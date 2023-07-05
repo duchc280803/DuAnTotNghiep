@@ -12,4 +12,10 @@ public class TrangChuController {
     public String dashboard(){
         return "/admin/trang-chu";
     }
+
+    @GetMapping("/dashboard/cart")
+    public String banHangTaiQuay(){
+        return "/admin/ban-hang-tai-quay";
+    }
+
 }
