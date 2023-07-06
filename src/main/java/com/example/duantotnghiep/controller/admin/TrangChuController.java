@@ -15,7 +15,17 @@ public class TrangChuController {
 
     @GetMapping("/dashboard/cart")
     public String banHangTaiQuay(){
-        return "/admin/ban-hang-tai-quay";
+        return "/admin/oder/ban-hang-tai-quay";
+    }
+
+    @GetMapping("/dashboard/voucher")
+    public String viewVoucher(){
+        return "/admin/voucher/hien-thi";
+    }
+
+    @GetMapping("/dashboard/create-voucher")
+    public String viewCreateVoucher(){
+        return "/admin/voucher/create";
     }
 
 }
