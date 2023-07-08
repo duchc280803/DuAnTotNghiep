@@ -17,3 +17,14 @@
 .shadow-textarea textarea.form-control {
     padding-left: 0.8rem;
 }
+.header-title {
+    color: #202223;
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+select.form-select {
+    width: 65px;
+    margin-top: 25px;
+}
