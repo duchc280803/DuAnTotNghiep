@@ -169,94 +169,100 @@
                     </div>
                 </nav>
             </section>
-            <main class="">
+            <main class="" style="background-color: #F0F0F0">
                 <div class="padding-container">
-                    <div class="container">
-                        <form action="#" class="form-voucher">
-                            <div class="form-input-voucher">
-                                <input type="search" placeholder="Mã Giảm Giá..." class="input-voucher">
-                                <button type="search" class="search-btn-voucher">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                         class="bi bi-search" viewBox="0 0 16 16">
-                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </form>
-                        <button type="button" class="btn btn-danger" style="margin-left: 1050px; margin-bottom: 25px;"
-                                data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Tạo Khuyến Mãi
-                        </button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">
-                                            Tạo khuyến mãi
-                                        </h5>
-                                        <br>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="modal-body-item">
-                                            <a href="#" class="icon-voucher">
-                                                <img src="/assets/image/coupons%20(1).png">
-                                            </a>
-                                            <div class="modal-body-item-title">
-                                                <a href="/admin/dashboard/create-voucher">
-                                                    <label>Tạo Mã khuyến mãi </label>
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="#" class="form-voucher">
+                                <div class="form-input-voucher">
+                                    <input type="search" placeholder="Mã Giảm Giá..." class="input-voucher">
+                                    <button type="search" class="search-btn-voucher">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="currentColor"
+                                             class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </form>
+                            <button type="button" class="btn btn-danger"
+                                    style="margin-left: 1050px; margin-bottom: 25px;"
+                                    data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Tạo Khuyến Mãi
+                            </button>
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">
+                                                Tạo khuyến mãi
+                                            </h5>
+                                            <br>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="modal-body-item">
+                                                <a href="#" class="icon-voucher">
+                                                    <img src="/assets/image/coupons%20(1).png">
                                                 </a>
+                                                <div class="modal-body-item-title">
+                                                    <a href="/admin/dashboard/create-voucher">
+                                                        <label>Tạo Mã khuyến mãi </label>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="modal-body-item">
+                                                <a href="#" class="icon-voucher">
+                                                    <img src="/assets/image/voucher.png">
+                                                </a>
+                                                <div class="modal-body-item-title">
+                                                    <a href="">
+                                                        <label>Tạo Chương trình khuyến mãi</label>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="modal-body-item">
-                                            <a href="#" class="icon-voucher">
-                                                <img src="/assets/image/voucher.png">
-                                            </a>
-                                            <div class="modal-body-item-title">
-                                                <a href="">
-                                                    <label>Tạo Chương trình khuyến mãi</label>
-                                                </a>
-                                            </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
                                         </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
-                                        </button>
                                     </div>
                                 </div>
                             </div>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">STT</th>
+                                    <th scope="col">Mã</th>
+                                    <th scope="col">Hình Thức</th>
+                                    <th scope="col">Loại Sản Phẩm</th>
+                                    <th scope="col">Đã Sử Dụng</th>
+                                    <th scope="col">Bắt Đầu</th>
+                                    <th scope="col">Kết Thúc</th>
+                                    <th scope="col">Trạng Thai</th>
+                                    <th scope="col">Thao Tác</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>0/5</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    <td>
+                                        <a class="btn-dark">Sửa</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">STT</th>
-                                <th scope="col">Mã</th>
-                                <th scope="col">Hình Thức</th>
-                                <th scope="col">Loại Sản Phẩm</th>
-                                <th scope="col">Đã Sử Dụng</th>
-                                <th scope="col">Bắt Đầu</th>
-                                <th scope="col">Kết Thúc</th>
-                                <th scope="col">Trạng Thai</th>
-                                <th scope="col">Thao Tác</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>0/5</td>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                <td>
-                                    <a class="btn-dark">Sửa</a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </main>

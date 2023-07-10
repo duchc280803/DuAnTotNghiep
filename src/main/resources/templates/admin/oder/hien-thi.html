@@ -5,7 +5,7 @@
     <title>Title</title>
     <link rel="stylesheet" href="/assets/css/bootstrap.css">
     <link rel="stylesheet" href="/css/admin/trang-chu.css">
-    <link rel="stylesheet" href="/css/admin/voucher/create.css">
+    <link rel="stylesheet" href="/css/admin/voucher/hien-thi.css">
 </head>
 <body>
 <div class="section">
@@ -169,111 +169,54 @@
                     </div>
                 </nav>
             </section>
-            <main class="" style="background-color: #f0f0f0">
-                <div class="row">
-                    <div class="col-lg-9">
-                        <br>
-                        <div class="card" style="margin-left: 20px;margin-right: -20px">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <span class="header-title">Mã khuyến mãi</span>
-                                        <input type="text" class="next-input" placeholder="Nhập mã khuyến mãi">
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <span class="header-title">Tên khuyến mãi</span>
-                                        <input type="text" class="next-input" placeholder="Nhập tên khuyến mãi">
-                                    </div>
+            <main class="" style="background-color: #F0F0F0">
+                <div class="padding-container">
+                    <div class="card">
+                        <div class="card-body">
+                            <form action="#" class="form-voucher">
+                                <div class="form-input-voucher">
+                                    <input type="search" placeholder="Đơn Hàng..." class="input-voucher">
+                                    <button type="search" class="search-btn-voucher">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="currentColor"
+                                             class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                                        </svg>
+                                    </button>
                                 </div>
-                                <br>
-                                <div class="form-group shadow-textarea">
-                                    <span class="header-title">Mô Tả</span>
-                                    <textarea class="next-input" id="exampleFormControlTextarea6" rows="3"
-                                              placeholder="Nhập mô tả"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="card" style="margin-left: 20px;margin-right: -20px">
-                            <div class="card-body">
-                                <span class="header-title">Loại Giảm Giá</span>
-                                <br>
-                                <div class="row" style="margin-top: 15px;margin-bottom: 7px;">
-                                    <div class="col-lg-4">
-                                        <button class="btn btn-danger" style="margin-left: 55px;">Giảm Giá Đơn Hàng
-                                        </button>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <button class="btn btn-danger" style="margin-left: 55px;">Giảm Giá Sản Phẩm
-                                        </button>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <button class="btn btn-danger" style="margin-left: 55px;">Giảm Giá Vận Chuyển
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="card" style="margin-left: 20px;margin-right: -20px">
-                            <div class="card-body">
-                                <span class="header-title">Giảm giá đơn hàng</span>
-                                <div class="row">
-                                    <div class="col-lg-5">
-                                        <span class="header-title">Mức Giảm</span>
-                                        <input type="text" class="next-input" placeholder="0">
-                                    </div>
-                                    <div class="col-lg-2">
-                                        <select class="form-select" aria-label="Default select example">
-                                            <option selected>%</option>
-                                            <option value="3">đ</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-5">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                   id="flexCheckDefault"/>
-                                            <label class="form-check-label" for="flexCheckDefault">Giới Hạn Số Tiền
-                                                Giảm</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="card" style="margin-left: 20px;margin-right: -20px">
-                            <div class="card-body">
-                                <span class="header-title">Điều Kiện Giảm Giá</span>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="card" style="margin-left: 20px;margin-right: -20px">
-                            <div class="card-body">
-                                <span class="header-title">Giới Hạn Sử Dụng</span>
-                            </div>
-                        </div>
-                        <br>
-                        <div class="card" style="margin-left: 20px;margin-right: -20px">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <span class="header-title">Ngày Bắt Đầu</span>
-                                        <input type="date" class="next-input" placeholder="Nhập ngày bắt đầu">
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <span class="header-title">Ngày Kết Thúc</span>
-                                        <input type="date" class="next-input" placeholder="Nhập ngày kết thúc">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                    </div>
-                    <div class="col-lg-3">
-                        <br>
-                        <div class="card" style="margin-left: 20px;margin-right: 20px">
-                            <div class="card-body">
-                            </div>
+                            </form>
+                            <a href="/admin/dashboard/don-hang" type="button" class="btn btn-danger"
+                                    style="margin-left: 1050px; margin-bottom: 25px;">
+                                Tạo Đơn Hàng
+                            </a>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">STT</th>
+                                    <th scope="col">Mã Đơn Hàng</th>
+                                    <th scope="col">Ngày Tạo</th>
+                                    <th scope="col">Khách Hàng</th>
+                                    <th scope="col">Số Lượng</th>
+                                    <th scope="col">Tổng Số Tiền</th>
+                                    <th scope="col">Trạng Thai</th>
+                                    <th scope="col">Thao Tác</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>0/5</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    <td>
+                                        <a class="btn-dark">Sửa</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
