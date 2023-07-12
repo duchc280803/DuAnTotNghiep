@@ -1,7 +1,9 @@
 .layout-card{
     background: white;
-    border-radius: 8px;
-    margin-top: 16px;
+    border-radius: 20px;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 .layout-card--header.line-bottom {
     border-bottom: 1px solid #e1e3e5;
@@ -17,6 +19,7 @@
 }
 .layout-card--section {
     padding: 16px;
+    margin-bottom: 20px;
 }
 .layout-card--section .row {
     margin-top: -16px;

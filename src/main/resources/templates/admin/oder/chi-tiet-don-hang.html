@@ -3,9 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link rel="stylesheet" href="/css/admin/oder/chi-tiet-don-hang.css">
+    <!-- UniIcon CDN Link  -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="/assets/css/bootstrap.css">
     <link rel="stylesheet" href="/css/admin/trang-chu.css">
-    <link rel="stylesheet" href="/css/admin/oder/hien-thi.css">
+    <link rel="stylesheet" href="/css/admin/phan-trang.css">
+    <link rel="stylesheet" href="/css/admin/select-button.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
 </head>
 <body>
 <div class="section">
@@ -28,7 +34,7 @@
                 <div class="sidebar-wrapper">
                     <ul class="nav" id="menu">
                         <li class="active d-flex align-items-center">
-                            <a href="" class="text-decoration-none">
+                            <a href="/admin/dashboard" class="text-decoration-none">
                                 <div class="">
                                     <img src="/assets/image/business%20(1).png">
                                 </div>
@@ -54,7 +60,7 @@
                                     <img src="/assets/image/cart.png">
                                 </div>
                             </a>
-                            <a href="/admin/dashboard/cart" class="text-decoration-none" style="padding-left: 25px;">
+                            <a href="/admin/dashboard/don-hang" class="text-decoration-none" style="padding-left: 25px;">
                                 <i class="nc-icon nc-pin-3"></i>
                                 <p>Bán tại quầy</p>
                             </a>
@@ -129,7 +135,7 @@
         </div>
         <div class="col-sm-10 col-xl-10 col-lg-10 col-md-10 col-xxl-10">
             <section id="content">
-                <nav class="navbar navbar-expand-lg navbar-light custom-navbar"
+                <nav class="navbar navbar-expand-lg navbar-light "
                      style="background-color:  #f9f9f9">
                     <div class="container-fluid">
                         <div class="collapse navbar-collapse">
@@ -170,61 +176,180 @@
                 </nav>
             </section>
             <main class="" style="background-color: #F0F0F0">
-                <div class="padding-container">
-                    <div class="card">
-                        <div class="card-body">
-                            <form action="#" class="form-oder">
-                                <div class="form-input-oder">
-                                    <input type="search" placeholder="Đơn Hàng..." class="input-oder">
-                                    <button type="search" class="search-btn-oder">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                             fill="currentColor"
-                                             class="bi bi-search" viewBox="0 0 16 16">
-                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-                                        </svg>
-                                    </button>
+                <div class="firstBoxCTDH">
+                    <div class="boxct">
+                        <div class="row justify-content-center">
+                            <div class="col-11 col-sm-9 col-md-7
+				col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
+                                <div class="px-0 pt-4 pb-0 mt-3 mb-3">
+                                    <form id="form">
+                                        <ul id="progressbar">
+                                            <li class="active" id="step1">
+                                                <strong>Tạo đơn hàng</strong>
+                                            </li>
+                                            <li id="step2"><strong>Xác nhận đơn</strong></li>
+                                            <li id="step3"><strong>Giao cho đơn vị vận chuyển</strong></li>
+                                            <li id="step4"><strong>Giao thành công</strong></li>
+                                        </ul>
+                                        <div class="progress">
+                                            <div class="progress-bar"></div>
+                                        </div>
+                                        <br>
+                                        <fieldset>
+                                            <h3>11h00 12/07/2023</h3>
+                                            <input type="button" name="next-step"
+                                                   class="next-step" value="Next"/>
+                                        </fieldset>
+                                        <fieldset>
+                                            <h3>12h00 12/07/2023</h3>
+                                            <input type="button" name="next-step"
+                                                   class="next-step" value="Next"/>
+                                            <input type="button" name="previous-step"
+                                                   class="previous-step"
+                                                   value="Previous"/>
+                                        </fieldset>
+                                        <fieldset>
+                                            <h3>13h00 12/07/2023</h3>
+                                            <input type="button" name="next-step"
+                                                   class="next-step" value="Final"/>
+                                            <input type="button" name="previous-step"
+                                                   class="previous-step"
+                                                   value="Previous"/>
+                                        </fieldset>
+                                        <fieldset>
+                                            <div class="finish">
+                                                <h3 class="text text-center">
+                                                    <h3>14h00 12/07/2023</h3>
+                                                </h3>
+                                            </div>
+                                            <input type="button" name="previous-step"
+                                                   class="previous-step"
+                                                   value="Previous"/>
+                                        </fieldset>
+                                    </form>
                                 </div>
-                            </form>
-                            <a href="/admin/dashboard/don-hang" type="button" class="btn btn-danger"
-                                    style="margin-left: 1050px; margin-bottom: 25px;">
-                                Tạo Đơn Hàng
-                            </a>
-                            <table class="table">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--                dong box1-->
+                <div class="twoBoxCTDH">
+                    <div class="boxct">
+                        <h2 class="d-flex justify-content-start">THÔNG TIN ĐƠN HÀNG</h2>
+                        <hr>
+                        <div class="row">
+                            <table class="table table-hover">
                                 <thead>
                                 <tr>
-                                    <th scope="col">STT</th>
-                                    <th scope="col">Mã Đơn Hàng</th>
-                                    <th scope="col">Ngày Tạo</th>
-                                    <th scope="col">Khách Hàng</th>
-                                    <th scope="col">Số Lượng</th>
-                                    <th scope="col">Tổng Số Tiền</th>
-                                    <th scope="col">Trạng Thai</th>
-                                    <th scope="col">Thao Tác</th>
+                                    <th scope="col">Mã đơn hàng</th>
+                                    <th scope="col">Loại</th>
+                                    <th scope="col">Họ và Tên</th>
+                                    <th scope="col">Số điện thoại</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Địa Chỉ</th>
+                                    <th scope="col">Trạng Thái</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="table">
                                 <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>0/5</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
+                                    <td>001</td>
+                                    <td>Loại 1</td>
+                                    <td>Duc Nam</td>
+                                    <td>1234567890</td>
+                                    <td>namndph22694@fpt.edu.vn</td>
+                                    <td>Thôn x-Phú Cát-Quốc Oai-Hà Nội</td>
                                     <td>
-                                        <a class="btn-dark">Sửa</a>
+                                    <span style="background-color: #cceeff;color: #0077cc; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Đang giao
+                                    </span>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
+
+                </div>
+                <!--                dong2-->
+                <div class="twoBoxCTDH">
+                    <div class="boxct">
+                        <div class="row">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Tên Giày</th>
+                                    <th scope="col">Loại</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Size</th>
+                                    <th scope="col">Số Lượng</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody class="table">
+                                <tr>
+                                    <td>Giày Converse New York</td>
+                                    <td>Giày Thể Thao</td>
+                                    <td>22.000.000 vnđ</td>
+                                    <td>42</td>
+                                    <td>2</td>
+                                    <td>
+                                        <a class="btn btn-primary">Cập nhật</a>
+                                        <button class="btn btn-danger">Xóa</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <button class="button1 d-flex justify-content-start">Thêm sản phẩm</button>
+                        <div class="row">
+                            <div class="col-lg-6"></div>
+                            <div class="col-sm-6 col-12 d-flex align-items-center justify-content-between">
+
+                                <div class="omni-layout-card--section-section">
+                                    <div class="omni-layout-card--item-stack-cover">
+                                        <div class="omni-layout-card--item-stack fill">Tiền hàng</div>
+                                        <div class="omni-layout-card--item-stack fill text-right">30.000.000
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="omni-layout-card--section-section">
+                                    <div class="omni-layout-card--item-stack-cover">
+                                        <div class="omni-layout-card--item-stack fill">Giảm giá</div>
+                                    </div>
+                                    <div class="omni-layout-card--item-stack fill text-right">20%
+                                    </div>
+                                </div>
+                                <div class="omni-layout-card--section-section">
+                                    <div class="omni-layout-card--item-stack-cover">
+                                        <div class="omni-layout-card--item-stack fill">Phí vận chuyển</div>
+                                        <div class="omni-layout-card--item-stack fill text-right">15.000
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="omni-layout-card--section-section">
+                                    <div class="omni-layout-card--item-stack-cover">
+                                        <div class="omni-layout-card--item-stack fill"><b>Tổng Tiền Hàng</b></div>
+                                    </div>
+                                    <div class="omni-layout-card--item-stack fill text-right" style="color: red">
+                                        22.000.000
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
             </main>
         </div>
     </div>
 </div>
-<script src="/assets/js/bootstrap.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'>
+</script>
+<script src="/js/admin/chi-tiet-don-hang.js"></script>
+<script src="https://unpkg.com/ionicons@latest/dist/ionicons.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+<script src="/assets/js/bootstrap.js"></script>
 <script src="/js/admin/trang-chu.js"></script>
 </body>
 </html>

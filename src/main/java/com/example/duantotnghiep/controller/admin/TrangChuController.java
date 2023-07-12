@@ -13,22 +13,17 @@ public class TrangChuController {
         return "/admin/trang-chu";
     }
 
-    @GetMapping("don-hang")
+    @GetMapping("/dashboard/don-hang")
     public String don(){
-        return "/admin/don-hang";
+        return "/admin/oder/don-hang";
     }
 
     @GetMapping("don-hang/1")
     public String chitietdonhang(){
-        return "/admin/chi-tiet-don-hang";
+        return "/admin/oder/chi-tiet-don-hang";
     }
 
-    @GetMapping("/dashboard/cart")
-    public String viewBanHang(){
-        return "/admin/oder/hien-thi";
-    }
-
-    @GetMapping("/dashboard/don-hang")
+    @GetMapping("/dashboard/tao-don-hang")
     public String donHang(){
         return "/admin/oder/tao-don-hang";
     }
