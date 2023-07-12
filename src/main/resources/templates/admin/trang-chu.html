@@ -5,6 +5,7 @@
     <title>Title</title>
     <link rel="stylesheet" href="/assets/css/bootstrap.css">
     <link rel="stylesheet" href="/css/admin/trang-chu.css">
+    <link rel="stylesheet" href="/css/admin/select-button.css">
 </head>
 <body>
 <div class="section">
@@ -42,7 +43,7 @@
                                     <img src="/assets/image/add-cart.png">
                                 </div>
                             </a>
-                            <a href="" class="text-decoration-none" style="padding-left: 25px;">
+                            <a href="/admin/don-hang" class="text-decoration-none" style="padding-left: 25px;">
                                 <i class="nc-icon nc-diamond"></i>
                                 <p>Đơn hàng</p>
                             </a>
@@ -118,7 +119,7 @@
                                     </svg>
                                 </i>
                             </a>
-                            <a href="#" class="text-decoration-none" >
+                            <a href="#" class="text-decoration-none">
                                 <p class="text">Logout</p>
                             </a>
                         </li>
@@ -169,12 +170,139 @@
                 </nav>
             </section>
             <main class="" style="background-color: #F0F0F0">
-
+                <!-- dòng 1-->
+                <div class="firstBox">
+                    <div class="box">
+                        <span class="cardName">Đơn hôm nay</span>
+                        <span class="iconBx">
+                            <ion-icon name="receipt-outline"> </ion-icon>
+                        </span>
+                        <div class="numbers">1,500</div>
+                    </div>
+                    <div class="box">
+                        <span class="cardName">Sản phẩm bán tháng này</span>
+                        <span class="iconBx">
+                            <ion-icon name="cube-outline"></ion-icon>
+                        </span>
+                        <div class="numbers">123,000</div>
+                    </div>
+                    <div class="box">
+                        <span class="cardName">Doanh thu hôm nay</span>
+                        <span class="iconBx">
+                           <ion-icon name="cash-outline"></ion-icon>
+                        </span>
+                        <div class="numbers">1,500,000,000</div>
+                    </div>
+                </div>
+                <!--hết dòng 1-->
+                <div class="row" style="margin-left: 8px">
+                    <div class="col-2 ">
+                        Ngày bắt đầu <input class="form-control" type="date">
+                    </div>
+                    <div class="col-2">
+                        Ngày kết thúc <input class="form-control" type="date">
+                    </div>
+                </div>
+                <!--dòng 2-->
+                <div class="graphBox">
+                    <div class="box" style="height: 500px;width: 90%">
+                        <div class="lable"
+                             style="text-align: center;color: #6ea7ff;font-weight: bolder;font-family: 'Times New Roman';font-size: larger;">
+                            Biểu đồ thống kê doanh thu
+                        </div>
+                        <canvas id="myChart2"></canvas>
+                    </div>
+                    <div>
+                        <div class="box" style="height: 500px;width: 450px;">
+                            <div class="lable"
+                                 style="text-align: center;color: #6ea7ff;font-weight: bolder;font-family: 'Times New Roman';font-size: larger">
+                                Trạng thái đơn hàng
+                            </div>
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!--hết dòng 2-->
+                <!--dòng 3-->
+                <div class="threeBox">
+                    <div class="box">
+                        <div class="lable"
+                             style="text-align: center;color: #6ea7ff;font-weight: bolder;font-family: 'Times New Roman';font-size: larger">
+                            Sản phẩm bán chạy
+                        </div>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Tên sản phẩm</th>
+                                <th scope="col">Loại sản phẩm</th>
+                                <th scope="col">Thương hiệu</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table">
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Giày đánh golf</td>
+                                <td>Giày thể thao nam</td>
+                                <td>Adidas</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Giày chạy bộ Gucci vip 2022</td>
+                                <td>Giày thể thao nữ</td>
+                                <td>Gucci</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Giày đinh đá bóng</td>
+                                <td>Giày thể thao nam</td>
+                                <td>Adidas</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box">
+                        <div class="lable"
+                             style="text-align: center;color: #6ea7ff;font-weight: bolder;font-family: 'Times New Roman';font-size: larger">
+                            Khách hàng mới
+                        </div>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Tên Khách Hàng</th>
+                                <th scope="col">Thời gian truy cập</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table">
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Nguyễn Đức Nam</td>
+                                <td>14:10 AM 07/06/2023</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Nguyễn Đức Nam2</td>
+                                <td>14:10 AM 07/06/2023</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Nguyễn Đức Nam3</td>
+                                <td>14:10 AM 07/06/2023</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--hết dòng 3-->
             </main>
         </div>
     </div>
 </div>
+<script src="https://unpkg.com/ionicons@latest/dist/ionicons.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 <script src="/assets/js/bootstrap.js"></script>
 <script src="/js/admin/trang-chu.js"></script>
+
 </body>
 </html>

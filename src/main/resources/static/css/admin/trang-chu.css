@@ -174,3 +174,110 @@ body {
     white-space: nowrap;
     overflow-x: hidden;
 }
+/*nam*/
+.firstBox {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 30px;
+    min-height: 200px;
+}
+
+.firstBox .box {
+    position: relative;
+    background: #FFFFFF;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.numbers {
+    font-weight: 500;
+    font-size: 2em;
+    font-family: "Times New Roman";
+    font-weight: bolder;
+    font-style: italic;
+    color: #7fa2ff;
+}
+
+.cardName {
+    font-size: 1.6em;
+    font-family: Tahoma;
+    color: #8697af;
+    margin-top: 5px;
+    margin-right: 20px;
+}
+
+.iconBx {
+    font-size: 1.7em;
+    color: #8697af;
+    position: absolute;
+    margin-top: 5px;
+    margin-right: 20px;
+}
+
+.box:hover {
+    background-color: #EFFAFF;
+}
+
+.graphBox {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 30px;
+    min-height: 100px;
+}
+
+.graphBox .box {
+    position: relative;
+    background: #FFFFFF;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+}
+
+.threeBox {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 30px;
+    min-height: 200px;
+}
+
+.threeBox .box {
+    position: relative;
+    background: #FFFFFF;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+}
+
+.fourBox {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 30px;
+    min-height: 200px;
+}
+
+.fourBox .box {
+    position: relative;
+    background: #FFFFFF;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+}
+/*end nam*/

@@ -13,6 +13,16 @@ public class TrangChuController {
         return "/admin/trang-chu";
     }
 
+    @GetMapping("don-hang")
+    public String don(){
+        return "/admin/don-hang";
+    }
+
+    @GetMapping("don-hang/1")
+    public String chitietdonhang(){
+        return "/admin/chi-tiet-don-hang";
+    }
+
     @GetMapping("/dashboard/cart")
     public String viewBanHang(){
         return "/admin/oder/hien-thi";
