@@ -260,7 +260,8 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
                                        id="flexRadioDefault1"/>
-                                <label class="form-check-label" for="flexRadioDefault1" style="margin-bottom: 15px">Giá Trị Mua Tối Thiểu</label>
+                                <label class="form-check-label" for="flexRadioDefault1" style="margin-bottom: 15px">Giá
+                                    Trị Mua Tối Thiểu</label>
                                 <div id="inputContainer1" style="display: none;margin-bottom: 15px">
                                     <input type="text" class="next-input" placeholder="0" style="width: 315px">
                                 </div>
@@ -268,10 +269,12 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="flexRadioDefault"
                                        id="flexRadioDefault2"/>
-                                <label class="form-check-label" for="flexRadioDefault2" style="margin-bottom: 15px">Số Lượng Sản phẩm Tối
+                                <label class="form-check-label" for="flexRadioDefault2" style="margin-bottom: 15px">Số
+                                    Lượng Sản phẩm Tối
                                     Thiểu</label>
-                                <div id="inputContainer2" style="display: none;" >
-                                    <input type="text" class="next-input" placeholder="0" style="width: 315px;margin-bottom: 15px">
+                                <div id="inputContainer2" style="display: none;">
+                                    <input type="text" class="next-input" placeholder="0"
+                                           style="width: 315px;margin-bottom: 15px">
                                 </div>
                             </div>
                         </div>
@@ -279,6 +282,27 @@
                         <div class="card" style="margin-left: 20px;margin-right: -20px;border-radius: 20px">
                             <div class="card-body">
                                 <span class="header-title">Giới Hạn Sử Dụng</span>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="ok"
+                                       id="rdo1"/>
+                                <label class="form-check-label" for="flexRadioDefault1" style="margin-bottom: 15px">
+                                    Giới Hạn Số Lượng
+                                </label>
+                                <div id="rdoCt1" style="display: none;margin-bottom: 15px">
+                                    <input type="text" class="next-input" placeholder="0" style="width: 315px">
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="ok"
+                                       id="rdo2"/>
+                                <label class="form-check-label" for="flexRadioDefault2" style="margin-bottom: 15px">
+                                    Giới Hạn Số Lần Sử Dụng Mỗi Khách
+                                </label>
+                                <div id="rdoCt2" style="display: none;">
+                                    <input type="text" class="next-input" placeholder="0"
+                                           style="width: 315px;margin-bottom: 15px">
+                                </div>
                             </div>
                         </div>
                         <br>
@@ -325,6 +349,26 @@
             checkbox.checked = false;
         }
     }
+
+    var rdo = document.querySelectorAll('input[type="radio"][name="ok"]');
+    var rdoCt1 = document.getElementById('rdoCt1');
+    var rdoCt2 = document.getElementById('rdoCt2');
+
+    // Thêm sự kiện click cho mỗi radio button
+    rdo.forEach(function (rdos) {
+        rdos.addEventListener('click', function () {
+            if (rdos.checked) {
+                // Kiểm tra radio button nào được chọn và hiển thị/div ẩn điều kiện tương ứng
+                if (rdos.id === 'rdo1') {
+                    rdoCt1.style.display = 'block';
+                    rdoCt2.style.display = 'none';
+                } else {
+                    rdoCt1.style.display = 'none';
+                    rdoCt2.style.display = 'block';
+                }
+            }
+        });
+    });
 
     var radioButtons = document.querySelectorAll('input[type="radio"][name="flexRadioDefault"]');
     var inputContainer1 = document.getElementById('inputContainer1');
