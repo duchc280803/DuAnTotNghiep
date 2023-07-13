@@ -28,3 +28,6 @@ select.form-select {
     width: 65px;
     margin-top: 25px;
 }
+.form-check{
+    margin-left: 16px;
+}
