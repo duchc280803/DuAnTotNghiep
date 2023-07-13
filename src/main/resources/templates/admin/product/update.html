@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link CSS của Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Product Form</title>
+</head>
+
+<body>
+<div class="container">
+    <center>
+        <h1>Update Sản Phẩm</h1>
+    </center>
+
+    <form>
+        <div class="form-group">
+            <label for="productName">Tên sản phẩm</label>
+            <input type="text" class="form-control" id="productName" placeholder="Nhập tên sản phẩm">
+        </div>
+        <div class="form-group">
+            <label for="price">Giá</label>
+            <input type="text" class="form-control" id="price" placeholder="Nhập giá sản phẩm">
+        </div>
+        <div class="form-group">
+            <label for="description">Mô tả</label>
+            <textarea class="form-control" id="description" rows="3" placeholder="Nhập mô tả sản phẩm"></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="brand">Thương hiệu</label>
+                <select class="form-control" id="brand">
+                    <option>Chọn thương hiệu</option>
+                    <option>Thương hiệu 1</option>
+                    <option>Thương hiệu 2</option>
+                    <option>Thương hiệu 3</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="category">Danh mục</label>
+                <select class="form-control" id="category">
+                    <option>Chọn danh mục</option>
+                    <option>Danh mục 1</option>
+                    <option>Danh mục 2</option>
+                    <option>Danh mục 3</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="material">Chất liệu</label>
+                <select class="form-control" id="material">
+                    <option>Chọn chất liệu</option>
+                    <option>Chất liệu 1</option>
+                    <option>Chất liệu 2</option>
+                    <option>Chất liệu 3</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="color">Màu sắc</label>
+                <select class="form-control" id="color">
+                    <option>Chọn màu sắc</option>
+                    <option>Màu sắc 1</option>
+                    <option>Màu sắc 2</option>
+                    <option>Màu sắc 3</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="sole">Đế giày</label>
+                <select class="form-control" id="sole">
+                    <option>Chọn đế giày</option>
+                    <option>Đế giày 1</option>
+                    <option>Đế giày 2</option>
+                    <option>Đế giày 3</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="origin">Xuất xứ</label>
+                <select class="form-control" id="origin">
+                    <option>Chọn xuất xứ</option>
+                    <option>Xuất xứ 1</option>
+                    <option>Xuất xứ 2</option>
+                    <option>Xuất xứ 3</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-danger">
+            <a href="/admin/dashboard/product/update">    Xác Nhận</a>
+        </button>
+    </form>
+</div>
+<br>
+<br>
+<br>
+<div class="container">
+    <h2 style="text-align: center">KÍCH CỠ VÀ SỐ LƯỢNG</h2>
+    <table class="table">
+        <tbody>
+        <tr>
+            <td>Kích Cỡ</td>
+            <td>Số Lượng</td>
+            <td>Trạng Thái</td>
+            <td>Thao Tác</td>
+        </tr>
+        <tr>
+            <td>39</td>
+            <td>10</td>
+            <td>Đang sử dụng</td>
+            <td>
+                <button class="btn btn-danger">Hủy Kích hoạt</button>
+            </td>
+        </tr>
+        <tr>
+            <td>40</td>
+            <td>5</td>
+            <td>Hết hàng</td>
+            <td>
+                <button class="btn btn-danger">Tái Kích hoạt</button>
+            </td>
+        </tr>
+        <!-- Thêm các dòng khác cho bảng -->
+
+        </tbody>
+    </table>
+
+
+
+    <button type="button" class="btn btn-danger" style="margin-left: 550px; margin-bottom: 25px;"
+            data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Thêm kích cỡ
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Thêm kích cỡ
+                    </h5>
+                    <br>
+                </div>
+
+
+                <div class="modal-body">
+                    <div class="modal-body-item">
+                        <form>
+                            <div class="form-group">
+                                <label for="inputSize">Kích cỡ:</label>
+                                <select class="form-control" id="inputSize">
+                                    <option>34</option>
+                                    <option>35</option>
+                                    <option>36</option>
+                                    <!--Thêm các size khác tại đây-->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputQuantity">Số lượng:</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">-</span>
+                                    </div>
+                                    <input type="number" class="form-control" id="inputQuantity">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">+</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Xác nhận
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<hr>
+<input type="file" id="image-input" style="display: none;">
+<button id="add-image-button" class="btn btn-danger" style="margin-left: 820px">Thêm ảnh</button>
+
+<script>
+    document.getElementById('add-image-button').addEventListener('click', function() {
+        document.getElementById('image-input').click();
+    });
+
+    document.getElementById('image-input').addEventListener('change', function(event) {
+        var selectedFile = event.target.files[0];
+        // Do something with the selected file
+        console.log(selectedFile);
+    });
+
+    function showAddSizeForm() {
+        var addSizeForm = document.querySelector(".add-size-form");
+        addSizeForm.style.display = "block";
+    }
+
+    function addSize() {
+        // Xử lý logic thêm kích cỡ vào bảng
+        var size = document.getElementById("size").value;
+        var quantity = document.getElementById("quantity").value;
+
+        // Thêm dữ liệu vào bảng
+
+        // Sau khi thêm xong, ẩn form
+        var addSizeForm = document.querySelector(".add-size-form");
+        addSizeForm.style.display = "none";
+    }
+</script>
+
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/js/admin/trang-chu.js"></script>
+<!-- Link JavaScript của Bootstrap -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

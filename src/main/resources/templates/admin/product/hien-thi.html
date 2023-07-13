@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/bootstrap.css">
+<link rel="stylesheet" href="/css/admin/trang-chu.css">
+<link rel="stylesheet" href="/css/admin/voucher/hien-thi.css">
+<h1>xin chao</h1>
+
+<div class="section">
+    <div class="row">
+        <div class="col-sm-2 col-xl-2 col-lg-2 col-md-2 col-xxl-2">
+            <div class="sidebar">
+                <div class="logo d-flex align-items-center" style="padding-left: 20px;padding-top: 52px;height: 40px;">
+                    <a href="" class="text-decoration-none">
+                        <div class="">
+                            <img src="/assets/image/business%20(1).png" style="padding-bottom: 30px">
+                        </div>
+                    </a>
+                    <a href="" class="simple-text logo-normal text-decoration-none" style="padding-left: 25px;">
+                        <p style="padding-bottom: 30px;">
+                            Tên cửa hàng
+                        </p>
+                    </a>
+                </div>
+                <hr>
+                <div class="sidebar-wrapper">
+                    <ul class="nav" id="menu">
+                        <li class="active d-flex align-items-center">
+                            <a href="" class="text-decoration-none">
+                                <div class="">
+                                    <img src="/assets/image/business%20(1).png">
+                                </div>
+                            </a>
+                            <a href="/admin/dashboard" class="text-decoration-none" style="padding-left: 25px;">
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+                        <li class="d-flex align-items-center" style="padding-top: 20px">
+                            <a href="" class="text-decoration-none">
+                                <div class="">
+                                    <img src="/assets/image/add-cart.png">
+                                </div>
+                            </a>
+                            <a href="" class="text-decoration-none" style="padding-left: 25px;">
+                                <i class="nc-icon nc-diamond"></i>
+                                <p>Đơn hàng</p>
+                            </a>
+                        </li>
+                        <li class="d-flex align-items-center" style="padding-top: 20px">
+                            <a href="" class="text-decoration-none">
+                                <div class="">
+                                    <img src="/assets/image/cart.png">
+                                </div>
+                            </a>
+                            <a href="/admin/dashboard/cart" class="text-decoration-none" style="padding-left: 25px;">
+                                <i class="nc-icon nc-pin-3"></i>
+                                <p>Bán tại quầy</p>
+                            </a>
+                        </li>
+
+
+                        <li class="d-flex align-items-center" style="padding-top: 20px">
+                            <a href="" class="text-decoration-none">
+                                <div class="">
+                                    <img src="/assets/image/delivery-box.png">
+                                </div>
+                            </a>
+                            <a href="#" onclick="toggleSubMenu()" class="text-decoration-none" style="padding-left: 25px;">
+                                <p>Quản Lý Sản phẩm</p>
+                            </a>
+                        </li>
+
+                        <div id="subMenu" style="display: none;">
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/product" class="text-decoration-none">
+                                    <p>Sản Phẩm</p>
+                                </a>
+                            </li>
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/deGiay" class="text-decoration-none">
+                                    <p>Đế Dày</p>
+                                </a>
+                            </li>
+
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/xuatXu" class="text-decoration-none">
+                                    <p>Xuất xứ</p>
+                                </a>
+                            </li>
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/danhMuc" class="text-decoration-none">
+                                    <p>Danh mục</p>
+                                </a>
+                            </li>
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/chatLieu" class="text-decoration-none">
+                                    <p>Chất Liệu</p>
+                                </a>
+                            </li>
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/thuongHieu" class="text-decoration-none">
+                                    <p>Thương Hiệu</p>
+                                </a>
+                            </li>
+                        </div>
+                        <li class="d-flex align-items-center" style="padding-top: 20px">
+                            <a href="" class="text-decoration-none">
+                                <div class="">
+                                    <img src="/assets/image/add-user.png">
+                                </div>
+                            </a>
+                            <a href="" class="text-decoration-none" style="padding-left: 25px;">
+                                <i class="nc-icon nc-single-02"></i>
+                                <p>Quản Lý Tài khoản</p>
+                            </a>
+                        </li>
+                        <li class="d-flex align-items-center" style="padding-top: 20px">
+                            <a href="" class="text-decoration-none">
+                                <div class="">
+                                    <img src="/assets/image/ticket.png">
+                                </div>
+                            </a>
+                            <a href="/admin/dashboard/voucher" class="text-decoration-none" style="padding-left: 25px;">
+                                <i class="nc-icon nc-tile-56"></i>
+                                <p>Quản Lý Voucher</p>
+                            </a>
+                        </li>
+                        <li class="d-flex align-items-center" style="padding-top: 20px">
+                            <a href="#" class="text-decoration-none" style="margin-right: 25px;">
+                                <i class="bx bxs-cog">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                         fill="currentColor" class="bi bi-gear-wide" viewBox="0 0 16 16"
+                                         style="width: 32px;height: 32px;">
+                                        <path d="M8.932.727c-.243-.97-1.62-.97-1.864 0l-.071.286a.96.96 0 0 1-1.622.434l-.205-.211c-.695-.719-1.888-.03-1.613.931l.08.284a.96.96 0 0 1-1.186 1.187l-.284-.081c-.96-.275-1.65.918-.931 1.613l.211.205a.96.96 0 0 1-.434 1.622l-.286.071c-.97.243-.97 1.62 0 1.864l.286.071a.96.96 0 0 1 .434 1.622l-.211.205c-.719.695-.03 1.888.931 1.613l.284-.08a.96.96 0 0 1 1.187 1.187l-.081.283c-.275.96.918 1.65 1.613.931l.205-.211a.96.96 0 0 1 1.622.434l.071.286c.243.97 1.62.97 1.864 0l.071-.286a.96.96 0 0 1 1.622-.434l.205.211c.695.719 1.888.03 1.613-.931l-.08-.284a.96.96 0 0 1 1.187-1.187l.283.081c.96.275 1.65-.918.931-1.613l-.211-.205a.96.96 0 0 1 .434-1.622l.286-.071c.97-.243.97-1.62 0-1.864l-.286-.071a.96.96 0 0 1-.434-1.622l.211-.205c.719-.695.03-1.888-.931-1.613l-.284.08a.96.96 0 0 1-1.187-1.186l.081-.284c.275-.96-.918-1.65-1.613-.931l-.205.211a.96.96 0 0 1-1.622-.434L8.932.727zM8 12.997a4.998 4.998 0 1 1 0-9.995 4.998 4.998 0 0 1 0 9.996z"/>
+                                    </svg>
+                                </i>
+                            </a>
+                            <a href="#" class="text-decoration-none">
+                                <p class="text">Settings</p>
+                            </a>
+                        </li>
+                        <li class="d-flex align-items-center" style="padding-top: 20px">
+                            <a href="#" class="text-decoration-none" style="margin-right: 25px;">
+                                <i class="bx bxs-log-out-circle">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-box-arrow-in-left" viewBox="0 0 16 16"
+                                         style="width: 32px;height: 32px;">>
+                                        <path fill-rule="evenodd"
+                                              d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"/>
+                                        <path fill-rule="evenodd"
+                                              d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                                    </svg>
+                                </i>
+                            </a>
+                            <a href="#" class="text-decoration-none" >
+                                <p class="text">Logout</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-10 col-xl-10 col-lg-10 col-md-10 col-xxl-10">
+            <main class="">
+                <div class="padding-container">
+                    <div class="container">
+                        <form action="#" class="form-voucher">
+                            <div class="form-input-voucher">
+                                <input type="search" placeholder="Tên Sản Phẩm..." class="input-voucher">
+                                <button type="search" class="search-btn-voucher">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
+
+                        <div style="display: flex; justify-content: flex-end;">
+                            <div style="padding-right: 230px;">
+                                <button type="button" class="btn btn-primary">Làm Mới</button>
+                            </div>
+
+                            <div style="padding-left: 20px;">
+                                <label class="form-label">Trạng Thái :</label>
+                                <button type="button" class="btn btn-primary">Tất Cả</button>
+                            </div>
+
+                            <div style="padding-left: 20px;">
+                                <a href="/admin/dashboard/product/create" class="btn btn-danger">      Tạo Sản Phẩm</a>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Ảnh</th>
+                                <th scope="col">Tên Sản Phẩm</th>
+                                <th scope="col">Giá</th>
+                                <th scope="col">Ngày Tạo</th>
+                                <th scope="col">Giới Tính</th>
+                                <th scope="col">Trạng Thai</th>
+                                <th scope="col" colspan="2">Thao Tác</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>im1</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                                <td>0/5</td>
+                                <td>Thornton</td>
+                                <td> <a class="btn btn-danger">Kích Hoạt</a></td>
+                                <td>
+                                    <a class="btn btn-danger">Chi Tiết</a>
+                                    <a class="btn btn-danger">Hủy Kích Hoạt</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+<script>
+    function toggleSubMenu() {
+        var subMenu = document.getElementById("subMenu");
+        if (subMenu.style.display === "none") {
+            subMenu.style.display = "block";
+        } else {
+            subMenu.style.display = "none";
+        }
+    }
+</script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/js/admin/trang-chu.js"></script>
+</body>
+</html>
