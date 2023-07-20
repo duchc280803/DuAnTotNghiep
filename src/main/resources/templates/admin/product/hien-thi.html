@@ -7,7 +7,10 @@
 <body>
 <link rel="stylesheet" href="/assets/css/bootstrap.css">
 <link rel="stylesheet" href="/css/admin/trang-chu.css">
-<link rel="stylesheet" href="/css/admin/voucher/hien-thi.css">
+<link rel="stylesheet" href="/css/admin/phan-trang.css">
+<link rel="stylesheet" href="/css/admin/select-button.css">
+<link rel="stylesheet" href="/css/admin/oder/don-hang.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
 <div class="section">
     <div class="row">
         <div class="col-sm-2 col-xl-2 col-lg-2 col-md-2 col-xxl-2">
@@ -161,84 +164,376 @@
             </div>
         </div>
         <div class="col-sm-10 col-xl-10 col-lg-10 col-md-10 col-xxl-10">
+            <section id="content">
+                <nav class="navbar navbar-expand-lg navbar-light custom-navbar"
+                     style="background-color:  #f9f9f9">
+                    <div class="container-fluid">
+                        <div class="collapse navbar-collapse">
+                            <i class="bx bx-menu">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-list" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                                </svg>
+                            </i>
+                            <nav>
+                                <form action="#">
+                                    <div class="form-input">
+                                        <input type="search" placeholder="Search...">
+                                        <button type="submit" class="search-btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                 fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </form>
+                                <a href="#" class="notification">
+                                    <i class="bx bxs-bell">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+                                        </svg>
+                                    </i>
+                                    <span class="num">8</span>
+                                </a>
+                                <a href="#" class="profile">
+                                    <img src="/assets/image/man.png">
+                                </a>
+                            </nav>
+                        </div>
+                    </div>
+                </nav>
+            </section>
             <main class="">
-                <div class="padding-container">
-                    <div class="container">
-                        <form action="#" class="form-voucher">
-                            <div class="form-input-voucher">
-                                <input type="search" placeholder="Tên Sản Phẩm..." class="input-voucher">
-                                <button type="search" class="search-btn-voucher">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                         class="bi bi-search" viewBox="0 0 16 16">
-                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-                                    </svg>
+                <div class="firstBoxDH" style="min-height: 120px">
+                    <div class="box">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <input class="form-control" placeholder="Tìm sản phẩm">
+                            </div>
+                            <div class="col-md-2 d-flex justify-content-start">
+                                <button class="button1" style="height: 39px">
+                                    <ion-icon name="search-outline"
+                                              style="vertical-align: middle;"></ion-icon>
+                                    <span style="vertical-align: middle;">Search</span>
                                 </button>
                             </div>
-                        </form>
-
-                        <div style="display: flex; justify-content: flex-end;">
-                            <div style="padding-right: 230px;">
-                                <button type="button" class="btn btn-primary">Làm Mới</button>
+                            <div class="col-md-2 d-flex justify-content-start">
                             </div>
-
-                            <div style="padding-left: 20px;">
-                                <label class="form-label">Trạng Thái :</label>
-                                <button type="button" class="btn btn-primary">Tất Cả</button>
+                            <div class="col-md-2">
                             </div>
-
-                            <div style="padding-left: 20px;">
-                                <a href="/admin/dashboard/product/create" class="btn btn-danger">      Tạo Sản Phẩm</a>
+                            <div class="col-md-2">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="button2"
+                                        style="text-decoration: none;height: 39px">
+                                    <ion-icon name="add-outline"
+                                              style="vertical-align: middle; margin-right: 5px;"></ion-icon>
+                                    <span style="vertical-align: middle;">Tạo Sản Phẩm</span>
+                                </button>
                             </div>
                         </div>
                         <br>
+                        <div class="row">
+                            <div class="col-md-4 d-flex justify-content-start" style="text-align: end">
+                                <label class="form-label" style="margin-top: 7px">Thương Hiệu :</label>
+                                <select style="color: green;" class="custom-select">
+                                    <option>Tất cả</option>
+                                    <option>Chưa giao</option>
+                                    <option>Đã giao</option>
+                                    <option>Chưa xác nhận</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 d-flex justify-content-start" style="text-align: end">
+                                <label class="form-label" style="margin-top: 7px">Danh Mục :</label>
+                                <select style="color: green;" class="custom-select">
+                                    <option>Tất cả</option>
+                                    <option>Chưa giao</option>
+                                    <option>Đã giao</option>
+                                    <option>Chưa xác nhận</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 d-flex justify-content-start" style="text-align: end">
+                                <label class="form-label" style="margin-top: 7px">Màu Sắc :</label>
+                                <select style="color: green;" class="custom-select">
+                                    <option>Tất cả</option>
+                                    <option>Chưa giao</option>
+                                    <option>Đã giao</option>
+                                    <option>Chưa xác nhận</option>
+                                </select>
+                            </div>
+                        </div>
                         <br>
-                        <br>
-                        <table class="table">
+                        <div class="row">
+                            <div class="col-md-4 d-flex justify-content-start" style="text-align: end">
+                                <label class="form-label" style="margin-top: 7px">Chất Liệu :</label>
+                                <select style="color: green;" class="custom-select">
+                                    <option>Tất cả</option>
+                                    <option>Chưa giao</option>
+                                    <option>Đã giao</option>
+                                    <option>Chưa xác nhận</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 d-flex justify-content-start" style="text-align: end">
+                                <label class="form-label" style="margin-top: 7px">Xuất Xứ :</label>
+                                <select style="color: green;" class="custom-select">
+                                    <option>Tất cả</option>
+                                    <option>Chưa giao</option>
+                                    <option>Đã giao</option>
+                                    <option>Chưa xác nhận</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 d-flex justify-content-start" style="text-align: end">
+                                <label class="form-label" style="margin-top: 7px">Kiểu Đế :</label>
+                                <select style="color: green;" class="custom-select">
+                                    <option>Tất cả</option>
+                                    <option>Chưa giao</option>
+                                    <option>Đã giao</option>
+                                    <option>Chưa xác nhận</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="twoBoxDH">
+                    <div class="box">
+                        <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th scope="col">STT</th>
+                                <th scope="col">#</th>
                                 <th scope="col">Ảnh</th>
+                                <th scope="col">Mã Sản Phẩm</th>
                                 <th scope="col">Tên Sản Phẩm</th>
                                 <th scope="col">Giá</th>
-                                <th scope="col">Ngày Tạo</th>
-                                <th scope="col">Giới Tính</th>
-                                <th scope="col">Trạng Thai</th>
-                                <th scope="col" colspan="2">Thao Tác</th>
+                                <th scope="col">Số Lượng</th>
+                                <th scope="col">Trạng Thái</th>
+                                <th scope="col">Thao tác</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="table">
                             <tr>
-                                <td>1</td>
-                                <td>im1</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>0/5</td>
-                                <td>Thornton</td>
-                                <td> <a class="btn btn-danger">Kích Hoạt</a></td>
+                                <th scope="row">1</th>
+                                <td>MH001</td>
+                                <td>5</td>
+                                <td>5</td>
+                                <td>$100</td>
+                                <td>John Doe</td>
                                 <td>
-                                    <a class="btn btn-danger">Chi Tiết</a>
-                                    <a class="btn btn-danger">Hủy Kích Hoạt</a>
+                                        <span style="background-color: #cceeff;color: #0077cc; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Kích hoạt
+                                        </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal1">
+                                        Sửa
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>MH002</td>
+                                <td>3</td>
+                                <td>3</td>
+                                <td>$50</td>
+                                <td>Jane Smith</td>
+                                <td>
+                                        <span style="background-color: #cceeff;color: #0077cc; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Kích hoạt
+                                        </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>MH003</td>
+                                <td>MH003</td>
+                                <td>2</td>
+                                <td>$30</td>
+                                <td>David Johnson</td>
+                                <td>
+                                        <span style="background-color: #cceeff;color: #0077cc; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Kích hoạt
+                                        </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>MH003</td>
+                                <td>2</td>
+                                <td>$30</td>
+                                <td>$30</td>
+                                <td>Loại 1</td>
+                                <td>
+                                        <span style="background-color: #cceeff;color: #0077cc; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Kích hoạt
+                                        </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">4</th>
+                                <td>MH003</td>
+                                <td>2</td>
+                                <td>$30</td>
+                                <td>$30</td>
+                                <td>Loại 1</td>
+                                <td>
+                                        <span style="background-color: #cceeff;color: #0077cc; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Kích hoạt
+                                        </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">5</th>
+                                <td>MH003</td>
+                                <td>2</td>
+                                <td>$30</td>
+                                <td>$30</td>
+                                <td>Loại 1</td>
+                                <td>
+                                        <span style="background-color:#FFB6C1;color: red; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Ngừng kích hoạt
+                                        </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">6</th>
+                                <td>MH003</td>
+                                <td>2</td>
+                                <td>$30</td>
+                                <td>$30</td>
+                                <td>Loại 1</td>
+                                <td>
+                                        <span style="background-color:#FFB6C1;color: red; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Ngừng kích hoạt
+                                        </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">7</th>
+                                <td>MH003</td>
+                                <td>2</td>
+                                <td>2</td>
+                                <td>$30</td>
+                                <td>Loại 1</td>
+                                <td>
+                                        <span style="background-color:#FFB6C1;color: red; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Ngừng kích hoạt
+                                        </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">8</th>
+                                <td>MH003</td>
+                                <td>2</td>
+                                <td>2023-07-03</td>
+                                <td>2023-07-03</td>
+                                <td>Loại 1</td>
+                                <td>
+                                        <span style="background-color:#FFB6C1;color: red; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Ngừng kích hoạt
+                                        </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9</th>
+                                <td>MH003</td>
+                                <td>MH003</td>
+                                <td>9876543210</td>
+                                <td>2023-07-03</td>
+                                <td>Loại 1</td>
+                                <td>
+                                        <span style="background-color:#FFB6C1;color: red; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Ngừng kích hoạt
+                                        </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">10</th>
+                                <td>MH003</td>
+                                <td>9876543210</td>
+                                <td>9876543210</td>
+                                <td>2023-07-03</td>
+                                <td>Loại 1</td>
+                                <td>
+                                        <span style="background-color:#FFB6C1;color: red; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Ngừng kích hoạt
+                                        </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
+                        <div class="container">
+                            <button class="button" id="startBtn" disabled>
+                                <i class="fa-solid fa-angles-left"></i>
+                            </button>
+                            <button class="button prevNext" id="prev" disabled>
+                                <i class="fa-solid fa-angle-left"></i>
+                            </button>
+                            <div class="links">
+                                <a href="#" class="link active">1</a>
+                                <a href="#" class="link">2</a>
+                                <a href="#" class="link">3</a>
+                                <a href="#" class="link">4</a>
+                                <a href="#" class="link">4</a>
+                                <a href="#" class="link">5</a>
+                            </div>
+                            <button class="button prevNext" id="next">
+                                <i class="fa-solid fa-angle-right"></i>
+                            </button>
+                            <button class="button" id="endBtn">
+                                <i class="fa-solid fa-angles-right"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </main>
         </div>
     </div>
 </div>
-<script>
-    function toggleSubMenu() {
-        var subMenu = document.getElementById("subMenu");
-        if (subMenu.style.display === "none") {
-            subMenu.style.display = "block";
-        } else {
-            subMenu.style.display = "none";
-        }
-    }
-</script>
-<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/js/admin/phan-trang.js"></script>
+<script src="https://unpkg.com/ionicons@latest/dist/ionicons.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+<script src="/assets/js/bootstrap.js"></script>
 <script src="/js/admin/trang-chu.js"></script>
 </body>
 </html>

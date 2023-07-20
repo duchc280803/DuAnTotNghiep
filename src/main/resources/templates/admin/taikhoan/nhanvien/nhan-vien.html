@@ -193,7 +193,7 @@
                                 <input class="form-control" placeholder="Tìm nhân viên">
                             </div>
                             <div class="col-md-2 d-flex justify-content-start">
-                                <button class="button1">
+                                <button class="button1" style="height: 39px">
                                     <ion-icon name="search-outline"
                                               style="vertical-align: middle;"></ion-icon>
                                     <span style="vertical-align: middle;">Search</span>
@@ -211,11 +211,96 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <a href="/admin/dashboard/tao-don-hang" class="button2" style="text-decoration: none">
+                                <button type="submit" class="button2" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal"
+                                        style="text-decoration: none;height: 39px">
                                     <ion-icon name="add-outline"
                                               style="vertical-align: middle; margin-right: 5px;"></ion-icon>
-                                    <span style="vertical-align: middle;">Tạo nhân viên</span>
-                                </a>
+                                    <span style="vertical-align: middle;">Tạo khách hàng</span>
+                                </button>
+                            </div>
+                            <!--tạo tài khoản-->
+                            <div class="modal fade" id="exampleModal" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">
+                                                Tạo Nhân Viên
+                                            </h5>
+                                            <br>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="modal-body-item">
+                                                <input type="text" class="form-control" placeholder="Tên tài khoản">
+                                            </div>
+                                            <br>
+                                            <div class="modal-body-item">
+                                                <input type="text" class="form-control" placeholder="Họ và tên">
+                                            </div>
+                                            <br>
+                                            <div class="modal-body-item">
+                                                <input type="text" class="form-control" placeholder="Email">
+                                            </div>
+                                            <div class="form-check form-switch mt-2">
+                                                <input class="form-check-input" type="checkbox" id="switchChecked"
+                                                       checked>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                            <button type="button" class="btn btn-primary">
+                                                Thêm
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Sửa tài khoản-->
+                            <div class="modal fade" id="exampleModal1" tabindex="-1"
+                                 aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">
+                                                Sửa Nhân Viên
+                                            </h5>
+                                            <br>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="modal-body-item">
+                                                <input type="text" class="form-control" placeholder="Tên tài khoản">
+                                            </div>
+                                            <br>
+                                            <div class="modal-body-item">
+                                                <input type="text" class="form-control" placeholder="Họ và tên">
+                                            </div>
+                                            <br>
+                                            <div class="modal-body-item">
+                                                <input type="text" class="form-control" placeholder="Email">
+                                            </div>
+                                            <div class="form-check form-switch mt-2">
+                                                <input class="form-check-input" type="checkbox" id="switchChecked1"
+                                                       checked>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                            <button type="button" class="btn btn-primary">
+                                                Hủy Kích Hoạt
+                                            </button>
+                                            <button type="button" class="btn btn-primary">
+                                                Chỉnh Sửa
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -232,6 +317,7 @@
                                 <th scope="col">Họ và tên</th>
                                 <th scope="col">Ngày tạo</th>
                                 <th scope="col">Trạng thái</th>
+                                <th scope="col">Thao tác</th>
                             </tr>
                             </thead>
                             <tbody class="table">
@@ -246,6 +332,12 @@
                                         <span style="background-color: #cceeff;color: #0077cc; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Kích hoạt
                                         </span>
                                 </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal1">
+                                        Sửa
+                                    </button>
+                                </td>
                             </tr>
                             <tr>
                                 <th scope="row">2</th>
@@ -257,6 +349,11 @@
                                 <td>
                                         <span style="background-color: #cceeff;color: #0077cc; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Kích hoạt
                                         </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
                                 </td>
                             </tr>
                             <tr>
@@ -270,6 +367,11 @@
                                         <span style="background-color: #cceeff;color: #0077cc; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Kích hoạt
                                         </span>
                                 </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
+                                </td>
                             </tr>
                             <tr>
                                 <th scope="row">3</th>
@@ -281,6 +383,11 @@
                                 <td>
                                         <span style="background-color: #cceeff;color: #0077cc; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Kích hoạt
                                         </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
                                 </td>
                             </tr>
                             <tr>
@@ -294,6 +401,11 @@
                                         <span style="background-color: #cceeff;color: #0077cc; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Kích hoạt
                                         </span>
                                 </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
+                                </td>
                             </tr>
                             <tr>
                                 <th scope="row">5</th>
@@ -305,6 +417,11 @@
                                 <td>
                                         <span style="background-color:#FFB6C1;color: red; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Ngừng kích hoạt
                                         </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
                                 </td>
                             </tr>
                             <tr>
@@ -318,6 +435,11 @@
                                         <span style="background-color:#FFB6C1;color: red; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Ngừng kích hoạt
                                         </span>
                                 </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
+                                </td>
                             </tr>
                             <tr>
                                 <th scope="row">7</th>
@@ -329,6 +451,11 @@
                                 <td>
                                         <span style="background-color:#FFB6C1;color: red; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Ngừng kích hoạt
                                         </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
                                 </td>
                             </tr>
                             <tr>
@@ -342,6 +469,11 @@
                                         <span style="background-color:#FFB6C1;color: red; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Ngừng kích hoạt
                                         </span>
                                 </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
+                                </td>
                             </tr>
                             <tr>
                                 <th scope="row">9</th>
@@ -354,6 +486,11 @@
                                         <span style="background-color:#FFB6C1;color: red; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Ngừng kích hoạt
                                         </span>
                                 </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
+                                </td>
                             </tr>
                             <tr>
                                 <th scope="row">10</th>
@@ -365,6 +502,11 @@
                                 <td>
                                         <span style="background-color:#FFB6C1;color: red; padding: 4px 8px; border-radius: 4px;display: inline-block; ">Ngừng kích hoạt
                                         </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        Sửa
+                                    </button>
                                 </td>
                             </tr>
                             </tbody>
@@ -397,22 +539,6 @@
         </div>
     </div>
 </div>
-<script>
-    // Lấy danh sách các dòng trong tbody
-    const rows = document.querySelectorAll('.table tbody tr');
-
-    // Lặp qua từng dòng và gán sự kiện click
-    rows.forEach((row) => {
-        row.addEventListener('click', () => {
-            // Lấy thông tin của dòng được nhấp
-            // const orderCode = row.cells[1].innerText; // Mã đơn hàng
-
-            // Chuyển hướng sang trang chi tiết của đơn hàng với mã tương ứng
-            // window.location.href = `/detail/${orderCode}`; // Thay đổi đường dẫn tương ứng với trang chi tiết
-            window.location.href = `/admin/don-hang/1`;
-        });
-    });
-</script>
 <script src="/js/admin/phan-trang.js"></script>
 <script src="https://unpkg.com/ionicons@latest/dist/ionicons.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>

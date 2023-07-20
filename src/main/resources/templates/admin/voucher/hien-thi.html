@@ -6,7 +6,9 @@
     <link rel="stylesheet" href="/assets/css/bootstrap.css">
     <link rel="stylesheet" href="/css/admin/trang-chu.css">
     <link rel="stylesheet" href="/css/admin/voucher/hien-thi.css">
+    <link rel="stylesheet" href="/css/admin/select-button.css">
     <link rel="stylesheet" href="/css/admin/phan-trang.css">
+    <link rel="stylesheet" href="/css/admin/oder/don-hang.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
 </head>
 <body>
@@ -185,28 +187,41 @@
                     </div>
                 </nav>
             </section>
-            <main class="" style="background-color: #F0F0F0">
-                <div class="padding-container">
-                    <div class="card" style="border-radius: 20px;margin-left: 10px;margin-right: 10px">
-                        <div class="card-body">
-                            <form action="#" class="form-voucher">
-                                <div class="form-input-voucher">
-                                    <input type="search" placeholder="Mã Giảm Giá..." class="input-voucher">
-                                    <button type="search" class="search-btn-voucher">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                             fill="currentColor"
-                                             class="bi bi-search" viewBox="0 0 16 16">
-                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </form>
-                            <button type="button" class="btn btn-outline-primary"
-                                    style="margin-left: 1050px; margin-bottom: 25px;"
-                                    data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                Tạo Khuyến Mãi
-                            </button>
-                            <!-- Modal -->
+            <main class="">
+                <div class="firstBoxDH" style="min-height: 120px">
+                    <div class="box">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <input class="form-control" placeholder="Tìm nhân viên">
+                            </div>
+                            <div class="col-md-2 d-flex justify-content-start">
+                                <button class="button1" style="height: 39px">
+                                    <ion-icon name="search-outline"
+                                              style="vertical-align: middle;"></ion-icon>
+                                    <span style="vertical-align: middle;">Search</span>
+                                </button>
+                            </div>
+                            <div class="col-md-3 d-flex justify-content-start">
+                            </div>
+                            <div class="col-md-3 d-flex justify-content-start" style="text-align: end">
+                                <label class="form-label" style="margin-top: 7px">Trạng thái :</label>
+                                <select style="color: green;" class="custom-select">
+                                    <option>Tất cả</option>
+                                    <option>Chưa giao</option>
+                                    <option>Đã giao</option>
+                                    <option>Chưa xác nhận</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="button2" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal"
+                                        style="text-decoration: none;height: 39px">
+                                    <ion-icon name="add-outline"
+                                              style="vertical-align: middle; margin-right: 5px;"></ion-icon>
+                                    <span style="vertical-align: middle;">Tạo Khuyến Mãi</span>
+                                </button>
+                            </div>
+                            <!--tạo tài khoản-->
                             <div class="modal fade" id="exampleModal" tabindex="-1"
                                  aria-labelledby="exampleModalLabel"
                                  aria-hidden="true">
@@ -248,214 +263,62 @@
                                     </div>
                                 </div>
                             </div>
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">STT</th>
-                                    <th scope="col">Mã</th>
-                                    <th scope="col">Hình Thức</th>
-                                    <th scope="col">Loại Sản Phẩm</th>
-                                    <th scope="col">Đã Sử Dụng</th>
-                                    <th scope="col">Bắt Đầu</th>
-                                    <th scope="col">Kết Thúc</th>
-                                    <th scope="col">Trạng Thai</th>
-                                    <th scope="col">Thao Tác</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>0/5</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>0/5</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>0/5</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>0/5</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>0/5</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>0/5</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>0/5</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>0/5</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>0/5</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>0/5</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>0/5</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>0/5</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                    <td>0/5</td>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                    <td>
-                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <div class="container">
-                                <button class="button" id="startBtn" disabled>
-                                    <i class="fa-solid fa-angles-left"></i>
-                                </button>
-                                <button class="button prevNext" id="prev" disabled>
-                                    <i class="fa-solid fa-angle-left"></i>
-                                </button>
-                                <div class="links">
-                                    <a href="#" class="link active">1</a>
-                                    <a href="#" class="link">2</a>
-                                    <a href="#" class="link">3</a>
-                                    <a href="#" class="link">4</a>
-                                    <a href="#" class="link">4</a>
-                                    <a href="#" class="link">5</a>
-                                </div>
-                                <button class="button prevNext" id="next">
-                                    <i class="fa-solid fa-angle-right"></i>
-                                </button>
-                                <button class="button" id="endBtn">
-                                    <i class="fa-solid fa-angles-right"></i>
-                                </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="twoBoxDH">
+                    <div class="box">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Mã</th>
+                                <th scope="col">Hình Thức</th>
+                                <th scope="col">Loại Sản Phẩm</th>
+                                <th scope="col">Đã Sử Dụng</th>
+                                <th scope="col">Bắt Đầu</th>
+                                <th scope="col">Kết Thúc</th>
+                                <th scope="col">Trạng Thai</th>
+                                <th scope="col">Thao Tác</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table">
+                            <tr>
+                                <td>1</td>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                                <td>0/5</td>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
+                                <td>
+                                    <a href="#" class="btn btn-outline-primary">Sửa</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="container">
+                            <button class="button" id="startBtn" disabled>
+                                <i class="fa-solid fa-angles-left"></i>
+                            </button>
+                            <button class="button prevNext" id="prev" disabled>
+                                <i class="fa-solid fa-angle-left"></i>
+                            </button>
+                            <div class="links">
+                                <a href="#" class="link active">1</a>
+                                <a href="#" class="link">2</a>
+                                <a href="#" class="link">3</a>
+                                <a href="#" class="link">4</a>
+                                <a href="#" class="link">4</a>
+                                <a href="#" class="link">5</a>
                             </div>
+                            <button class="button prevNext" id="next">
+                                <i class="fa-solid fa-angle-right"></i>
+                            </button>
+                            <button class="button" id="endBtn">
+                                <i class="fa-solid fa-angles-right"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
