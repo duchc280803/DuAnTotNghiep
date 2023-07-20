@@ -38,18 +38,18 @@
                             </a>
                         </li>
                         <li class="d-flex align-items-center" style="padding-top: 20px">
-                            <a href="" class="text-decoration-none">
+                            <a href="/admin/dashboard/hoa-don" class="text-decoration-none">
                                 <div class="">
                                     <img src="/assets/image/add-cart.png">
                                 </div>
                             </a>
-                            <a href="" class="text-decoration-none" style="padding-left: 25px;">
+                            <a href="/admin/dashboard/hoa-don" class="text-decoration-none" style="padding-left: 25px;">
                                 <i class="nc-icon nc-diamond"></i>
-                                <p>Đơn hàng</p>
+                                <p>Quản lí thu chi</p>
                             </a>
                         </li>
                         <li class="d-flex align-items-center" style="padding-top: 20px">
-                            <a href="" class="text-decoration-none">
+                            <a href="/admin/dashboard/don-hang" class="text-decoration-none">
                                 <div class="">
                                     <img src="/assets/image/cart.png">
                                 </div>
@@ -60,29 +60,51 @@
                             </a>
                         </li>
                         <li class="d-flex align-items-center" style="padding-top: 20px">
-                            <a href="" class="text-decoration-none">
-                                <div class="">
-                                    <img src="/assets/image/cart.png">
-                                </div>
-                            </a>
-                            <a href="/admin/dashboard/hoa-don" class="text-decoration-none" style="padding-left: 25px;">
-                                <i class="nc-icon nc-pin-3"></i>
-                                <p>Quản lí thu chi</p>
-                            </a>
-                        </li>
-                        <li class="d-flex align-items-center" style="padding-top: 20px">
-                            <a href="" class="text-decoration-none">
+                            <a class="text-decoration-none">
                                 <div class="">
                                     <img src="/assets/image/delivery-box.png">
                                 </div>
                             </a>
-                            <a href="" onclick="toggleNoiDung()" class="text-decoration-none"
+                            <a onclick="toggleNoiDung()" class="text-decoration-none"
                                style="padding-left: 25px;">
                                 <p>Quản Lý Sản phẩm</p>
                             </a>
                         </li>
+                        <div id="noiDung" style="display: none;">
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/product" class="text-decoration-none">
+                                    <p>Sản Phẩm</p>
+                                </a>
+                            </li>
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/deGiay" class="text-decoration-none">
+                                    <p>Đế Dày</p>
+                                </a>
+                            </li>
+
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/xuatXu" class="text-decoration-none">
+                                    <p>Xuất xứ</p>
+                                </a>
+                            </li>
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/danhMuc" class="text-decoration-none">
+                                    <p>Danh mục</p>
+                                </a>
+                            </li>
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/chatLieu" class="text-decoration-none">
+                                    <p>Chất Liệu</p>
+                                </a>
+                            </li>
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/thuongHieu" class="text-decoration-none">
+                                    <p>Thương Hiệu</p>
+                                </a>
+                            </li>
+                        </div>
                         <li class="d-flex align-items-center" style="padding-top: 20px">
-                            <a href="" class="text-decoration-none">
+                            <a class="text-decoration-none">
                                 <div class="">
                                     <img src="/assets/image/add-user.png">
                                 </div>
@@ -106,7 +128,7 @@
                             </li>
                         </div>
                         <li class="d-flex align-items-center" style="padding-top: 20px">
-                            <a href="" class="text-decoration-none">
+                            <a href="/admin/dashboard/voucher" class="text-decoration-none">
                                 <div class="">
                                     <img src="/assets/image/ticket.png">
                                 </div>
@@ -114,20 +136,6 @@
                             <a href="/admin/dashboard/voucher" class="text-decoration-none" style="padding-left: 25px;">
                                 <i class="nc-icon nc-tile-56"></i>
                                 <p>Quản Lý Voucher</p>
-                            </a>
-                        </li>
-                        <li class="d-flex align-items-center" style="padding-top: 20px">
-                            <a href="#" class="text-decoration-none" style="margin-right: 25px;">
-                                <i class="bx bxs-cog">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                         fill="currentColor" class="bi bi-gear-wide" viewBox="0 0 16 16"
-                                         style="width: 32px;height: 32px;">
-                                        <path d="M8.932.727c-.243-.97-1.62-.97-1.864 0l-.071.286a.96.96 0 0 1-1.622.434l-.205-.211c-.695-.719-1.888-.03-1.613.931l.08.284a.96.96 0 0 1-1.186 1.187l-.284-.081c-.96-.275-1.65.918-.931 1.613l.211.205a.96.96 0 0 1-.434 1.622l-.286.071c-.97.243-.97 1.62 0 1.864l.286.071a.96.96 0 0 1 .434 1.622l-.211.205c-.719.695-.03 1.888.931 1.613l.284-.08a.96.96 0 0 1 1.187 1.187l-.081.283c-.275.96.918 1.65 1.613.931l.205-.211a.96.96 0 0 1 1.622.434l.071.286c.243.97 1.62.97 1.864 0l.071-.286a.96.96 0 0 1 1.622-.434l.205.211c.695.719 1.888.03 1.613-.931l-.08-.284a.96.96 0 0 1 1.187-1.187l.283.081c.96.275 1.65-.918.931-1.613l-.211-.205a.96.96 0 0 1 .434-1.622l.286-.071c.97-.243.97-1.62 0-1.864l-.286-.071a.96.96 0 0 1-.434-1.622l.211-.205c.719-.695.03-1.888-.931-1.613l-.284.08a.96.96 0 0 1-1.187-1.186l.081-.284c.275-.96-.918-1.65-1.613-.931l-.205.211a.96.96 0 0 1-1.622-.434L8.932.727zM8 12.997a4.998 4.998 0 1 1 0-9.995 4.998 4.998 0 0 1 0 9.996z"/>
-                                    </svg>
-                                </i>
-                            </a>
-                            <a href="#" class="text-decoration-none">
-                                <p class="text">Settings</p>
                             </a>
                         </li>
                         <li class="d-flex align-items-center" style="padding-top: 20px">

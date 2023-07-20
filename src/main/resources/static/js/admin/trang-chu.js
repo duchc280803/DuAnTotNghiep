@@ -1,16 +1,4 @@
 var isHienThi = false;
-
-function toggleNoiDung() {
-    var noiDung = document.getElementById("noiDung");
-    isHienThi = !isHienThi;
-    if (isHienThi) {
-        noiDung.style.display = "block";
-    } else {
-        noiDung.style.display = "none";
-    }
-}
-
-
 var ctx = document.getElementById('myChart2').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'bar',
@@ -74,5 +62,14 @@ function toggleSubMenu() {
         subMenu.style.display = "block";
     } else {
         subMenu.style.display = "none";
+    }
+}
+function toggleNoiDung() {
+    var noiDung = document.getElementById("noiDung");
+    isHienThi = !isHienThi;
+    if (isHienThi) {
+        noiDung.style.display = "block";
+    } else {
+        noiDung.style.display = "none";
     }
 }
