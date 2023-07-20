@@ -5,7 +5,7 @@
     <title>Title</title>
     <link rel="stylesheet" href="/assets/css/bootstrap.css">
     <link rel="stylesheet" href="/css/admin/trang-chu.css">
-    <link rel="stylesheet" href="/css/admin/voucher/create.css">
+    <link rel="stylesheet" href="/css/admin/voucher/create-chuongtrinh.css">
 </head>
 <body>
 <div class="section">
@@ -77,11 +77,24 @@
                                     <img src="/assets/image/add-user.png">
                                 </div>
                             </a>
-                            <a href="" class="text-decoration-none" style="padding-left: 25px;">
+                            <a onclick="toggleSubMenu()" class="text-decoration-none"
+                               style="padding-left: 25px;">
                                 <i class="nc-icon nc-single-02"></i>
                                 <p>Quản Lý Tài khoản</p>
                             </a>
                         </li>
+                        <div id="subMenu" style="display: none;">
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/nhan-vien" class="text-decoration-none">
+                                    <p>Nhân Viên</p>
+                                </a>
+                            </li>
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/khach-hang" class="text-decoration-none">
+                                    <p>Khách Hàng</p>
+                                </a>
+                            </li>
+                        </div>
                         <li class="d-flex align-items-center" style="padding-top: 20px">
                             <a href="" class="text-decoration-none">
                                 <div class="">
@@ -182,7 +195,7 @@
                                         <input type="text" class="next-input" placeholder="Nhập mã khuyến mãi">
                                     </div>
                                     <div class="col-lg-6">
-                                        <span class="header-title">Tên khuyến mãi</span>
+                                        <span class="header-title">Tên chương trình khuyến mãi</span>
                                         <input type="text" class="next-input" placeholder="Nhập tên khuyến mãi">
                                     </div>
                                 </div>
@@ -200,22 +213,12 @@
                                 <span class="header-title">Loại Giảm Giá</span>
                                 <br>
                                 <div class="row" style="margin-top: 15px;margin-bottom: 7px;">
-                                    <div class="col-lg-3">
-                                        <button class="btn btn-outline-primary" style="margin-left: 55px;">
-                                            Giảm Giá Đơn Hàng
-                                        </button>
-                                    </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-6">
                                         <button class="btn btn-outline-primary" style="margin-left: 55px;">
                                             Giảm Giá Sản Phẩm
                                         </button>
                                     </div>
-                                    <div class="col-lg-3">
-                                        <button class="btn btn-outline-primary" style="margin-left: 55px;">
-                                            Giảm Giá Vận Chuyển
-                                        </button>
-                                    </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-6">
                                         <button class="btn btn-outline-primary"
                                                 style="margin-left: 55px;height: 61.6px">
                                             Đồng Giá
@@ -247,6 +250,22 @@
                                             <label class="form-check-label" for="flexCheckDefault">Giới Hạn Số Tiền
                                                 Giảm</label>
                                             <input type="text" class="next-input" placeholder="0">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="card" style="margin-left: 20px;margin-right: -20px;border-radius: 20px">
+                            <div class="card-body">
+                                <span class="header-title">Sản Phẩm Áp Dụng</span>
+                                <br>
+                                <div class="pt-16" style="">
+                                    <div style="">
+                                        <div class="next-input--stylized">
+                                            <div class="next-input-wrapper">
+                                                <input autocomplete="on" type="text" class="next-input" placeholder="Tìm kiếm" step="1" value="">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -326,6 +345,13 @@
                         <br>
                         <div class="card" style="margin-left: 20px;margin-right: 20px;border-radius: 20px">
                             <div class="card-body">
+                                <label class="form-label">Mã khuyến mãi</label><br>
+                                <label class="form-label">Tên khuyến mãi</label><br>
+                                <label class="form-label">Loại giảm giá</label><br>
+                                <label class="form-label">Giảm giá đơn hàng</label><br>
+                                <label class="form-label">Điều kiện giảm giá</label><br>
+                                <label class="form-label">Giới hạn sử dụng</label><br>
+                                <label class="form-label">Có hiệu lực từ 13:41 17/07/2023 - 13:41 24/07/2023</label>
                             </div>
                         </div>
                     </div>
@@ -335,60 +361,7 @@
     </div>
 </div>
 <script src="/assets/js/bootstrap.min.js"></script>
-<script>
-    function toggleCheckbox() {
-        var selectElement = document.getElementById("selectOption");
-        var checkboxContainer = document.getElementById("checkboxContainer");
-        var checkbox = document.getElementById("flexCheckDefault");
-
-        if (selectElement.value === "%") {
-            checkboxContainer.style.display = "block";
-            checkbox.checked = true;
-        } else {
-            checkboxContainer.style.display = "none";
-            checkbox.checked = false;
-        }
-    }
-
-    var rdo = document.querySelectorAll('input[type="radio"][name="ok"]');
-    var rdoCt1 = document.getElementById('rdoCt1');
-    var rdoCt2 = document.getElementById('rdoCt2');
-
-    // Thêm sự kiện click cho mỗi radio button
-    rdo.forEach(function (rdos) {
-        rdos.addEventListener('click', function () {
-            if (rdos.checked) {
-                // Kiểm tra radio button nào được chọn và hiển thị/div ẩn điều kiện tương ứng
-                if (rdos.id === 'rdo1') {
-                    rdoCt1.style.display = 'block';
-                    rdoCt2.style.display = 'none';
-                } else {
-                    rdoCt1.style.display = 'none';
-                    rdoCt2.style.display = 'block';
-                }
-            }
-        });
-    });
-
-    var radioButtons = document.querySelectorAll('input[type="radio"][name="flexRadioDefault"]');
-    var inputContainer1 = document.getElementById('inputContainer1');
-    var inputContainer2 = document.getElementById('inputContainer2');
-
-    // Thêm sự kiện click cho mỗi radio button
-    radioButtons.forEach(function (radioButton) {
-        radioButton.addEventListener('click', function () {
-            if (radioButton.checked) {
-                // Kiểm tra radio button nào được chọn và hiển thị/div ẩn điều kiện tương ứng
-                if (radioButton.id === 'flexRadioDefault1') {
-                    inputContainer1.style.display = 'block';
-                    inputContainer2.style.display = 'none';
-                } else {
-                    inputContainer1.style.display = 'none';
-                    inputContainer2.style.display = 'block';
-                }
-            }
-        });
-    });
+<script src="/js/admin/voucher/voucher.js">
 </script>
 </body>
 </html>

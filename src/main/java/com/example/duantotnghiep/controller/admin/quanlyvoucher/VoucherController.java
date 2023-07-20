@@ -15,6 +15,11 @@ public class VoucherController {
 
     @GetMapping("/dashboard/create-voucher")
     public String viewCreateVoucher(){
-        return "/admin/voucher/create";
+        return "/admin/voucher/create-voucher";
+    }
+
+    @GetMapping("/dashboard/create-programme")
+    public String viewCreateProgramme(){
+        return "/admin/voucher/create-chuong-trinh";
     }
 }

@@ -68,3 +68,11 @@ button.addEventListener("click", (e) => {
         button.classList.remove("animate");
     }, 600);
 });
+function toggleSubMenu() {
+    var subMenu = document.getElementById("subMenu");
+    if (subMenu.style.display === "none") {
+        subMenu.style.display = "block";
+    } else {
+        subMenu.style.display = "none";
+    }
+}

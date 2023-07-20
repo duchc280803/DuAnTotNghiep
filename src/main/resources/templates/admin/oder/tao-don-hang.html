@@ -81,11 +81,24 @@
                                     <img src="/assets/image/add-user.png">
                                 </div>
                             </a>
-                            <a href="" class="text-decoration-none" style="padding-left: 25px;">
+                            <a onclick="toggleSubMenu()" class="text-decoration-none"
+                               style="padding-left: 25px;">
                                 <i class="nc-icon nc-single-02"></i>
                                 <p>Quản Lý Tài khoản</p>
                             </a>
                         </li>
+                        <div id="subMenu" style="display: none;">
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/nhan-vien" class="text-decoration-none">
+                                    <p>Nhân Viên</p>
+                                </a>
+                            </li>
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/khach-hang" class="text-decoration-none">
+                                    <p>Khách Hàng</p>
+                                </a>
+                            </li>
+                        </div>
                         <li class="d-flex align-items-center" style="padding-top: 20px">
                             <a href="" class="text-decoration-none">
                                 <div class="">

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="/assets/css/bootstrap.css">
     <link rel="stylesheet" href="/css/admin/trang-chu.css">
-    <link rel="stylesheet" href="/css/admin/oder/phan-trang.css">
+    <link rel="stylesheet" href="/css/admin/phan-trang.css">
     <link rel="stylesheet" href="/css/admin/select-button.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
 </head>
@@ -82,11 +82,24 @@
                                     <img src="/assets/image/add-user.png">
                                 </div>
                             </a>
-                            <a href="" class="text-decoration-none" style="padding-left: 25px;">
+                            <a onclick="toggleSubMenu()" class="text-decoration-none"
+                               style="padding-left: 25px;">
                                 <i class="nc-icon nc-single-02"></i>
                                 <p>Quản Lý Tài khoản</p>
                             </a>
                         </li>
+                        <div id="subMenu" style="display: none;">
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/nhan-vien" class="text-decoration-none">
+                                    <p>Nhân Viên</p>
+                                </a>
+                            </li>
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/khach-hang" class="text-decoration-none">
+                                    <p>Khách Hàng</p>
+                                </a>
+                            </li>
+                        </div>
                         <li class="d-flex align-items-center" style="padding-top: 20px">
                             <a href="" class="text-decoration-none">
                                 <div class="">
@@ -346,7 +359,7 @@
 </div>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'>
 </script>
-<script src="/js/admin/chi-tiet-don-hang.js"></script>
+<script src="/js/admin/oder/chi-tiet-don-hang.js"></script>
 <script src="https://unpkg.com/ionicons@latest/dist/ionicons.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 <script src="/assets/js/bootstrap.js"></script>

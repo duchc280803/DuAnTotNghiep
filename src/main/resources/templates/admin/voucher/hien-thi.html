@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="/assets/css/bootstrap.css">
     <link rel="stylesheet" href="/css/admin/trang-chu.css">
     <link rel="stylesheet" href="/css/admin/voucher/hien-thi.css">
+    <link rel="stylesheet" href="/css/admin/phan-trang.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
 </head>
 <body>
 <div class="section">
@@ -54,7 +56,8 @@
                                     <img src="/assets/image/cart.png">
                                 </div>
                             </a>
-                            <a href="/admin/dashboard/don-hang" class="text-decoration-none" style="padding-left: 25px;">
+                            <a href="/admin/dashboard/don-hang" class="text-decoration-none"
+                               style="padding-left: 25px;">
                                 <i class="nc-icon nc-pin-3"></i>
                                 <p>Bán tại quầy</p>
                             </a>
@@ -76,11 +79,24 @@
                                     <img src="/assets/image/add-user.png">
                                 </div>
                             </a>
-                            <a href="" class="text-decoration-none" style="padding-left: 25px;">
+                            <a onclick="toggleSubMenu()" class="text-decoration-none"
+                               style="padding-left: 25px;">
                                 <i class="nc-icon nc-single-02"></i>
                                 <p>Quản Lý Tài khoản</p>
                             </a>
                         </li>
+                        <div id="subMenu" style="display: none;">
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/nhan-vien" class="text-decoration-none">
+                                    <p>Nhân Viên</p>
+                                </a>
+                            </li>
+                            <li class="d-flex align-items-center" style="padding-top: 10px; padding-left: 40px;">
+                                <a href="/admin/dashboard/khach-hang" class="text-decoration-none">
+                                    <p>Khách Hàng</p>
+                                </a>
+                            </li>
+                        </div>
                         <li class="d-flex align-items-center" style="padding-top: 20px">
                             <a href="" class="text-decoration-none">
                                 <div class="">
@@ -171,7 +187,7 @@
             </section>
             <main class="" style="background-color: #F0F0F0">
                 <div class="padding-container">
-                    <div class="card" style="border-radius: 20px">
+                    <div class="card" style="border-radius: 20px;margin-left: 10px;margin-right: 10px">
                         <div class="card-body">
                             <form action="#" class="form-voucher">
                                 <div class="form-input-voucher">
@@ -185,7 +201,7 @@
                                     </button>
                                 </div>
                             </form>
-                            <button type="button" class="btn btn-danger"
+                            <button type="button" class="btn btn-outline-primary"
                                     style="margin-left: 1050px; margin-bottom: 25px;"
                                     data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 Tạo Khuyến Mãi
@@ -218,7 +234,7 @@
                                                     <img src="/assets/image/voucher.png">
                                                 </a>
                                                 <div class="modal-body-item-title">
-                                                    <a href="">
+                                                    <a href="/admin/dashboard/create-programme">
                                                         <label>Tạo Chương trình khuyến mãi</label>
                                                     </a>
                                                 </div>
@@ -257,11 +273,189 @@
                                     <td>Thornton</td>
                                     <td>@fat</td>
                                     <td>
-                                        <a class="btn-dark">Sửa</a>
+                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>0/5</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>0/5</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>0/5</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>0/5</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>0/5</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>0/5</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>0/5</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>0/5</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>0/5</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>0/5</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>0/5</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                    <td>0/5</td>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                    <td>
+                                        <a href="#" class="btn btn-outline-primary">Sửa</a>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
+                            <div class="container">
+                                <button class="button" id="startBtn" disabled>
+                                    <i class="fa-solid fa-angles-left"></i>
+                                </button>
+                                <button class="button prevNext" id="prev" disabled>
+                                    <i class="fa-solid fa-angle-left"></i>
+                                </button>
+                                <div class="links">
+                                    <a href="#" class="link active">1</a>
+                                    <a href="#" class="link">2</a>
+                                    <a href="#" class="link">3</a>
+                                    <a href="#" class="link">4</a>
+                                    <a href="#" class="link">4</a>
+                                    <a href="#" class="link">5</a>
+                                </div>
+                                <button class="button prevNext" id="next">
+                                    <i class="fa-solid fa-angle-right"></i>
+                                </button>
+                                <button class="button" id="endBtn">
+                                    <i class="fa-solid fa-angles-right"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -271,5 +465,8 @@
 </div>
 <script src="/assets/js/bootstrap.min.js"></script>
 <script src="/js/admin/trang-chu.js"></script>
+<script src="/js/admin/phan-trang.js"></script>
+<script src="https://unpkg.com/ionicons@latest/dist/ionicons.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
 </body>
 </html>
