@@ -15,31 +15,30 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "spgiamgia")
 public class SpGiamGia {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
+    @Column(name = "id")
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "IdSanPham")
+    @JoinColumn(name = "idsanpham")
     @JsonBackReference
     private SanPhamChiTiet sanPhamChiTiet;
 
     @ManyToOne
-    @JoinColumn(name = "IdGiamGia")
+    @JoinColumn(name = "idgiamgia")
     @JsonBackReference
     private GiamGia giamGia;
 
-    @Column(name = "SoLuongMa")
+    @Column(name = "soluongma")
     private Integer soLuongMa;
 
-    @Column(name = "DonGia")
+    @Column(name = "dongia")
     private Integer donGia;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trangthai")
     private Integer trangThai;
 
 }

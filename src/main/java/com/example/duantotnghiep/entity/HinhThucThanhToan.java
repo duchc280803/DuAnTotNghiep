@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
-import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -16,37 +15,36 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "hinhthucthanhtoan")
 public class HinhThucThanhToan {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
+    @Column(name = "id")
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "IdHoaDon")
+    @JoinColumn(name = "idhoadon")
     @JsonBackReference
     private HoaDon hoaDon;
 
     @ManyToOne
-    @JoinColumn(name = "IdTaiKhoan")
+    @JoinColumn(name = "idtaikhoan")
     @JsonBackReference
     private TaiKhoan taiKhoan;
 
-    @Column(name = "NgayThanhToan")
+    @Column(name = "ngaythanhtoan")
     private Date ngayThanhToan;
 
-    @Column(name = "TongSoTien")
+    @Column(name = "tongsotien")
     private Integer tongSoTien;
 
-    @Column(name = "PhuongThucThanhToan")
+    @Column(name = "phuongthucthanhtoan")
     private Integer phuongThucThanhToan;
 
-    @Column(name = "GhiChu")
+    @Column(name = "ghichu")
     private String ghiChu;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trangthai")
     private Integer trangThai;
 
 }

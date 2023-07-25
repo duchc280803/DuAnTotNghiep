@@ -18,65 +18,64 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "hoadon")
 public class HoaDon {
 
     @Id
-    @Column(name = "Id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "IdTaiKhoan")
+    @JoinColumn(name = "idtaikhoan")
     @JsonBackReference
     private TaiKhoan taiKhoan;
 
-    @Column(name = "Ma")
+    @Column(name = "ma")
     private String ma;
 
-    @Column(name = "NgayTao")
+    @Column(name = "ngaytao")
     private Date ngayTao;
 
-    @Column(name = "NgayThanhToan")
+    @Column(name = "ngaythanhtoan")
     private Date ngayThanhToan;
 
-    @Column(name = "NgayShip")
+    @Column(name = "ngayship")
     private Date ngayShip;
 
-    @Column(name = "NgayNhan")
+    @Column(name = "ngaynhan")
     private Date ngayNhan;
 
-    @Column(name = "TenNguoiNhan")
+    @Column(name = "tennguoinhan")
     private String tenNguoiNhan;
 
-    @Column(name = "DiaChi")
+    @Column(name = "diachi")
     private String diaChi;
 
-    @Column(name = "PhanTramGiamGia")
+    @Column(name = "phantramgiamgia")
     private Long phanTramGiamGia;
 
-    @Column(name = "SDTNguoiNhan")
+    @Column(name = "sdtnguoinhan")
     private String sdtNguoiNhan;
 
-    @Column(name = "SDTNguoiShip")
+    @Column(name = "sdtnguoiship")
     private String sdtNguoiShip;
 
-    @Column(name = "TenNguoiShip")
+    @Column(name = "tennguoiship")
     private String tenNguoiShip;
 
-    @Column(name = "TienKhachTra")
+    @Column(name = "tienkhachtra")
     private Integer tienKhachTra;
 
-    @Column(name = "TienShip")
+    @Column(name = "tienship")
     private Integer tienShip;
 
-    @Column(name = "TienThua")
+    @Column(name = "tienthua")
     private Integer tienThua;
 
-    @Column(name = "ThanhTien")
+    @Column(name = "thanhtien")
     private Integer thanhTien;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trangthai")
     private Integer trangThai;
 
     @OneToMany(mappedBy = "hoaDon",fetch = FetchType.LAZY)

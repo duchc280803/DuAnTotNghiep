@@ -15,23 +15,22 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "image")
 public class Image {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "Id")
+    @Column(name = "id")
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "IdSanPham")
+    @JoinColumn(name = "idsanpham")
     @JsonBackReference
     private SanPham sanPham;
 
-    @Column(name = "TenImage")
+    @Column(name = "tenimage")
     private String tenImage;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trangthai")
     private Integer trangThai;
 
 }

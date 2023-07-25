@@ -17,22 +17,21 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "thuonghieu")
 public class ThuongHieu {
 
     @Id
-    @Column(name = "Id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private UUID id;
 
-    @Column(name = "TenThuongHieu")
+    @Column(name = "tenthuonghieu")
     @JsonBackReference
     private String tenThuongHieu;
 
-    @Column(name = "MoTa")
+    @Column(name = "mota")
     private String moTa;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trangthai")
     private String trangThai;
 
     @OneToMany(mappedBy = "thuongHieu",fetch = FetchType.LAZY)

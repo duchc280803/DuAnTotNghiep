@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -15,29 +14,32 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "giohangchitiet")
 public class GioHangChiTiet {
 
+    @Id
+    private UUID id;
+
     @ManyToOne
-    @JoinColumn(name = "IdSanPhamChiTiet")
+    @JoinColumn(name = "idsanphamchitiet")
     @JsonBackReference
     private SanPhamChiTiet sanPhamChiTiet;
 
     @ManyToOne
-    @JoinColumn(name = "IdGioHang")
+    @JoinColumn(name = "idgiohang")
     @JsonBackReference
     private GioHang gioHang;
 
-    @Column(name = "SoLuong")
+    @Column(name = "soluong")
     private Integer soLuong;
 
-    @Column(name = "DonGia")
+    @Column(name = "dongia")
     private Integer donGia;
 
-    @Column(name = "DonGiaKhiGiam")
+    @Column(name = "dongiakhigiam")
     private Integer donGiaKhiGiam;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trangthai")
     private Integer trangThai;
 
 }

@@ -18,51 +18,57 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "taikhoan")
 public class TaiKhoan {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
+    @Column(name = "id")
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "IdVaiTro")
+    @JoinColumn(name = "idvaitro")
     @JsonBackReference
     private VaiTro vaiTro;
 
-    @Column(name = "UserName")
+    @Column(name = "username")
     private String userName;
 
-    @Column(name = "MatKhau")
+    @Column(name = "matkhau")
     private String matKhau;
 
-    @Column(name = "Email")
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "Image")
+    @Column(name = "image")
     private String image;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trangthai")
     private Integer trangThai;
 
-    @Column(name = "Ten")
+    @Column(name = "ten")
     private String ten;
 
-    @Column(name = "NgaySinh")
+    @Column(name = "ngaysinh")
     private Date ngaySinh;
 
-    @Column(name = "GioiTinh")
+    @Column(name = "gioitinh")
     private Boolean gioiTinh;
 
-    @OneToMany(mappedBy = "taiKhoan",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
     private List<GioHang> gioHangList;
 
-    @OneToMany(mappedBy = "taiKhoan",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
     private List<HinhThucThanhToan> hinhThucThanhToanList;
 
-    @OneToMany(mappedBy = "taiKhoan",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<HoaDon> hoaDonList;
+
+    public TaiKhoan(UUID id,String userName, String matKhau, String email) {
+        this.id = id;
+        this.userName = userName;
+        this.matKhau = matKhau;
+        this.email = email;
+    }
 
 }

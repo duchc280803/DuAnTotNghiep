@@ -17,52 +17,51 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "sanphamchitiet")
 public class SanPhamChiTiet {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
+    @Column(name = "id")
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "IdSanPham")
+    @JoinColumn(name = "idsanpham")
     @JsonBackReference
     private SanPham sanPham;
 
     @ManyToOne
-    @JoinColumn(name = "IdMauSac")
+    @JoinColumn(name = "idmausac")
     @JsonBackReference
     private MauSac mauSac;
 
     @ManyToOne
-    @JoinColumn(name = "IdChatLieu")
+    @JoinColumn(name = "idchatlieu")
     @JsonBackReference
     private ChatLieu chatLieu;
 
     @ManyToOne
-    @JoinColumn(name = "IdSize")
+    @JoinColumn(name = "idsize")
     @JsonBackReference
     private Size size;
 
     @ManyToOne
-    @JoinColumn(name = "IdKieuDe")
+    @JoinColumn(name = "idkieude")
     @JsonBackReference
     private KieuDe kieuDe;
 
-    @Column(name = "BaoHanh")
+    @Column(name = "baohanh")
     private Integer baoHanh;
 
-    @Column(name = "GiaNhap")
+    @Column(name = "gianhap")
     private Integer giaNhap;
 
-    @Column(name = "GiaBan")
+    @Column(name = "giaban")
     private Integer giaBan;
 
-    @Column(name = "SoLuong")
+    @Column(name = "soluong")
     private Integer soLuong;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trangthai")
     private Integer trangThai;
 
     @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)

@@ -18,29 +18,28 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "giohang")
 public class GioHang {
 
     @Id
-    @Column(name = "Id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "IdTaiKhoan")
+    @JoinColumn(name = "idtaikhoan")
     @JsonBackReference
     private TaiKhoan taiKhoan;
 
-    @Column(name = "NgayTao")
+    @Column(name = "ngaytao")
     private Date ngayTao;
 
-    @Column(name = "NgayCapNhat")
+    @Column(name = "ngaycapnhat")
     private Date ngayCapNhat;
 
-    @Column(name = "GhiChu")
+    @Column(name = "ghichu")
     private String ghiChu;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trangthai")
     private Integer trangThai;
 
     @OneToMany(mappedBy = "gioHang",fetch = FetchType.LAZY)

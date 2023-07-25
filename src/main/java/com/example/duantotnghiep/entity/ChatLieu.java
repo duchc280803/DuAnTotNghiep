@@ -16,18 +16,17 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "chatlieu")
 public class ChatLieu {
 
     @Id
-    @Column(name = "Id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private UUID id;
 
-    @Column(name = "TenChatLieu")
+    @Column(name = "tenchatlieu")
     private String tenChatLieu;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trangthai")
     private Integer trangThai;
 
     @OneToMany(mappedBy = "chatLieu",fetch = FetchType.LAZY)

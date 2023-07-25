@@ -16,27 +16,26 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "kieude")
 public class KieuDe {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
+    @Column(name = "id")
     private UUID id;
 
-    @Column(name = "TenDe")
+    @Column(name = "tende")
     private String tenDe;
 
-    @Column(name = "LoaiDe")
+    @Column(name = "loaide")
     private String loaiDe;
 
-    @Column(name = "MauSac")
+    @Column(name = "mausac")
     private String mauSac;
 
-    @Column(name = "KichThuoc")
+    @Column(name = "kichthuoc")
     private String kichThuoc;
 
-    @Column(name = "TrangThai")
+    @Column(name = "trangthai")
     private Integer trangThai;
 
     @OneToMany(mappedBy = "kieuDe",fetch = FetchType.LAZY)
