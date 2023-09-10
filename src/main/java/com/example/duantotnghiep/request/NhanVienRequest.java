@@ -1,4 +1,4 @@
-package com.example.duantotnghiep.dto;
+package com.example.duantotnghiep.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NhanVienDTO {
+public class NhanVienRequest {
 
     private UUID id;
 

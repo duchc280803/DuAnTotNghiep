@@ -1,27 +1,25 @@
 package com.example.duantotnghiep.mapper;
 
-import com.example.duantotnghiep.dto.NhanVienDTO;
+import com.example.duantotnghiep.request.NhanVienRequest;
 import com.example.duantotnghiep.entity.TaiKhoan;
-
-import java.util.UUID;
 
 public class NhanVienMapper {
 
-    public static NhanVienDTO nhanVienDTO(TaiKhoan taiKhoan) {
-        return new NhanVienDTO(
+    public static NhanVienRequest nhanVienDTO(TaiKhoan taiKhoan) {
+        return new NhanVienRequest(
                 taiKhoan.getId().randomUUID(),
-                taiKhoan.getUserName(),
+                taiKhoan.getUsername(),
                 taiKhoan.getMatKhau(),
                 taiKhoan.getEmail()
         );
     }
 
-    public static TaiKhoan taiKhoan(NhanVienDTO nhanVienDTO) {
+    public static TaiKhoan taiKhoan(NhanVienRequest nhanVienRequest) {
         return new TaiKhoan(
-                nhanVienDTO.getId().randomUUID(),
-                nhanVienDTO.getUsername(),
-                nhanVienDTO.getPassword(),
-                nhanVienDTO.getEmail()
+                nhanVienRequest.getId().randomUUID(),
+                nhanVienRequest.getUsername(),
+                nhanVienRequest.getPassword(),
+                nhanVienRequest.getEmail()
         );
     }
 

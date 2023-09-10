@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -24,7 +23,7 @@ public class VaiTro {
     private UUID id;
 
     @Column(name = "tenvaitro")
-    private String tenVaiTro;
+    private RoleEnum name;
 
     @Column(name = "trangthai")
     private Integer trangThai;

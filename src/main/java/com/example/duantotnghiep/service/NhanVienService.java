@@ -1,6 +1,6 @@
 package com.example.duantotnghiep.service;
 
-import com.example.duantotnghiep.dto.NhanVienDTO;
+import com.example.duantotnghiep.request.NhanVienRequest;
 import com.example.duantotnghiep.entity.TaiKhoan;
 import org.springframework.http.ResponseEntity;
 
@@ -10,8 +10,10 @@ public interface NhanVienService {
 
     ResponseEntity getAll();
 
-    ResponseEntity<NhanVienDTO> createNhanVien(NhanVienDTO NhanVienDTO);
+    ResponseEntity<NhanVienRequest> createNhanVien(NhanVienRequest NhanVienRequest);
 
-    ResponseEntity<NhanVienDTO> updateNhanVien(NhanVienDTO NhanVienDTO, UUID id);
+    ResponseEntity<NhanVienRequest> updateNhanVien(NhanVienRequest NhanVienRequest, UUID id);
+
+    TaiKhoan findByNameOrEmail(String name, String email);
 
 }
