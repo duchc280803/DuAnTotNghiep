@@ -4,12 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import java.sql.Date;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,10 +12,11 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Builder
 @Entity
 @Table(name = "taikhoan")
-public class TaiKhoan implements UserDetails {
+public class TaiKhoan {
 
     @Id
     @Column(name = "id")
@@ -70,40 +66,5 @@ public class TaiKhoan implements UserDetails {
         this.username = username;
         this.matKhau = matKhau;
         this.email = email;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(vaiTro.getName().name()));
-    }
-
-    @Override
-    public String getPassword() {
-        return matKhau;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 }

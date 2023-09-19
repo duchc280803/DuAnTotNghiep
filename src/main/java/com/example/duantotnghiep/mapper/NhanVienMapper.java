@@ -18,7 +18,7 @@ public class NhanVienMapper {
         return new TaiKhoan(
                 nhanVienRequest.getId().randomUUID(),
                 nhanVienRequest.getUsername(),
-                nhanVienRequest.getPassword(),
+                nhanVienRequest.getFullName(),
                 nhanVienRequest.getEmail()
         );
     }

@@ -2,18 +2,18 @@ package com.example.duantotnghiep.service;
 
 import com.example.duantotnghiep.request.NhanVienRequest;
 import com.example.duantotnghiep.entity.TaiKhoan;
+import com.example.duantotnghiep.response.NhanVienResponse;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface NhanVienService {
 
-    ResponseEntity getAll();
+    List<NhanVienResponse> getAllPage(Integer pageNumber, Integer pageSize);
 
-    ResponseEntity<NhanVienRequest> createNhanVien(NhanVienRequest NhanVienRequest);
+    NhanVienRequest createNhanVien(NhanVienRequest NhanVienRequest);
 
-    ResponseEntity<NhanVienRequest> updateNhanVien(NhanVienRequest NhanVienRequest, UUID id);
-
-    TaiKhoan findByNameOrEmail(String name, String email);
+    NhanVienRequest updateNhanVien(NhanVienRequest NhanVienRequest, UUID id);
 
 }
