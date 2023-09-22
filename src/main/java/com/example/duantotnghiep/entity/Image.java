@@ -33,4 +33,7 @@ public class Image {
     @Column(name = "trangthai")
     private Integer trangThai;
 
+    @Column(name = "isdefault")
+    private Boolean isDefault;
+
 }

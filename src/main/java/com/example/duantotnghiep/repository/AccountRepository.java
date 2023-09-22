@@ -16,7 +16,7 @@ public interface AccountRepository extends JpaRepository<TaiKhoan, UUID> {
 
     @Query("select new com.example.duantotnghiep.response.NhanVienResponse(" +
             "tk.image,tk.username,tk.email,tk.name,tk.trangThai)" +
-            " from TaiKhoan tk")
+            " from TaiKhoan tk JOIN tk.vaiTro vt where vt.name = 'EMPLOYEE'")
     Page<NhanVienResponse> getAllPage(Pageable pageable);
 
     Optional<TaiKhoan> findByUsername(String username);
