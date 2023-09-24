@@ -26,27 +26,22 @@ public class SanPhamChiTiet {
 
     @ManyToOne
     @JoinColumn(name = "idsanpham")
-    @JsonBackReference
     private SanPham sanPham;
 
     @ManyToOne
     @JoinColumn(name = "idmausac")
-    @JsonBackReference
     private MauSac mauSac;
 
     @ManyToOne
     @JoinColumn(name = "idchatlieu")
-    @JsonBackReference
     private ChatLieu chatLieu;
 
     @ManyToOne
     @JoinColumn(name = "idsize")
-    @JsonBackReference
     private Size size;
 
     @ManyToOne
     @JoinColumn(name = "idkieude")
-    @JsonBackReference
     private KieuDe kieuDe;
 
     @Column(name = "baohanh")
@@ -65,14 +60,11 @@ public class SanPhamChiTiet {
     private Integer trangThai;
 
     @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
-    @JsonManagedReference
     private List<SpGiamGia> spGiamGiaList;
 
     @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
-    @JsonManagedReference
     private List<GioHangChiTiet> gioHangChiTiets;
 
     @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
-    @JsonManagedReference
     private List<HoaDonChiTiet> hoaDonChiTietList;
 }

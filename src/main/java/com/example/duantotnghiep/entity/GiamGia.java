@@ -1,15 +1,13 @@
 package com.example.duantotnghiep.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -52,6 +50,5 @@ public class GiamGia {
     private Integer trangThai;
 
     @OneToMany(mappedBy = "giamGia",fetch = FetchType.LAZY)
-    @JsonManagedReference
     private List<SpGiamGia> spGiamGiaList;
 }
