@@ -52,9 +52,11 @@ public class TaiKhoan {
     private VaiTro vaiTro;
 
     @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<GioHang> gioHangList;
 
     @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<HinhThucThanhToan> hinhThucThanhToanList;
 
     @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)

@@ -8,6 +8,7 @@ import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.ProductDetailResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface MaKhuyenMaiService {
 

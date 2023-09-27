@@ -10,10 +10,10 @@ public class NhanVienMapper {
                 taiKhoan.getId().randomUUID(),
                 taiKhoan.getUsername(),
                 taiKhoan.getMatKhau(),
-                taiKhoan.getEmail()
+                taiKhoan.getEmail(),
+                taiKhoan.getVaiTro().getName().name()
         );
     }
-
     public static TaiKhoan taiKhoan(NhanVienRequest nhanVienRequest) {
         return new TaiKhoan(
                 nhanVienRequest.getId().randomUUID(),

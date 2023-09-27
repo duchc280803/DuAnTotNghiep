@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.request;
 
+import com.example.duantotnghiep.entity.VaiTro;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -30,4 +31,6 @@ public class NhanVienRequest {
     )
     @NotEmpty(message = "Email Không Được Dể Trống")
     private String email;
+
+    private String vaiTro;
 }

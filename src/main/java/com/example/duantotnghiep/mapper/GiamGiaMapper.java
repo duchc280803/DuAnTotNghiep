@@ -23,7 +23,6 @@ public class GiamGiaMapper {
         giamGia.setLoaiGiamGia(createMaGiamGiaCreateRequest.getLoaiGiamGia());
         giamGia.setHinhThucGiam(createMaGiamGiaCreateRequest.getHinhThucGiam());
         giamGia.setTrangThai(1);
-        giamGia.setSpGiamGiaList(null);
         return giamGia;
     }
 

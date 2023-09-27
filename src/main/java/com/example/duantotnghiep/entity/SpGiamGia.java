@@ -25,10 +25,12 @@ public class SpGiamGia {
 
     @ManyToOne
     @JoinColumn(name = "idsanpham")
+    @JsonBackReference
     private SanPhamChiTiet sanPhamChiTiet;
 
     @ManyToOne
     @JoinColumn(name = "idgiamgia")
+    @JsonBackReference
     private GiamGia giamGia;
 
     @Column(name = "soluongma")
@@ -45,6 +47,5 @@ public class SpGiamGia {
 
     @Column(name = "gioihansotien")
     private BigDecimal gioiHanSoTien;
-
 
 }
