@@ -28,17 +28,4 @@ public class NhanVienRestController {
         return new ResponseEntity<>(nhanVienService.getAllPage(pageNumber, pageSize), HttpStatus.OK);
     }
 
-    @PostMapping("create")
-    public ResponseEntity<NhanVienRequest> createNhanVien(@Valid @RequestBody NhanVienRequest nhanVienRequest) {
-        return new ResponseEntity<>(nhanVienService.createNhanVien(nhanVienRequest), HttpStatus.CREATED);
-    }
-
-    @PutMapping("update/{id}")
-    public ResponseEntity<NhanVienRequest> updateNhanVien(
-            @RequestBody NhanVienRequest nhanVienRequest,
-            @PathVariable("id") UUID id
-    ) {
-        return new ResponseEntity<>(nhanVienService.updateNhanVien(nhanVienRequest, id), HttpStatus.OK);
-    }
-
 }

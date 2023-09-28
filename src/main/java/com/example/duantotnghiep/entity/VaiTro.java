@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.entity;
 
+import com.example.duantotnghiep.enums.RoleEnum;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class VaiTro {
     private UUID id;
 
     @Column(name = "tenvaitro")
+    @Enumerated(EnumType.STRING)
     private RoleEnum name;
 
     @Column(name = "trangthai")

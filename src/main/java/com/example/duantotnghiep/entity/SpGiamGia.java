@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -35,10 +36,16 @@ public class SpGiamGia {
     @Column(name = "soluongma")
     private Integer soLuongMa;
 
+    @Column(name = "soluotdung")
+    private Integer soLuongDung;
+
     @Column(name = "dongia")
-    private Integer donGia;
+    private BigDecimal donGia;
 
     @Column(name = "trangthai")
     private Integer trangThai;
+
+    @Column(name = "gioihansotien")
+    private BigDecimal gioiHanSoTien;
 
 }

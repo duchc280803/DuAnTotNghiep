@@ -1,4 +1,4 @@
-package com.example.duantotnghiep.entity;
+package com.example.duantotnghiep.enums;
 
 public enum RoleEnum {
 
