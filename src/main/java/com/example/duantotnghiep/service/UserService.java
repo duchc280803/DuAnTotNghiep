@@ -1,12 +1,23 @@
 package com.example.duantotnghiep.service;
 
+import com.example.duantotnghiep.entity.RefreshToken;
 import com.example.duantotnghiep.request.LoginRequest;
 import com.example.duantotnghiep.request.RegisterRequest;
-import com.example.duantotnghiep.response.JwtTokenResponse;
+import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.response.TokenResponse;
+
+import java.util.Optional;
 
 public interface UserService {
 
-    JwtTokenResponse login(LoginRequest loginRequest);
+    TokenResponse login(LoginRequest loginRequest);
 
-    JwtTokenResponse register(RegisterRequest registerRequest);
+    MessageResponse register(RegisterRequest registerRequest);
+
+    RefreshToken createToken(String username);
+
+    RefreshToken verifyExpiration(RefreshToken token);
+
+    Optional<RefreshToken> findByToken(String token);
+
 }

@@ -12,7 +12,6 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Builder
 @Entity
 @Table(name = "taikhoan")
@@ -49,6 +48,7 @@ public class TaiKhoan {
     @ManyToOne
     @JoinColumn(name = "idvaitro")
     @JsonBackReference
+    @Enumerated(EnumType.STRING)
     private VaiTro vaiTro;
 
     @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
@@ -63,10 +63,4 @@ public class TaiKhoan {
     @JsonManagedReference
     private List<HoaDon> hoaDonList;
 
-    public TaiKhoan(UUID id,String username, String matKhau, String email) {
-        this.id = id;
-        this.username = username;
-        this.matKhau = matKhau;
-        this.email = email;
-    }
 }
