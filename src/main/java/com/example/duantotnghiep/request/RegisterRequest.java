@@ -1,9 +1,6 @@
 package com.example.duantotnghiep.request;
 
-import com.example.duantotnghiep.entity.VaiTro;
 import com.example.duantotnghiep.enums.RoleEnum;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
