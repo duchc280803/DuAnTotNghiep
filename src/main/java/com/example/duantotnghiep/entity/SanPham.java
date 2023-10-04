@@ -53,10 +53,6 @@ public class SanPham {
 
     @OneToMany(mappedBy = "sanPham",fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<Image> listImage;
-
-    @OneToMany(mappedBy = "sanPham",fetch = FetchType.LAZY)
-    @JsonManagedReference
     private List<SanPhamChiTiet> listSanPhamChiTiet;
 
 }

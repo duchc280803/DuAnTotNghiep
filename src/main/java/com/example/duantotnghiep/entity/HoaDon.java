@@ -77,6 +77,9 @@ public class HoaDon {
     @Column(name = "trangthai")
     private Integer trangThai;
 
+    @Column(name = "qrcode")
+    private String qrcode;
+
     @OneToMany(mappedBy = "hoaDon",fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<HinhThucThanhToan> hinhThucThanhToanList;
@@ -84,5 +87,10 @@ public class HoaDon {
     @OneToMany(mappedBy = "hoaDon",fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<HoaDonChiTiet> hoaDonChiTietList;
+
+    @ManyToOne
+    @JoinColumn(name = "idgiamgia")
+    @JsonBackReference
+    private GiamGia giamGia;
 
 }
