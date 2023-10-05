@@ -42,6 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/gio-hang/**").permitAll()
                         .requestMatchers("/api/gio-hang-chi-tiet/**").permitAll()
                         .requestMatchers("/username").permitAll()
+                        .requestMatchers("/api/v1/hoa-don/**").permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
