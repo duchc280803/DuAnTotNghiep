@@ -27,4 +27,9 @@ public class NhanVienServiceImpl implements NhanVienService {
         return pageList.getContent();
     }
 
+    @Override
+    public NhanVienResponse getList(String name) {
+        return accountRepository.getList(name);
+    }
+
 }

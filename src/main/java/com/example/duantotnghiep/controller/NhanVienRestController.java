@@ -28,4 +28,9 @@ public class NhanVienRestController {
         return new ResponseEntity<>(nhanVienService.getAllPage(pageNumber, pageSize), HttpStatus.OK);
     }
 
+    @GetMapping("all/{name}")
+    public ResponseEntity<NhanVienResponse> getAll(@PathVariable("name") String name) {
+        return new ResponseEntity<>(nhanVienService.getList(name), HttpStatus.OK);
+    }
+
 }

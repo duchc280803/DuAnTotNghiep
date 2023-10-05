@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.response;
 
+import com.example.duantotnghiep.enums.RoleEnum;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,4 +24,6 @@ public class NhanVienResponse {
     private String fullName;
 
     private Integer trangThai;
+
+    private RoleEnum role;
 }

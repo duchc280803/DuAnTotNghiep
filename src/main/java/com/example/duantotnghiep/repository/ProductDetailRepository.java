@@ -23,7 +23,7 @@ public interface ProductDetailRepository extends JpaRepository<SanPhamChiTiet, U
             "JOIN sp.thuongHieu th " +
             "JOIN sp.danhMuc dm " +
             "JOIN sp.xuatXu xx " +
-            "JOIN sp.listImage i WHERE i.isDefault = true GROUP BY spct.id, i.tenImage, sp.tenSanPham")
+            "JOIN spct.listImage i WHERE i.isDefault = true GROUP BY spct.id, i.tenImage, sp.tenSanPham")
     List<ProductDetailResponse> listProductDetailResponse();
 
 }

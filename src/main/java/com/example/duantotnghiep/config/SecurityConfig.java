@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.config;
 
 
+import com.example.duantotnghiep.enums.RoleEnum;
 import com.example.duantotnghiep.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -35,10 +36,12 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/khach-hang/**").permitAll()
+                        .requestMatchers("/api/nhan-vien/**").permitAll()
+                        .requestMatchers("/username").permitAll()
+                        .requestMatchers("/api/v1/hoa-don/**").permitAll()
                         .anyRequest()
                         .authenticated())
-//                .oauth2Login(Customizer.withDefaults())
-//                .formLogin(Customizer.withDefaults())
                 .sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

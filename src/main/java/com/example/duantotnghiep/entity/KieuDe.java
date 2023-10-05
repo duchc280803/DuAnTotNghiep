@@ -26,9 +26,6 @@ public class KieuDe {
     @Column(name = "tende")
     private String tenDe;
 
-    @Column(name = "loaide")
-    private String loaiDe;
-
     @Column(name = "mausac")
     private String mauSac;
 
@@ -42,4 +39,7 @@ public class KieuDe {
     @JsonManagedReference
     private List<SanPhamChiTiet> sanPhamChiTietList;
 
+    @ManyToOne
+    @JoinColumn(name = "loaide")
+    private LoaiDe loaiDe;
 }
