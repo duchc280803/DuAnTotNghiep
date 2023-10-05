@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/khach-hang/**").permitAll()
                         .requestMatchers("/api/nhan-vien/**").permitAll()
                         .requestMatchers("/username").permitAll()
+                        .requestMatchers("/api/v1/hoa-don/**").permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
