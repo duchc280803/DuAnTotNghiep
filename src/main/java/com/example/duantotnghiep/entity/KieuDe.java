@@ -39,7 +39,4 @@ public class KieuDe {
     @JsonManagedReference
     private List<SanPhamChiTiet> sanPhamChiTietList;
 
-    @ManyToOne
-    @JoinColumn(name = "loaide")
-    private LoaiDe loaiDe;
 }
