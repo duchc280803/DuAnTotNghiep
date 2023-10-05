@@ -20,7 +20,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "giohang")
 public class GioHang {
-
     @Id
     @Column(name = "id")
     private UUID id;
@@ -45,5 +44,4 @@ public class GioHang {
     @OneToMany(mappedBy = "gioHang",fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<GioHangChiTiet> gioHangChiTiets;
-
 }
