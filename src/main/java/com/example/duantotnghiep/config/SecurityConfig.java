@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/khach-hang/**").permitAll()
                         .anyRequest()
                         .authenticated())
 //                .oauth2Login(Customizer.withDefaults())

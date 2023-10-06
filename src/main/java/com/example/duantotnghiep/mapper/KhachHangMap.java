@@ -1,10 +1,13 @@
 package com.example.duantotnghiep.mapper;
 
-public interface TaiKhoanMap {
+import java.util.UUID;
+
+public interface KhachHangMap {
     String getEmail();
     String getImage();
     String getTrangThai();
     String getTen();
     String getNgaySinh();
     String getGioiTinh();
+    UUID getId();
 }
