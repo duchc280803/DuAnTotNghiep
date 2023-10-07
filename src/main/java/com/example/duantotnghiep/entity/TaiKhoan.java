@@ -71,4 +71,8 @@ public class TaiKhoan {
     @JsonManagedReference
     private List<HoaDon> hoaDonList;
 
+    @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<RefreshToken> refreshTokenList;
+
 }

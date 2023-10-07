@@ -18,7 +18,7 @@ public class GioHangController {
     @Autowired
     private GioHangService gioHangService;
 
-    //TO DO tạo mới 1 giỏ hàng
+    //TODO tạo mới 1 giỏ hàng
     @PostMapping("/tao-gio-hang")
         public ResponseEntity<UUID> taoGioHang(@RequestParam UUID taiKhoanId) {
         try {
