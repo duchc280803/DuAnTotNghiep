@@ -8,4 +8,6 @@ public interface NhanVienService {
 
     List<NhanVienResponse> getAllPage(Integer pageNumber, Integer pageSize);
 
+    NhanVienResponse getList(String name);
+
 }

@@ -39,6 +39,9 @@ public class TaiKhoan {
     @Column(name = "ten")
     private String name;
 
+    @Column(name = "sodienthoai")
+    private String soDienThoai;
+
     @Column(name = "ngaysinh")
     private Date ngaySinh;
 
@@ -50,6 +53,11 @@ public class TaiKhoan {
     @JsonBackReference
     @Enumerated(EnumType.STRING)
     private VaiTro vaiTro;
+
+    @ManyToOne
+    @JoinColumn(name = "idloaitaikhoan")
+    @JsonBackReference
+    private LoaiTaiKhoan loaiTaiKhoan;
 
     @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
     @JsonManagedReference

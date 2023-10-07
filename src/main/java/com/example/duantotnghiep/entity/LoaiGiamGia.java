@@ -1,13 +1,13 @@
 package com.example.duantotnghiep.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Objects;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -15,25 +15,20 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "image")
-public class Image {
+@Table(name = "loaigiamgia")
+public class LoaiGiamGia {
 
     @Id
     @Column(name = "id")
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "idsanphamchitiet")
-    @JsonBackReference
-    private SanPhamChiTiet sanPhamChiTiet;
-
-    @Column(name = "tenimage")
-    private String tenImage;
+    @Column(name = "tenloaigiamgia")
+    private String tenLoaiGiamGia;
 
     @Column(name = "trangthai")
     private Integer trangThai;
 
-    @Column(name = "isdefault")
-    private Boolean isDefault;
-
+    @OneToMany(mappedBy = "loaiGiamGia",fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<GiamGia> giamGiaList;
 }
