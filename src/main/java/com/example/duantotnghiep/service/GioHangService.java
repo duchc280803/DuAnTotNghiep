@@ -5,5 +5,5 @@ import com.example.duantotnghiep.entity.GioHang;
 import java.util.UUID;
 
 public interface GioHangService {
-    UUID taoGioHang(UUID taiKhoanId);
+    UUID taoGioHang(String name);
 }
