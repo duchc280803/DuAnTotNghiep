@@ -13,11 +13,10 @@ import java.util.List;
 import java.util.UUID;
 
 public interface KhachHangRepository extends JpaRepository<TaiKhoan, UUID> {
-
-    @Query(value = "SELECT TK.id, TK.email, TK.image, TK.trangthai, TK.ten, TK.ngaysinh, TK.gioitinh "
+    @Query(value = "SELECT TK.id, TK.email, TK.image, TK.trangthai, TK.ten, TK.sodienthoai, TK.ngaysinh, TK.gioitinh "
             + "FROM TaiKhoan TK "
             + "INNER JOIN VaiTro VT ON TK.idvaitro = VT.id "
-            + "WHERE VT.tenvaitro = 'Khách hàng'",
+            + "WHERE VT.tenvaitro = 'USER'",
             nativeQuery = true)
     List<KhachHangMap> findlistKhachHang();
 

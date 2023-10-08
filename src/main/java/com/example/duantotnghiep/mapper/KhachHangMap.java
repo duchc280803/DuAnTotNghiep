@@ -7,6 +7,7 @@ public interface KhachHangMap {
     String getImage();
     String getTrangThai();
     String getTen();
+    String getSoDienThoai();
     String getNgaySinh();
     String getGioiTinh();
     UUID getId();
