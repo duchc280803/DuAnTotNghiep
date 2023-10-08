@@ -1,12 +1,17 @@
 package com.example.duantotnghiep.controller;
 
 import com.example.duantotnghiep.entity.TaiKhoan;
+import com.example.duantotnghiep.mapper.KhachHangMap;
 import com.example.duantotnghiep.service.KhachHangService;
 import com.example.duantotnghiep.service.impl.KhachHangImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -42,4 +47,6 @@ public class KhachHangController {
         khachHangService.save(taiKhoan);
         return ResponseEntity.ok(khachHangService.save(taiKhoan));
     }
+
+
 }
