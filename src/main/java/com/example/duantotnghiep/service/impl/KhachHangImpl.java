@@ -25,5 +25,4 @@ public class KhachHangImpl implements KhachHangService {
     }
 
 
-
 }

@@ -15,4 +15,5 @@ public class LoginRequest {
 
     @NotBlank(message = "Không được để trống password")
     private String password;
+
 }

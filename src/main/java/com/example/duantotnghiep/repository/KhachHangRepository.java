@@ -20,5 +20,4 @@ public interface KhachHangRepository extends JpaRepository<TaiKhoan, UUID> {
             nativeQuery = true)
     List<KhachHangMap> findlistKhachHang();
 
-
 }

@@ -51,7 +51,6 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "            where img.isDefault = 'true'\n" +
             "            AND sp.id = ?1", nativeQuery = true)
     List<SanPhamGetAllSizeCustom> getByIdSp(UUID id);
-
     //--------------------Lọc sản phẩm theo các thuộc tính------------------
 
     //1.tìm kiếm sản phẩm theo idDanhMuc
