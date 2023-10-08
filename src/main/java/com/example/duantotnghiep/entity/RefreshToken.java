@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,17 +18,17 @@ public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
+    @Column(name = "id")
     private Integer id;
 
-    @Column(name = "Token")
+    @Column(name = "token")
     private String token;
 
-    @Column(name = "ThoiGianHetHan")
+    @Column(name = "thoi_gian_het_han")
     private LocalDate thoiGianHetHan;
 
     @ManyToOne
-    @JoinColumn(name = "taiKhoanId")
+    @JoinColumn(name = "tai_Khoan_id")
     private TaiKhoan taiKhoan;
 
 }

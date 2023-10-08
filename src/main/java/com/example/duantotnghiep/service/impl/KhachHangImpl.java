@@ -24,5 +24,4 @@ public class KhachHangImpl implements KhachHangService {
         return khachHangRepository.save(taiKhoan);
     }
 
-
 }
