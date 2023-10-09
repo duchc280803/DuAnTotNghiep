@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -15,9 +16,15 @@ import java.util.UUID;
 public interface AccountRepository extends JpaRepository<TaiKhoan, UUID> {
 
     @Query("select new com.example.duantotnghiep.response.NhanVienResponse(" +
-            "tk.image,tk.username,tk.email,tk.name,tk.trangThai)" +
+            "tk.image,tk.username,tk.email,tk.name,tk.trangThai, tk.vaiTro.name)" +
             " from TaiKhoan tk JOIN tk.vaiTro vt where vt.name = 'EMPLOYEE'")
     Page<NhanVienResponse> getAllPage(Pageable pageable);
 
     Optional<TaiKhoan> findByUsername(String username);
+
+    @Query("select new com.example.duantotnghiep.response.NhanVienResponse(" +
+            "tk.image,tk.username,tk.email,tk.name,tk.trangThai, vt.name)" +
+            " from TaiKhoan tk JOIN tk.vaiTro vt where tk.username = :name")
+    NhanVienResponse getList(@Param("name") String name);
+
 }

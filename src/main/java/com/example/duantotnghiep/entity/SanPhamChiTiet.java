@@ -61,6 +61,9 @@ public class SanPhamChiTiet {
     @Column(name = "soluong")
     private Integer soLuong;
 
+    @Column(name = "qrcode")
+    private String qrcode;
+
     @Column(name = "trangthai")
     private Integer trangThai;
 
@@ -75,4 +78,8 @@ public class SanPhamChiTiet {
     @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<HoaDonChiTiet> hoaDonChiTietList;
+
+    @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Image> listImage;
 }

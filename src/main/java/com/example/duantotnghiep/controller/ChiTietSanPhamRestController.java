@@ -62,7 +62,4 @@ public class ChiTietSanPhamRestController {
         return ResponseEntity.ok(chiTietSanPhamService.findByMauSac(idMauSac));
     }//close findByMauSac
 
-
-
-
     }//close class

@@ -41,6 +41,9 @@ public class HoaDonChiTiet {
     @Column(name = "tiengiamgia")
     private Integer tienGiamGia;
 
+    @Column(name = "comment")
+    private String comment;
+
     @Column(name = "trangthai")
     private Integer trangThai;
 

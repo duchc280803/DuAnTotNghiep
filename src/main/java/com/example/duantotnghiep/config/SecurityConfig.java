@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -36,10 +35,21 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/khach-hang/**").permitAll()
+
+                        .requestMatchers("/api/nhan-vien/**").permitAll()
+                        .requestMatchers("/api/chi-tiet-sp/**").permitAll()
+                        .requestMatchers("/api/gio-hang/**").permitAll()
+                        .requestMatchers("/api/gio-hang-chi-tiet/**").permitAll()
+                        .requestMatchers("/username").permitAll()
+                        .requestMatchers("/api/v1/hoa-don/**").permitAll()
+                        .requestMatchers("/api/chat-lieu/**").permitAll()
+                        .requestMatchers("/api/danh-muc/**").permitAll()
+                        .requestMatchers("/api/kieu-de/**").permitAll()
+                        .requestMatchers("/api/mau-sac/**").permitAll()
+                        .requestMatchers("/api/thuong-hieu/**").permitAll()
+                        .requestMatchers("/api/xuat-su/**").permitAll()
                         .anyRequest()
                         .authenticated())
-//                .oauth2Login(Customizer.withDefaults())
-//                .formLogin(Customizer.withDefaults())
                 .sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
