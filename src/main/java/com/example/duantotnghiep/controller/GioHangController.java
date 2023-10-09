@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.UUID;
 
 @RestController
@@ -20,9 +21,9 @@ public class GioHangController {
 
     //TODO tạo mới 1 giỏ hàng
     @PostMapping("/tao-gio-hang")
-        public ResponseEntity<UUID> taoGioHang(@RequestParam String name) {
+        public ResponseEntity<UUID> taoGioHang(Principal principal) {
         try {
-            UUID gioHangId = gioHangService.taoGioHang(name);
+            UUID gioHangId = gioHangService.taoGioHang(principal.getName());
             return ResponseEntity.ok(gioHangId);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);

@@ -2,6 +2,7 @@ package com.example.duantotnghiep.repository;
 
 import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.mapper.KhachHangMap;
+import com.example.duantotnghiep.response.KhachHangResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,11 +15,19 @@ import java.util.UUID;
 
 public interface KhachHangRepository extends JpaRepository<TaiKhoan, UUID> {
 
-    @Query(value = "SELECT TK.id, TK.email, TK.image, TK.trangthai, TK.ten, TK.ngaysinh, TK.gioitinh "
+    @Query(value = "SELECT TK.id, TK.email, TK.image, TK.trangthai, TK.ten, TK.ngaysinh, TK.gioitinh, TK.sodienthoai "
             + "FROM TaiKhoan TK "
             + "INNER JOIN VaiTro VT ON TK.idvaitro = VT.id "
-            + "WHERE VT.tenvaitro = 'Khách hàng'",
+            + "WHERE VT.tenvaitro = 'USER'",
             nativeQuery = true)
     List<KhachHangMap> findlistKhachHang();
+
+    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(kh.id, kh.name, kh.email, kh.soDienThoai) " +
+            "FROM TaiKhoan kh JOIN kh.vaiTro vt WHERE vt.name = 'USER' AND kh.id= :id")
+    KhachHangResponse findByKhachHang(@Param("id") UUID id);
+
+    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(kh.id, kh.name, kh.email, kh.soDienThoai) " +
+            "FROM TaiKhoan kh JOIN kh.vaiTro vt WHERE vt.name = 'USER' AND kh.name = :key OR kh.soDienThoai = :key OR kh.email = :key")
+    KhachHangResponse findByKeyToKhachHang(@Param("key") String key);
 
 }

@@ -33,7 +33,6 @@ public class GioHangServiceImpl implements GioHangService {
         gioHang.setTrangThai(1);
 
         GioHang gioHangMoi = gioHangRepository.save(gioHang);
-
         return gioHangMoi.getId();
     }
 }

@@ -63,7 +63,7 @@ public class GiamGia {
     private List<HoaDon> hoaDonList;
 
     @ManyToOne
-    @JoinColumn(name = "idloaigiamgia")
+    @JoinColumn(name = "loaigiamgia")
     @JsonBackReference
     private LoaiGiamGia loaiGiamGia;
 }

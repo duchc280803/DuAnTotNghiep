@@ -24,11 +24,6 @@ public class HoaDon {
     @Column(name = "id")
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "idtaikhoan")
-    @JsonBackReference
-    private TaiKhoan taiKhoan;
-
     @Column(name = "ma")
     private String ma;
 
@@ -62,7 +57,7 @@ public class HoaDon {
     @Column(name = "tennguoiship")
     private String tenNguoiShip;
 
-    @Column(name = "tienkhachtra")
+    @Column(name = "tienthachtra")
     private Integer tienKhachTra;
 
     @Column(name = "tienship")
@@ -92,5 +87,10 @@ public class HoaDon {
     @JoinColumn(name = "idgiamgia")
     @JsonBackReference
     private GiamGia giamGia;
+
+    @ManyToOne
+    @JoinColumn(name = "idtaithoan")
+    @JsonBackReference
+    private TaiKhoan taiKhoan;
 
 }

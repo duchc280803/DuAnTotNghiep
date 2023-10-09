@@ -1,8 +1,10 @@
 package com.example.duantotnghiep.service.impl;
 
 import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
-import com.example.duantotnghiep.mapper.SanPhamGetAllSizeCustom;
 import com.example.duantotnghiep.repository.ChiTietSanPhamRepository;
+import com.example.duantotnghiep.response.DetailQuantityToSizeReponse;
+import com.example.duantotnghiep.response.DetailSizeToProductResponse;
+import com.example.duantotnghiep.response.SanPhamGetAllResponse;
 import com.example.duantotnghiep.service.ChiTietSanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +28,18 @@ public class ChiTietSanPhamServiceImpl implements ChiTietSanPhamService {
     }
 
     @Override
-    public List<SanPhamGetAllSizeCustom> getByIdSp(UUID id) {
+    public SanPhamGetAllResponse getByIdSp(UUID id) {
         return chiTietSanPhamRepository.getByIdSp(id);
+    }
+
+    @Override
+    public List<DetailSizeToProductResponse> getDetailSizeToSanPham(UUID id) {
+        return chiTietSanPhamRepository.getDetailSizeToSanPham(id);
+    }
+
+    @Override
+    public DetailQuantityToSizeReponse getDetailQuantityToSizeReponse(UUID id, Integer size) {
+        return chiTietSanPhamRepository.getDetailQuantityToSizeReponse(id, size);
     }
 
     //filter
