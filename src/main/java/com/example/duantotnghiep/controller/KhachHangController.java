@@ -1,16 +1,29 @@
 package com.example.duantotnghiep.controller;
 
 import com.example.duantotnghiep.entity.TaiKhoan;
+<<<<<<< HEAD
 import com.example.duantotnghiep.response.KhachHangResponse;
 import com.example.duantotnghiep.service.KhachHangService;
 import com.example.duantotnghiep.service.impl.KhachHangImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+=======
+import com.example.duantotnghiep.mapper.KhachHangMap;
+import com.example.duantotnghiep.service.KhachHangService;
+import com.example.duantotnghiep.service.impl.KhachHangImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+>>>>>>> 8ad908c2030a56c77752838a166c22ab26456dbb
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
+<<<<<<< HEAD
 import java.util.UUID;
+=======
+import java.util.List;
+>>>>>>> 8ad908c2030a56c77752838a166c22ab26456dbb
 
 @CrossOrigin
 @RestController
@@ -56,4 +69,6 @@ public class KhachHangController {
         khachHangService.save(taiKhoan);
         return ResponseEntity.ok(khachHangService.save(taiKhoan));
     }
+
+
 }

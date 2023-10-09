@@ -26,6 +26,7 @@ public class KhachHangImpl implements KhachHangService {
         return khachHangRepository.save(taiKhoan);
     }
 
+<<<<<<< HEAD
     @Override
     public KhachHangResponse findByKhachHang(UUID id) {
         return khachHangRepository.findByKhachHang(id);
@@ -35,5 +36,7 @@ public class KhachHangImpl implements KhachHangService {
     public KhachHangResponse findByKeyToKhachHang(String key) {
         return khachHangRepository.findByKeyToKhachHang(key);
     }
+=======
+>>>>>>> 8ad908c2030a56c77752838a166c22ab26456dbb
 
 }
