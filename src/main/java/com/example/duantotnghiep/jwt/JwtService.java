@@ -47,7 +47,7 @@ public class JwtService {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(userCustomDetails.getTaiKhoan().getUsername())
+                .setSubject(userCustomDetails.getNhanVien().getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)

@@ -25,9 +25,14 @@ public class GioHang {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "idtaikhoan")
+    @JoinColumn(name = "idkhachhang")
     @JsonBackReference
-    private TaiKhoan taiKhoan;
+    private KhachHang khachHang;
+
+    @ManyToOne
+    @JoinColumn(name = "idnhanvien")
+    @JsonBackReference
+    private NhanVien nhanVien;
 
     @Column(name = "ngaytao")
     private Date ngayTao;

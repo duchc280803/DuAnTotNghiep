@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -24,25 +25,20 @@ public class HoaDon {
     @Column(name = "id")
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "idtaikhoan")
-    @JsonBackReference
-    private TaiKhoan taiKhoan;
-
     @Column(name = "ma")
     private String ma;
 
     @Column(name = "ngaytao")
-    private Date ngayTao;
+    private LocalDate ngayTao;
 
     @Column(name = "ngaythanhtoan")
-    private Date ngayThanhToan;
+    private LocalDate ngayThanhToan;
 
     @Column(name = "ngayship")
-    private Date ngayShip;
+    private LocalDate ngayShip;
 
     @Column(name = "ngaynhan")
-    private Date ngayNhan;
+    private LocalDate ngayNhan;
 
     @Column(name = "tennguoinhan")
     private String tenNguoiNhan;
@@ -62,7 +58,7 @@ public class HoaDon {
     @Column(name = "tennguoiship")
     private String tenNguoiShip;
 
-    @Column(name = "tienkhachtra")
+    @Column(name = "tienthachtra")
     private Integer tienKhachTra;
 
     @Column(name = "tienship")
@@ -92,5 +88,15 @@ public class HoaDon {
     @JoinColumn(name = "idgiamgia")
     @JsonBackReference
     private GiamGia giamGia;
+
+    @ManyToOne
+    @JoinColumn(name = "idkhachhang")
+    @JsonBackReference
+    private KhachHang khachHang;
+
+    @ManyToOne
+    @JoinColumn(name = "idnhanvien")
+    @JsonBackReference
+    private NhanVien nhanVien;
 
 }
