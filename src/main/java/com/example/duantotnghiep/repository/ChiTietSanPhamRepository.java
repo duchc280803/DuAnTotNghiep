@@ -63,17 +63,6 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             " FROM SanPhamChiTiet spct WHERE spct.sanPham.id = :id AND spct.size.size = :size")
     DetailQuantityToSizeReponse getDetailQuantityToSizeReponse(@Param("id") UUID id, @Param("size") Integer size);
 
-//    @Query(value = "SELECT sp.TenSanPham,img.TenImage,th.TenThuongHieu,dm.TenDanhMuc,xs.TenXuatXu,sct.GiaBan,s.Size,sct.SoLuong FROM SanPhamChiTiet sct\n" +
-//            "            JOIN Size s on sct.IdSize = s.Id\n" +
-//            "            JOIN SanPham sp on sct.IdSanPham=sp.Id\n" +
-//            "            JOIN Image img on sct.Id= img.idsanphamchitiet\n" +
-//            "            JOIN XuatXu xs on sp.IdXuatXu = xs.Id\n" +
-//            "            JOIN ThuongHieu th on sp.IdThuongHieu = th.Id\n" +
-//            "            JOIN DanhMuc dm on sp.IdDanhMuc = dm.Id\n" +
-//            "            where img.isDefault = 'true'\n" +
-//            "            AND sp.id = ?1", nativeQuery = true)
-//    List<SanPhamGetAllSizeCustom> getByIdSp(UUID id);
-
     //1.tìm kiếm sản phẩm theo idDanhMuc
     @Query(value = "SELECT IMG.TenImage,SCT.Id,SP.TenSanPham,SCT.GiaBan\n" +
             "            FROM SanPhamChiTiet SCT \n" +

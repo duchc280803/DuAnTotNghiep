@@ -28,9 +28,9 @@ public class GioHangController {
 
     //TODO tạo mới 1 giỏ hàng
     @PostMapping("/tao-gio-hang")
-        public ResponseEntity<UUID> taoGioHang(Principal principal) {
+    public ResponseEntity<UUID> taoGioHang(@RequestParam("name") String name) {
         try {
-            UUID gioHangId = gioHangService.taoGioHang(principal.getName());
+            UUID gioHangId = gioHangService.taoGioHang(name);
             return ResponseEntity.ok(gioHangId);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
@@ -39,10 +39,11 @@ public class GioHangController {
 
     @GetMapping("/so-luong-san-pham")
     public ResponseEntity<?> getSoLuongGioHang(@RequestParam UUID idgh) {
-        return  ResponseEntity.ok(getSoLuongGioHangService.getSoLuongGioHang(idgh));
+        return ResponseEntity.ok(getSoLuongGioHangService.getSoLuongGioHang(idgh));
     }
+
     @GetMapping("/tong-tien-san-pham")
     public ResponseEntity<?> getTongTien(@RequestParam UUID idgh) {
-        return  ResponseEntity.ok(gettongtien.getTongTien(idgh));
+        return ResponseEntity.ok(gettongtien.getTongTien(idgh));
     }
 }

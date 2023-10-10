@@ -16,22 +16,22 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "vaitro")
-public class VaiTro {
+@Table(name = "chucvu")
+public class ChucVu {
 
     @Id
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "tenvaitro")
+    @Column(name = "tenchucvu")
     @Enumerated(EnumType.STRING)
     private RoleEnum name;
 
     @Column(name = "trangthai")
     private Integer trangThai;
 
-    @OneToMany(mappedBy = "vaiTro",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "chucVu",fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<TaiKhoan> taiKhoanList;
+    private List<NhanVien> taiKhoanList;
 
 }

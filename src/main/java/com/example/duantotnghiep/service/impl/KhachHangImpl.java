@@ -1,6 +1,5 @@
 package com.example.duantotnghiep.service.impl;
 
-import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.mapper.KhachHangMap;
 import com.example.duantotnghiep.repository.KhachHangRepository;
 import com.example.duantotnghiep.response.KhachHangResponse;
@@ -13,6 +12,7 @@ import java.util.UUID;
 
 @Service
 public class KhachHangImpl implements KhachHangService {
+
     @Autowired
     private KhachHangRepository khachHangRepository;
 
@@ -22,12 +22,6 @@ public class KhachHangImpl implements KhachHangService {
     }
 
     @Override
-    public TaiKhoan save(TaiKhoan taiKhoan) {
-        return khachHangRepository.save(taiKhoan);
-    }
-
-<<<<<<< HEAD
-    @Override
     public KhachHangResponse findByKhachHang(UUID id) {
         return khachHangRepository.findByKhachHang(id);
     }
@@ -36,7 +30,5 @@ public class KhachHangImpl implements KhachHangService {
     public KhachHangResponse findByKeyToKhachHang(String key) {
         return khachHangRepository.findByKeyToKhachHang(key);
     }
-=======
->>>>>>> 8ad908c2030a56c77752838a166c22ab26456dbb
 
 }

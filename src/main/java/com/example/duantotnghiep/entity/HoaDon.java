@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -28,16 +29,16 @@ public class HoaDon {
     private String ma;
 
     @Column(name = "ngaytao")
-    private Date ngayTao;
+    private LocalDate ngayTao;
 
     @Column(name = "ngaythanhtoan")
-    private Date ngayThanhToan;
+    private LocalDate ngayThanhToan;
 
     @Column(name = "ngayship")
-    private Date ngayShip;
+    private LocalDate ngayShip;
 
     @Column(name = "ngaynhan")
-    private Date ngayNhan;
+    private LocalDate ngayNhan;
 
     @Column(name = "tennguoinhan")
     private String tenNguoiNhan;
@@ -89,8 +90,13 @@ public class HoaDon {
     private GiamGia giamGia;
 
     @ManyToOne
-    @JoinColumn(name = "idtaithoan")
+    @JoinColumn(name = "idkhachhang")
     @JsonBackReference
-    private TaiKhoan taiKhoan;
+    private KhachHang khachHang;
+
+    @ManyToOne
+    @JoinColumn(name = "idnhanvien")
+    @JsonBackReference
+    private NhanVien nhanVien;
 
 }

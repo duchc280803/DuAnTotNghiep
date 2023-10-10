@@ -30,6 +30,6 @@ public class LoaiTaiKhoan {
 
     @OneToMany(mappedBy = "loaiTaiKhoan", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<TaiKhoan> taiKhoanList;
+    private List<KhachHang> taiKhoanList;
 
 }

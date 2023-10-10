@@ -1,11 +1,11 @@
 package com.example.duantotnghiep.service.impl;
 
+import com.example.duantotnghiep.entity.NhanVien;
 import com.example.duantotnghiep.entity.RefreshToken;
-import com.example.duantotnghiep.entity.TaiKhoan;
-import com.example.duantotnghiep.entity.VaiTro;
+import com.example.duantotnghiep.entity.ChucVu;
 import com.example.duantotnghiep.jwt.JwtService;
 import com.example.duantotnghiep.model.UserCustomDetails;
-import com.example.duantotnghiep.repository.AccountRepository;
+import com.example.duantotnghiep.repository.NhanVienRepository;
 import com.example.duantotnghiep.repository.RefreshTokenRepository;
 import com.example.duantotnghiep.repository.VaiTroRepository;
 import com.example.duantotnghiep.request.LoginRequest;
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     private final VaiTroRepository vaiTroRepository;
 
-    private final AccountRepository accountRepository;
+    private final NhanVienRepository nhanVienRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
                 )
         );
         // Kiểm tra xem tài khoản đã tồn tại hay không
-        Optional<TaiKhoan> optionalPhatTu = accountRepository.findByUsername(loginRequest.getUsername());
+        Optional<NhanVien> optionalPhatTu = nhanVienRepository.findByUsername(loginRequest.getUsername());
         if (optionalPhatTu.isPresent()) {
             // Tài khoản tồn tại, tạo mới hoặc cập nhật token
             RefreshToken refreshToken = createToken(loginRequest.getUsername());
@@ -73,28 +73,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public MessageResponse register(RegisterRequest registerRequest) {
-        Optional<TaiKhoan> optionalPhatTu = accountRepository.findByUsername(registerRequest.getUsername());
+        Optional<NhanVien> optionalPhatTu = nhanVienRepository.findByUsername(registerRequest.getUsername());
 
         if (optionalPhatTu.isPresent()) {
             return MessageResponse.builder().message("Tài khoản đã tồn tại").build();
         }
 
-        Optional<VaiTro> quyenHan = vaiTroRepository.findByName(registerRequest.getRole());
+        Optional<ChucVu> quyenHan = vaiTroRepository.findByName(registerRequest.getRole());
 
         if (quyenHan.isEmpty()) {
             return MessageResponse.builder().message("Quyền hạn không hợp lệ").build();
         }
 
-        TaiKhoan user = TaiKhoan.builder()
+        NhanVien user = NhanVien.builder()
                 .id(UUID.randomUUID())
                 .username(registerRequest.getUsername())
-                .matKhau(passwordEncoder.encode(registerRequest.getPassword()))
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .email(registerRequest.getEmail())
-                .vaiTro(quyenHan.get())
+                .chucVu(quyenHan.get())
                 .build();
-
+        System.out.printf(user.getId().toString());
         try {
-            TaiKhoan savedUser = accountRepository.save(user);
+            NhanVien savedUser = nhanVienRepository.save(user);
             String jwtToken = jwtService.generateToken(new UserCustomDetails(savedUser));
             return MessageResponse.builder().message("Registered Successfully").build();
         } catch (Exception e) {
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
     public RefreshToken createToken(String username) {
         RefreshToken refreshToken = RefreshToken
                 .builder()
-                .taiKhoan(accountRepository.findByUsername(username).get())
+                .nhanVien(nhanVienRepository.findByUsername(username).get())
                 .token(UUID.randomUUID().toString())
                 .thoiGianHetHan(LocalDate.from(LocalDateTime.now().plusMinutes(10)))
                 .build();

@@ -45,7 +45,7 @@ public class UserController {
             // tìm user thông qua token
             TokenResponse response = userService.findByToken(refreshToken.getToken())
                     .map(userService::verifyExpiration) // nếu tìm thấy user sẽ gọi hàm very...
-                    .map(RefreshToken::getTaiKhoan) // lấy ra thông tin phật tử
+                    .map(RefreshToken::getNhanVien) // lấy ra thông tin phật tử
                     .map(phatTu -> {
                         String accessToken = jwtService.generateToken(new UserCustomDetails(phatTu));
                         return TokenResponse.builder()
