@@ -1,16 +1,17 @@
 package com.example.duantotnghiep.service.impl;
 
-import com.example.duantotnghiep.entity.HoaDon;
-import com.example.duantotnghiep.entity.NhanVien;
-import com.example.duantotnghiep.repository.HoaDonRepository;
-import com.example.duantotnghiep.repository.NhanVienRepository;
+import com.example.duantotnghiep.entity.*;
+import com.example.duantotnghiep.repository.*;
+import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.service.ChiTietSanPhamService;
 import com.example.duantotnghiep.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -21,10 +22,16 @@ public class HoaDonServiceImpl implements HoaDonService {
     private HoaDonRepository hoaDonRepository;
 
     @Autowired
-    private NhanVienRepository accountRepository;
+    private NhanVienRepository nhanVienRepository;
 
     @Autowired
-    private NhanVienRepository nhanVienRepository;
+    private GioHangChiTietRepository gioHangChiTietRepository;
+
+    @Autowired
+    private HoaDonChiTietRepository hoaDonChiTietRepository;
+
+    @Autowired
+    private HinhThucThanhToanRepository hinhThucThanhToanRepository;
 
     @Override
     @Transactional
@@ -43,7 +50,7 @@ public class HoaDonServiceImpl implements HoaDonService {
         HoaDon hoaDon = new HoaDon();
         hoaDon.setId(UUID.randomUUID());
         hoaDon.setMa(maHd);
-        hoaDon.setNgayTao(LocalDate.now());
+//        hoaDon.setNgayTao(LocalDate.now());
         hoaDon.setTrangThai(1);
         hoaDon.setNhanVien(findByNhanVien.get());
         hoaDonRepository.save(hoaDon);
@@ -53,5 +60,40 @@ public class HoaDonServiceImpl implements HoaDonService {
     @Override
     public List<HoaDonResponse> viewHoaDonTaiQuay() {
         return hoaDonRepository.viewHoaDonTaiQuay();
+    }
+
+    @Override
+    public MessageResponse updateHoaDon(HoaDonThanhToanRequest hoaDonThanhToanRequest) {
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(hoaDonThanhToanRequest.getIdHoaDon());
+        hoaDon.get().setNgayNhan(hoaDonThanhToanRequest.getNgayNhan());
+        hoaDon.get().setTienKhachTra(hoaDonThanhToanRequest.getTienKhachTra());
+        hoaDon.get().setTienThua(hoaDonThanhToanRequest.getTienThua());
+        hoaDon.get().setThanhTien(hoaDonThanhToanRequest.getTongTien());
+        hoaDonRepository.save(hoaDon.get());
+
+        HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+        hinhThucThanhToan.setId(UUID.randomUUID());
+        hinhThucThanhToan.setHoaDon(hoaDon.get());
+        hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+        hinhThucThanhToan.setTrangThai(1);
+        hinhThucThanhToan.setKhachHang(hoaDon.get().getKhachHang());
+        hinhThucThanhToan.setPhuongThucThanhToan(1);
+        hinhThucThanhToanRepository.save(hinhThucThanhToan);
+
+        for (UUID idGioHangChiTiet : hoaDonThanhToanRequest.getGioHangChiTietList()) {
+            Optional<GioHangChiTiet> gioHangChiTiet = gioHangChiTietRepository.findById(idGioHangChiTiet);
+
+            if (gioHangChiTiet.isPresent()) {
+                HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+                hoaDonChiTiet.setId(UUID.randomUUID());
+                hoaDonChiTiet.setHoaDon(hoaDon.get());
+                hoaDonChiTiet.setSanPhamChiTiet(gioHangChiTiet.get().getSanPhamChiTiet());
+                hoaDonChiTiet.setDonGia(gioHangChiTiet.get().getSanPhamChiTiet().getGiaBan());
+                hoaDonChiTiet.setSoLuong(gioHangChiTiet.get().getSoLuong());
+                hoaDonChiTiet.setTrangThai(1);
+                hoaDonChiTietRepository.save(hoaDonChiTiet);
+            }
+        }
+        return MessageResponse.builder().message("Thanh Toán Thành Công").build();
     }
 }

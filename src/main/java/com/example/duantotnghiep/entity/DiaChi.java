@@ -17,7 +17,6 @@ import java.util.UUID;
 public class DiaChi {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
     @Column(name = "diachi")

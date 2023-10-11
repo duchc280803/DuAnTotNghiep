@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.service.impl;
 
+import com.example.duantotnghiep.entity.NhanVien;
 import com.example.duantotnghiep.repository.NhanVienRepository;
 import com.example.duantotnghiep.response.NhanVienResponse;
 import com.example.duantotnghiep.service.NhanVienService;
@@ -17,4 +18,8 @@ public class NhanVienServiceImpl implements NhanVienService {
     @Autowired
     private NhanVienRepository accountRepository;
 
+    @Override
+    public NhanVienResponse nhanVien(String name) {
+        return accountRepository.findByNhanVien(name);
+    }
 }

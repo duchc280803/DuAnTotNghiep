@@ -4,6 +4,7 @@ import com.example.duantotnghiep.entity.GioHang;
 import com.example.duantotnghiep.entity.GioHangChiTiet;
 import com.example.duantotnghiep.entity.SanPhamChiTiet;
 import com.example.duantotnghiep.mapper.GioHangCustom;
+import com.example.duantotnghiep.repository.ChiTietSanPhamRepository;
 import com.example.duantotnghiep.repository.GioHangChiTietRepository;
 import com.example.duantotnghiep.service.GioHangChiTietService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,12 @@ import java.util.UUID;
 
 @Service
 public class GioHangChiTietServiceImpl implements GioHangChiTietService {
+
     @Autowired
     private GioHangChiTietRepository gioHangChiTietRepository;
+
+    @Autowired
+    private ChiTietSanPhamRepository chiTietSanPhamRepository;
 
     @Override
     public void themSanPhamVaoGioHangChiTiet(UUID idGioHang, UUID idSanPhamChiTiet, int soLuong) {
@@ -45,11 +50,19 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
 
             // Set số lượng
             gioHangChiTiet.setSoLuong(soLuong);
+
+            gioHangChiTiet.setTrangThai(1);
         }
 
         // Lưu hoặc cập nhật GioHangChiTiet
         gioHangChiTietRepository.save(gioHangChiTiet);
+
+        // Cập nhật số lượng trong sản phẩm chi tiết
+        SanPhamChiTiet sanPhamChiTiet = gioHangChiTiet.getSanPhamChiTiet();
+        sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
+        chiTietSanPhamRepository.save(sanPhamChiTiet);
     }
+
 
     @Override
     public List<GioHangCustom> loadGH(UUID idgh) {

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ public class HinhThucThanhToan {
     private Date ngayThanhToan;
 
     @Column(name = "tongsotien")
-    private Integer tongSoTien;
+    private BigDecimal tongSoTien;
 
     @Column(name = "phuongthucthanhtoan")
     private Integer phuongThucThanhToan;

@@ -1,12 +1,11 @@
 package com.example.duantotnghiep.controller;
 
-import com.example.duantotnghiep.entity.GioHang;
-import com.example.duantotnghiep.service.GetTongTienService;
-import com.example.duantotnghiep.service.GioHangService;
+import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.impl.GetSoLuongGioHangServiceImpl;
 import com.example.duantotnghiep.service.impl.GioHangServiceImpl;
 import com.example.duantotnghiep.service.impl.TongTienServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,13 +27,19 @@ public class GioHangController {
 
     //TODO tạo mới 1 giỏ hàng
     @PostMapping("/tao-gio-hang")
-    public ResponseEntity<UUID> taoGioHang(@RequestParam("name") String name) {
+    public ResponseEntity<UUID> taoGioHang(Principal principal) {
         try {
-            UUID gioHangId = gioHangService.taoGioHang(name);
+            UUID gioHangId = gioHangService.taoGioHang(principal.getName());
             return ResponseEntity.ok(gioHangId);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<MessageResponse> updateGioHang(@RequestParam("idGioHang") UUID idGioHang,
+                                                         @RequestParam("idKhachHang") UUID idKhachHang) {
+        return new ResponseEntity<>(gioHangService.updateGioHang(idGioHang, idKhachHang), HttpStatus.OK);
     }
 
     @GetMapping("/so-luong-san-pham")

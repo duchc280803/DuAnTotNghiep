@@ -21,4 +21,6 @@ public class KhachHangResponse {
 
     private String sodienthoai;
 
+    private String diaChi;
+
 }

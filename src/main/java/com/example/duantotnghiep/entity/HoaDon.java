@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -29,16 +29,16 @@ public class HoaDon {
     private String ma;
 
     @Column(name = "ngaytao")
-    private LocalDate ngayTao;
+    private Date ngayTao;
 
     @Column(name = "ngaythanhtoan")
-    private LocalDate ngayThanhToan;
+    private Date ngayThanhToan;
 
     @Column(name = "ngayship")
-    private LocalDate ngayShip;
+    private Date ngayShip;
 
     @Column(name = "ngaynhan")
-    private LocalDate ngayNhan;
+    private Date ngayNhan;
 
     @Column(name = "tennguoinhan")
     private String tenNguoiNhan;
@@ -59,16 +59,16 @@ public class HoaDon {
     private String tenNguoiShip;
 
     @Column(name = "tienthachtra")
-    private Integer tienKhachTra;
+    private BigDecimal tienKhachTra;
 
     @Column(name = "tienship")
-    private Integer tienShip;
+    private BigDecimal tienShip;
 
     @Column(name = "tienthua")
-    private Integer tienThua;
+    private BigDecimal tienThua;
 
     @Column(name = "thanhtien")
-    private Integer thanhTien;
+    private BigDecimal thanhTien;
 
     @Column(name = "trangthai")
     private Integer trangThai;
