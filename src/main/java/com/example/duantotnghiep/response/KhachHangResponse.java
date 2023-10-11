@@ -1,30 +1,26 @@
 package com.example.duantotnghiep.response;
 
-import com.example.duantotnghiep.enums.RoleEnum;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
 import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NhanVienResponse {
+public class KhachHangResponse {
 
     private UUID id;
 
-    private String username;
+    private String ten;
 
     private String email;
 
-    private String fullName;
+    private String sodienthoai;
 
-    private Integer trangThai;
+    private String diaChi;
 
-    private RoleEnum role;
 }

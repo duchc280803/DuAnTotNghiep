@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.UUID;
 
@@ -28,15 +29,15 @@ public class HinhThucThanhToan {
     private HoaDon hoaDon;
 
     @ManyToOne
-    @JoinColumn(name = "idtaikhoan")
+    @JoinColumn(name = "idkhachhang")
     @JsonBackReference
-    private TaiKhoan taiKhoan;
+    private KhachHang khachHang;
 
     @Column(name = "ngaythanhtoan")
     private Date ngayThanhToan;
 
     @Column(name = "tongsotien")
-    private Integer tongSoTien;
+    private BigDecimal tongSoTien;
 
     @Column(name = "phuongthucthanhtoan")
     private Integer phuongThucThanhToan;

@@ -1,7 +1,10 @@
 package com.example.duantotnghiep.service;
 
 import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
-import com.example.duantotnghiep.mapper.SanPhamGetAllSizeCustom;
+import com.example.duantotnghiep.response.DetailQuantityToSizeReponse;
+import com.example.duantotnghiep.response.DetailSizeToProductResponse;
+import com.example.duantotnghiep.response.SanPhamGetAllResponse;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,7 +14,11 @@ public interface ChiTietSanPhamService {
 
     List<ChiTietSanPhamCustom> searchByName(String name);
 
-    List<SanPhamGetAllSizeCustom> getByIdSp(UUID id);
+    SanPhamGetAllResponse getByIdSp(UUID id);
+
+    List<DetailSizeToProductResponse> getDetailSizeToSanPham(UUID id);
+
+    DetailQuantityToSizeReponse getDetailQuantityToSizeReponse(UUID id, Integer size);
 
     List<ChiTietSanPhamCustom> findByDanhMuc(UUID idDanhMuc);
 

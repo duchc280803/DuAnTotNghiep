@@ -10,7 +10,6 @@ import java.util.UUID;
 @RequestMapping("/api/gio-hang-chi-tiet")
 public class GioHangChiTietController {
 
-
     @Autowired
     private GioHangChiTietServiceImpl gioHangChiTietService;
 

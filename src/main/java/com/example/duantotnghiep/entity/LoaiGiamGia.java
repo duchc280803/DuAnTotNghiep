@@ -31,4 +31,5 @@ public class LoaiGiamGia {
     @OneToMany(mappedBy = "loaiGiamGia",fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<GiamGia> giamGiaList;
+
 }

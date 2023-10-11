@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -36,10 +37,10 @@ public class HoaDonChiTiet {
     private Integer soLuong;
 
     @Column(name = "dongia")
-    private Integer donGia;
+    private BigDecimal donGia;
 
     @Column(name = "tiengiamgia")
-    private Integer tienGiamGia;
+    private BigDecimal tienGiamGia;
 
     @Column(name = "comment")
     private String comment;

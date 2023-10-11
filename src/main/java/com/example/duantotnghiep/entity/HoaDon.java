@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -23,11 +24,6 @@ public class HoaDon {
     @Id
     @Column(name = "id")
     private UUID id;
-
-    @ManyToOne
-    @JoinColumn(name = "idtaikhoan")
-    @JsonBackReference
-    private TaiKhoan taiKhoan;
 
     @Column(name = "ma")
     private String ma;
@@ -62,17 +58,17 @@ public class HoaDon {
     @Column(name = "tennguoiship")
     private String tenNguoiShip;
 
-    @Column(name = "tienkhachtra")
-    private Integer tienKhachTra;
+    @Column(name = "tienthachtra")
+    private BigDecimal tienKhachTra;
 
     @Column(name = "tienship")
-    private Integer tienShip;
+    private BigDecimal tienShip;
 
     @Column(name = "tienthua")
-    private Integer tienThua;
+    private BigDecimal tienThua;
 
     @Column(name = "thanhtien")
-    private Integer thanhTien;
+    private BigDecimal thanhTien;
 
     @Column(name = "trangthai")
     private Integer trangThai;
@@ -92,5 +88,15 @@ public class HoaDon {
     @JoinColumn(name = "idgiamgia")
     @JsonBackReference
     private GiamGia giamGia;
+
+    @ManyToOne
+    @JoinColumn(name = "idkhachhang")
+    @JsonBackReference
+    private KhachHang khachHang;
+
+    @ManyToOne
+    @JoinColumn(name = "idnhanvien")
+    @JsonBackReference
+    private NhanVien nhanVien;
 
 }

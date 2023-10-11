@@ -1,7 +1,7 @@
 package com.example.duantotnghiep.model;
 
 
-import com.example.duantotnghiep.entity.TaiKhoan;
+import com.example.duantotnghiep.entity.NhanVien;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,22 +19,22 @@ import java.util.List;
 @AllArgsConstructor
 public class UserCustomDetails implements UserDetails {
 
-    private TaiKhoan taiKhoan;
+    private NhanVien nhanVien;
 
     @Override// TODO Trả về quyền được cấp cho người dùng
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(taiKhoan.getVaiTro().getName().name()));
+        return List.of(new SimpleGrantedAuthority(nhanVien.getChucVu().getName().name()));
     }
 
     @Override// TODO Trả về mật khẩu được sử dụng để xác thực người dùng
     public String getPassword() {
-        return taiKhoan.getMatKhau();
+        return nhanVien.getPassword();
     }
 
 
     @Override// TODO Trả về tên tài khoản để xác thực người dùng
     public String getUsername() {
-        return taiKhoan.getUsername();
+        return nhanVien.getUsername();
     }
 
     @Override// TODO Cho biết tài khoản người dùng đã hết hạn chưa
