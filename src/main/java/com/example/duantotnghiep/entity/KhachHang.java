@@ -52,6 +52,7 @@ public class KhachHang {
     private Integer trangThai;
 
     @OneToMany(mappedBy = "khachHang", fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<DiaChi> diaChiList;
 
     @OneToMany(mappedBy = "khachHang", fetch = FetchType.LAZY)
@@ -66,12 +67,9 @@ public class KhachHang {
     @JsonManagedReference
     private List<GioHang> gioHangList;
 
-    @OneToMany(mappedBy = "khachHang", fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<RefreshToken> refreshTokenList;
-
     @ManyToOne
-    @JoinColumn(name = "idloaitaikhoan")
+    @JoinColumn(name = "idtaikhoan")
     @JsonBackReference
-    private LoaiTaiKhoan loaiTaiKhoan;
+    private TaiKhoan taiKhoan;
+
 }

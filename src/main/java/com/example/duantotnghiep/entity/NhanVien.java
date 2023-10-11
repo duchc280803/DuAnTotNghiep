@@ -37,23 +37,8 @@ public class NhanVien {
     @Column(name = "ngaysinh")
     private Date ngaySinh;
 
-    @Column(name = "username")
-    private String username;
-
-    @Column(name = "password")
-    private String password;
-
-    @Column(name = "anh")
-    private String image;
-
     @Column(name = "trangthai")
     private Integer trangThai;
-
-    @ManyToOne
-    @JoinColumn(name = "idchucvu")
-    @JsonBackReference
-    @Enumerated(EnumType.STRING)
-    private ChucVu chucVu;
 
     @OneToMany(mappedBy = "nhanVien", fetch = FetchType.LAZY)
     private List<DiaChi> diaChiList;
@@ -66,7 +51,9 @@ public class NhanVien {
     @JsonManagedReference
     private List<GioHang> gioHangList;
 
-    @OneToMany(mappedBy = "nhanVien", fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<RefreshToken> refreshTokenList;
+    @ManyToOne
+    @JoinColumn(name = "idtaikhoan")
+    @JsonBackReference
+    private TaiKhoan taiKhoan;
+
 }

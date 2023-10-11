@@ -15,7 +15,6 @@ public class MauSacServiceImpl implements MauSacService {
     @Autowired
     MauSacRepository repository;
 
-
     @Override
     public List<MauSac> getALL() {
         return repository.findAll();

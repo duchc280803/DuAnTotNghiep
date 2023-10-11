@@ -26,8 +26,8 @@ public class HoaDonController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<MessageResponse> taoHoaDon(Principal principal) {
-        return new ResponseEntity<>(hoaDonService.taoHoaDon(principal.getName()), HttpStatus.CREATED);
+    public ResponseEntity<MessageResponse> taoHoaDon(@RequestParam(name = "name") String name) {
+        return new ResponseEntity<>(hoaDonService.taoHoaDon(name), HttpStatus.CREATED);
     }
 
     @PostMapping("create-hoa-don-chi-tiet")

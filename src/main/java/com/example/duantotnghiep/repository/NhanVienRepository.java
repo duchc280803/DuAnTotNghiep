@@ -13,10 +13,5 @@ import java.util.UUID;
 @Repository
 public interface NhanVienRepository extends JpaRepository<NhanVien, UUID> {
 
-    @Query("SELECT new com.example.duantotnghiep.response.NhanVienResponse(nv.id, nv.username, nv.email, nv.hoVaTen, nv.trangThai, nv.chucVu.name) " +
-            "FROM NhanVien nv WHERE nv.username = :username")
-    NhanVienResponse findByNhanVien(String username);
-
-    Optional<NhanVien> findByUsername(String name);
-
+    Optional<NhanVien> findByHoVaTen(String name);
 }
