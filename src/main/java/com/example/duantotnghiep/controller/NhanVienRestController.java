@@ -20,9 +20,9 @@ public class NhanVienRestController {
     @Autowired
     private NhanVienServiceImpl nhanVienService;
 
-    @GetMapping("all/{username}")
-    public ResponseEntity<NhanVienResponse> getAll(@PathVariable("username") String username) {
-        return new ResponseEntity<>(nhanVienService.nhanVien(username), HttpStatus.OK);
-    }
+//    @GetMapping("all/{username}")
+//    public ResponseEntity<NhanVienResponse> getAll(@PathVariable("username") String username) {
+//        return new ResponseEntity<>(nhanVienService.nhanVien(username), HttpStatus.OK);
+//    }
 
 }

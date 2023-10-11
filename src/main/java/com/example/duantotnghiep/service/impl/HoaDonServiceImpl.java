@@ -5,7 +5,6 @@ import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.MessageResponse;
-import com.example.duantotnghiep.service.ChiTietSanPhamService;
 import com.example.duantotnghiep.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,7 @@ public class HoaDonServiceImpl implements HoaDonService {
     //TODO Thêm hóa đơn tại quầy
     public MessageResponse taoHoaDon(String name) {
 
-        Optional<NhanVien> findByNhanVien = nhanVienRepository.findByUsername(name);
+        Optional<NhanVien> findByNhanVien = nhanVienRepository.findByHoVaTen(name);
         if (findByNhanVien.isEmpty()) {
             return MessageResponse.builder().message("Nhân viên không tồn tại").build();
         }

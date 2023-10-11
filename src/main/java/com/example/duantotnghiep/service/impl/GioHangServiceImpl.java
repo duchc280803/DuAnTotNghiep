@@ -29,7 +29,7 @@ public class GioHangServiceImpl implements GioHangService {
 
     public UUID taoGioHang(String name) {
         // tìm theo username
-        NhanVien nhanVien = accountRepository.findByUsername(name).get();
+        NhanVien nhanVien = accountRepository.findByHoVaTen(name).get();
         GioHang gioHang = new GioHang();
         gioHang.setId(UUID.randomUUID());
 

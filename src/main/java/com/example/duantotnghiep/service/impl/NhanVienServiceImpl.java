@@ -18,8 +18,8 @@ public class NhanVienServiceImpl implements NhanVienService {
     @Autowired
     private NhanVienRepository accountRepository;
 
-    @Override
-    public NhanVienResponse nhanVien(String name) {
-        return accountRepository.findByNhanVien(name);
-    }
+//    @Override
+//    public NhanVienResponse nhanVien(String name) {
+//        return accountRepository.findByNhanVien(name);
+//    }
 }
