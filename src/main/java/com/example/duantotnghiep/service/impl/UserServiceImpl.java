@@ -1,10 +1,12 @@
 package com.example.duantotnghiep.service.impl;
 
+import com.example.duantotnghiep.entity.NhanVien;
 import com.example.duantotnghiep.entity.RefreshToken;
 import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.entity.VaiTro;
 import com.example.duantotnghiep.jwt.JwtService;
 import com.example.duantotnghiep.model.UserCustomDetails;
+import com.example.duantotnghiep.repository.NhanVienRepository;
 import com.example.duantotnghiep.repository.RefreshTokenRepository;
 import com.example.duantotnghiep.repository.TaiKhoanRepository;
 import com.example.duantotnghiep.repository.VaiTroRepository;
@@ -53,16 +55,16 @@ public class UserServiceImpl implements UserService {
                 )
         );
         // Kiểm tra xem tài khoản đã tồn tại hay không
-        Optional<TaiKhoan> optionalPhatTu = taiKhoanRepository.findByUsername(loginRequest.getUsername());
-        if (optionalPhatTu.isPresent()) {
+        Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByUsername(loginRequest.getUsername());
+        if (taiKhoan.isPresent()) {
             // Tài khoản tồn tại, tạo mới hoặc cập nhật token
             RefreshToken refreshToken = createToken(loginRequest.getUsername());
-            String jwtToken = jwtService.generateToken(new UserCustomDetails(optionalPhatTu.get()));
+            String jwtToken = jwtService.generateToken(new UserCustomDetails(taiKhoan.get()));
 
             return TokenResponse.builder()
                     .accessToken(jwtToken)
                     .token(refreshToken.getToken())
-                    .role(optionalPhatTu.get().getVaiTro().getName().name())
+                    .role(taiKhoan.get().getVaiTro().getName().name())
                     .message("Login thành công")
                     .build();
         } else {

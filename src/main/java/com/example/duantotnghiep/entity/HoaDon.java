@@ -71,7 +71,7 @@ public class HoaDon {
     private BigDecimal thanhTien;
 
     @Column(name = "trangthai")
-    private Integer trangThaiHoaDon;
+    private Integer trangThai;
 
     @Column(name = "qrcode")
     private String qrcode;
@@ -92,11 +92,11 @@ public class HoaDon {
     @ManyToOne
     @JoinColumn(name = "idkhachhang")
     @JsonBackReference
-    private TaiKhoan taiKhoanKhachHang;
+    private KhachHang khachHang;
 
     @ManyToOne
     @JoinColumn(name = "idnhanvien")
     @JsonBackReference
-    private TaiKhoan taiKhoanNhanVien;
+    private NhanVien nhanVien;
 
 }

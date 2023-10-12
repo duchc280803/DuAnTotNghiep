@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,29 +21,14 @@ public class TaiKhoan {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "ten")
-    private String name;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "sodienthoai")
-    private String soDienThoai;
-
-    @Column(name = "gioitinh")
-    private Boolean gioiTinh;
-
     @Column(name = "username")
     private String username;
 
-    @Column(name = "matkhau")
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "image")
+    @Column(name = "avatar")
     private String image;
-
-    @Column(name = "ngaysinh")
-    private Date ngaySinh;
 
     @Column(name = "trangthai")
     private Integer trangThai;
@@ -64,19 +48,11 @@ public class TaiKhoan {
     @JsonBackReference
     private LoaiTaiKhoan loaiTaiKhoan;
 
-    @OneToMany(mappedBy = "taiKhoanKhachHang", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<HoaDon> khachHangToHoaDonList;
-
-    @OneToMany(mappedBy = "taiKhoanNhanVien", fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<HoaDon> nhanVienToHoaDonList;
+    private List<KhachHang> khachHangList;
 
     @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<DiaChi> diaChiList;
-
-    @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<HinhThucThanhToan> hinhThucThanhToanList;
+    private List<NhanVien> nhanVienList;
 }

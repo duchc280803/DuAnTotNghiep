@@ -38,6 +38,10 @@ public class DiaChi {
     private Integer trangThai;
 
     @ManyToOne
-    @JoinColumn(name = "idtaikhoan")
-    private TaiKhoan taiKhoan;
+    @JoinColumn(name = "idnhanvien")
+    private NhanVien nhanVien;
+
+    @ManyToOne
+    @JoinColumn(name = "idkhachhang")
+    private KhachHang khachHang;
 }

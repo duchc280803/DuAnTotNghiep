@@ -1,7 +1,9 @@
 package com.example.duantotnghiep.service.impl;
 
+import com.example.duantotnghiep.entity.NhanVien;
 import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.model.UserCustomDetails;
+import com.example.duantotnghiep.repository.NhanVienRepository;
 import com.example.duantotnghiep.repository.TaiKhoanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +21,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByUsername(username);
-        return new UserCustomDetails(taiKhoan.get());
+        Optional<TaiKhoan> phatTu = taiKhoanRepository.findByUsername(username);
+        return new UserCustomDetails(phatTu.get());
     }
 }

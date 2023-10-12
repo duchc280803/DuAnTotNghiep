@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.UUID;
 
 public interface KhachHangService {
-//    List<KhachHangMap> getKhachHang();
-//
-//    KhachHangResponse findByKhachHang(UUID id, UUID idHoaDon);
-//
-//    KhachHangResponse findByKeyToKhachHang(String key);
-//
-//    MessageResponse createKhachHang(CreateKhachRequest createKhachRequest);
-//
-//    MessageResponse updateHoaDon(UUID id, UUID idHoaDon);
+    List<KhachHangMap> getKhachHang();
+
+    KhachHangResponse findByKhachHang(UUID id, UUID idHoaDon);
+
+    KhachHangResponse findByKeyToKhachHang(String key);
+
+    MessageResponse createKhachHang(CreateKhachRequest createKhachRequest);
+
+    MessageResponse updateHoaDon(UUID id, UUID idHoaDon);
 
 }

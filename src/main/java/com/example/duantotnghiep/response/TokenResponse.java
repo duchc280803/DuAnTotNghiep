@@ -16,5 +16,4 @@ public class TokenResponse {
     private String role;
 
     private String message;
-
 }
