@@ -19,6 +19,6 @@ public class HoaDonResponse {
 
     private String tenNhanVien;
 
-    private Integer trangThai;
+    private Integer trangThaiHoaDon;
 
 }

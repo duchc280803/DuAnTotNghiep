@@ -14,8 +14,8 @@ import java.util.UUID;
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
 
-    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonResponse(hd.id, hd.ma, nv.hoVaTen, hd.trangThai)" +
-            " FROM HoaDon hd JOIN hd.nhanVien nv WHERE hd.trangThai = 1")
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonResponse(hd.id, hd.ma, nv.name, hd.trangThaiHoaDon)" +
+            " FROM HoaDon hd JOIN hd.taiKhoanNhanVien nv WHERE hd.trangThaiHoaDon = 1")
     List<HoaDonResponse> viewHoaDonTaiQuay();
 
 }

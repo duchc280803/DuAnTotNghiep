@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.service.impl;
 
 import com.example.duantotnghiep.entity.*;
+import com.example.duantotnghiep.enums.StatusOrderEnums;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonResponse;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -21,7 +21,7 @@ public class HoaDonServiceImpl implements HoaDonService {
     private HoaDonRepository hoaDonRepository;
 
     @Autowired
-    private NhanVienRepository nhanVienRepository;
+    private TaiKhoanRepository taiKhoanRepository;
 
     @Autowired
     private GioHangChiTietRepository gioHangChiTietRepository;
@@ -37,7 +37,7 @@ public class HoaDonServiceImpl implements HoaDonService {
     //TODO Thêm hóa đơn tại quầy
     public MessageResponse taoHoaDon(String name) {
 
-        Optional<NhanVien> findByNhanVien = nhanVienRepository.findByHoVaTen(name);
+        Optional<TaiKhoan> findByNhanVien = taiKhoanRepository.findByUsername(name);
         if (findByNhanVien.isEmpty()) {
             return MessageResponse.builder().message("Nhân viên không tồn tại").build();
         }
@@ -49,9 +49,9 @@ public class HoaDonServiceImpl implements HoaDonService {
         HoaDon hoaDon = new HoaDon();
         hoaDon.setId(UUID.randomUUID());
         hoaDon.setMa(maHd);
-//        hoaDon.setNgayTao(LocalDate.now());
-        hoaDon.setTrangThai(1);
-        hoaDon.setNhanVien(findByNhanVien.get());
+        hoaDon.setNgayTao(new Date(System.currentTimeMillis()));
+        hoaDon.setTrangThaiHoaDon(StatusOrderEnums.CHO_THANH_TOAN.getValue());
+        hoaDon.setTaiKhoanNhanVien(findByNhanVien.get());
         hoaDonRepository.save(hoaDon);
         return MessageResponse.builder().message("Tạo hóa đơn thành công").build();
     }
@@ -75,7 +75,7 @@ public class HoaDonServiceImpl implements HoaDonService {
         hinhThucThanhToan.setHoaDon(hoaDon.get());
         hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
         hinhThucThanhToan.setTrangThai(1);
-        hinhThucThanhToan.setKhachHang(hoaDon.get().getKhachHang());
+        hinhThucThanhToan.setTaiKhoan(hoaDon.get().getTaiKhoanKhachHang());
         hinhThucThanhToan.setPhuongThucThanhToan(1);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
 

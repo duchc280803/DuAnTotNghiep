@@ -1,7 +1,6 @@
 package com.example.duantotnghiep.model;
 
 
-import com.example.duantotnghiep.entity.NhanVien;
 import com.example.duantotnghiep.entity.TaiKhoan;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

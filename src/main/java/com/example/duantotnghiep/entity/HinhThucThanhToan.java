@@ -29,9 +29,9 @@ public class HinhThucThanhToan {
     private HoaDon hoaDon;
 
     @ManyToOne
-    @JoinColumn(name = "idkhachhang")
+    @JoinColumn(name = "idtaikhoan")
     @JsonBackReference
-    private KhachHang khachHang;
+    private TaiKhoan taiKhoan;
 
     @Column(name = "ngaythanhtoan")
     private Date ngayThanhToan;
