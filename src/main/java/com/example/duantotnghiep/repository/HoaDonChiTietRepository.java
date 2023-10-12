@@ -16,6 +16,8 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
 
     HoaDonChiTiet findByHoaDonAndSanPhamChiTiet_Id(HoaDon hoaDon, UUID idSpCt);
 
+    List<HoaDonChiTiet> findAllByHoaDon(HoaDon hoaDon);
+
     @Query(value = "SELECT TOP 1 hd.ma, hd.trangthai, LD.tenloaidon,\n" +
             "HD.diachi,\n" +
             "HD.tennguoinhan, HD.sdtnguoinhan,  HD.ngayship, HD.sdtnguoiship, TTHD.ghichu, HD.idnhanvien\n" +
@@ -27,11 +29,11 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
     ThongTinDonHang getThongTinDonHang(UUID idHoaDon);
 
     @Query("SELECT new com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse" +
-            "(hdct.id, i.tenImage, sp.tenSanPham, hdct.donGia, hdct.donGiaSauGiam, hdct.soLuong) " +
+            "(hdct.id, i.tenImage, sp.tenSanPham, hdct.donGia, hdct.donGiaSauGiam, hdct.soLuong, hdct.trangThai) " +
             "FROM HoaDon hd JOIN " +
             "hd.hoaDonChiTietList hdct " +
-            "JOIN hdct.sanPhamChiTiet spct" +
-            " JOIN spct.sanPham sp " +
+            "JOIN hdct.sanPhamChiTiet spct " +
+            "JOIN spct.sanPham sp " +
             "JOIN sp.listImage i " +
             "WHERE i.isDefault = true AND hd.id = :idHoaDon")
     List<SanPhamHoaDonChiTietResponse> getSanPhamHDCT(@Param("idHoaDon") UUID idHoaDon);
@@ -50,5 +52,17 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
     @Query("SELECT new com.example.duantotnghiep.response.MoneyResponse(hd.thanhTien, hd.tienShip, hd.tienThua, hd.tienGiamGia)" +
             "FROM HoaDon hd WHERE hd.id = :idHoaDon")
     MoneyResponse getAllMoneyByHoaDon(UUID idHoaDon);
+
+    @Query("SELECT new com.example.duantotnghiep.response.ProductDetailDTOResponse(hdct.id, sp.tenSanPham, im.tenImage, hdct.donGia, hdct.donGiaSauGiam, s.size, cl.tenChatLieu, ms.tenMauSac, hdct.soLuong)" +
+            "FROM HoaDonChiTiet hdct JOIN hdct.sanPhamChiTiet spct " +
+            "JOIN spct.sanPham sp " +
+            "JOIN spct.size s " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.mauSac ms " +
+            "JOIN sp.listImage im " +
+            "WHERE hdct.id = :idhdct AND im.isDefault = true")
+    ProductDetailDTOResponse getDetailSanPham(@Param("idhdct") UUID idhdct);
+
+
 
 }

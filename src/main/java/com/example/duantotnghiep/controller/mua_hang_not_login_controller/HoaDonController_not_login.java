@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/api/checkout-not-login")
 public class HoaDonController_not_login {
@@ -23,6 +25,15 @@ public class HoaDonController_not_login {
             @RequestBody CreateKhachRequest_not_login createKhachRequest_not_login
     ) {
         return hoaDonService_not_login.thanhToanKhongDangNhap(createKhachRequest_not_login);
+    }
+
+    // Endpoint để tạo hóa đơn và thanh toán khi khách hàng không đăng nhập
+    @PostMapping("/thanh-toan-login")
+    public MessageResponse thanhToanLogin(
+            @RequestBody CreateKhachRequest_not_login createKhachRequest_not_login,
+            Principal principal
+    ) {
+        return hoaDonService_not_login.thanhToanLogin(createKhachRequest_not_login,principal);
     }
 
 }
