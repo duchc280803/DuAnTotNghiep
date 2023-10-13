@@ -18,13 +18,9 @@ public class NhanVienResponse {
 
     private UUID id;
 
-    private String username;
+    private String fullName;
 
     private String email;
 
-    private String fullName;
-
-    private Integer trangThai;
-
-    private RoleEnum role;
+    private String soDienThoai;
 }
