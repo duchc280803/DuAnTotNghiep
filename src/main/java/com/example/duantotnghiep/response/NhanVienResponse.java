@@ -15,6 +15,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class NhanVienResponse {
 
+    private String image;
+
     private String username;
 
     private String email;

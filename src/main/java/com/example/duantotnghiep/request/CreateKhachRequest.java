@@ -1,26 +1,25 @@
-package com.example.duantotnghiep.response;
+package com.example.duantotnghiep.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
+import java.util.Date;
 
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class KhachHangResponse {
+@Getter
+@Setter
+public class CreateKhachRequest {
 
-    private UUID id;
+    private String hoTen;
 
-    private String ten;
+    private String soDienThoai;
 
     private String email;
 
-    private String sodienthoai;
-
     private String diaChi;
 
+    private Date ngaySinh;
 }

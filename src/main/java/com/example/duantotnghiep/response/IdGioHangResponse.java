@@ -11,16 +11,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class KhachHangResponse {
+public class IdGioHangResponse {
 
     private UUID id;
-
-    private String ten;
-
-    private String email;
-
-    private String sodienthoai;
-
-    private String diaChi;
-
 }

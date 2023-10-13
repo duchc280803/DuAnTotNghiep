@@ -8,5 +8,6 @@ import java.util.UUID;
 
 public interface GioHangRepository extends JpaRepository<GioHang, UUID> {
     // Tìm giỏ hàng theo ID tài khoản
-    Optional<GioHang> findByKhachHang_Id(UUID taiKhoanId);
+    Optional<GioHang> findByTaiKhoan_Id(UUID taiKhoanId);
+
 }

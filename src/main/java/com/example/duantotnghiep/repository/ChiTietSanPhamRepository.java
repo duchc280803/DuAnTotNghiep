@@ -10,40 +10,34 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, UUID> {
     //load sản phẩm với 1 ảnh mặc định
-    @Query(value = "SELECT IMG.TenImage,SP.Id,SP.TenSanPham,SCT.GiaBan\n" +
-            "            FROM SanPhamChiTiet SCT \n" +
-            "            JOIN SanPham SP ON SCT.IdSanPham = SP.Id\n" +
-            "            JOIN DanhMuc DM ON SP.IdDanhMuc = DM.Id \n" +
-            "            JOIN XuatXu XS ON SP.IdXuatXu = XS.Id\n" +
-            "            JOIN Image IMG ON IMG.idsanphamchitiet = SCT.Id\n" +
-            "            JOIN ThuongHieu TH ON SP.IdThuongHieu = TH.Id\n" +
-            "            JOIN ChatLieu CL ON SCT.IdChatLieu = CL.Id\n" +
-            "            JOIN Size S ON SCT.IdSize = S.Id\n" +
-            "            JOIN MauSac MS ON SCT.IdMauSac = MS.Id       \n" +
-            "            WHERE IMG.isDefault = 'true' ", nativeQuery = true)
+    @Query("SELECT new com.example.duantotnghiep.mapper.ChiTietSanPhamCustom" +
+            "(i.tenImage, spct.id, sp.tenSanPham, spct.giaBan, spct.soLuong, kd.tenDe, ms.tenMauSac, s.size, cl.tenChatLieu) " +
+            "FROM SanPhamChiTiet spct " +
+            "JOIN spct.sanPham sp " +
+            "JOIN spct.size s " +
+            "JOIN spct.kieuDe kd " +
+            "JOIN spct.chatLieu cl JOIN spct.mauSac ms " +
+            "JOIN spct.listImage i WHERE i.isDefault = TRUE")
     List<ChiTietSanPhamCustom> getAll();
 
     //tìm kiếm sản phẩm theo tên
-    @Query(value = "SELECT IMG.TenImage,SCT.Id,SP.TenSanPham,SCT.GiaBan\n" +
-            "            FROM SanPhamChiTiet SCT \n" +
-            "            JOIN SanPham SP ON SCT.IdSanPham = SP.Id\n" +
-            "            JOIN DanhMuc DM ON SP.IdDanhMuc = DM.Id \n" +
-            "            JOIN XuatXu XS ON SP.IdXuatXu = XS.Id\n" +
-            "            JOIN Image IMG ON IMG.idsanphamchitiet = SCT.Id\n" +
-            "            JOIN ThuongHieu TH ON SP.IdThuongHieu = TH.Id\n" +
-            "            JOIN ChatLieu CL ON SCT.IdChatLieu = CL.Id\n" +
-            "            JOIN Size S ON SCT.IdSize = S.Id\n" +
-            "            JOIN MauSac MS ON SCT.IdMauSac = MS.Id       \n" +
-            "            WHERE IMG.isDefault = 'true'  AND SP.TenSanPham LIKE %?1%", nativeQuery = true)
+    @Query("SELECT new com.example.duantotnghiep.mapper.ChiTietSanPhamCustom" +
+            "(i.tenImage, spct.id, sp.tenSanPham, spct.giaBan, spct.soLuong, kd.tenDe, ms.tenMauSac, s.size, cl.tenChatLieu) " +
+            "FROM SanPhamChiTiet spct " +
+            "JOIN spct.sanPham sp " +
+            "JOIN spct.size s " +
+            "JOIN spct.kieuDe kd " +
+            "JOIN spct.chatLieu cl JOIN spct.mauSac ms " +
+            "JOIN spct.listImage i WHERE i.isDefault = TRUE AND sp.tenSanPham = :name")
     List<ChiTietSanPhamCustom> searchByName(String name);
 
-    //Chọn ra 1 sản phẩm bao gồm tất cả các size
     @Query("SELECT new com.example.duantotnghiep.response.SanPhamGetAllResponse(" +
             "sp.id, sp.tenSanPham, i.tenImage, th.tenThuongHieu, dm.tenDanhMuc, xx.tenXuatXu, spct.giaBan) " +
             "FROM SanPham sp " +
@@ -52,7 +46,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "JOIN sp.thuongHieu th " +
             "JOIN sp.listSanPhamChiTiet spct " +
             "JOIN spct.listImage i " +
-            "WHERE sp.id = :id")
+            "WHERE sp.id = :id AND i.isDefault = true ")
     SanPhamGetAllResponse getByIdSp(@Param("id") UUID id);
 
     @Query("SELECT new com.example.duantotnghiep.response.DetailSizeToProductResponse(spct.size.size)" +

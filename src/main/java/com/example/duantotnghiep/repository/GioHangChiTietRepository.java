@@ -1,6 +1,5 @@
 package com.example.duantotnghiep.repository;
 
-import com.example.duantotnghiep.entity.GioHang;
 import com.example.duantotnghiep.entity.GioHangChiTiet;
 import com.example.duantotnghiep.mapper.GioHangCustom;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -6,6 +6,7 @@ import com.example.duantotnghiep.response.MessageResponse;
 import java.util.UUID;
 
 public interface GioHangService {
-    UUID taoGioHang(String name);
+    UUID taoGioHang(UUID id);
 
+    MessageResponse updateGioHang(UUID idGioHang, UUID idAccount);
 }

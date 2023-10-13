@@ -17,7 +17,6 @@ import java.util.UUID;
 public class DiaChi {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
     @Column(name = "diachi")
@@ -39,10 +38,6 @@ public class DiaChi {
     private Integer trangThai;
 
     @ManyToOne
-    @JoinColumn(name = "idnhanvien")
-    private NhanVien nhanVien;
-
-    @ManyToOne
-    @JoinColumn(name = "idkhachhang")
-    private KhachHang khachHang;
+    @JoinColumn(name = "idtaikhoan")
+    private TaiKhoan taiKhoan;
 }

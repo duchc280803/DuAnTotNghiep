@@ -28,11 +28,7 @@ public class RefreshToken {
     private LocalDate thoiGianHetHan;
 
     @ManyToOne
-    @JoinColumn(name = "idnhanvien")
-    private NhanVien nhanVien;
-
-    @ManyToOne
-    @JoinColumn(name = "idkhachhang")
-    private KhachHang khachHang;
+    @JoinColumn(name = "tai_Khoan_id")
+    private TaiKhoan taiKhoan;
 
 }

@@ -1,15 +1,13 @@
 package com.example.duantotnghiep.controller;
 
+import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.impl.HoaDonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -29,5 +27,10 @@ public class HoaDonController {
     @PostMapping("create")
     public ResponseEntity<MessageResponse> taoHoaDon(Principal principal) {
         return new ResponseEntity<>(hoaDonService.taoHoaDon(principal.getName()), HttpStatus.CREATED);
+    }
+
+    @PostMapping("create-hoa-don-chi-tiet")
+    public ResponseEntity<MessageResponse> taoHoaDonDetial(@RequestBody HoaDonThanhToanRequest hoaDonThanhToanRequest) {
+        return new ResponseEntity<>(hoaDonService.updateHoaDon(hoaDonThanhToanRequest), HttpStatus.CREATED);
     }
 }
