@@ -13,5 +13,6 @@ import java.util.UUID;
 @Repository
 public interface NhanVienRepository extends JpaRepository<NhanVien, UUID> {
 
-    Optional<NhanVien> findByHoVaTen(String name);
+    @Query("select nv from NhanVien nv JOIN nv.taiKhoan tk where tk.username = :name")
+    Optional<NhanVien> findByNhanVien(String name);
 }

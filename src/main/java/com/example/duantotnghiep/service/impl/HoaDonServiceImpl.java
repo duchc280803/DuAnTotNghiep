@@ -37,7 +37,7 @@ public class HoaDonServiceImpl implements HoaDonService {
     //TODO Thêm hóa đơn tại quầy
     public MessageResponse taoHoaDon(String name) {
 
-        Optional<NhanVien> findByNhanVien = nhanVienRepository.findByHoVaTen(name);
+        Optional<NhanVien> findByNhanVien = nhanVienRepository.findByNhanVien(name);
         if (findByNhanVien.isEmpty()) {
             return MessageResponse.builder().message("Nhân viên không tồn tại").build();
         }
