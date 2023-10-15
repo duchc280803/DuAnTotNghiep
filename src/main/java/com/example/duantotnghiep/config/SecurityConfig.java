@@ -33,9 +33,11 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/user/**").permitAll()
+                        .requestMatchers("/api/employee/**").permitAll()
+                        .requestMatchers("/api/admin/**").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/khach-hang/**").permitAll()
-
                         .requestMatchers("/api/nhan-vien/**").permitAll()
                         .requestMatchers("/api/chi-tiet-sp/**").permitAll()
                         .requestMatchers("/api/gio-hang/**").permitAll()

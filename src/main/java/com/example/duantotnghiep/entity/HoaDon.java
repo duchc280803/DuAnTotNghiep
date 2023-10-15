@@ -78,10 +78,6 @@ public class HoaDon {
 
     @OneToMany(mappedBy = "hoaDon",fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<HinhThucThanhToan> hinhThucThanhToanList;
-
-    @OneToMany(mappedBy = "hoaDon",fetch = FetchType.LAZY)
-    @JsonManagedReference
     private List<HoaDonChiTiet> hoaDonChiTietList;
 
     @ManyToOne
@@ -98,5 +94,10 @@ public class HoaDon {
     @JoinColumn(name = "idnhanvien")
     @JsonBackReference
     private TaiKhoan taiKhoanNhanVien;
+
+    @ManyToOne
+    @JoinColumn(name = "idhinhthucthanhtoan")
+    @JsonBackReference
+    private HinhThucThanhToan hinhThucThanhToan;
 
 }

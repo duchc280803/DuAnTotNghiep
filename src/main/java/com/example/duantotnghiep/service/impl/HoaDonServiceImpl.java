@@ -4,10 +4,14 @@ import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.enums.StatusOrderEnums;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
+import com.example.duantotnghiep.response.HoaDonCustomResponse;
 import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,21 +68,20 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     @Override
     public MessageResponse updateHoaDon(HoaDonThanhToanRequest hoaDonThanhToanRequest) {
+        HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+        hinhThucThanhToan.setId(UUID.randomUUID());
+        hinhThucThanhToan.setNgayThanhToan(new java.sql.Date(System.currentTimeMillis()));
+        hinhThucThanhToan.setTrangThai(1);
+        hinhThucThanhToan.setPhuongThucThanhToan(1);
+        hinhThucThanhToanRepository.save(hinhThucThanhToan);
+
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(hoaDonThanhToanRequest.getIdHoaDon());
         hoaDon.get().setNgayNhan(hoaDonThanhToanRequest.getNgayNhan());
         hoaDon.get().setTienKhachTra(hoaDonThanhToanRequest.getTienKhachTra());
         hoaDon.get().setTienThua(hoaDonThanhToanRequest.getTienThua());
         hoaDon.get().setThanhTien(hoaDonThanhToanRequest.getTongTien());
+        hoaDon.get().setHinhThucThanhToan(hinhThucThanhToan);
         hoaDonRepository.save(hoaDon.get());
-
-        HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
-        hinhThucThanhToan.setId(UUID.randomUUID());
-        hinhThucThanhToan.setHoaDon(hoaDon.get());
-        hinhThucThanhToan.setNgayThanhToan(new java.sql.Date(System.currentTimeMillis()));
-        hinhThucThanhToan.setTrangThai(1);
-        hinhThucThanhToan.setTaiKhoan(hoaDon.get().getTaiKhoanKhachHang());
-        hinhThucThanhToan.setPhuongThucThanhToan(1);
-        hinhThucThanhToanRepository.save(hinhThucThanhToan);
 
         for (UUID idGioHangChiTiet : hoaDonThanhToanRequest.getGioHangChiTietList()) {
             Optional<GioHangChiTiet> gioHangChiTiet = gioHangChiTietRepository.findById(idGioHangChiTiet);
@@ -95,5 +98,40 @@ public class HoaDonServiceImpl implements HoaDonService {
             }
         }
         return MessageResponse.builder().message("Thanh Toán Thành Công").build();
+    }
+
+    @Override
+    public List<HoaDonCustomResponse> getAllHoaDonAdmin(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<HoaDonCustomResponse> pageList = hoaDonRepository.getAllHoaDonAdmin(pageable);
+        return pageList.getContent();
+    }
+
+    @Override
+    public List<HoaDonCustomResponse> getAllHoaDonAdminFilter(Integer trangThaiHD, Integer phuongThucThanhToan, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<HoaDonCustomResponse> pageList = hoaDonRepository.getAllHoaDonAdminFilter(trangThaiHD, phuongThucThanhToan, pageable);
+        return pageList.getContent();
+    }
+
+    @Override
+    public List<HoaDonCustomResponse> getAllHoaDonEmployee(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<HoaDonCustomResponse> pageList = hoaDonRepository.getAllHoaDonEmployee(pageable);
+        return pageList.getContent();
+    }
+
+    @Override
+    public List<HoaDonCustomResponse> getAllHoaDonOfEmployeeFilter(String username, Integer trangThaiHD, Integer phuongThucThanhToan, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<HoaDonCustomResponse> pageList = hoaDonRepository.getAllHoaDonOfEmployeeFilter(username, trangThaiHD, phuongThucThanhToan, pageable);
+        return pageList.getContent();
+    }
+
+    @Override
+    public List<HoaDonCustomResponse> getAllHoaDonOfEmployeeDefault(String username, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<HoaDonCustomResponse> pageList = hoaDonRepository.getAllHoaDonOfEmployeeDefault(username, pageable);
+        return pageList.getContent();
     }
 }

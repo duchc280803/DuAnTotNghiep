@@ -63,10 +63,6 @@ public class TaiKhoan {
     @JsonManagedReference
     private List<GioHang> gioHangList;
 
-    @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<HinhThucThanhToan> hinhThucThanhToanList;
-
     @OneToMany(mappedBy = "taiKhoanKhachHang", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<HoaDon> hoaDonKhachHangList;
