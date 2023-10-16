@@ -1,14 +1,14 @@
 package com.example.duantotnghiep.enums;
 
-public enum StatusProductEnums {
+public enum TypeOrderEnums {
 
-    SU_DUNG(1),
+    ONLINE(1),
 
-    NGUNG_SU_DUNG(2);
+    TAI_QUAY(2);
 
     private final int value;
 
-    StatusProductEnums(int value) {
+    TypeOrderEnums(int value) {
         this.value = value;
     }
 

@@ -52,8 +52,8 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
     }
 
     @Override
-    public List<GioHangCustom> loadGH(UUID idgh) {
-        return gioHangChiTietRepository.loadOnGioHang(idgh);
+    public List<GioHangCustom> loadGH(String name) {
+        return gioHangChiTietRepository.loadOnGioHang(name);
     }
 
     // Cập nhật số lượng trong GioHangChiTiet

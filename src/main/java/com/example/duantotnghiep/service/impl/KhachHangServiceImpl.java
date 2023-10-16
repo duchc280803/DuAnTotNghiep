@@ -3,7 +3,6 @@ package com.example.duantotnghiep.service.impl;
 import com.example.duantotnghiep.entity.DiaChi;
 import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.entity.TaiKhoan;
-import com.example.duantotnghiep.mapper.KhachHangMap;
 import com.example.duantotnghiep.repository.DiaChiRepository;
 import com.example.duantotnghiep.repository.HoaDonRepository;
 import com.example.duantotnghiep.repository.KhachHangRepository;
@@ -19,7 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class KhachHangImpl implements KhachHangService {
+public class KhachHangServiceImpl implements KhachHangService {
 
     @Autowired
     private KhachHangRepository khachHangRepository;

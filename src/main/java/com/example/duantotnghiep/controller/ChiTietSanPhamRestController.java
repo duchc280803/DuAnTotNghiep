@@ -14,7 +14,7 @@ import java.util.UUID;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/chi-tiet-sp")
-public class ChiTietSanPhamRestController {
+public class    ChiTietSanPhamRestController {
 
     @Autowired
     private ChiTietSanPhamServiceImpl chiTietSanPhamService;

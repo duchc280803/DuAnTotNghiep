@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface GioHangChiTietService {
     void themSanPhamVaoGioHangChiTiet(UUID idGioHang, UUID idSanPhamChiTiet, int soLuong);
-    List<GioHangCustom> loadGH(UUID idgh);
+    List<GioHangCustom> loadGH(String name);
 }

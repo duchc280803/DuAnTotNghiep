@@ -19,6 +19,7 @@ import java.util.UUID;
 public class GioHangChiTiet {
 
     @Id
+    @Column(name = "id")
     private UUID id;
 
     @ManyToOne

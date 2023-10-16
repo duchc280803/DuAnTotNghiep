@@ -1,6 +1,6 @@
 package com.example.duantotnghiep.enums;
 
-public enum StatusProductEnums {
+public enum ColorEnums {
 
     SU_DUNG(1),
 
@@ -8,7 +8,7 @@ public enum StatusProductEnums {
 
     private final int value;
 
-    StatusProductEnums(int value) {
+    ColorEnums(int value) {
         this.value = value;
     }
 

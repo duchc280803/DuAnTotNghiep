@@ -35,7 +35,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/khach-hang/**").permitAll()
-
                         .requestMatchers("/api/nhan-vien/**").permitAll()
                         .requestMatchers("/api/chi-tiet-sp/**").permitAll()
                         .requestMatchers("/api/gio-hang/**").permitAll()

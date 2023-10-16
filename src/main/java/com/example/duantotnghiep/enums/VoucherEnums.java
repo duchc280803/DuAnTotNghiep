@@ -1,14 +1,18 @@
 package com.example.duantotnghiep.enums;
 
-public enum StatusProductEnums {
+public enum VoucherEnums {
 
-    SU_DUNG(1),
+    CHUA_KICH_HOAT(1),
 
-    NGUNG_SU_DUNG(2);
+    DANG_KICH_HOAT(2),
+
+    HET_HAN(3),
+
+    NGHUNG_KICH_HOAT(4);
 
     private final int value;
 
-    StatusProductEnums(int value) {
+    VoucherEnums(int value) {
         this.value = value;
     }
 

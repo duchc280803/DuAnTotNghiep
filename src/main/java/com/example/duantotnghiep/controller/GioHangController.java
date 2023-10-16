@@ -1,18 +1,12 @@
 package com.example.duantotnghiep.controller;
 
-import com.example.duantotnghiep.entity.GioHang;
 import com.example.duantotnghiep.response.MessageResponse;
-import com.example.duantotnghiep.service.GetTongTienService;
-import com.example.duantotnghiep.service.GioHangService;
-import com.example.duantotnghiep.service.impl.GetSoLuongGioHangServiceImpl;
 import com.example.duantotnghiep.service.impl.GioHangServiceImpl;
-import com.example.duantotnghiep.service.impl.TongTienServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.UUID;
 
 @RestController

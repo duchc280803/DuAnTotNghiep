@@ -1,14 +1,16 @@
 package com.example.duantotnghiep.enums;
 
-public enum StatusProductEnums {
+public enum TypeTransactionEnums {
 
-    SU_DUNG(1),
+    TIEN_MAT(1),
 
-    NGUNG_SU_DUNG(2);
+    QR_CODE(2),
+
+    CHUYEN_KHOAN(3);
 
     private final int value;
 
-    StatusProductEnums(int value) {
+    TypeTransactionEnums(int value) {
         this.value = value;
     }
 

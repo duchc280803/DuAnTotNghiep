@@ -3,7 +3,7 @@ package com.example.duantotnghiep.controller;
 import com.example.duantotnghiep.request.CreateKhachRequest;
 import com.example.duantotnghiep.response.KhachHangResponse;
 import com.example.duantotnghiep.response.MessageResponse;
-import com.example.duantotnghiep.service.impl.KhachHangImpl;
+import com.example.duantotnghiep.service.impl.KhachHangServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.UUID;
 public class KhachHangController {
 
     @Autowired
-    private KhachHangImpl khachHangService;
+    private KhachHangServiceImpl khachHangService;
 
     @GetMapping("hien-thi")
     public ResponseEntity<?> getAll() {

@@ -1,14 +1,14 @@
 package com.example.duantotnghiep.enums;
 
-public enum StatusProductEnums {
+public enum BrandEnums {
 
-    SU_DUNG(1),
+    DANG_CO_SAN_PHAM(1),
 
-    NGUNG_SU_DUNG(2);
+    DA_THANH_TOAN(2);
 
     private final int value;
 
-    StatusProductEnums(int value) {
+    BrandEnums(int value) {
         this.value = value;
     }
 

@@ -1,14 +1,20 @@
 package com.example.duantotnghiep.enums;
 
-public enum StatusProductEnums {
+public enum TypeAccountEnum {
 
-    SU_DUNG(1),
+    MANAGER(1),
 
-    NGUNG_SU_DUNG(2);
+    STAFF(2),
+
+    USER(3),
+
+    KHACH_LE(4),
+
+    ADMIN(5);
 
     private final int value;
 
-    StatusProductEnums(int value) {
+    TypeAccountEnum(int value) {
         this.value = value;
     }
 

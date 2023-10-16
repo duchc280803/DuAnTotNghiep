@@ -1,6 +1,5 @@
 package com.example.duantotnghiep.entity;
 
-import com.example.duantotnghiep.enums.RoleEnum;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,22 +15,20 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "vaitro")
-public class VaiTro {
+@Table(name = "loaihinhthucthanhtoan")
+public class LoaiHinhThucThanhToan {
 
     @Id
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "tenvaitro")
-    @Enumerated(EnumType.STRING)
-    private RoleEnum name;
+    @Column(name = "tenloai")
+    private String tenChatLieu;
 
     @Column(name = "trangthai")
     private Integer trangThai;
 
-    @OneToMany(mappedBy = "vaiTro",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "loaiHinhThucThanhToan",fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<TaiKhoan> taiKhoanList;
-
+    private List<HinhThucThanhToan> hinhThucThanhToanList;
 }
