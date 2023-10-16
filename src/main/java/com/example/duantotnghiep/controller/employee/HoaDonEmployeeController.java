@@ -20,6 +20,11 @@ public class HoaDonEmployeeController {
     @Autowired
     private HoaDonServiceImpl hoaDonService;
 
+
+    /**
+     Lấy tất các hóa đơn trạng thái 1 hiển thị lên table vai trò là nhân viên
+     * */
+
     @GetMapping("hien-thi")
     public ResponseEntity<List<HoaDonCustomResponse>> getAll(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
@@ -28,18 +33,22 @@ public class HoaDonEmployeeController {
         return new ResponseEntity<>(hoaDonService.getAllHoaDonEmployee(pageNumber, pageSize), HttpStatus.OK);
     }
 
+    /**
+     Lấy tất các hóa đơn khác trạng thái 1 của nhân viên đó và vai trò là nhân viên
+     * */
 
     @GetMapping("hien-thi/ofEmployee")
     public ResponseEntity<List<HoaDonCustomResponse>> getAllHoaDonOfEmployee(
             @RequestParam(name = "trangThaiHD", required = false) Integer trangThaiHD,
             @RequestParam(name = "phuongThucThanhToan", required = false) Integer phuongThucThanhToan,
+            @RequestParam(name = "loaiDon", required = false) Integer loaiDon,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
             Principal principal
     ) {
         String username = principal.getName();
         if (trangThaiHD != null || phuongThucThanhToan != null) {
-            return new ResponseEntity<>(hoaDonService.getAllHoaDonOfEmployeeFilter(username, trangThaiHD, phuongThucThanhToan, pageNumber, pageSize), HttpStatus.OK);
+            return new ResponseEntity<>(hoaDonService.getAllHoaDonOfEmployeeFilter(username, trangThaiHD, phuongThucThanhToan, loaiDon, pageNumber, pageSize), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(hoaDonService.getAllHoaDonOfEmployeeDefault(username, pageNumber, pageSize), HttpStatus.OK);
         }

@@ -108,9 +108,9 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
-    public List<HoaDonCustomResponse> getAllHoaDonAdminFilter(Integer trangThaiHD, Integer phuongThucThanhToan, Integer pageNumber, Integer pageSize) {
+    public List<HoaDonCustomResponse> getAllHoaDonAdminFilter(Integer trangThaiHD, Integer phuongThucThanhToan, Integer loaiDon, Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<HoaDonCustomResponse> pageList = hoaDonRepository.getAllHoaDonAdminFilter(trangThaiHD, phuongThucThanhToan, pageable);
+        Page<HoaDonCustomResponse> pageList = hoaDonRepository.getAllHoaDonAdminFilter(trangThaiHD, phuongThucThanhToan, loaiDon, pageable);
         return pageList.getContent();
     }
 
@@ -122,9 +122,9 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
-    public List<HoaDonCustomResponse> getAllHoaDonOfEmployeeFilter(String username, Integer trangThaiHD, Integer phuongThucThanhToan, Integer pageNumber, Integer pageSize) {
+    public List<HoaDonCustomResponse> getAllHoaDonOfEmployeeFilter(String username, Integer trangThaiHD, Integer phuongThucThanhToan, Integer loaiDon, Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<HoaDonCustomResponse> pageList = hoaDonRepository.getAllHoaDonOfEmployeeFilter(username, trangThaiHD, phuongThucThanhToan, pageable);
+        Page<HoaDonCustomResponse> pageList = hoaDonRepository.getAllHoaDonOfEmployeeFilter(username, trangThaiHD, phuongThucThanhToan, loaiDon, pageable);
         return pageList.getContent();
     }
 

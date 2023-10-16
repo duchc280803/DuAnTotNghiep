@@ -100,4 +100,9 @@ public class HoaDon {
     @JsonBackReference
     private HinhThucThanhToan hinhThucThanhToan;
 
+    @ManyToOne
+    @JoinColumn(name = "idloaidon")
+    @JsonBackReference
+    private LoaiDon loaiDon;
+
 }

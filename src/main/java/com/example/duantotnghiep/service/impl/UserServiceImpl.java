@@ -91,6 +91,7 @@ public class UserServiceImpl implements UserService {
                 .matKhau(passwordEncoder.encode(registerRequest.getPassword()))
                 .email(registerRequest.getEmail())
                 .vaiTro(quyenHan.get())
+                .trangThai(1)
                 .build();
 
         try {

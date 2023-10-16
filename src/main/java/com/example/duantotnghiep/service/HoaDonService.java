@@ -17,11 +17,11 @@ public interface HoaDonService {
 
     List<HoaDonCustomResponse> getAllHoaDonAdmin(Integer pageNumber, Integer pageSize);
 
-    List<HoaDonCustomResponse> getAllHoaDonAdminFilter(Integer trangThaiHD, Integer phuongThucThanhToan, Integer pageNumber, Integer pageSize);
+    List<HoaDonCustomResponse> getAllHoaDonAdminFilter(Integer trangThaiHD, Integer phuongThucThanhToan, Integer loaiDon, Integer pageNumber, Integer pageSize);
 
     List<HoaDonCustomResponse> getAllHoaDonEmployee(Integer pageNumber, Integer pageSize);
 
-    List<HoaDonCustomResponse> getAllHoaDonOfEmployeeFilter(String username, Integer trangThaiHD, Integer phuongThucThanhToan, Integer pageNumber, Integer pageSize);
+    List<HoaDonCustomResponse> getAllHoaDonOfEmployeeFilter(String username, Integer trangThaiHD, Integer phuongThucThanhToan,Integer loaiDon, Integer pageNumber, Integer pageSize);
 
     List<HoaDonCustomResponse> getAllHoaDonOfEmployeeDefault(String username, Integer pageNumber, Integer pageSize);
 

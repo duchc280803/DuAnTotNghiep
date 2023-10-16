@@ -20,33 +20,36 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
             " FROM HoaDon hd JOIN hd.taiKhoanNhanVien tk WHERE hd.trangThai = 1")
     List<HoaDonResponse> viewHoaDonTaiQuay();
 
-    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonCustomResponse(hd.id, hd.ma, hd.ngayTao, hd.thanhTien, hd.trangThai, httt.phuongThucThanhToan, tknv.name)" +
-            " FROM HoaDon hd JOIN hd.hinhThucThanhToan httt JOIN hd.taiKhoanNhanVien tknv")
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonCustomResponse(hd.id, hd.ma, hd.ngayTao, hd.thanhTien, hd.trangThai, httt.phuongThucThanhToan, tknv.name, ld.trangThai)" +
+            " FROM HoaDon hd JOIN hd.hinhThucThanhToan httt JOIN hd.taiKhoanNhanVien tknv JOIN hd.loaiDon ld")
     Page<HoaDonCustomResponse> getAllHoaDonAdmin(Pageable pageable);
 
-    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonCustomResponse(hd.id, hd.ma, hd.ngayTao, hd.thanhTien, hd.trangThai, httt.phuongThucThanhToan, tknv.name)" +
-            " FROM HoaDon hd JOIN hd.hinhThucThanhToan httt JOIN hd.taiKhoanNhanVien tknv" +
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonCustomResponse(hd.id, hd.ma, hd.ngayTao, hd.thanhTien, hd.trangThai, httt.phuongThucThanhToan, tknv.name, ld.trangThai)" +
+            " FROM HoaDon hd JOIN hd.hinhThucThanhToan httt JOIN hd.taiKhoanNhanVien tknv JOIN hd.loaiDon ld" +
             " WHERE (:trangThaiHD IS NULL OR hd.trangThai = :trangThaiHD)" +
-            " AND (:phuongThucThanhToan IS NULL OR httt.phuongThucThanhToan = :phuongThucThanhToan)")
-    Page<HoaDonCustomResponse> getAllHoaDonAdminFilter(@Param("trangThaiHD") Integer trangThaiHD, @Param("phuongThucThanhToan") Integer phuongThucThanhToan, Pageable pageable);
+            " AND (:phuongThucThanhToan IS NULL OR httt.phuongThucThanhToan = :phuongThucThanhToan) " +
+            " AND (:loaiDon IS NULL OR ld.trangThai = :loaiDon) ")
+    Page<HoaDonCustomResponse> getAllHoaDonAdminFilter(@Param("trangThaiHD") Integer trangThaiHD, @Param("phuongThucThanhToan") Integer phuongThucThanhToan, @Param("loaiDon") Integer loaiDon, Pageable pageable);
 
-    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonCustomResponse(hd.id, hd.ma, hd.ngayTao, hd.thanhTien, hd.trangThai, httt.phuongThucThanhToan, tknv.name)" +
-            " FROM HoaDon hd JOIN hd.hinhThucThanhToan httt JOIN hd.taiKhoanNhanVien tknv where hd.trangThai = 1 AND tknv.trangThai = 1")
+
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonCustomResponse(hd.id, hd.ma, hd.ngayTao, hd.thanhTien, hd.trangThai, httt.phuongThucThanhToan, tknv.name, ld.trangThai)" +
+            " FROM HoaDon hd JOIN hd.hinhThucThanhToan httt JOIN hd.taiKhoanNhanVien tknv JOIN hd.loaiDon ld where hd.trangThai = 1 AND tknv.trangThai = 1")
     Page<HoaDonCustomResponse> getAllHoaDonEmployee(Pageable pageable);
 
 
-    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonCustomResponse(hd.id, hd.ma, hd.ngayTao, hd.thanhTien, hd.trangThai, httt.phuongThucThanhToan, tknv.name)" +
-            " FROM HoaDon hd JOIN hd.hinhThucThanhToan httt JOIN hd.taiKhoanNhanVien tknv" +
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonCustomResponse(hd.id, hd.ma, hd.ngayTao, hd.thanhTien, hd.trangThai, httt.phuongThucThanhToan, tknv.name, ld.trangThai)" +
+            " FROM HoaDon hd JOIN hd.hinhThucThanhToan httt JOIN hd.taiKhoanNhanVien tknv JOIN hd.loaiDon ld" +
             " WHERE hd.trangThai <> 1 AND tknv.trangThai = 1 AND tknv.username = :username AND (:trangThaiHD IS NULL OR hd.trangThai = :trangThaiHD)" +
-            " AND (:phuongThucThanhToan IS NULL OR httt.phuongThucThanhToan = :phuongThucThanhToan)")
+            " AND (:phuongThucThanhToan IS NULL OR httt.phuongThucThanhToan = :phuongThucThanhToan) AND (:loaiDon IS NULL OR ld.trangThai = :loaiDon)")
     Page<HoaDonCustomResponse> getAllHoaDonOfEmployeeFilter(
                                                         @Param("username") String username,
                                                         @Param("trangThaiHD") Integer trangThaiHD,
                                                         @Param("phuongThucThanhToan") Integer phuongThucThanhToan,
+                                                        @Param("loaiDon") Integer loaiDon,
                                                         Pageable pageable);
 
-    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonCustomResponse(hd.id, hd.ma, hd.ngayTao, hd.thanhTien, hd.trangThai, httt.phuongThucThanhToan, tknv.name)" +
-            " FROM HoaDon hd JOIN hd.hinhThucThanhToan httt JOIN hd.taiKhoanNhanVien tknv where hd.trangThai <> 1 AND tknv.trangThai = 1 AND tknv.username = :username")
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonCustomResponse(hd.id, hd.ma, hd.ngayTao, hd.thanhTien, hd.trangThai, httt.phuongThucThanhToan, tknv.name, ld.trangThai)" +
+            " FROM HoaDon hd JOIN hd.hinhThucThanhToan httt JOIN hd.taiKhoanNhanVien tknv JOIN hd.loaiDon ld where hd.trangThai <> 1 AND tknv.trangThai = 1 AND tknv.username = :username")
     Page<HoaDonCustomResponse> getAllHoaDonOfEmployeeDefault( @Param("username") String username, Pageable pageable);
 
 

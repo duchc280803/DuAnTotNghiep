@@ -23,13 +23,29 @@ public class HoaDonAdminController {
     public ResponseEntity<List<HoaDonCustomResponse>> getAll(
             @RequestParam(name = "trangThaiHD", required = false) Integer trangThaiHD,
             @RequestParam(name = "phuongThucThanhToan", required = false) Integer phuongThucThanhToan,
+            @RequestParam(name = "loaiDon", required = false) Integer loaiDon,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
     ) {
-        if (trangThaiHD != null || phuongThucThanhToan != null) {
-            return new ResponseEntity<>(hoaDonService.getAllHoaDonAdminFilter(trangThaiHD, phuongThucThanhToan, pageNumber, pageSize), HttpStatus.OK);
+        if (trangThaiHD != null || phuongThucThanhToan != null || loaiDon != null) {
+            return new ResponseEntity<>(hoaDonService.getAllHoaDonAdminFilter(trangThaiHD, phuongThucThanhToan, loaiDon, pageNumber, pageSize), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(hoaDonService.getAllHoaDonAdmin(pageNumber, pageSize), HttpStatus.OK);
         }
     }
+
+//    @GetMapping("hien-thi")
+//    public ResponseEntity<List<HoaDonCustomResponse>> getAll(
+//            @RequestParam(name = "trangThaiHD", required = false) Integer trangThaiHD,
+//            @RequestParam(name = "phuongThucThanhToan", required = false) Integer phuongThucThanhToan,
+//            @RequestParam(name = "loaiDon", required = false) Integer loaiDon,
+//            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+//            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
+//    ) {
+//        if (trangThaiHD != null || phuongThucThanhToan != null || loaiDon != null) {
+//            return new ResponseEntity<>(hoaDonService.getAllHoaDonAdminFilter(trangThaiHD, phuongThucThanhToan, loaiDon, pageNumber, pageSize), HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(hoaDonService.getAllHoaDonAdmin(pageNumber, pageSize), HttpStatus.OK);
+//        }
+//    }
 }

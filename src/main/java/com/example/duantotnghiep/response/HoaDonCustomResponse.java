@@ -29,4 +29,6 @@ public class HoaDonCustomResponse {
     private int hinhThucThanhToan;
 
     private String nguoiTao;
+
+    private int trangThaiLoaiDon;
 }
