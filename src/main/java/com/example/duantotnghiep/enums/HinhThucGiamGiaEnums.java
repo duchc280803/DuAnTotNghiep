@@ -1,14 +1,14 @@
 package com.example.duantotnghiep.enums;
 
-public enum BrandEnums {
+public enum HinhThucGiamGiaEnums {
 
-    SU_DUNG(1),
+    PHAN_TRAM(1),
 
-    KHONG_SU_DUNG(2);
+    TIEN(2);
 
     private final int value;
 
-    BrandEnums(int value) {
+    HinhThucGiamGiaEnums(int value) {
         this.value = value;
     }
 

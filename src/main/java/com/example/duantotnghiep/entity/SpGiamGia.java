@@ -42,4 +42,7 @@ public class SpGiamGia {
     @Column(name = "dongiakhigiam")
     private BigDecimal donGiaKhiGiam;
 
+    @Column(name = "mucgiam")
+    private Long mucGiam;
+
 }

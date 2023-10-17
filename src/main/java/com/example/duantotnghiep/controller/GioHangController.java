@@ -16,12 +16,6 @@ public class GioHangController {
     @Autowired
     private GioHangServiceImpl gioHangService;
 
-    @Autowired
-    private GetSoLuongGioHangServiceImpl getSoLuongGioHangService;
-
-    @Autowired
-    private TongTienServiceImpl gettongtien;
-
     //TODO tạo mới 1 giỏ hàng
     @PostMapping("/tao-gio-hang")
         public ResponseEntity<UUID> taoGioHang(@RequestParam UUID id) {
@@ -39,12 +33,4 @@ public class GioHangController {
         return new ResponseEntity<>(gioHangService.updateGioHang(idGioHang, idAccount), HttpStatus.OK);
     }
 
-    @GetMapping("/so-luong-san-pham")
-    public ResponseEntity<?> getSoLuongGioHang(@RequestParam UUID idgh) {
-        return  ResponseEntity.ok(getSoLuongGioHangService.getSoLuongGioHang(idgh));
-    }
-    @GetMapping("/tong-tien-san-pham")
-    public ResponseEntity<?> getTongTien(@RequestParam UUID idgh) {
-        return  ResponseEntity.ok(gettongtien.getTongTien(idgh));
-    }
 }
