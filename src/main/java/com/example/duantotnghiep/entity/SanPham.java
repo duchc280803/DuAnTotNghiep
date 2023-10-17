@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -44,6 +45,12 @@ public class SanPham {
 
     @Column(name = "tensanpham")
     private String tenSanPham;
+
+    @Column(name = "giaban")
+    private BigDecimal giaBan;
+
+    @Column(name = "baohanh")
+    private Integer baoHanh;
 
     @Column(name = "mota")
     private String moTa;

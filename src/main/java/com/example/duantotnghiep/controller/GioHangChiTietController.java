@@ -1,10 +1,12 @@
 package com.example.duantotnghiep.controller;
+import com.example.duantotnghiep.mapper.GioHangCustom;
 import com.example.duantotnghiep.service.impl.GioHangChiTietServiceImpl;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 @RestController
 @RequestMapping("/api/gio-hang-chi-tiet")
@@ -15,8 +17,8 @@ public class GioHangChiTietController {
     private GioHangChiTietServiceImpl gioHangChiTietService;
 
     @GetMapping("hien-thi")
-    public ResponseEntity<?> show(@RequestParam UUID idgh){
-        return ResponseEntity.ok(gioHangChiTietService.loadGH(idgh));
+    public ResponseEntity<List<GioHangCustom>> show(@RequestParam(name = "name") String name ){
+        return ResponseEntity.ok(gioHangChiTietService.loadGH(name));
     }
 
     @PostMapping("/them-san-pham")

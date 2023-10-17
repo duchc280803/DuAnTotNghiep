@@ -1,6 +1,6 @@
 package com.example.duantotnghiep.request;
 
-import com.example.duantotnghiep.enums.RoleEnum;
+import com.example.duantotnghiep.enums.TypeAccountEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -25,5 +25,5 @@ public class RegisterRequest {
     private String email;
 
     @NotNull(message = "Không được để trống quyền hạn")
-    private RoleEnum role;
+    private TypeAccountEnum role;
 }

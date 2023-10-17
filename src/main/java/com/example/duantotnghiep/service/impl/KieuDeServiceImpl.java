@@ -11,13 +11,11 @@ import java.util.List;
 @Service
 public class KieuDeServiceImpl implements KieuDeService {
 
-
     @Autowired
-    KieuDeRepository repository;
-
+    private KieuDeRepository kieuDeRepository;
 
     @Override
-    public List<KieuDe> getALL() {
-        return repository.findAll();
+    public List<KieuDe> getAll() {
+        return kieuDeRepository.findAll();
     }
 }

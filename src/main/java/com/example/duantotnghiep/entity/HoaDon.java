@@ -40,14 +40,14 @@ public class HoaDon {
     @Column(name = "ngaynhan")
     private Date ngayNhan;
 
+    @Column(name = "ngaycapnhap")
+    private Date ngayCapNhap;
+
     @Column(name = "tennguoinhan")
     private String tenNguoiNhan;
 
     @Column(name = "diachi")
     private String diaChi;
-
-    @Column(name = "phantramgiamgia")
-    private Long phanTramGiamGia;
 
     @Column(name = "sdtnguoinhan")
     private String sdtNguoiNhan;
@@ -78,16 +78,11 @@ public class HoaDon {
 
     @OneToMany(mappedBy = "hoaDon",fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<HinhThucThanhToan> hinhThucThanhToanList;
+    private List<HoaDonChiTiet> hoaDonChiTietList;
 
     @OneToMany(mappedBy = "hoaDon",fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<HoaDonChiTiet> hoaDonChiTietList;
-
-    @ManyToOne
-    @JoinColumn(name = "idgiamgia")
-    @JsonBackReference
-    private GiamGia giamGia;
+    private List<HinhThucThanhToan> hinhThucThanhToanList;
 
     @ManyToOne
     @JoinColumn(name = "idkhachhang")
@@ -98,5 +93,15 @@ public class HoaDon {
     @JoinColumn(name = "idnhanvien")
     @JsonBackReference
     private TaiKhoan taiKhoanNhanVien;
+
+    @ManyToOne
+    @JoinColumn(name = "idloaidon")
+    @JsonBackReference
+    private LoaiDon loaiDon;
+
+    @ManyToOne
+    @JoinColumn(name = "idvoucher")
+    @JsonBackReference
+    private Voucher voucher;
 
 }

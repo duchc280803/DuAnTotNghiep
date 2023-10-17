@@ -25,7 +25,6 @@ public class ThuongHieu {
     private UUID id;
 
     @Column(name = "tenthuonghieu")
-    @JsonBackReference
     private String tenThuongHieu;
 
     @Column(name = "mota")

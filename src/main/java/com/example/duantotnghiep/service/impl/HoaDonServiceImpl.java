@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.service.impl;
 
 import com.example.duantotnghiep.entity.*;
+import com.example.duantotnghiep.enums.TypeOrderEnums;
 import com.example.duantotnghiep.enums.StatusOrderEnums;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
@@ -22,7 +23,7 @@ public class HoaDonServiceImpl implements HoaDonService {
     private HoaDonRepository hoaDonRepository;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private TaiKhoanRepository taiKhoanRepository;
 
     @Autowired
     private GioHangChiTietRepository gioHangChiTietRepository;
@@ -33,12 +34,17 @@ public class HoaDonServiceImpl implements HoaDonService {
     @Autowired
     private HinhThucThanhToanRepository hinhThucThanhToanRepository;
 
+    @Autowired
+    private LoaiDonRepository loaiDonRepository;
+
     @Override
     @Transactional
     //TODO Thêm hóa đơn tại quầy
     public MessageResponse taoHoaDon(String name) {
 
-        Optional<TaiKhoan> findByNhanVien = accountRepository.findByUsername(name);
+        Optional<TaiKhoan> findByNhanVien = taiKhoanRepository.findByUsername(name);
+
+        Optional<LoaiDon> findByLoaiDon = loaiDonRepository.findByTrangThai(TypeOrderEnums.TAI_QUAY.getValue());
 
         Random rand = new Random();
         int randomNumber = rand.nextInt(1000); // Số ngẫu nhiên từ 0 đến 999
@@ -53,6 +59,7 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDon.setNgayTao(utilDate);
         hoaDon.setTrangThai(StatusOrderEnums.CHO_THANH_TOAN.getValue());
         hoaDon.setTaiKhoanNhanVien(findByNhanVien.get());
+        hoaDon.setLoaiDon(findByLoaiDon.get());
         hoaDonRepository.save(hoaDon);
         return MessageResponse.builder().message("Tạo hóa đơn thành công").build();
     }
@@ -73,10 +80,8 @@ public class HoaDonServiceImpl implements HoaDonService {
 
         HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
         hinhThucThanhToan.setId(UUID.randomUUID());
-        hinhThucThanhToan.setHoaDon(hoaDon.get());
         hinhThucThanhToan.setNgayThanhToan(new java.sql.Date(System.currentTimeMillis()));
         hinhThucThanhToan.setTrangThai(1);
-        hinhThucThanhToan.setTaiKhoan(hoaDon.get().getTaiKhoanKhachHang());
         hinhThucThanhToan.setPhuongThucThanhToan(1);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
 

@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -21,16 +23,6 @@ public class HinhThucThanhToan {
     @Id
     @Column(name = "id")
     private UUID id;
-
-    @ManyToOne
-    @JoinColumn(name = "idhoadon")
-    @JsonBackReference
-    private HoaDon hoaDon;
-
-    @ManyToOne
-    @JoinColumn(name = "idtaikhoan")
-    @JsonBackReference
-    private TaiKhoan taiKhoan;
 
     @Column(name = "ngaythanhtoan")
     private Date ngayThanhToan;
@@ -47,4 +39,18 @@ public class HinhThucThanhToan {
     @Column(name = "trangthai")
     private Integer trangThai;
 
+    @ManyToOne
+    @JoinColumn(name = "idhoadon")
+    @JsonBackReference
+    private HoaDon hoaDon;
+
+    @ManyToOne
+    @JoinColumn(name = "idtaikhoan")
+    @JsonBackReference
+    private TaiKhoan taiKhoan;
+
+    @ManyToOne
+    @JoinColumn(name = "idloai")
+    @JsonBackReference
+    private LoaiHinhThucThanhToan loaiHinhThucThanhToan;
 }

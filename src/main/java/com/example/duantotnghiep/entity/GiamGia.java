@@ -1,6 +1,5 @@
 package com.example.duantotnghiep.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,20 +36,11 @@ public class GiamGia {
     @Column(name = "ngayketthuc")
     private Date ngayKetThuc;
 
+    @Column(name = "ngaycapnhap")
+    private Date ngayCapNhap;
+
     @Column(name = "hinhthucgiam")
     private Integer hinhThucGiam;
-
-    @Column(name = "giatrigiamtu")
-    private BigDecimal giaTriGiamTu;
-
-    @Column(name = "giatrigiamden")
-    private BigDecimal giaTriGiamDen;
-
-    @Column(name = "dieukiengiamgia")
-    private Integer dieuKienGiamGia;
-
-    @Column(name = "soluongmagiamgia")
-    private Integer soLuongMaGiaGiam;
 
     @Column(name = "trangthai")
     private Integer trangThai;
@@ -59,12 +49,4 @@ public class GiamGia {
     @JsonManagedReference
     private List<SpGiamGia> spGiamGiaList;
 
-    @OneToMany(mappedBy = "giamGia",fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<HoaDon> hoaDonList;
-
-    @ManyToOne
-    @JoinColumn(name = "loaigiamgia")
-    @JsonBackReference
-    private LoaiGiamGia loaiGiamGia;
 }

@@ -53,9 +53,6 @@ public class SanPhamChiTiet {
     @Column(name = "baohanh")
     private Integer baoHanh;
 
-    @Column(name = "gianhap")
-    private BigDecimal giaNhap;
-
     @Column(name = "giaban")
     private BigDecimal giaBan;
 
@@ -74,7 +71,7 @@ public class SanPhamChiTiet {
 
     @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<GioHangChiTiet> gioHangChiTiets;
+    private List<GioHangChiTiet> gioHangChiTietList;
 
     @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
     @JsonManagedReference

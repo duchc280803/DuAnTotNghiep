@@ -2,11 +2,9 @@ package com.example.duantotnghiep.enums;
 
 public enum StatusProductEnums {
 
-    DA_HET(1),
+    SU_DUNG(1),
 
-    NGUNG_BAN(2),
-
-    CON_HANG(3);
+    NGUNG_SU_DUNG(2);
 
     private final int value;
 

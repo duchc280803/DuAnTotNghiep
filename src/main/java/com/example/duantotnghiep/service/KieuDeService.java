@@ -5,5 +5,6 @@ import com.example.duantotnghiep.entity.KieuDe;
 import java.util.List;
 
 public interface KieuDeService {
-    List<KieuDe> getALL();
+
+    List<KieuDe> getAll();
 }

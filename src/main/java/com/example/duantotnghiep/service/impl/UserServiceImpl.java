@@ -1,13 +1,13 @@
 package com.example.duantotnghiep.service.impl;
 
+import com.example.duantotnghiep.entity.LoaiTaiKhoan;
 import com.example.duantotnghiep.entity.RefreshToken;
 import com.example.duantotnghiep.entity.TaiKhoan;
-import com.example.duantotnghiep.entity.VaiTro;
 import com.example.duantotnghiep.jwt.JwtService;
 import com.example.duantotnghiep.model.UserCustomDetails;
-import com.example.duantotnghiep.repository.AccountRepository;
+import com.example.duantotnghiep.repository.TaiKhoanRepository;
+import com.example.duantotnghiep.repository.LoaiTaiKhoanRepository;
 import com.example.duantotnghiep.repository.RefreshTokenRepository;
-import com.example.duantotnghiep.repository.VaiTroRepository;
 import com.example.duantotnghiep.request.LoginRequest;
 import com.example.duantotnghiep.request.RegisterRequest;
 import com.example.duantotnghiep.response.MessageResponse;
@@ -30,9 +30,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final VaiTroRepository vaiTroRepository;
+    private final LoaiTaiKhoanRepository loaiTaiKhoanRepository;
 
-    private final AccountRepository accountRepository;
+    private final TaiKhoanRepository taiKhoanRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
                 )
         );
         // Kiểm tra xem tài khoản đã tồn tại hay không
-        Optional<TaiKhoan> optionalPhatTu = accountRepository.findByUsername(loginRequest.getUsername());
+        Optional<TaiKhoan> optionalPhatTu = taiKhoanRepository.findByUsername(loginRequest.getUsername());
         if (optionalPhatTu.isPresent()) {
             // Tài khoản tồn tại, tạo mới hoặc cập nhật token
             RefreshToken refreshToken = createToken(loginRequest.getUsername());
@@ -73,13 +73,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public MessageResponse register(RegisterRequest registerRequest) {
-        Optional<TaiKhoan> optionalPhatTu = accountRepository.findByUsername(registerRequest.getUsername());
+        Optional<TaiKhoan> optionalPhatTu = taiKhoanRepository.findByUsername(registerRequest.getUsername());
 
         if (optionalPhatTu.isPresent()) {
             return MessageResponse.builder().message("Tài khoản đã tồn tại").build();
         }
 
-        Optional<VaiTro> quyenHan = vaiTroRepository.findByName(registerRequest.getRole());
+        Optional<LoaiTaiKhoan> quyenHan = loaiTaiKhoanRepository.findByName(registerRequest.getRole());
 
         if (quyenHan.isEmpty()) {
             return MessageResponse.builder().message("Quyền hạn không hợp lệ").build();
@@ -90,11 +90,11 @@ public class UserServiceImpl implements UserService {
                 .username(registerRequest.getUsername())
                 .matKhau(passwordEncoder.encode(registerRequest.getPassword()))
                 .email(registerRequest.getEmail())
-                .vaiTro(quyenHan.get())
+                .loaiTaiKhoan(quyenHan.get())
                 .build();
 
         try {
-            TaiKhoan savedUser = accountRepository.save(user);
+            TaiKhoan savedUser = taiKhoanRepository.save(user);
             String jwtToken = jwtService.generateToken(new UserCustomDetails(savedUser));
             return MessageResponse.builder().message("Registered Successfully").build();
         } catch (Exception e) {
@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
     public RefreshToken createToken(String username) {
         RefreshToken refreshToken = RefreshToken
                 .builder()
-                .taiKhoan(accountRepository.findByUsername(username).get())
+                .taiKhoan(taiKhoanRepository.findByUsername(username).get())
                 .token(UUID.randomUUID().toString())
                 .thoiGianHetHan(LocalDate.from(LocalDateTime.now().plusMinutes(10)))
                 .build();

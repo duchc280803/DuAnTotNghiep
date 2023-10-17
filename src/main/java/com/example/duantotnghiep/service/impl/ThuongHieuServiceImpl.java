@@ -12,11 +12,10 @@ import java.util.List;
 public class ThuongHieuServiceImpl implements ThuongHieuService {
 
     @Autowired
-    ThuongHieuRepository repository;
-
+    private ThuongHieuRepository thuongHieuRepository;
 
     @Override
     public List<ThuongHieu> getALL() {
-        return repository.findAll();
+        return thuongHieuRepository.findAll();
     }
 }

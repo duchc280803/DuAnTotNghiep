@@ -33,19 +33,16 @@ public class SpGiamGia {
     @JsonBackReference
     private GiamGia giamGia;
 
-    @Column(name = "soluongma")
-    private Integer soLuongMa;
-
-    @Column(name = "soluotdung")
-    private Integer soLuongDung;
-
     @Column(name = "dongia")
     private BigDecimal donGia;
 
     @Column(name = "trangthai")
     private Integer trangThai;
 
-    @Column(name = "gioihansotien")
-    private BigDecimal gioiHanSoTien;
+    @Column(name = "dongiakhigiam")
+    private BigDecimal donGiaKhiGiam;
+
+    @Column(name = "mucgiam")
+    private Long mucGiam;
 
 }

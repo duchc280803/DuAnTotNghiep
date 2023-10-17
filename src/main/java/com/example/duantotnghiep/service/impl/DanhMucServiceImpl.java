@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 public class DanhMucServiceImpl implements DanhMucService {
 
     @Autowired
-    DanhMucRepository repository;
+    private DanhMucRepository danhMucRepository;
+
     @Override
     public List<DanhMuc> getAll() {
-        return repository.findAll();
+        return danhMucRepository.findAll();
     }
 }

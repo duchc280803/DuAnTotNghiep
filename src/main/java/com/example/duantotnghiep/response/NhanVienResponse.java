@@ -1,13 +1,10 @@
 package com.example.duantotnghiep.response;
 
-import com.example.duantotnghiep.enums.RoleEnum;
-import jakarta.validation.constraints.NotBlank;
+import com.example.duantotnghiep.enums.TypeAccountEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Date;
 
 @Getter
 @Setter
@@ -25,5 +22,5 @@ public class NhanVienResponse {
 
     private Integer trangThai;
 
-    private RoleEnum role;
+    private TypeAccountEnum role;
 }

@@ -2,6 +2,7 @@ package com.example.duantotnghiep.repository;
 
 import com.example.duantotnghiep.entity.SanPhamChiTiet;
 import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
+import com.example.duantotnghiep.mapper.GioHangCustom;
 import com.example.duantotnghiep.response.DetailQuantityToSizeReponse;
 import com.example.duantotnghiep.response.DetailSizeToProductResponse;
 import com.example.duantotnghiep.response.SanPhamGetAllResponse;
@@ -18,24 +19,36 @@ import java.util.UUID;
 public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, UUID> {
     //load sản phẩm với 1 ảnh mặc định
     @Query("SELECT new com.example.duantotnghiep.mapper.ChiTietSanPhamCustom" +
-            "(i.tenImage, spct.id, sp.tenSanPham, spct.giaBan, spct.soLuong, kd.tenDe, ms.tenMauSac, s.size, cl.tenChatLieu) " +
-            "FROM SanPhamChiTiet spct " +
-            "JOIN spct.sanPham sp " +
+            "(i.tenImage, spct.id, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam,spct.soLuong, kd.tenDe, ms.tenMauSac, s.size, cl.tenChatLieu) " +
+            "FROM SanPham sp " +
+            "JOIN sp.listSanPhamChiTiet spct " +
+            "JOIN spct.listImage i " +
+            "LEFT JOIN spct.spGiamGiaList spgg " +
+            "LEFT JOIN spgg.giamGia gg " +
             "JOIN spct.size s " +
             "JOIN spct.kieuDe kd " +
-            "JOIN spct.chatLieu cl JOIN spct.mauSac ms " +
-            "JOIN spct.listImage i WHERE i.isDefault = TRUE")
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.mauSac ms " +
+            "WHERE i.isDefault = TRUE AND " +
+            "(spgg IS NOT NULL AND spgg.donGiaKhiGiam <> 0) " +
+            "OR spgg IS NULL")
     List<ChiTietSanPhamCustom> getAll();
 
     //tìm kiếm sản phẩm theo tên
     @Query("SELECT new com.example.duantotnghiep.mapper.ChiTietSanPhamCustom" +
-            "(i.tenImage, spct.id, sp.tenSanPham, spct.giaBan, spct.soLuong, kd.tenDe, ms.tenMauSac, s.size, cl.tenChatLieu) " +
-            "FROM SanPhamChiTiet spct " +
-            "JOIN spct.sanPham sp " +
+            "(i.tenImage, spct.id, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam,spct.soLuong, kd.tenDe, ms.tenMauSac, s.size, cl.tenChatLieu) " +
+            "FROM SanPham sp " +
+            "JOIN sp.listSanPhamChiTiet spct " +
+            "JOIN spct.listImage i " +
+            "LEFT JOIN spct.spGiamGiaList spgg " +
+            "LEFT JOIN spgg.giamGia gg " +
             "JOIN spct.size s " +
             "JOIN spct.kieuDe kd " +
-            "JOIN spct.chatLieu cl JOIN spct.mauSac ms " +
-            "JOIN spct.listImage i WHERE i.isDefault = TRUE AND sp.tenSanPham = :name")
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.mauSac ms " +
+            "WHERE i.isDefault = TRUE AND sp.tenSanPham = :name AND " +
+            "(spgg IS NOT NULL AND spgg.donGiaKhiGiam <> 0) " +
+            "OR spgg IS NULL")
     List<ChiTietSanPhamCustom> searchByName(String name);
 
     @Query("SELECT new com.example.duantotnghiep.response.SanPhamGetAllResponse(" +

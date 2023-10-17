@@ -15,21 +15,20 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "loaigiamgia")
-public class LoaiGiamGia {
+@Table(name = "loaidon")
+public class LoaiDon {
 
     @Id
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "tenloaigiamgia")
-    private String tenLoaiGiamGia;
+    @Column(name = "tenloaidon")
+    private String tenLoaiDon;
 
     @Column(name = "trangthai")
     private Integer trangThai;
 
-    @OneToMany(mappedBy = "loaiGiamGia",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "loaiDon",fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<GiamGia> giamGiaList;
-
+    private List<HoaDon> hoaDonList;
 }

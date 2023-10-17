@@ -1,6 +1,5 @@
 package com.example.duantotnghiep.service.impl;
 
-
 import com.example.duantotnghiep.entity.MauSac;
 import com.example.duantotnghiep.repository.MauSacRepository;
 import com.example.duantotnghiep.service.MauSacService;
@@ -13,11 +12,10 @@ import java.util.List;
 public class MauSacServiceImpl implements MauSacService {
 
     @Autowired
-    MauSacRepository repository;
-
+    private MauSacRepository mauSacRepository;
 
     @Override
-    public List<MauSac> getALL() {
-        return repository.findAll();
+    public List<MauSac> getAll() {
+        return mauSacRepository.findAll();
     }
 }

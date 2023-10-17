@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ChatLieuService {
 
-    List<ChatLieu> getALL();
+    List<ChatLieu> getAll();
 }

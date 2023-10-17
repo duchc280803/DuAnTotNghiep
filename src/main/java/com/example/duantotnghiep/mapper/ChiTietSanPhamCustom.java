@@ -22,6 +22,10 @@ public class ChiTietSanPhamCustom {
 
     private BigDecimal giaBan;
 
+    private BigDecimal giaGiamGia;
+
+    private Long mucGiam;
+
     private Integer soLuong;
 
     private String kieuDe;

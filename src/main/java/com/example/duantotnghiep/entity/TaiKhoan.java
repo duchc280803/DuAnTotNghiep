@@ -49,23 +49,14 @@ public class TaiKhoan {
     private Boolean gioiTinh;
 
     @ManyToOne
-    @JoinColumn(name = "idvaitro")
-    @JsonBackReference
-    @Enumerated(EnumType.STRING)
-    private VaiTro vaiTro;
-
-    @ManyToOne
     @JoinColumn(name = "idloaitaikhoan")
+    @Enumerated(EnumType.STRING)
     @JsonBackReference
     private LoaiTaiKhoan loaiTaiKhoan;
 
     @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<GioHang> gioHangList;
-
-    @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<HinhThucThanhToan> hinhThucThanhToanList;
 
     @OneToMany(mappedBy = "taiKhoanKhachHang", fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -82,5 +73,9 @@ public class TaiKhoan {
     @OneToMany(mappedBy = "taiKhoan", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<DiaChi> diaChiList;
+
+    @OneToMany(mappedBy = "taiKhoan",fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<HinhThucThanhToan> hinhThucThanhToanList;
 
 }

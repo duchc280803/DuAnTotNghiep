@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.entity;
 
+import com.example.duantotnghiep.enums.TypeAccountEnum;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,8 @@ public class LoaiTaiKhoan {
     private UUID id;
 
     @Column(name = "tenloaitaikhoan")
-    private String tenLoaiTaiKhoan;
+    @Enumerated(EnumType.STRING)
+    private TypeAccountEnum name;
 
     @Column(name = "trangthai")
     private Integer trangThai;

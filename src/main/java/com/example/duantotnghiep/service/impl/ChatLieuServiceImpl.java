@@ -1,6 +1,5 @@
 package com.example.duantotnghiep.service.impl;
 
-
 import com.example.duantotnghiep.entity.ChatLieu;
 import com.example.duantotnghiep.repository.ChatLieuRepository;
 import com.example.duantotnghiep.service.ChatLieuService;
@@ -13,11 +12,10 @@ import java.util.List;
 public class ChatLieuServiceImpl implements ChatLieuService {
 
     @Autowired
-    ChatLieuRepository repository;
-
+    private ChatLieuRepository chatLieuRepository;
 
     @Override
-    public List<ChatLieu> getALL() {
-        return repository.findAll();
+    public List<ChatLieu> getAll() {
+        return chatLieuRepository.findAll();
     }
 }
