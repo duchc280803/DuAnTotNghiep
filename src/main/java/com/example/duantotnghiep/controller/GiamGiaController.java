@@ -29,6 +29,7 @@ public class GiamGiaController {
     public ResponseEntity<List<GiamGiaResponse>> getAllGiamGia() {
         return new ResponseEntity<>(Service.getAll(), HttpStatus.OK);
     }
+    // search by 
     @GetMapping("searchString_bykey")
     public ResponseEntity<GiamGiaResponse>findByKhachHangByIdHoaDon(@RequestParam(name = "key") String key) {
         return new ResponseEntity<>(Service.findbyValueString(key), HttpStatus.OK);
