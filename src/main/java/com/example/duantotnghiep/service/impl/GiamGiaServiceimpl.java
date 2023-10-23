@@ -1,15 +1,19 @@
 package com.example.duantotnghiep.service.impl;
 
 
-import com.example.duantotnghiep.entity.GiamGia;
+import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.repository.GiamGiaRepository;
+import com.example.duantotnghiep.request.CreateKhachRequest;
+import com.example.duantotnghiep.request.GiamGiaRequest;
 import com.example.duantotnghiep.response.GiamGiaResponse;
+import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.GiamGiaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class GiamGiaServiceimpl implements GiamGiaService {
@@ -24,7 +28,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     }
 
     @Override
-    public GiamGiaResponse findbyValueString(String key) {
+    public List<GiamGiaResponse> findbyValueString(String key) {
         return Repository.findbyValueString(key);
     }
 
@@ -56,5 +60,34 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
         return Repository.listGiamGia();
     }
+//    @Override
+//    public MessageResponse createKhachHang(CreateKhachRequest createKhachRequest) {
+//        TaiKhoan taiKhoan = new TaiKhoan();
+//        taiKhoan.setId(UUID.randomUUID());
+//        taiKhoan.setName(createKhachRequest.getHoTen());
+//        taiKhoan.setSoDienThoai(createKhachRequest.getSoDienThoai());
+//        taiKhoan.setEmail(createKhachRequest.getEmail());
+//        taiKhoan.setNgaySinh(createKhachRequest.getNgaySinh());
+//        khachHangRepository.save(taiKhoan);
+//        DiaChi diaChi = new DiaChi();
+//        diaChi.setId(UUID.randomUUID());
+//        diaChi.setDiaChi(createKhachRequest.getDiaChi());
+//        diaChi.setTaiKhoan(taiKhoan);
+//        diaChiRepository.save(diaChi);
+//        return MessageResponse.builder().message("Thêm Thành Công").build();
+//    }
+    @Override
+    public MessageResponse createGiamGia(GiamGiaRequest createKhachRequest) {
+        GiamGia giamGia = new GiamGia();
+        giamGia.setId(UUID.randomUUID());
+        giamGia.setTenGiamGia(createKhachRequest.getTenGiamGia());
+      Repository.save(giamGia );
+//        SanPhamChiTiet sanPhamChiTiet = new SanPhamChiTiet();
+//        sanPhamChiTiet.setId(UUID.randomUUID());
+//        sanPhamChiTiet.setSanPham( giamGia);
+        return MessageResponse.builder().message("Thêm Thành Công").build();
+    }
+
+
 
 }

@@ -25,7 +25,7 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
             "FROM GiamGia gg " +
             "JOIN gg.spGiamGiaList spgg " +
             "WHERE gg.maGiamGia LIKE :key OR gg.tenGiamGia LIKE :key ")
-   GiamGiaResponse findbyValueString(@Param("key") String key);
+    List<GiamGiaResponse> findbyValueString(@Param("key") String key);
 
     @Query("SELECT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id,gg.tenGiamGia,gg.maGiamGia,gg.ngayBatDau,gg.ngayKetThuc,gg.hinhThucGiam,gg.trangThai,spgg.mucGiam) " +
             "FROM GiamGia gg " +

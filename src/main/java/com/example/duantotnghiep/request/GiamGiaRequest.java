@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -13,21 +15,19 @@ import java.util.Date;
 @NoArgsConstructor
 public class GiamGiaRequest {
 
-    private String maGiamGia;
+
+    private UUID id;
+
+//    private String maGiamGia;
 
     private String tenGiamGia;
 
-    private String loaiGiamGia;
-
-    private Integer hinhThucGiamgGia;
-
-    private Integer soLuong;
-
-    private Integer soLuongSuDung;
-
-    private Date ngayBatDau;
-
-    private Date ngayKetThuc;
-
-    private Integer trangThai;
+//    private Date ngayBatDau;
+//
+//    private Date ngayKetThuc;
+//
+//    private Integer hinhThucGiam;
+//
+//    private Integer trangThai;
+//    private Long mucGiam;
 }

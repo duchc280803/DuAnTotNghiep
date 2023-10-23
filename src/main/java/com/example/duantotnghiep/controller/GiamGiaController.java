@@ -2,18 +2,18 @@ package com.example.duantotnghiep.controller;
 
 import com.example.duantotnghiep.entity.ChatLieu;
 import com.example.duantotnghiep.entity.GiamGia;
+import com.example.duantotnghiep.request.CreateKhachRequest;
+import com.example.duantotnghiep.request.GiamGiaRequest;
 import com.example.duantotnghiep.response.GiamGiaResponse;
 import com.example.duantotnghiep.response.KhachHangResponse;
+import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.impl.ChatLieuServiceImpl;
 import com.example.duantotnghiep.service.impl.GiamGiaServiceimpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -31,7 +31,7 @@ public class GiamGiaController {
     }
     // search by 
     @GetMapping("searchString_bykey")
-    public ResponseEntity<GiamGiaResponse>findByKhachHangByIdHoaDon(@RequestParam(name = "key") String key) {
+    public ResponseEntity<List<GiamGiaResponse>>findByKhachHangByIdHoaDon(@RequestParam(name = "key") String key) {
         return new ResponseEntity<>(Service.findbyValueString(key), HttpStatus.OK);
     }
 
@@ -48,4 +48,9 @@ public class GiamGiaController {
     public ResponseEntity<List<GiamGiaResponse>>findByKha(@RequestParam(name = "key") Integer key) {
         return new ResponseEntity<>(Service.findbyValueStatus(key), HttpStatus.OK);
     }
+    @PostMapping("create")
+    public ResponseEntity<MessageResponse> createKhachHang(@RequestBody GiamGiaRequest createKhachRequest) {
+        return new ResponseEntity<>(Service.createGiamGia(createKhachRequest), HttpStatus.CREATED);
+    }
+
 }
