@@ -16,18 +16,26 @@ import java.util.UUID;
 public class GiamGiaRequest {
 
 
-    private UUID id;
 
-//    private String maGiamGia;
 
     private String tenGiamGia;
 
-//    private Date ngayBatDau;
-//
-//    private Date ngayKetThuc;
-//
-//    private Integer hinhThucGiam;
-//
-//    private Integer trangThai;
-//    private Long mucGiam;
+
+    private String maGiamGia;
+
+    private Date ngayBatDau;
+
+    private Date ngayKetThuc;
+
+    private Integer hinhThucGiam;
+
+    private Integer trangThai;
+    private Long mucGiam;
+    private  UUID idsanpham;
+    private  UUID idchatLieu;
+    private  UUID idmausac;
+    private  UUID idkieude;
+    private  UUID idsize;
+//  private  String image;
+
 }

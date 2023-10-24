@@ -14,16 +14,17 @@ import java.util.UUID;
 @Repository
 public interface ProductDetailRepository extends JpaRepository<SanPhamChiTiet, UUID> {
 
-    @Query("SELECT new com.example.duantotnghiep.response.ProductDetailResponse(spct.id, i.tenImage, sp.tenSanPham) " +
-            "FROM SanPhamChiTiet spct " +
-            "JOIN spct.size s" +
-            " JOIN spct.mauSac ms " +
-            "JOIN spct.kieuDe kd " +
-            "JOIN spct.sanPham sp " +
-            "JOIN sp.thuongHieu th " +
-            "JOIN sp.danhMuc dm " +
-            "JOIN sp.xuatXu xx " +
-            "JOIN spct.listImage i WHERE i.isDefault = true GROUP BY spct.id, i.tenImage, sp.tenSanPham")
-    List<ProductDetailResponse> listProductDetailResponse();
+//    @Query("SELECT new com.example.duantotnghiep.response.(spct.id, i.tenImage, sp.tenSanPham,s.size,kd.tenDe,ms.tenMauSac,ct.tenChatLieu,sp.trangThai) " +
+//            "FROM SanPhamChiTiet spct " +
+//            "JOIN spct.size s" +
+//            " JOIN spct.mauSac ms " +
+//            "JOIN spct.kieuDe kd " +
+//            "JOIN spct.sanPham sp " +
+//            "JOIN sp.thuongHieu th " +
+//            "JOIN sp.danhMuc dm " +
+//            "JOIN sp.xuatXu xx " +
+//            "JOIN spct.chatLieu ct " +
+//            "JOIN spct.listImage i WHERE i.isDefault = true GROUP BY spct.id, i.tenImage, sp.tenSanPham")
+//    List<ProductDetailResponse> listProductDetailResponse();
 
 }

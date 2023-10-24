@@ -7,6 +7,7 @@ import com.example.duantotnghiep.request.GiamGiaRequest;
 import com.example.duantotnghiep.response.GiamGiaResponse;
 import com.example.duantotnghiep.response.KhachHangResponse;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.response.ProductDetailResponse;
 import com.example.duantotnghiep.service.impl.ChatLieuServiceImpl;
 import com.example.duantotnghiep.service.impl.GiamGiaServiceimpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,21 @@ public class GiamGiaController {
     public ResponseEntity<List<GiamGiaResponse>> getAllGiamGia() {
         return new ResponseEntity<>(Service.getAll(), HttpStatus.OK);
     }
-    // search by 
+    // search by
     @GetMapping("searchString_bykey")
     public ResponseEntity<List<GiamGiaResponse>>findByKhachHangByIdHoaDon(@RequestParam(name = "key") String key) {
         return new ResponseEntity<>(Service.findbyValueString(key), HttpStatus.OK);
     }
+    @GetMapping("showproduct")
+    public ResponseEntity<List<ProductDetailResponse>> getAllProduct() {
+        return new ResponseEntity<>(Service.getAllProduct(), HttpStatus.OK);
+    }
 
+
+    @GetMapping("detail")
+    public ResponseEntity<List<ProductDetailResponse>> search(@RequestParam(name = "id") UUID id) {
+        return new ResponseEntity<>(Service.ListSearch(id), HttpStatus.OK);
+    }
 
     @GetMapping("searchDatebykey")
     public ResponseEntity<List<GiamGiaResponse>> findByKhachHangB(
@@ -43,6 +53,11 @@ public class GiamGiaController {
 
         List<GiamGiaResponse> result = Service.findbyValueDate(key1, key2);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("searchProduct_bykey")
+    public ResponseEntity<List<ProductDetailResponse>>findProduct(@RequestParam(name = "key") String key) {
+        return new ResponseEntity<>(Service.findbyProduct(key), HttpStatus.OK);
     }
     @GetMapping("searchStatus_bykey")
     public ResponseEntity<List<GiamGiaResponse>>findByKha(@RequestParam(name = "key") Integer key) {
