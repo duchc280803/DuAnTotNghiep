@@ -18,9 +18,9 @@ public class GioHangController {
 
     //TODO tạo mới 1 giỏ hàng
     @PostMapping("/tao-gio-hang")
-        public ResponseEntity<UUID> taoGioHang(@RequestParam UUID id) {
+        public ResponseEntity<UUID> taoGioHang() {
         try {
-            UUID gioHangId = gioHangService.taoGioHang(id);
+            UUID gioHangId = gioHangService.taoGioHang();
             return ResponseEntity.ok(gioHangId);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);

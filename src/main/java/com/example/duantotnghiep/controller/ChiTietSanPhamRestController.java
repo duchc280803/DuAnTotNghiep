@@ -14,7 +14,7 @@ import java.util.UUID;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/chi-tiet-sp")
-public class    ChiTietSanPhamRestController {
+public class ChiTietSanPhamRestController {
 
     @Autowired
     private ChiTietSanPhamServiceImpl chiTietSanPhamService;
@@ -32,11 +32,6 @@ public class    ChiTietSanPhamRestController {
     @GetMapping("san-pham/{id}")
     public ResponseEntity<SanPhamGetAllResponse> searchByIdSp(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(chiTietSanPhamService.getByIdSp(id), HttpStatus.OK);
-    }//close searchID
-
-    @GetMapping("san-pham-detail/{id}")
-    public ResponseEntity<?> searchDetailSanPham(@PathVariable("id") UUID id) {
-        return new ResponseEntity<>(chiTietSanPhamService.getDetailSizeToSanPham(id), HttpStatus.OK);
     }//close searchID
 
     @GetMapping("san-pham-detail-soluong")

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -18,6 +20,12 @@ public class HoaDonResponse {
     private String maHoaDon;
 
     private String tenNhanVien;
+
+    private Date ngayTao;
+
+    private String tenKhachHang;
+
+    private String loaiDon;
 
     private Integer trangThai;
 

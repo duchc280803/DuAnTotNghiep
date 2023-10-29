@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 @CrossOrigin
 @RestController
@@ -24,7 +25,7 @@ public class KhachHangController {
     }
 
     @GetMapping("search")
-    public ResponseEntity<KhachHangResponse> search(@RequestParam(name = "key") String key) {
+    public ResponseEntity<List<KhachHangResponse>> search(@RequestParam(name = "key") String key) {
         return new ResponseEntity<>(khachHangService.findByKeyToKhachHang(key), HttpStatus.OK);
     }
 

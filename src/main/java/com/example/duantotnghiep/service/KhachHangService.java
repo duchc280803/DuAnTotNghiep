@@ -14,7 +14,7 @@ public interface KhachHangService {
 
     List<KhachHangResponse> getKhachHang();
 
-    KhachHangResponse findByKeyToKhachHang(String key);
+    List<KhachHangResponse> findByKeyToKhachHang(String key);
 
     MessageResponse createKhachHang(CreateKhachRequest createKhachRequest);
 
@@ -23,4 +23,6 @@ public interface KhachHangService {
     KhachHangResponse findByKhachHangByIdHoaDon(UUID id);
 
     KhachHangResponse detailKhachHang(UUID id);
+
+    MessageResponse updateKhachVaoGioHang(UUID id, UUID idGioHang);
 }

@@ -1,16 +1,24 @@
 package com.example.duantotnghiep.service;
 
+import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonResponse;
+import com.example.duantotnghiep.response.IdGioHangResponse;
 import com.example.duantotnghiep.response.MessageResponse;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface HoaDonService {
 
-    MessageResponse taoHoaDon(String name);
+    HoaDon taoHoaDon(String name);
 
-    List<HoaDonResponse> viewHoaDonTaiQuay();
+    List<HoaDonResponse> viewHoaDonTaiQuay(Integer pageNumber, Integer pageSize);
 
-    MessageResponse updateHoaDon(HoaDonThanhToanRequest hoaDonThanhToanRequest);
+    List<HoaDonResponse> findByCodeOrder(String ma);
+
+    MessageResponse updateHoaDon(UUID idHoaDon, HoaDonThanhToanRequest hoaDonThanhToanRequest);
+
+    IdGioHangResponse showIdGioHangCt(String name);
 }
