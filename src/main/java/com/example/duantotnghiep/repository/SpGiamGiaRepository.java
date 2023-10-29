@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,9 +23,9 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
             "JOIN spct.listImage i " +
             "LEFT JOIN spct.spGiamGiaList spgg " +
             "LEFT JOIN spgg.giamGia gg " +
-            "WHERE i.isDefault = true " +
+            "WHERE i.isDefault = true AND (:tenSanPham IS NULL OR sp.tenSanPham LIKE %:tenSanPham%) " +
             "AND (spgg IS NOT NULL AND spgg.donGiaKhiGiam <> 0) " +
             "OR spgg IS NULL")
-    List<SanPhamGiamGiaResponse> getAllSpGiamGia();
+    List<SanPhamGiamGiaResponse> getAllSpGiamGia(@Param("tenSanPham") String tenSanPham);
 
 }

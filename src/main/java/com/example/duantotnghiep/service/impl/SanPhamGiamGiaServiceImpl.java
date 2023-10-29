@@ -15,7 +15,7 @@ public class SanPhamGiamGiaServiceImpl implements SanPhamGiamGiaService {
     private SpGiamGiaRepository spGiamGiaRepository;
 
     @Override
-    public List<SanPhamGiamGiaResponse> getAllSpGiamGia() {
-        return spGiamGiaRepository.getAllSpGiamGia();
+    public List<SanPhamGiamGiaResponse> getAllSpGiamGia(String tenSanPham) {
+        return spGiamGiaRepository.getAllSpGiamGia(tenSanPham);
     }
 }
