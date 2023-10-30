@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface SanPhamGiamGiaService {
 
-    List<SanPhamGiamGiaResponse> getAllSpGiamGia();
+    List<SanPhamGiamGiaResponse> getAllSpGiamGia(String tenSanPham);
 }

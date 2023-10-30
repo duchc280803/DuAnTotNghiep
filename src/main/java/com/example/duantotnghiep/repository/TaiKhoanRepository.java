@@ -15,10 +15,7 @@ import java.util.UUID;
 @Repository
 public interface TaiKhoanRepository extends JpaRepository<TaiKhoan, UUID> {
 
-    @Query("select new com.example.duantotnghiep.response.NhanVienResponse(" +
-            "tk.image,tk.username,tk.email,tk.name,tk.trangThai, tk.loaiTaiKhoan.name)" +
-            " from TaiKhoan tk JOIN tk.loaiTaiKhoan vt where vt.name = 'EMPLOYEE'")
-    Page<NhanVienResponse> getAllPage(Pageable pageable);
+
 
     Optional<TaiKhoan> findByUsername(String username);
 

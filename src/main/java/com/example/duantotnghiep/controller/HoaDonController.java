@@ -33,4 +33,6 @@ public class HoaDonController {
     public ResponseEntity<MessageResponse> taoHoaDonDetial(@RequestBody HoaDonThanhToanRequest hoaDonThanhToanRequest) {
         return new ResponseEntity<>(hoaDonService.updateHoaDon(hoaDonThanhToanRequest), HttpStatus.CREATED);
     }
+
+
 }
