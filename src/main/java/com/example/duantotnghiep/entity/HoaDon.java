@@ -104,4 +104,8 @@ public class HoaDon {
     @JsonBackReference
     private Voucher voucher;
 
+    @OneToMany(mappedBy = "hoaDon",fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<TrangThaiHoaDon> trangThaiHoaDonList;
+
 }
