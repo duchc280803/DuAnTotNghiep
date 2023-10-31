@@ -45,7 +45,7 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     @Override
     @Transactional
-    //TODO Thêm hóa đơn tại quầy
+    // TODO Thêm hóa đơn tại quầy
     public MessageResponse taoHoaDon(String name) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<TaiKhoan> findByNhanVien = taiKhoanRepository.findByUsername(name);
@@ -83,7 +83,7 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
-    public List<HoaDonResponse> viewHoaDonTaiQuay(Integer pageNumber, Integer pageSize){
+    public List<HoaDonResponse> viewHoaDonTaiQuay(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<HoaDonResponse> hoaDonResponses = hoaDonRepository.viewHoaDonTaiQuay(pageable);
         return hoaDonResponses.getContent();

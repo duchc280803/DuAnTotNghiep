@@ -5,6 +5,8 @@ import com.example.duantotnghiep.entity.GioHangChiTiet;
 import com.example.duantotnghiep.mapper.GioHangCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import com.example.duantotnghiep.entity.GioHangChiTiet;
+import com.example.duantotnghiep.mapper.GioHangCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,7 +16,8 @@ import java.util.UUID;
 
 public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, UUID> {
 
-    @Query("SELECT new com.example.duantotnghiep.mapper.GioHangCustom(gh.id, i.tenImage, sp.tenSanPham, sp.giaBan, ghct.soLuong, s.size, kd.tenDe,ms.tenMauSac) " +
+    @Query("SELECT new com.example.duantotnghiep.mapper.GioHangCustom(gh.id, i.tenImage, sp.tenSanPham, sp.giaBan, ghct.soLuong, s.size, kd.tenDe,ms.tenMauSac) "
+            +
             "FROM SanPhamChiTiet spct " +
             "JOIN spct.listImage i " +
             "JOIN spct.sanPham sp " +

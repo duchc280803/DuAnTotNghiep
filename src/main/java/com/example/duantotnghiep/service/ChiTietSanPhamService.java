@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface ChiTietSanPhamService {
-
     List<ChiTietSanPhamCustom> getAll();
 
     List<ChiTietSanPhamCustom> searchByName(String name);

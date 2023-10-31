@@ -56,21 +56,21 @@ public class SanPhamChiTiet {
     @Column(name = "qrcode")
     private String qrcode;
 
-//    @Column(name = "gioitinh")
-//    private Boolean gioiTinh;
+    // @Column(name = "gioitinh")
+    // private Boolean gioiTinh;
 
     @Column(name = "trangthai")
     private Integer trangThai;
 
-    @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sanPhamChiTiet", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<GioHangChiTiet> gioHangChiTietList;
 
-    @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sanPhamChiTiet", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<HoaDonChiTiet> hoaDonChiTietList;
 
-    @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sanPhamChiTiet", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Image> listImage;
 }
