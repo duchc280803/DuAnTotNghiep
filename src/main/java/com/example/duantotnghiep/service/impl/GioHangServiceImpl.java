@@ -18,6 +18,7 @@ public class GioHangServiceImpl implements GioHangService {
     @Autowired
     private GioHangRepository gioHangRepository;
 
+    // minh
     @Autowired
     private TaiKhoanRepository taiKhoanRepository;
 
