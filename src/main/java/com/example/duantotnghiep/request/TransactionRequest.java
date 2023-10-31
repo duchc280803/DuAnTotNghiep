@@ -15,4 +15,6 @@ public class TransactionRequest {
 
     private BigDecimal soTien;
 
+    private BigDecimal tienThua = BigDecimal.ZERO;
+
 }

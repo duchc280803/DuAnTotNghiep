@@ -5,6 +5,7 @@ import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.IdGioHangResponse;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.response.OrderCounterCartsResponse;
 import com.example.duantotnghiep.service.impl.HoaDonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,9 +33,14 @@ public class HoaDonController {
         return new ResponseEntity<>(hoaDonService.viewHoaDonTaiQuay(pageNumber, pageSize), HttpStatus.OK);
     }
 
+    @GetMapping("order-counter/{id}")
+    public ResponseEntity<OrderCounterCartsResponse> findByHoaDon(@PathVariable("id") UUID id) {
+        return new ResponseEntity<>(hoaDonService.findByHoaDon(id), HttpStatus.OK);
+    }
+
     @GetMapping("id_cart")
-    public ResponseEntity<IdGioHangResponse> showIdGioHang(@RequestParam(name = "name") String name) {
-        return new ResponseEntity<>(hoaDonService.showIdGioHangCt(name), HttpStatus.OK);
+    public ResponseEntity<IdGioHangResponse> showIdGioHang(@RequestParam(name = "id") UUID id) {
+        return new ResponseEntity<>(hoaDonService.showIdGioHangCt(id), HttpStatus.OK);
     }
 
     @GetMapping("search/{ma}")
@@ -43,7 +49,7 @@ public class HoaDonController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<HoaDon> taoHoaDon(Principal principal) {
+    public ResponseEntity<MessageResponse> taoHoaDon(Principal principal) {
         return new ResponseEntity<>(hoaDonService.taoHoaDon(principal.getName()), HttpStatus.CREATED);
     }
 

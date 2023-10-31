@@ -13,19 +13,21 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/gio-hang-chi-tiet")
+@RequestMapping("/api/gio-hang-chi-tiet/")
 public class GioHangChiTietController {
-
 
     @Autowired
     private GioHangChiTietServiceImpl gioHangChiTietService;
 
     @GetMapping("hien-thi")
-    public ResponseEntity<List<GioHangCustom>> show(@RequestParam(name = "name") String name) {
-        return ResponseEntity.ok(gioHangChiTietService.loadGH(name));
+    public ResponseEntity<List<GioHangCustom>> show(
+            @RequestParam(name = "id") UUID id,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "2") Integer pageSize) {
+        return ResponseEntity.ok(gioHangChiTietService.loadGH(id, pageNumber, pageSize));
     }
 
-    @PostMapping("/them-san-pham")
+    @PostMapping("them-san-pham")
     public ResponseEntity<MessageResponse> themSanPhamVaoGioHangChiTiet(
             @RequestParam(name = "idGioHang") UUID idGioHang,
             @RequestParam(name = "idSanPhamChiTiet") UUID idSanPhamChiTiet,
@@ -33,7 +35,7 @@ public class GioHangChiTietController {
         return new ResponseEntity<>(gioHangChiTietService.themSanPhamVaoGioHangChiTiet(idGioHang, idSanPhamChiTiet, soLuong), HttpStatus.CREATED);
     }
 
-    @PutMapping("/update-quantity")
+    @PutMapping("update-quantity")
     public ResponseEntity<String> capNhatSoLuong(
             @RequestParam(name = "idgiohangchitiet") UUID idgiohangchitiet,
             @RequestParam(name = "quantity") Integer quantity) {
@@ -43,5 +45,11 @@ public class GioHangChiTietController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest().body("Không tìm thấy sản phẩm trong giỏ hàng.");
         }
+    }
+
+    @DeleteMapping("delete_product")
+    public ResponseEntity<Void> deleteProductInCart(@RequestParam("id") UUID id) {
+        gioHangChiTietService.deleteProductInCart(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

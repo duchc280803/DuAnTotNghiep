@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface TransactionService {
 
-    MessageResponse createTransaction(UUID idHoaDon, String name,Integer phuongThuc, TransactionRequest transactionRequest);
+    MessageResponse createTransaction(UUID idHoaDon, UUID id,Integer phuongThuc, TransactionRequest transactionRequest);
 
-    List<TransactionResponse> findAllTran(String name);
+    List<TransactionResponse> findAllTran(UUID id);
 }

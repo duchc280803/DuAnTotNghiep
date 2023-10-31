@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.service.impl;
 
+import com.example.duantotnghiep.config.VnPayConfig;
 import com.example.duantotnghiep.entity.HinhThucThanhToan;
 import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.entity.LoaiHinhThucThanhToan;
@@ -34,12 +35,9 @@ public class TransactionServiceImpl implements TransactionService {
     private HoaDonRepository hoaDonRepository;
 
     @Override
-    public MessageResponse createTransaction(UUID idHoaDon, String name, Integer phuongThuc,TransactionRequest transactionRequest) {
-        Optional<TaiKhoan> taiKhoan = khachHangRepository.findByName(name);
+    public MessageResponse createTransaction(UUID idHoaDon, UUID id, Integer phuongThuc,TransactionRequest transactionRequest) {
+        Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
-        Random rand = new Random();
-        int randomNumber = rand.nextInt(100000);
-        String maTransaction = String.format("HTTT%03d", randomNumber);
 
         HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
         hinhThucThanhToan.setId(UUID.randomUUID());
@@ -47,14 +45,15 @@ public class TransactionServiceImpl implements TransactionService {
         hinhThucThanhToan.setTaiKhoan(taiKhoan.get());
         hinhThucThanhToan.setTongSoTien(transactionRequest.getSoTien());
         hinhThucThanhToan.setPhuongThucThanhToan(phuongThuc);
-        hinhThucThanhToan.setCodeTransaction(maTransaction);
+        hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
         hinhThucThanhToan.setHoaDon(hoaDon.get());
+        hinhThucThanhToan.setTrangThai(1);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
         return MessageResponse.builder().message("Thanh toán thành công").build();
     }
 
     @Override
-    public List<TransactionResponse> findAllTran(String name) {
-        return hinhThucThanhToanRepository.findAllTran(name);
+    public List<TransactionResponse> findAllTran(UUID id) {
+        return hinhThucThanhToanRepository.findAllTran(id);
     }
 }

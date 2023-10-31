@@ -8,6 +8,7 @@ import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.IdGioHangResponse;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.response.OrderCounterCartsResponse;
 import com.example.duantotnghiep.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,14 +40,23 @@ public class HoaDonServiceImpl implements HoaDonService {
     @Autowired
     private LoaiDonRepository loaiDonRepository;
 
+    @Autowired
+    private TrangThaiHoaDonRepository trangThaiHoaDonRepository;
+
     @Override
     @Transactional
     //TODO Thêm hóa đơn tại quầy
-    public HoaDon taoHoaDon(String name) {
+    public MessageResponse taoHoaDon(String name) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<TaiKhoan> findByNhanVien = taiKhoanRepository.findByUsername(name);
 
         Optional<LoaiDon> findByLoaiDon = loaiDonRepository.findByTrangThai(TypeOrderEnums.TAI_QUAY.getValue());
+
+        TaiKhoan taiKhoan = new TaiKhoan();
+        taiKhoan.setId(UUID.randomUUID());
+        taiKhoan.setName("Khách lẻ");
+        taiKhoan.setTrangThai(1);
+        taiKhoanRepository.save(taiKhoan);
 
         Random rand = new Random();
         int randomNumber = rand.nextInt(100000);
@@ -57,8 +67,19 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDon.setNgayTao(timestamp);
         hoaDon.setTrangThai(StatusOrderEnums.CHO_THANH_TOAN.getValue());
         hoaDon.setTaiKhoanNhanVien(findByNhanVien.get());
+        hoaDon.setTaiKhoanKhachHang(taiKhoan);
         hoaDon.setLoaiDon(findByLoaiDon.get());
-        return hoaDonRepository.save(hoaDon);
+        hoaDonRepository.save(hoaDon);
+
+        TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+        trangThaiHoaDon.setId(UUID.randomUUID());
+        trangThaiHoaDon.setTrangThai(1);
+        trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setGhiChu("Nhân viên tạo đơn cho khách");
+        trangThaiHoaDon.setHoaDon(hoaDon);
+        trangThaiHoaDonRepository.save(trangThaiHoaDon);
+
+        return MessageResponse.builder().message("Tạo hóa đơn thành công").build();
     }
 
     @Override
@@ -101,7 +122,12 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
-    public IdGioHangResponse showIdGioHangCt(String name) {
-        return hoaDonRepository.showIdGioHangCt(name);
+    public OrderCounterCartsResponse findByHoaDon(UUID id) {
+        return hoaDonRepository.findByHoaDon(id);
+    }
+
+    @Override
+    public IdGioHangResponse showIdGioHangCt(UUID id) {
+        return hoaDonRepository.showIdGioHangCt(id);
     }
 }

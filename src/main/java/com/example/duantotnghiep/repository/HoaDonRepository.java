@@ -3,6 +3,7 @@ package com.example.duantotnghiep.repository;
 import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.IdGioHangResponse;
+import com.example.duantotnghiep.response.OrderCounterCartsResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,9 +35,16 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
             "ORDER BY hd.ngayTao DESC")
     List<HoaDonResponse> findByCodeOrder(@Param("ma") String ma);
 
+    @Query("SELECT NEW com.example.duantotnghiep.response.OrderCounterCartsResponse" +
+            "(tkkh.id, hd.ma, tkkh.name, hd.ngayTao, dc.diaChi, tkkh.email, tkkh.soDienThoai)" +
+            "FROM HoaDon hd " +
+            "JOIN hd.taiKhoanKhachHang tkkh " +
+            "LEFT JOIN tkkh.diaChiList dc WHERE hd.id = :id")
+    OrderCounterCartsResponse findByHoaDon(@Param("id") UUID id);
+
     @Query("SELECT new com.example.duantotnghiep.response.IdGioHangResponse(gh.id) " +
             "FROM HoaDon hd " +
             "JOIN hd.taiKhoanKhachHang tk " +
-            "JOIN tk.gioHangList gh WHERE hd.trangThai = 1 AND tk.name = :name")
-    IdGioHangResponse showIdGioHangCt(@Param("name") String name);
+            "JOIN tk.gioHangList gh WHERE hd.trangThai = 1 AND tk.id = :id")
+    IdGioHangResponse showIdGioHangCt(@Param("id") UUID id);
 }

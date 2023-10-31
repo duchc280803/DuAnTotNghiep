@@ -42,6 +42,6 @@ public class GioHangChiTiet {
     private BigDecimal donGiaKhiGiam;
 
     @Column(name = "trangthai")
-    private BigDecimal trangThai;
+    private Integer trangThai;
 
 }

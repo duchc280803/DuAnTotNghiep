@@ -85,6 +85,10 @@ public class HoaDon {
     @JsonManagedReference
     private List<HinhThucThanhToan> hinhThucThanhToanList;
 
+    @OneToMany(mappedBy = "hoaDon",fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<TrangThaiHoaDon> trangThaiHoaDonList;
+
     @ManyToOne
     @JoinColumn(name = "idkhachhang")
     @JsonBackReference

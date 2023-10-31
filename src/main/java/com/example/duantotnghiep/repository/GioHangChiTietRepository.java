@@ -3,6 +3,8 @@ package com.example.duantotnghiep.repository;
 import com.example.duantotnghiep.entity.GioHang;
 import com.example.duantotnghiep.entity.GioHangChiTiet;
 import com.example.duantotnghiep.mapper.GioHangCustom;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,8 +24,8 @@ public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, 
             "JOIN spct.gioHangChiTietList ghct " +
             "JOIN ghct.gioHang gh " +
             "JOIN gh.taiKhoan tk " +
-            "WHERE i.isDefault = true AND tk.name = :name")
-    List<GioHangCustom> loadOnGioHang(@Param("name") String name);
+            "WHERE i.isDefault = true AND tk.id = :id")
+    Page<GioHangCustom> loadOnGioHang(@Param("id") UUID id, Pageable pageable);
 
     // Tìm mục trong giỏ hàng chi tiết dựa trên idGioHang và idSanPhamChiTiet
     GioHangChiTiet findByGioHangAndSanPhamChiTiet_Id(GioHang gioHang, UUID idSanPhamChiTiet);
