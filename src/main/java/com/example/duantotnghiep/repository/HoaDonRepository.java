@@ -28,10 +28,9 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
     List<HoaDonResponse> viewHoaDonTaiQuay();
 
     // TODO Hiển thị hóa đơn của Admin
-    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonDTOResponse(hd.id, hd.ma, tkkh.name, tkkh.soDienThoai, hd.thanhTien, SUM(hdct.tienGiamGia), hd.ngayTao, tknv.name, ld.tenLoaiDon, hd.trangThai)\n" +
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonDTOResponse(hd.id, hd.ma, hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.thanhTien, SUM(hdct.tienGiamGia), hd.ngayTao, tknv.name, ld.tenLoaiDon, hd.trangThai)\n" +
             "FROM HoaDon hd\n" +
             "LEFT JOIN hd.hoaDonChiTietList hdct\n" +
-            "LEFT JOIN hd.taiKhoanKhachHang tkkh\n" +
             "LEFT JOIN hd.taiKhoanNhanVien tknv\n" +
             "JOIN hd.loaiDon ld\n" +
             "WHERE (:trangThaiHD IS NULL OR hd.trangThai = :trangThaiHD) AND (:loaiDon IS NULL OR ld.trangThai = :loaiDon) AND (:tenNhanVien IS NULL OR tknv.name = :tenNhanVien)" +
@@ -41,10 +40,9 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
     Page<HoaDonDTOResponse> getAllHoaDonAdmin(@Param("trangThaiHD") Integer trangThaiHD, @Param("loaiDon") Integer loaiDon, @Param("tenNhanVien") String tenNhanVien, @Param("ma") String ma, @Param("soDienThoai") String soDienThoai, Pageable pageable);
 
     // TODO Hiển thị hóa đơn Staff
-    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonDTOResponse(hd.id, hd.ma, tkkh.name, tkkh.soDienThoai,hd.thanhTien, SUM(hdct.tienGiamGia), hd.ngayTao, tknv.name, ld.tenLoaiDon, hd.trangThai)\n" +
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonDTOResponse(hd.id, hd.ma, hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.thanhTien, SUM(hdct.tienGiamGia), hd.ngayTao, tknv.name, ld.tenLoaiDon, hd.trangThai)\n" +
             "FROM HoaDon hd\n" +
             "LEFT JOIN hd.hoaDonChiTietList hdct\n" +
-            "LEFT JOIN hd.taiKhoanKhachHang tkkh\n" +
             "LEFT JOIN hd.taiKhoanNhanVien tknv\n" +
             "JOIN hd.loaiDon ld\n" +
             "WHERE (:trangThaiHD IS NULL OR hd.trangThai = :trangThaiHD) AND (:loaiDon IS NULL OR ld.trangThai = :loaiDon) " +
@@ -54,7 +52,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
     Page<HoaDonDTOResponse> getAllHoaDonStaff(@Param("trangThaiHD") Integer trangThaiHD, @Param("loaiDon") Integer loaiDon, @Param("ma") String ma, @Param("soDienThoai") String soDienThoai, @Param("username") String username, Pageable pageable);
 
     // TODO Hiển thị hóa đơn chưa thanh toán cho staff
-    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonDTOResponse(hd.id, hd.ma, tkkh.name, tkkh.soDienThoai, hd.thanhTien, SUM(hdct.tienGiamGia), hd.ngayTao, tknv.name, ld.tenLoaiDon, hd.trangThai)\n" +
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonDTOResponse(hd.id, hd.ma, hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.thanhTien, SUM(hdct.tienGiamGia), hd.ngayTao, tknv.name, ld.tenLoaiDon, hd.trangThai)\n" +
             "FROM HoaDon hd\n" +
             "LEFT JOIN hd.hoaDonChiTietList hdct\n" +
             "LEFT JOIN hd.taiKhoanKhachHang tkkh\n" +
@@ -67,17 +65,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
     Page<HoaDonDTOResponse> getAllHoaDonCTTStaff(@Param("loaiDon") Integer loaiDon, @Param("ma") String ma, @Param("soDienThoai") String soDienThoai, Pageable pageable);
 
 
-    @Query(value = "SELECT TOP 1 TTHD.trangthai, LD.tenloaidon,\n" +
-            "CONCAT(DC.diachi, ' - ', DC.Xa, ' - ', DC.huyen, ' - ', DC.tinh, ' - ', DC.quocgia) as diachi,\n" +
-            "TKKH.fullname, TKKH.sodienthoai, TTHD.ghichu\n" +
-            "FROM\n" +
-            "hoadon HD JOIN loaidon LD ON HD.idloaidon = LD.id\n" +
-            "JOIN trangthaihoadon TTHD ON TTHD.idhoadon = HD.id\n" +
-            "LEFT JOIN taikhoan TKKH ON TKKH.id = HD.idkhachhang \n" +
-            "LEFT JOIN diachi DC ON DC.idtaikhoan = TKKH.id\n" +
-            "WHERE TTHD.idhoadon = ?1\n" +
-            "ORDER BY TTHD.thoigian DESC", nativeQuery = true)
-    ThongTinDonHang getThongTinDonHang(UUID idHoaDon);
+
 
 
 

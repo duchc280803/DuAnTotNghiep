@@ -130,9 +130,11 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
 
+
     @Override
     public ThongTinDonHang getThongTinDonHang(UUID idHoaDon) {
         return hoaDonRepository.getThongTinDonHang(idHoaDon);
     }
+
 
 }

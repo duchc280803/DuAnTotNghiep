@@ -28,6 +28,6 @@ public interface HoaDonService {
     List<HoaDonDTOResponse> getAllHoaDonCTTStaff(Integer loaiDon, String ma, String soDienThoai, Integer pageNumber, Integer pageSize);
 
 
-    ThongTinDonHang getThongTinDonHang(UUID idHoaDon);
 
+    ThongTinDonHang getThongTinDonHang(UUID idHoaDon);
 }
