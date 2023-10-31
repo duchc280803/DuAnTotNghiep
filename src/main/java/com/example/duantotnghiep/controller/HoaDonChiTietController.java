@@ -1,9 +1,9 @@
 package com.example.duantotnghiep.controller;
 
-import com.example.duantotnghiep.response.HoaDonResponse;
-import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.entity.HoaDon;
+import com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse;
 import com.example.duantotnghiep.response.ThongTinDonHang;
-import com.example.duantotnghiep.service.impl.HoaDonServiceImpl;
+import com.example.duantotnghiep.service.impl.HoaDonChiTietServiceImpl;
 import com.example.duantotnghiep.service.impl.TrangThaiHoaDonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,18 +17,24 @@ import java.util.UUID;
 @RequestMapping("/api/v1/hoa-don-chi-tiet/")
 public class HoaDonChiTietController {
     @Autowired
-    private HoaDonServiceImpl hoaDonService;
+    private HoaDonChiTietServiceImpl hoaDonChiTietService;
 
     @Autowired
     private TrangThaiHoaDonServiceImpl trangThaiHoaDonService;
 
-    @GetMapping("hien-thi")
-    public ResponseEntity<ThongTinDonHang> viewThongTinDonHang(@RequestParam("idHoaDon") UUID idHoaDon) {
-        return new ResponseEntity<>(hoaDonService.getThongTinDonHang(idHoaDon), HttpStatus.OK);
+    @GetMapping("hien-thi-don/{idHoaDon}")
+    public ResponseEntity<ThongTinDonHang> viewThongTinDonHang(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
+        return new ResponseEntity<>(hoaDonChiTietService.getThongTinDonHang(idHoaDon), HttpStatus.OK);
     }
-    @PutMapping("/hien-thi/{hoadonId}")
+    @GetMapping("hien-thi-san-pham/{idHoaDon}")
+    public ResponseEntity<List<SanPhamHoaDonChiTietResponse>> getSanPhamHDCT(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
+        return new ResponseEntity<>(hoaDonChiTietService.getSanPhamHDCT(idHoaDon), HttpStatus.OK);
+    }
+
+    @PostMapping("hien-thi-status/{hoadonId}")
     public ResponseEntity<?> updateTrangThaiHoaDon(@PathVariable UUID hoadonId, @RequestBody Integer newTrangThai, @RequestBody String ghiChu) {
         trangThaiHoaDonService.updateTrangThaiHoaDon(hoadonId, newTrangThai,ghiChu);
         return ResponseEntity.ok("Trạng thái hóa đơn đã được cập nhật.");
     }
+
 }

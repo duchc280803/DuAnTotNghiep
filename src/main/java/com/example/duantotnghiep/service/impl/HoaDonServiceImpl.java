@@ -128,8 +128,5 @@ public class HoaDonServiceImpl implements HoaDonService {
         return pageList.getContent();
     }
 
-    @Override
-    public ThongTinDonHang getThongTinDonHang(UUID idHoaDon) {
-        return hoaDonRepository.getThongTinDonHang(idHoaDon);
-    }
+
 }

@@ -62,17 +62,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
     Page<HoaDonDTOResponse> getAllHoaDonCTTStaff(@Param("loaiDon") Integer loaiDon, @Param("ma") String ma, @Param("soDienThoai") String soDienThoai, Pageable pageable);
 
 
-    @Query(value = "SELECT TOP 1 TTHD.trangthai, LD.tenloaidon,\n" +
-            "CONCAT(DC.diachi, ' - ', DC.Xa, ' - ', DC.huyen, ' - ', DC.tinh, ' - ', DC.quocgia) as diachi,\n" +
-            "TKKH.fullname, TKKH.sodienthoai, TTHD.ghichu\n" +
-            "FROM\n" +
-            "hoadon HD JOIN loaidon LD ON HD.idloaidon = LD.id\n" +
-            "JOIN trangthaihoadon TTHD ON TTHD.idhoadon = HD.id\n" +
-            "LEFT JOIN taikhoan TKKH ON TKKH.id = HD.idkhachhang \n" +
-            "LEFT JOIN diachi DC ON DC.idtaikhoan = TKKH.id\n" +
-            "WHERE TTHD.idhoadon = ?1\n" +
-            "ORDER BY TTHD.thoigian DESC", nativeQuery = true)
-    ThongTinDonHang getThongTinDonHang(UUID idHoaDon);
+
 
 
 }
