@@ -16,17 +16,6 @@ public class GioHangController {
     @Autowired
     private GioHangServiceImpl gioHangService;
 
-    //TODO tạo mới 1 giỏ hàng
-    @PostMapping("/tao-gio-hang")
-        public ResponseEntity<UUID> taoGioHang() {
-        try {
-            UUID gioHangId = gioHangService.taoGioHang();
-            return ResponseEntity.ok(gioHangId);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
-
     @PutMapping("/update")
     public ResponseEntity<MessageResponse> updateGioHang(@RequestParam("idGioHang") UUID idGioHang,
                                                          @RequestParam("idKhachHang") UUID idAccount) {

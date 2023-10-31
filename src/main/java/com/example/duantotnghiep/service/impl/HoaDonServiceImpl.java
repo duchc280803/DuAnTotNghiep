@@ -1,8 +1,7 @@
 package com.example.duantotnghiep.service.impl;
 
 import com.example.duantotnghiep.entity.*;
-import com.example.duantotnghiep.enums.TypeOrderEnums;
-import com.example.duantotnghiep.enums.StatusOrderEnums;
+import com.example.duantotnghiep.enums.*;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonResponse;
@@ -43,6 +42,9 @@ public class HoaDonServiceImpl implements HoaDonService {
     @Autowired
     private TrangThaiHoaDonRepository trangThaiHoaDonRepository;
 
+    @Autowired
+    private GioHangRepository gioHangRepository;
+
     @Override
     @Transactional
     //TODO Thêm hóa đơn tại quầy
@@ -65,20 +67,26 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDon.setId(UUID.randomUUID());
         hoaDon.setMa(maHd);
         hoaDon.setNgayTao(timestamp);
-        hoaDon.setTrangThai(StatusOrderEnums.CHO_THANH_TOAN.getValue());
+        hoaDon.setTrangThai(StatusOrderEnums.CHO_XAC_NHAN.getValue());
         hoaDon.setTaiKhoanNhanVien(findByNhanVien.get());
         hoaDon.setTaiKhoanKhachHang(taiKhoan);
         hoaDon.setLoaiDon(findByLoaiDon.get());
         hoaDonRepository.save(hoaDon);
 
+        GioHang gioHang = new GioHang();
+        gioHang.setId(UUID.randomUUID());
+        gioHang.setTaiKhoan(taiKhoan);
+        gioHang.setNgayTao(timestamp);
+        gioHang.setTrangThai(StatusCartEnums.CHUA_CO_SAN_PHAM.getValue());
+        gioHangRepository.save(gioHang);
+
         TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
         trangThaiHoaDon.setId(UUID.randomUUID());
-        trangThaiHoaDon.setTrangThai(1);
+        trangThaiHoaDon.setTrangThai(StatusOrderDetailEnums.HOAN_THANH.getValue());
         trangThaiHoaDon.setThoiGian(timestamp);
         trangThaiHoaDon.setGhiChu("Nhân viên tạo đơn cho khách");
         trangThaiHoaDon.setHoaDon(hoaDon);
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
-
         return MessageResponse.builder().message("Tạo hóa đơn thành công").build();
     }
 
@@ -100,13 +108,16 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDon.get().setNgayNhan(new java.sql.Date(System.currentTimeMillis()));
         hoaDon.get().setNgayThanhToan(new java.sql.Date(System.currentTimeMillis()));
         hoaDon.get().setTienKhachTra(hoaDonThanhToanRequest.getTienKhachTra());
+        hoaDon.get().setTienThua(hoaDonThanhToanRequest.getTienThua());
         hoaDon.get().setThanhTien(hoaDonThanhToanRequest.getTongTien());
+        hoaDon.get().setTienShip(hoaDonThanhToanRequest.getTienShip());
         hoaDon.get().setTrangThai(5);
         hoaDonRepository.save(hoaDon.get());
 
         for (UUID idGioHangChiTiet : hoaDonThanhToanRequest.getGioHangChiTietList()) {
             Optional<GioHangChiTiet> gioHangChiTiet = gioHangChiTietRepository.findById(idGioHangChiTiet);
-
+            gioHangChiTiet.get().setTrangThai(StatusCartDetailEnums.DA_THANH_TOAN.getValue());
+            gioHangChiTietRepository.save(gioHangChiTiet.get());
             if (gioHangChiTiet.isPresent()) {
                 HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
                 hoaDonChiTiet.setId(UUID.randomUUID());

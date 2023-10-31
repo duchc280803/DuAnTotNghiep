@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,9 +19,11 @@ public class HoaDonThanhToanRequest {
 
     private BigDecimal tongTien;
 
-    private BigDecimal tienKhachTra;
+    private BigDecimal tienKhachTra;    
 
-    private Integer phuongThuongThanhToan;
+    private BigDecimal tienThua;
+
+    private BigDecimal tienShip;
 
     private List<UUID> gioHangChiTietList;
 }

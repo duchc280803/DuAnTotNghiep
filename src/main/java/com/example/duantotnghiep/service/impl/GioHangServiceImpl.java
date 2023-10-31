@@ -21,18 +21,6 @@ public class GioHangServiceImpl implements GioHangService {
     @Autowired
     private TaiKhoanRepository taiKhoanRepository;
 
-    public UUID taoGioHang() {
-        // tìm theo username
-        GioHang gioHang = new GioHang();
-        gioHang.setId(UUID.randomUUID());
-
-        gioHang.setNgayTao(new Date(System.currentTimeMillis()));
-        gioHang.setTrangThai(1);
-
-        GioHang gioHangMoi = gioHangRepository.save(gioHang);
-        return gioHangMoi.getId();
-    }
-
     @Override
     public MessageResponse updateGioHang(UUID idGioHang, UUID idAccount) {
         var gioHang = gioHangRepository.findById(idGioHang);
