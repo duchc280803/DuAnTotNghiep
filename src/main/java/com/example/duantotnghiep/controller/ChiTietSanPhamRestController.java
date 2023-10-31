@@ -34,10 +34,10 @@ public class ChiTietSanPhamRestController {
         return new ResponseEntity<>(chiTietSanPhamService.getByIdSp(id), HttpStatus.OK);
     }// close searchID
 
-    @GetMapping("san-pham-detail/{id}")
-    public ResponseEntity<?> searchDetailSanPham(@PathVariable("id") UUID id) {
-        return new ResponseEntity<>(chiTietSanPhamService.getDetailSizeToSanPham(id), HttpStatus.OK);
-    }// close searchID
+//    @GetMapping("san-pham-detail/{id}")
+//    public ResponseEntity<?> searchDetailSanPham(@PathVariable("id") UUID id) {
+//        return new ResponseEntity<>(chiTietSanPhamService.getDetailSizeToSanPham(id), HttpStatus.OK);
+//    }// close searchID
 
     @GetMapping("san-pham-detail-soluong")
     public ResponseEntity<DetailQuantityToSizeReponse> getDetailQuantityToSizeReponse(

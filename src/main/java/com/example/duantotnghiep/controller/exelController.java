@@ -22,11 +22,11 @@ public class exelController {
     @Autowired
     private ExcelReader excelReader;
 
-    @PostMapping("/uploadExcel")
-    public ResponseEntity<String> uploadExcel(@RequestParam("file") MultipartFile file) {
-        List<ChatLieu> entities = excelReader.readExcel(file);
-        service.saveAll(entities);
-
-        return ResponseEntity.ok("Data imported successfully.");
-    }
+//    @PostMapping("/uploadExcel")
+//    public ResponseEntity<String> uploadExcel(@RequestParam("file") MultipartFile file) {
+//        List<ChatLieu> entities = excelReader.readExcel(file);
+//        service.saveAll(entities);
+//
+//        return ResponseEntity.ok("Data imported successfully.");
+//    }
 }
