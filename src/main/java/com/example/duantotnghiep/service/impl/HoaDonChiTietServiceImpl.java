@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.service.impl;
 
 import com.example.duantotnghiep.repository.HoaDonChiTietRepository;
+import com.example.duantotnghiep.response.HinhThucThanhToanResponse;
 import com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse;
 import com.example.duantotnghiep.response.ThongTinDonHang;
 import com.example.duantotnghiep.service.HoaDonChiTietService;
@@ -23,5 +24,10 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     @Override
     public List<SanPhamHoaDonChiTietResponse> getSanPhamHDCT(UUID idHoaDon) {
         return hoaDonChiTietRepository.getSanPhamHDCT(idHoaDon);
+    }
+
+    @Override
+    public List<HinhThucThanhToanResponse> getLichSuThanhToan(UUID idHoaDon) {
+        return hoaDonChiTietRepository.getLichSuThanhToan(idHoaDon);
     }
 }

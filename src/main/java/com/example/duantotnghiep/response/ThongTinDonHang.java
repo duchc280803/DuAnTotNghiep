@@ -7,9 +7,9 @@ public interface ThongTinDonHang {
 
     String getDiaChi();
 
-    String getFullName();
+    String getTenNguoiNhan();
 
-    String getSoDienThoai();
+    String getSdtNguoiNhan();
 
     String getGhiChu();
 
