@@ -33,7 +33,7 @@ public class ThuongHieu {
     @Column(name = "trangthai")
     private Integer trangThai;
 
-    @OneToMany(mappedBy = "thuongHieu",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "thuongHieu", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<SanPham> sanPhamList;
 

@@ -1,6 +1,9 @@
 package com.example.duantotnghiep.controller;
 
 import com.example.duantotnghiep.mapper.GioHangCustom;
+import com.example.duantotnghiep.entity.GioHang;
+import com.example.duantotnghiep.mapper.GioHangCustom;
+import com.example.duantotnghiep.repository.GioHangRepository;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.impl.GioHangChiTietServiceImpl;
 import jakarta.persistence.EntityNotFoundException;
@@ -32,7 +35,9 @@ public class GioHangChiTietController {
             @RequestParam(name = "idGioHang") UUID idGioHang,
             @RequestParam(name = "idSanPhamChiTiet") UUID idSanPhamChiTiet,
             @RequestParam(name = "soLuong") int soLuong) {
-        return new ResponseEntity<>(gioHangChiTietService.themSanPhamVaoGioHangChiTiet(idGioHang, idSanPhamChiTiet, soLuong), HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                gioHangChiTietService.themSanPhamVaoGioHangChiTiet(idGioHang, idSanPhamChiTiet, soLuong),
+                HttpStatus.CREATED);
     }
 
     @PutMapping("update-quantity")

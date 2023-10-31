@@ -77,15 +77,15 @@ public class HoaDon {
     @Column(name = "qrcode")
     private String qrcode;
 
-    @OneToMany(mappedBy = "hoaDon",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hoaDon", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<HoaDonChiTiet> hoaDonChiTietList;
 
-    @OneToMany(mappedBy = "hoaDon",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hoaDon", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<HinhThucThanhToan> hinhThucThanhToanList;
 
-    @OneToMany(mappedBy = "hoaDon",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hoaDon", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<TrangThaiHoaDon> trangThaiHoaDonList;
 

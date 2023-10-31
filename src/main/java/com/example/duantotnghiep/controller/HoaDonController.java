@@ -6,6 +6,9 @@ import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.IdGioHangResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.OrderCounterCartsResponse;
+import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
+import com.example.duantotnghiep.response.HoaDonResponse;
+import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.impl.HoaDonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,7 +58,7 @@ public class HoaDonController {
 
     @PostMapping("create-hoa-don-chi-tiet")
     public ResponseEntity<MessageResponse> taoHoaDonDetial(@RequestParam("idHoaDon") UUID idHoaDon,
-                                                           @RequestBody HoaDonThanhToanRequest hoaDonThanhToanRequest) {
+            @RequestBody HoaDonThanhToanRequest hoaDonThanhToanRequest) {
         return new ResponseEntity<>(hoaDonService.updateHoaDon(idHoaDon, hoaDonThanhToanRequest), HttpStatus.CREATED);
     }
 

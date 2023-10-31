@@ -1,6 +1,5 @@
 package com.example.duantotnghiep.config;
 
-
 import com.example.duantotnghiep.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -50,9 +49,14 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/chat-lieu/**").permitAll()
                         .requestMatchers("/api/v1/san-pham-giam-gia/**").permitAll()
                         .requestMatchers("/api/v1/transaction/**").permitAll()
+                        .requestMatchers("/api/v1/giam-gia/**").permitAll()
+                        .requestMatchers("/api/v1/invoice/**").permitAll()
+                        .requestMatchers("/api/v1/chat-lieu/**").permitAll()
+                        // .requestMatchers("/api/v1/exel/**").permitAll()
                         .anyRequest()
                         .authenticated())
-                .sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(
+                        sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();

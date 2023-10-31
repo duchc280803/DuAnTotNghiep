@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/khach-hang/")
@@ -41,7 +42,7 @@ public class KhachHangController {
 
     @PutMapping("update-hoa-don")
     public ResponseEntity<MessageResponse> updateHoaDon(@RequestParam(name = "id") UUID id,
-                                                        @RequestParam(name = "idHoaDon") UUID idHoaDon) {
+            @RequestParam(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(khachHangService.updateHoaDon(id, idHoaDon), HttpStatus.OK);
     }
 
