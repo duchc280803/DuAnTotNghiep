@@ -36,6 +36,15 @@ public class GiamGiaResponse {
     private Integer trangThai;
     private Long mucGiam;
 
+    public GiamGiaResponse(UUID id, String maGiamGia, String tenGiamGia, Date ngayBatDau, Date ngayKetThuc, Integer hinhThucGiam, Integer trangThai) {
+        this.id = id;
+        this.maGiamGia = maGiamGia;
+        this.tenGiamGia = tenGiamGia;
+        this.ngayBatDau = ngayBatDau;
+        this.ngayKetThuc = ngayKetThuc;
+        this.hinhThucGiam = hinhThucGiam;
+        this.trangThai = trangThai;
+    }
 //    public GiamGiaResponse(UUID id, String maGiamGia, String tenGiamGia, Date ngayBatDau, Date ngayKetThuc, Integer hinhThucGiam, Integer trangThai, Long mucGiam) {
 //        this.id = id;
 //        this.maGiamGia = maGiamGia;

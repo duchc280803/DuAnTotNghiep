@@ -5,14 +5,18 @@ import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.CreateKhachRequest;
 import com.example.duantotnghiep.request.GiamGiaRequest;
+import com.example.duantotnghiep.response.GiamGiaDetailResponse;
 import com.example.duantotnghiep.response.GiamGiaResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.ProductDetailResponse;
 import com.example.duantotnghiep.service.GiamGiaService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -39,14 +43,15 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     private MauSacRepository msRepository;
     @Autowired
     private ImageRepository iRepository;
+
     @Override
     public List<GiamGiaResponse> getAll() {
-//        List<GiamGiaResponse> allGiamGia = Repository.listGiamGia();
-//
-//        // Lấy ra top 3 bản ghi đầu tiên
-//        List<GiamGiaResponse> top3Records = allGiamGia.stream().limit(3).collect(Collectors.toList());
-return Repository.listGiamGia();
-//        return top3Records;
+        return Repository.listGiamGia();
+    }
+
+    @Override
+    public Page<GiamGiaResponse> getAll(Pageable pageable) {
+        return Repository.listGiamGias(pageable);
     }
 
     @Override
@@ -99,59 +104,76 @@ return Repository.listGiamGia();
     }
 
     @Override
+    public List<GiamGiaDetailResponse> ListGiamGiaDeatil(UUID id) {
+        return Repository.listGiamGiaDetail(id);
+    }
+
+    @Override
     public MessageResponse createGiamGia(GiamGiaRequest createKhachRequest) {
         // Tạo đối tượng GiamGia
         GiamGia giamGia = new GiamGia();
         giamGia.setId(UUID.randomUUID());
-        giamGia.setTenGiamGia(createKhachRequest.getTenGiamGia());
         giamGia.setMaGiamGia(createKhachRequest.getMaGiamGia());
+        giamGia.setTenGiamGia(createKhachRequest.getTenGiamGia());
         giamGia.setNgayBatDau(createKhachRequest.getNgayBatDau());
         giamGia.setNgayKetThuc(createKhachRequest.getNgayKetThuc());
         giamGia.setHinhThucGiam(createKhachRequest.getHinhThucGiam());
         giamGia.setTrangThai(createKhachRequest.getTrangThai());
-
-        // Lưu đối tượng GiamGia vào Repository
         Repository.save(giamGia);
-
-//
-            SanPham sanPham = spRepository.findById(createKhachRequest.getIdsanpham()).orElse(null);
-           ChatLieu cl = clRepository.findById(createKhachRequest.getIdchatLieu()).orElse(null);
-        MauSac ms = msRepository.findById(createKhachRequest.getIdmausac()).orElse(null);
-        Size s = sizeRepository.findById(createKhachRequest.getIdsize()).orElse(null);
-        KieuDe kd = kdRepository.findById(createKhachRequest.getIdkieude()).orElse(null);
-            // Tạo đối tượng SanPhamChiTiet
-
-            SanPhamChiTiet sanPhamChiTiet = new SanPhamChiTiet();
-            sanPhamChiTiet.setId(UUID.randomUUID());
-        sanPhamChiTiet.setSanPham(sanPham);
-        sanPhamChiTiet.setChatLieu(cl);
-        sanPhamChiTiet.setSize(s);
-        sanPhamChiTiet.setKieuDe(kd);
-        sanPhamChiTiet.setMauSac(ms);
-        System.out.println("SanPham ctID: " + sanPhamChiTiet.getId());
-        spctRepository.save(sanPhamChiTiet);
-// anh
-        Image i = new Image();
-        i.setId(UUID.randomUUID());
-//        i.setTenImage(createKhachRequest.getImage());
-        i.setSanPhamChiTiet(sanPhamChiTiet);
-i.setIsDefault(true);
-i.setTrangThai(1);
-iRepository.save(i);
-        // Tạo đối tượng SpGiamGia và cài đặt các thuộc tính
-        SpGiamGia spGiamGia = new SpGiamGia();
-        spGiamGia.setId(UUID.randomUUID());
-        spGiamGia.setMucGiam(createKhachRequest.getMucGiam());
-        spGiamGia.setGiamGia(giamGia);
-        spGiamGia.setSanPhamChiTiet(sanPhamChiTiet);
-
-        // Lưu đối tượng SpGiamGia vào Repository
-        spggRepository.save(spGiamGia);
-
+        for (UUID sanPhamId : createKhachRequest.getIdsanpham()) {
+            SanPham sanPham= spRepository.findById(sanPhamId).orElse(null);
+            if (sanPham != null) {
+                SpGiamGia spGiamGia = new SpGiamGia();
+                spGiamGia.setId(UUID.randomUUID());
+                spGiamGia.setMucGiam(createKhachRequest.getMucGiam());
+                spGiamGia.setGiamGia(giamGia);
+                spGiamGia.setSanPham(sanPham);
+                if (createKhachRequest.getHinhThucGiam() == 1) {
+                    // HinhThucGiam = 1, set donGiaKhiGiam = dongia - mucgiam
+                    spGiamGia.setDonGiaKhiGiam(sanPham.getGiaBan().subtract(BigDecimal.valueOf(createKhachRequest.getMucGiam())));
+                }else if (createKhachRequest.getHinhThucGiam() == 2) {
+                    spGiamGia.setDonGiaKhiGiam(sanPham.getGiaBan().multiply(BigDecimal.ONE.subtract(BigDecimal.valueOf(createKhachRequest.getMucGiam()).divide(BigDecimal.valueOf(100)))));
+                }
+                spggRepository.save(spGiamGia);
+            } else {
+            }
+        }
+        // danh muc
+        List<UUID> productIds = Repository.findProductIdsByDanhMucId(createKhachRequest.getIdDanhMuc());
+        // Associate each product with the discount
+        for (UUID sanPhamId : productIds) {
+            SanPham sanPham = spRepository.findById(sanPhamId).orElse(null);
+            if (sanPham != null) {
+                SpGiamGia spGiamGia = new SpGiamGia();
+                spGiamGia.setId(UUID.randomUUID());
+                spGiamGia.setMucGiam(createKhachRequest.getMucGiam());
+                spGiamGia.setGiamGia(giamGia);
+                spGiamGia.setSanPham(sanPham);
+                if (createKhachRequest.getHinhThucGiam() == 1) {
+                    spGiamGia.setDonGiaKhiGiam(sanPham.getGiaBan().subtract(BigDecimal.valueOf(createKhachRequest.getMucGiam())));
+                } else if (createKhachRequest.getHinhThucGiam() == 2) {
+                    spGiamGia.setDonGiaKhiGiam(sanPham.getGiaBan().multiply(BigDecimal.ONE.subtract(BigDecimal.valueOf(createKhachRequest.getMucGiam()).divide(BigDecimal.valueOf(100)))));
+                }
+                spggRepository.save(spGiamGia);
+            } else {
+                // Handle the case where the product is not found
+            }
+        }
+        //
         // Trả về thông báo thành công
         return MessageResponse.builder().message("Thêm Thành Công").build();
     }
 
+    @Override
+    public boolean isTenGiamGiaExists(String tenGiamGia) {
+        return Repository.existsByTenGiamGia(tenGiamGia);
+    }
+
+    @Override
+    public boolean checkProductRecordCount(UUID productId) {
+        int recordCount = Repository.countByProductId(productId);
+        return recordCount < 1;
+    }
 
 
 

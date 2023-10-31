@@ -60,6 +60,10 @@ public class SanPham {
 
     @OneToMany(mappedBy = "sanPham",fetch = FetchType.LAZY)
     @JsonManagedReference
+    private List<SpGiamGia> spGiamGiaList;
+
+    @OneToMany(mappedBy = "sanPham",fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<SanPhamChiTiet> listSanPhamChiTiet;
 
 }

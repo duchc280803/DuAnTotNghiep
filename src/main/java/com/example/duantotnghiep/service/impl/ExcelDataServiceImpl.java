@@ -91,7 +91,7 @@ public class ExcelDataServiceImpl implements IExcelDataService {
         int i = noOfColumns;
         do {
             ChatLieu inv = new ChatLieu();
-            inv.setId(UUID.fromString(excelData.get(i + 1)));
+            inv.setId(UUID.randomUUID());
             inv.setTenChatLieu(excelData.get(i));
 //            inv.setTrangThai(Integer.valueOf(excelData.get(i + 1)));
             invList.add(inv);

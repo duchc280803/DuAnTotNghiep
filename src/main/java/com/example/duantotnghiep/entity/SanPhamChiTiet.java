@@ -59,9 +59,6 @@ public class SanPhamChiTiet {
     @Column(name = "trangthai")
     private Integer trangThai;
 
-    @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<SpGiamGia> spGiamGiaList;
 
     @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
     @JsonManagedReference
