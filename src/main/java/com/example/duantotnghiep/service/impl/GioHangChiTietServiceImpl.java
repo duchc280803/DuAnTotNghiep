@@ -9,6 +9,9 @@ import com.example.duantotnghiep.repository.GioHangRepository;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.GioHangChiTietService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +20,7 @@ import java.util.UUID;
 
 @Service
 public class GioHangChiTietServiceImpl implements GioHangChiTietService {
+
     @Autowired
     private GioHangChiTietRepository gioHangChiTietRepository;
 
@@ -56,11 +60,16 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         return MessageResponse.builder().message("Thêm thành công").build();
     }
 
-
+    @Override
+    public List<GioHangCustom> loadGH(UUID id, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<GioHangCustom> gioHangCustomPage = gioHangChiTietRepository.loadOnGioHang(id, pageable);
+        return gioHangCustomPage.getContent();
+    }
 
     @Override
-    public List<GioHangCustom> loadGH(String name) {
-        return gioHangChiTietRepository.loadOnGioHang(name);
+    public void deleteProductInCart(UUID id) {
+        gioHangChiTietRepository.deleteById(id);
     }
 
     // Cập nhật số lượng trong GioHangChiTiet

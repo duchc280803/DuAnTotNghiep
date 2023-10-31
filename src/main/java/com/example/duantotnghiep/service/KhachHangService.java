@@ -20,8 +20,6 @@ public interface KhachHangService {
 
     MessageResponse updateHoaDon(UUID id, UUID idHoaDon);
 
-    KhachHangResponse findByKhachHangByIdHoaDon(UUID id);
-
     KhachHangResponse detailKhachHang(UUID id);
 
     MessageResponse updateKhachVaoGioHang(UUID id, UUID idGioHang);

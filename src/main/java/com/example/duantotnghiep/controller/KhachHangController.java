@@ -34,11 +34,6 @@ public class KhachHangController {
         return new ResponseEntity<>(khachHangService.detailKhachHang(id), HttpStatus.OK);
     }
 
-    @GetMapping("search_khach_byid")
-    public ResponseEntity<KhachHangResponse> findByKhachHangByIdHoaDon(@RequestParam(name = "id") UUID id) {
-        return new ResponseEntity<>(khachHangService.findByKhachHangByIdHoaDon(id), HttpStatus.OK);
-    }
-
     @PostMapping("create")
     public ResponseEntity<MessageResponse> createKhachHang(@RequestBody CreateKhachRequest createKhachRequest) {
         return new ResponseEntity<>(khachHangService.createKhachHang(createKhachRequest), HttpStatus.CREATED);

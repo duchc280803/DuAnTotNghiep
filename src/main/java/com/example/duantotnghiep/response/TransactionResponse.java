@@ -18,4 +18,5 @@ public class TransactionResponse {
     private BigDecimal soTien;
 
     private Integer phuongThuc;
+
 }

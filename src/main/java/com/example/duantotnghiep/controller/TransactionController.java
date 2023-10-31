@@ -21,17 +21,17 @@ public class TransactionController {
     private TransactionServiceImpl transactionService;
 
     @GetMapping("show")
-    public ResponseEntity<List<TransactionResponse>> findAllTran(@RequestParam(name = "name") String name) {
-        return new ResponseEntity<>(transactionService.findAllTran(name), HttpStatus.OK);
+    public ResponseEntity<List<TransactionResponse>> findAllTran(@RequestParam(name = "id") UUID id) {
+        return new ResponseEntity<>(transactionService.findAllTran(id), HttpStatus.OK);
     }
 
     @PostMapping("create")
     public ResponseEntity<MessageResponse> createTransaction(
             @RequestParam(name = "idHoaDon") UUID idHoaDon,
-            @RequestParam(name = "name") String name,
+            @RequestParam(name = "id") UUID id,
             @RequestParam(name = "phuongThuc") Integer phuongThuc,
             @RequestBody TransactionRequest transactionRequest
     ) {
-        return new ResponseEntity<>(transactionService.createTransaction(idHoaDon, name, phuongThuc, transactionRequest), HttpStatus.CREATED);
+        return new ResponseEntity<>(transactionService.createTransaction(idHoaDon, id, phuongThuc, transactionRequest), HttpStatus.CREATED);
     }
 }

@@ -56,8 +56,8 @@ public class SanPhamChiTiet {
     @Column(name = "qrcode")
     private String qrcode;
 
-    @Column(name = "gioitinh")
-    private Boolean gioiTinh;
+//    @Column(name = "gioitinh")
+//    private Boolean gioiTinh;
 
     @Column(name = "trangthai")
     private Integer trangThai;

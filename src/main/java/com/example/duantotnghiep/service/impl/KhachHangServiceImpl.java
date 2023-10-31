@@ -76,11 +76,6 @@ public class KhachHangServiceImpl implements KhachHangService {
     }
 
     @Override
-    public KhachHangResponse findByKhachHangByIdHoaDon(UUID id) {
-        return khachHangRepository.findByKhachHangByIdHoaDon(id);
-    }
-
-    @Override
     public KhachHangResponse detailKhachHang(UUID id) {
         return khachHangRepository.detailKhachHang(id);
     }

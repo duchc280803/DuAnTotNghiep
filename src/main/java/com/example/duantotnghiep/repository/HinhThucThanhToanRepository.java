@@ -16,6 +16,6 @@ import java.util.UUID;
 public interface HinhThucThanhToanRepository extends JpaRepository<HinhThucThanhToan, UUID> {
 
     @Query("SELECT new com.example.duantotnghiep.response.TransactionResponse(httt.codeTransaction, httt.tongSoTien, httt.phuongThucThanhToan) " +
-            "FROM HinhThucThanhToan httt JOIN httt.taiKhoan tk WHERE tk.name = :name")
-    List<TransactionResponse> findAllTran(@Param("name") String name);
+            "FROM HinhThucThanhToan httt JOIN httt.hoaDon hd where hd.id = :id")
+    List<TransactionResponse> findAllTran(@Param("id") UUID id);
 }
