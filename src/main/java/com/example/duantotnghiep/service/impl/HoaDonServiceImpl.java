@@ -8,6 +8,7 @@ import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonDTOResponse;
 import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.response.ThongTinDonHang;
 import com.example.duantotnghiep.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -126,6 +127,12 @@ public class HoaDonServiceImpl implements HoaDonService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<HoaDonDTOResponse> pageList = hoaDonRepository.getAllHoaDonCTTStaff(loaiDon, ma, soDienThoai, pageable);
         return pageList.getContent();
+    }
+
+
+    @Override
+    public ThongTinDonHang getThongTinDonHang(UUID idHoaDon) {
+        return hoaDonRepository.getThongTinDonHang(idHoaDon);
     }
 
 }
