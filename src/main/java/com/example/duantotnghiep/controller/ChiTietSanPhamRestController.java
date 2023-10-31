@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin
@@ -21,17 +22,22 @@ public class ChiTietSanPhamRestController {
     @GetMapping("hien-thi")
     public ResponseEntity<?> getAll() {
         return ResponseEntity.ok(chiTietSanPhamService.getAll());
-    } //close getAll()
+    } // close getAll()
 
     @GetMapping()
     public ResponseEntity<?> searchByName(@RequestParam String name) {
         return ResponseEntity.ok(chiTietSanPhamService.searchByName(name));
-    }//close searchName
+    }// close searchName
 
     @GetMapping("san-pham/{id}")
     public ResponseEntity<SanPhamGetAllResponse> searchByIdSp(@PathVariable("id") UUID id) {
         return new ResponseEntity<>(chiTietSanPhamService.getByIdSp(id), HttpStatus.OK);
-    }//close searchID
+    }// close searchID
+
+//    @GetMapping("san-pham-detail/{id}")
+//    public ResponseEntity<?> searchDetailSanPham(@PathVariable("id") UUID id) {
+//        return new ResponseEntity<>(chiTietSanPhamService.getDetailSizeToSanPham(id), HttpStatus.OK);
+//    }// close searchID
 
     @GetMapping("san-pham-detail-soluong")
     public ResponseEntity<DetailQuantityToSizeReponse> getDetailQuantityToSizeReponse(

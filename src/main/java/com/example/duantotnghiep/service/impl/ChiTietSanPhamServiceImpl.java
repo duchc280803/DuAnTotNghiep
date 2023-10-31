@@ -3,6 +3,7 @@ package com.example.duantotnghiep.service.impl;
 import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
 import com.example.duantotnghiep.repository.ChiTietSanPhamRepository;
 import com.example.duantotnghiep.response.DetailQuantityToSizeReponse;
+import com.example.duantotnghiep.response.DetailSizeToProductResponse;
 import com.example.duantotnghiep.response.SanPhamGetAllResponse;
 import com.example.duantotnghiep.service.ChiTietSanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
