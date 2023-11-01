@@ -26,7 +26,7 @@ public class SpGiamGia {
     @ManyToOne
     @JoinColumn(name = "idsanpham")
     @JsonBackReference
-    private SanPhamChiTiet sanPhamChiTiet;
+    private SanPham sanPham;
 
     @ManyToOne
     @JoinColumn(name = "idgiamgia")

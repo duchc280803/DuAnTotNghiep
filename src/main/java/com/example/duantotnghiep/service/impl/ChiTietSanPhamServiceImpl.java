@@ -14,8 +14,9 @@ import java.util.UUID;
 
 @Service
 public class ChiTietSanPhamServiceImpl implements ChiTietSanPhamService {
+
     @Autowired
-    ChiTietSanPhamRepository chiTietSanPhamRepository;
+    private ChiTietSanPhamRepository chiTietSanPhamRepository;
 
     @Override
     public List<ChiTietSanPhamCustom> getAll() {
@@ -33,48 +34,8 @@ public class ChiTietSanPhamServiceImpl implements ChiTietSanPhamService {
     }
 
     @Override
-    public List<DetailSizeToProductResponse> getDetailSizeToSanPham(UUID id) {
-        return chiTietSanPhamRepository.getDetailSizeToSanPham(id);
-    }
-
-    @Override
     public DetailQuantityToSizeReponse getDetailQuantityToSizeReponse(UUID id, Integer size) {
         return chiTietSanPhamRepository.getDetailQuantityToSizeReponse(id, size);
     }
-
-    //filter
-    @Override
-    public List<ChiTietSanPhamCustom> findByDanhMuc(UUID idDanhMuc) {
-        return chiTietSanPhamRepository.searchByIdDanhMuc(idDanhMuc);
-    }
-
-    @Override
-    public List<ChiTietSanPhamCustom> findByXuatSu(UUID idXuatSu) {
-        return chiTietSanPhamRepository.searchByIdXuatSu(idXuatSu);
-    }
-
-    @Override
-    public List<ChiTietSanPhamCustom> findByThuongHieu(UUID idThuongHieu) {
-        return chiTietSanPhamRepository.searchByIdThuongHieu(idThuongHieu);
-    }
-
-    @Override
-    public List<ChiTietSanPhamCustom> findByKieuDe(UUID idKieuDe) {
-        return chiTietSanPhamRepository.searchByIdKieuDe(idKieuDe);
-
-    }
-
-    @Override
-    public List<ChiTietSanPhamCustom> findByChatLieu(UUID idChatLieu) {
-        return chiTietSanPhamRepository.searchByIdChatLieu(idChatLieu);
-
-    }
-
-    @Override
-    public List<ChiTietSanPhamCustom> findByMauSac(UUID idMauSac) {
-        return chiTietSanPhamRepository.searchByIdMauSac(idMauSac);
-
-    }
-
 
 }

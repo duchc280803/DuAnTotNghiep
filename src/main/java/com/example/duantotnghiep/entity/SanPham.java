@@ -58,8 +58,12 @@ public class SanPham {
     @Column(name = "trangthai")
     private Integer trangThai;
 
-    @OneToMany(mappedBy = "sanPham",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sanPham", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<SanPhamChiTiet> listSanPhamChiTiet;
+
+    @OneToMany(mappedBy = "sanPham", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<SpGiamGia> spGiamGiaList;
 
 }

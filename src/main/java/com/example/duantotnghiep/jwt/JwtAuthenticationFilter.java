@@ -1,6 +1,5 @@
 package com.example.duantotnghiep.jwt;
 
-
 import com.example.duantotnghiep.model.UserCustomDetails;
 import com.example.duantotnghiep.service.impl.UserDetailServiceImpl;
 import jakarta.servlet.FilterChain;
@@ -30,8 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(
             @NotNull HttpServletRequest request,
             @NotNull HttpServletResponse response,
-            @NotNull FilterChain filterChain
-    ) throws ServletException, IOException {
+            @NotNull FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String username;
@@ -42,16 +40,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         jwt = authHeader.substring(7);
         username = jwtService.extractUsername(jwt); // TODO Chích xuất người dùng từ JWT TOKEN
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserCustomDetails userCustomDetails = (UserCustomDetails) this.userDetailService.loadUserByUsername(username);
+            UserCustomDetails userCustomDetails = (UserCustomDetails) this.userDetailService
+                    .loadUserByUsername(username);
             if (jwtService.isTokenValid(jwt, userCustomDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userCustomDetails,
                         null,
-                        userCustomDetails.getAuthorities()
-                );
+                        userCustomDetails.getAuthorities());
                 authenticationToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
+                        new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }

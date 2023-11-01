@@ -1,5 +1,11 @@
 package com.example.duantotnghiep.controller;
 
+import com.example.duantotnghiep.entity.HoaDon;
+import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
+import com.example.duantotnghiep.response.HoaDonResponse;
+import com.example.duantotnghiep.response.IdGioHangResponse;
+import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.response.OrderCounterCartsResponse;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.MessageResponse;
@@ -11,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/hoa-don/")
@@ -20,8 +27,28 @@ public class HoaDonController {
     private HoaDonServiceImpl hoaDonService;
 
     @GetMapping("show")
-    public ResponseEntity<List<HoaDonResponse>> viewHoaDonTaiQuay() {
-        return new ResponseEntity<>(hoaDonService.viewHoaDonTaiQuay(), HttpStatus.OK);
+    public ResponseEntity<List<HoaDonResponse>> viewHoaDonTaiQuay(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "4") Integer pageSize) {
+        if (pageNumber <= 0) {
+            pageNumber = 0;
+        }
+        return new ResponseEntity<>(hoaDonService.viewHoaDonTaiQuay(pageNumber, pageSize), HttpStatus.OK);
+    }
+
+    @GetMapping("order-counter/{id}")
+    public ResponseEntity<OrderCounterCartsResponse> findByHoaDon(@PathVariable("id") UUID id) {
+        return new ResponseEntity<>(hoaDonService.findByHoaDon(id), HttpStatus.OK);
+    }
+
+    @GetMapping("id_cart")
+    public ResponseEntity<IdGioHangResponse> showIdGioHang(@RequestParam(name = "id") UUID id) {
+        return new ResponseEntity<>(hoaDonService.showIdGioHangCt(id), HttpStatus.OK);
+    }
+
+    @GetMapping("search/{ma}")
+    public ResponseEntity<List<HoaDonResponse>> viewHoaDonTaiQuay(@PathVariable("ma") String ma) {
+        return new ResponseEntity<>(hoaDonService.findByCodeOrder(ma), HttpStatus.OK);
     }
 
     @PostMapping("create")
@@ -30,7 +57,9 @@ public class HoaDonController {
     }
 
     @PostMapping("create-hoa-don-chi-tiet")
-    public ResponseEntity<MessageResponse> taoHoaDonDetial(@RequestBody HoaDonThanhToanRequest hoaDonThanhToanRequest) {
-        return new ResponseEntity<>(hoaDonService.updateHoaDon(hoaDonThanhToanRequest), HttpStatus.CREATED);
+    public ResponseEntity<MessageResponse> taoHoaDonDetial(@RequestParam("idHoaDon") UUID idHoaDon,
+            @RequestBody HoaDonThanhToanRequest hoaDonThanhToanRequest) {
+        return new ResponseEntity<>(hoaDonService.updateHoaDon(idHoaDon, hoaDonThanhToanRequest), HttpStatus.CREATED);
     }
+
 }

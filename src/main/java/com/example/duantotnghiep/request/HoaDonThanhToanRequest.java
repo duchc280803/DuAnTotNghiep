@@ -18,13 +18,11 @@ public class HoaDonThanhToanRequest {
 
     private UUID idHoaDon;
 
-    private Date ngayNhan;
-
-    private BigDecimal tienThua;
-
     private BigDecimal tongTien;
 
     private BigDecimal tienKhachTra;
+
+    private Integer phuongThuongThanhToan;
 
     private List<UUID> gioHangChiTietList;
 }

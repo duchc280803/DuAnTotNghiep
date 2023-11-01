@@ -21,14 +21,11 @@ public class GioHangServiceImpl implements GioHangService {
     @Autowired
     private TaiKhoanRepository taiKhoanRepository;
 
-    public UUID taoGioHang(UUID id) {
+    public UUID taoGioHang() {
         // tìm theo username
-        Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByKhachHang(id);
-
         GioHang gioHang = new GioHang();
         gioHang.setId(UUID.randomUUID());
 
-        gioHang.setTaiKhoan(taiKhoan.get());
         gioHang.setNgayTao(new Date(System.currentTimeMillis()));
         gioHang.setTrangThai(1);
 

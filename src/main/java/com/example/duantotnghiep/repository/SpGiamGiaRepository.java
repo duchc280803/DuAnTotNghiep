@@ -16,15 +16,13 @@ import java.util.UUID;
 public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
 
     @Query("SELECT new com.example.duantotnghiep.response.SanPhamGiamGiaResponse" +
-            "(sp.id, spct.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam) " +
+            "(sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam) " +
             "FROM SanPham sp " +
-            "JOIN sp.listSanPhamChiTiet spct " +
-            "JOIN spct.listImage i " +
-            "LEFT JOIN spct.spGiamGiaList spgg " +
+            "LEFT JOIN sp.spGiamGiaList spgg " +
             "LEFT JOIN spgg.giamGia gg " +
-            "WHERE i.isDefault = true " +
-            "AND (spgg IS NOT NULL AND spgg.donGiaKhiGiam <> 0) " +
-            "OR spgg IS NULL")
+            "JOIN sp.listSanPhamChiTiet spct " +
+            "LEFT JOIN spct.listImage i " +
+            "WHERE i.isDefault = true AND (spgg IS NULL OR (gg.trangThai = 1 AND spgg.trangThai = 1))")
     List<SanPhamGiamGiaResponse> getAllSpGiamGia();
 
 }

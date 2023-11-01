@@ -50,34 +50,27 @@ public class SanPhamChiTiet {
     @JsonBackReference
     private KieuDe kieuDe;
 
-    @Column(name = "baohanh")
-    private Integer baoHanh;
-
-    @Column(name = "giaban")
-    private BigDecimal giaBan;
-
     @Column(name = "soluong")
     private Integer soLuong;
 
     @Column(name = "qrcode")
     private String qrcode;
 
+    // @Column(name = "gioitinh")
+    // private Boolean gioiTinh;
+
     @Column(name = "trangthai")
     private Integer trangThai;
 
-    @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<SpGiamGia> spGiamGiaList;
-
-    @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sanPhamChiTiet", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<GioHangChiTiet> gioHangChiTietList;
 
-    @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sanPhamChiTiet", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<HoaDonChiTiet> hoaDonChiTietList;
 
-    @OneToMany(mappedBy = "sanPhamChiTiet",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sanPhamChiTiet", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Image> listImage;
 }
