@@ -1,5 +1,9 @@
 package com.example.duantotnghiep.controller;
 
+<<<<<<< HEAD
+=======
+import com.example.duantotnghiep.entity.HoaDon;
+>>>>>>> 2ee2821ddc2018f3497374646b8de782ba7e6791
 import com.example.duantotnghiep.response.HinhThucThanhToanResponse;
 import com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse;
 import com.example.duantotnghiep.response.ThongTinDonHang;
@@ -42,4 +46,8 @@ public class HoaDonChiTietController {
         return ResponseEntity.ok("Trạng thái hóa đơn đã được cập nhật.");
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 2ee2821ddc2018f3497374646b8de782ba7e6791
