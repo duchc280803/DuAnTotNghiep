@@ -13,17 +13,23 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class HoaDonThanhToanRequest {
+public class HoaDonGiaoThanhToanRequest {
 
     private UUID idHoaDon;
 
     private String hoTen;
+
+    private String tenNguoiShip;
+
+    private String soDienThoaiNguoiShip;
 
     private String soDienThoai;
 
     private String diaChi;
 
     private BigDecimal tongTien;
+
+    private BigDecimal tienGiao;
 
     private BigDecimal tienKhachTra;
 

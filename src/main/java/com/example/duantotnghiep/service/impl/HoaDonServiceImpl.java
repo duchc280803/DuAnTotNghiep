@@ -3,11 +3,9 @@ package com.example.duantotnghiep.service.impl;
 import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.enums.*;
 import com.example.duantotnghiep.repository.*;
+import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
-import com.example.duantotnghiep.response.HoaDonResponse;
-import com.example.duantotnghiep.response.IdGioHangResponse;
-import com.example.duantotnghiep.response.MessageResponse;
-import com.example.duantotnghiep.response.OrderCounterCartsResponse;
+import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,6 +42,9 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     @Autowired
     private GioHangRepository gioHangRepository;
+
+    @Autowired
+    private ChiTietSanPhamRepository chiTietSanPhamRepository;
 
     @Override
     @Transactional
@@ -110,7 +111,9 @@ public class HoaDonServiceImpl implements HoaDonService {
         hoaDon.get().setTienKhachTra(hoaDonThanhToanRequest.getTienKhachTra());
         hoaDon.get().setTienThua(hoaDonThanhToanRequest.getTienThua());
         hoaDon.get().setThanhTien(hoaDonThanhToanRequest.getTongTien());
-        hoaDon.get().setTienShip(hoaDonThanhToanRequest.getTienShip());
+        hoaDon.get().setTenNguoiNhan(hoaDonThanhToanRequest.getHoTen());
+        hoaDon.get().setSdtNguoiNhan(hoaDonThanhToanRequest.getSoDienThoai());
+        hoaDon.get().setDiaChi(hoaDonThanhToanRequest.getDiaChi());
         hoaDon.get().setTrangThai(5);
         hoaDonRepository.save(hoaDon.get());
 
@@ -118,6 +121,9 @@ public class HoaDonServiceImpl implements HoaDonService {
             Optional<GioHangChiTiet> gioHangChiTiet = gioHangChiTietRepository.findById(idGioHangChiTiet);
             gioHangChiTiet.get().setTrangThai(StatusCartDetailEnums.DA_THANH_TOAN.getValue());
             gioHangChiTietRepository.save(gioHangChiTiet.get());
+            Optional<GioHang> gioHang = gioHangRepository.findById(gioHangChiTiet.get().getGioHang().getId());
+            gioHang.get().setTrangThai(StatusCartEnums.DA_THANH_TOAN.getValue());
+            gioHangRepository.save(gioHang.get());
             if (gioHangChiTiet.isPresent()) {
                 HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
                 hoaDonChiTiet.setId(UUID.randomUUID());
@@ -127,6 +133,10 @@ public class HoaDonServiceImpl implements HoaDonService {
                 hoaDonChiTiet.setSoLuong(gioHangChiTiet.get().getSoLuong());
                 hoaDonChiTiet.setTrangThai(1);
                 hoaDonChiTietRepository.save(hoaDonChiTiet);
+
+//                SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(gioHangChiTiet.get().getSanPhamChiTiet().getId()).get();
+//                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - gioHangChiTiet.get().getSoLuong());
+//                chiTietSanPhamRepository.save(sanPhamChiTiet);
             }
         }
         return MessageResponse.builder().message("Thanh Toán Thành Công").build();
@@ -140,5 +150,69 @@ public class HoaDonServiceImpl implements HoaDonService {
     @Override
     public IdGioHangResponse showIdGioHangCt(UUID id) {
         return hoaDonRepository.showIdGioHangCt(id);
+    }
+
+    @Override
+    public MessageResponse updateHoaDonGiaoTaiQuay(UUID idHoaDon, HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest) {
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+        hoaDon.get().setNgayNhan(new java.sql.Date(System.currentTimeMillis()));
+        hoaDon.get().setNgayThanhToan(new java.sql.Date(System.currentTimeMillis()));
+        hoaDon.get().setTienKhachTra(hoaDonGiaoThanhToanRequest.getTienKhachTra());
+        hoaDon.get().setTienThua(hoaDonGiaoThanhToanRequest.getTienThua());
+        hoaDon.get().setThanhTien(hoaDonGiaoThanhToanRequest.getTongTien());
+        hoaDon.get().setTenNguoiNhan(hoaDonGiaoThanhToanRequest.getHoTen());
+        hoaDon.get().setSdtNguoiNhan(hoaDonGiaoThanhToanRequest.getSoDienThoai());
+        hoaDon.get().setDiaChi(hoaDonGiaoThanhToanRequest.getDiaChi());
+        hoaDon.get().setTienShip(hoaDonGiaoThanhToanRequest.getTienGiao());
+        hoaDon.get().setTenNguoiShip(hoaDonGiaoThanhToanRequest.getTenNguoiShip());
+        hoaDon.get().setSdtNguoiShip(hoaDonGiaoThanhToanRequest.getSoDienThoaiNguoiShip());
+        hoaDon.get().setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
+        hoaDonRepository.save(hoaDon.get());
+
+        for (UUID idGioHangChiTiet : hoaDonGiaoThanhToanRequest.getGioHangChiTietList()) {
+            Optional<GioHangChiTiet> gioHangChiTiet = gioHangChiTietRepository.findById(idGioHangChiTiet);
+            gioHangChiTiet.get().setTrangThai(StatusCartDetailEnums.DA_THANH_TOAN.getValue());
+            gioHangChiTietRepository.save(gioHangChiTiet.get());
+            Optional<GioHang> gioHang = gioHangRepository.findById(gioHangChiTiet.get().getGioHang().getId());
+            gioHang.get().setTrangThai(StatusCartEnums.DA_THANH_TOAN.getValue());
+            gioHangRepository.save(gioHang.get());
+            if (gioHangChiTiet.isPresent()) {
+                HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
+                hoaDonChiTiet.setId(UUID.randomUUID());
+                hoaDonChiTiet.setHoaDon(hoaDon.get());
+                hoaDonChiTiet.setSanPhamChiTiet(gioHangChiTiet.get().getSanPhamChiTiet());
+                hoaDonChiTiet.setDonGia(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getGiaBan());
+                hoaDonChiTiet.setSoLuong(gioHangChiTiet.get().getSoLuong());
+                hoaDonChiTiet.setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
+                hoaDonChiTietRepository.save(hoaDonChiTiet);
+//
+//                SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(gioHangChiTiet.get().getSanPhamChiTiet().getId()).get();
+//                System.out.println(gioHangChiTiet.get().getSanPhamChiTiet().getId());
+//                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - gioHangChiTiet.get().getSoLuong());
+//                chiTietSanPhamRepository.save(sanPhamChiTiet);
+            }
+        }
+        return MessageResponse.builder().message("Thanh Toán Thành Công").build();
+    }
+
+    @Override
+    public List<HoaDonDTOResponse> getAllHoaDonAdmin(Integer trangThaiHD, Integer loaiDon, String tenNhanVien, String ma, String soDienThoai, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<HoaDonDTOResponse> pageList = hoaDonRepository.getAllHoaDonAdmin(trangThaiHD, loaiDon, tenNhanVien, ma, soDienThoai, pageable);
+        return pageList.getContent();
+    }
+
+    @Override
+    public List<HoaDonDTOResponse> getAllHoaDonStaff(Integer trangThaiHD, Integer loaiDon, String ma, String soDienThoai, String username, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<HoaDonDTOResponse> pageList = hoaDonRepository.getAllHoaDonStaff(trangThaiHD, loaiDon, ma, soDienThoai, username, pageable);
+        return pageList.getContent();
+    }
+
+    @Override
+    public List<HoaDonDTOResponse> getAllHoaDonCTTStaff(Integer loaiDon, String ma, String soDienThoai, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<HoaDonDTOResponse> pageList = hoaDonRepository.getAllHoaDonCTTStaff(loaiDon, ma, soDienThoai, pageable);
+        return pageList.getContent();
     }
 }

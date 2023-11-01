@@ -18,7 +18,7 @@ public interface KhachHangService {
 
     MessageResponse createKhachHang(CreateKhachRequest createKhachRequest);
 
-    MessageResponse updateHoaDon(UUID id, UUID idHoaDon);
+    MessageResponse updateHoaDon(UUID id, UUID idHoaDon, UUID idGioHang);
 
     KhachHangResponse detailKhachHang(UUID id);
 

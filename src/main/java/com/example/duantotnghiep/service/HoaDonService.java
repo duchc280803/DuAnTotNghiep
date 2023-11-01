@@ -1,11 +1,9 @@
 package com.example.duantotnghiep.service;
 
 import com.example.duantotnghiep.entity.HoaDon;
+import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
-import com.example.duantotnghiep.response.HoaDonResponse;
-import com.example.duantotnghiep.response.IdGioHangResponse;
-import com.example.duantotnghiep.response.MessageResponse;
-import com.example.duantotnghiep.response.OrderCounterCartsResponse;
+import com.example.duantotnghiep.response.*;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -24,4 +22,13 @@ public interface HoaDonService {
     OrderCounterCartsResponse findByHoaDon(UUID id);
 
     IdGioHangResponse showIdGioHangCt(UUID id);
+
+    public MessageResponse updateHoaDonGiaoTaiQuay(UUID idHoaDon, HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest);
+
+    List<HoaDonDTOResponse> getAllHoaDonAdmin(Integer trangThaiHD, Integer loaiDon, String tenNhanVien, String ma, String soDienThoai, Integer pageNumber, Integer pageSize);
+
+    List<HoaDonDTOResponse> getAllHoaDonStaff(Integer trangThaiHD, Integer loaiDon, String ma, String soDienThoai, String username, Integer pageNumber, Integer pageSize);
+
+    List<HoaDonDTOResponse> getAllHoaDonCTTStaff(Integer loaiDon, String ma, String soDienThoai, Integer pageNumber, Integer pageSize);
+
 }
