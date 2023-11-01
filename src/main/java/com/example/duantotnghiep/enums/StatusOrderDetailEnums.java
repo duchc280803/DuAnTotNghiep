@@ -2,17 +2,21 @@ package com.example.duantotnghiep.enums;
 
 public enum StatusOrderDetailEnums {
 
-    CHO_THANH_TOAN(1),
+    CHO_XAC_NHAN(1),
 
-    VAN_CHUYEN(2),
+    XAC_NHAN(2),
 
-    GIAO_HANG(3),
+    CHO_GIAO_HANG(3),
 
-    THANH_CONG(4),
+    GIAO_HANG(4),
 
-    DA_HUY(5),
+    HOAN_THANH(5),
 
-    TRA_HANG(6);
+    DA_HUY(6),
+
+    TRAN_HANG(7),
+
+    TRA_HANG(8);
 
     private final int value;
 

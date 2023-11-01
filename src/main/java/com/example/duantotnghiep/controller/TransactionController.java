@@ -1,9 +1,12 @@
 package com.example.duantotnghiep.controller;
 
 import com.example.duantotnghiep.request.TransactionRequest;
+import com.example.duantotnghiep.request.TransactionVnPayRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.TransactionResponse;
 import com.example.duantotnghiep.service.impl.TransactionServiceImpl;
+import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +32,20 @@ public class TransactionController {
     public ResponseEntity<MessageResponse> createTransaction(
             @RequestParam(name = "idHoaDon") UUID idHoaDon,
             @RequestParam(name = "id") UUID id,
-            @RequestParam(name = "phuongThuc") Integer phuongThuc,
             @RequestBody TransactionRequest transactionRequest
     ) {
-        return new ResponseEntity<>(transactionService.createTransaction(idHoaDon, id, phuongThuc, transactionRequest), HttpStatus.CREATED);
+        return new ResponseEntity<>(transactionService.createTransaction(idHoaDon, id, transactionRequest), HttpStatus.CREATED);
     }
+
+    @PostMapping("create-pay")
+    public ResponseEntity<JsonNode> callPaymentApi(
+            HttpServletRequest req,
+            @RequestParam(name = "idHoaDon") UUID idHoaDon,
+            @RequestParam(name = "id") UUID id,
+            @RequestBody TransactionVnPayRequest TransactionVnPayRequest
+    ) {
+        return new ResponseEntity<>(transactionService.callPaymentApi(req, idHoaDon, id, TransactionVnPayRequest),
+                HttpStatus.CREATED);
+    }
+
 }

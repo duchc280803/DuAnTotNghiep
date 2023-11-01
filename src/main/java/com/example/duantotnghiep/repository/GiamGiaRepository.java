@@ -86,17 +86,17 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
         List<ProductDetailResponse> ProductDetailResponse(@Param("key") String key);
 
         @Query("SELECT new com.example.duantotnghiep.response.ProductDetailResponse(sp.id, i.tenImage, sp.tenSanPham,s.size,kd.tenDe,ms.tenMauSac,ct.tenChatLieu,sp.trangThai,i.id,s.id,ms.id,ct.id,kd.id) "
-                        +
-                        "FROM SanPhamChiTiet spct " +
-                        "JOIN spct.size s" +
-                        " JOIN spct.mauSac ms " +
-                        "JOIN spct.kieuDe kd " +
-                        "JOIN spct.sanPham sp " +
-                        "JOIN sp.thuongHieu th " +
-                        "JOIN sp.danhMuc dm " +
-                        "JOIN sp.xuatXu xx " +
-                        "JOIN spct.chatLieu ct " +
-                        "JOIN spct.listImage i ")
+                +
+                "FROM SanPhamChiTiet spct " +
+                "JOIN spct.size s" +
+                " JOIN spct.mauSac ms " +
+                "JOIN spct.kieuDe kd " +
+                "JOIN spct.sanPham sp " +
+                "JOIN sp.thuongHieu th " +
+                "JOIN sp.danhMuc dm " +
+                "JOIN sp.xuatXu xx " +
+                "JOIN spct.chatLieu ct " +
+                "JOIN spct.listImage i ")
         List<ProductDetailResponse> ListProductResponse();
 
         @Query("SELECT new com.example.duantotnghiep.response.ProductDetailResponse(sp.id, i.tenImage, sp.tenSanPham,s.size,kd.tenDe,ms.tenMauSac,ct.tenChatLieu,sp.trangThai) "

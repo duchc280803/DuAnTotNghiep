@@ -22,7 +22,6 @@ public class ProductDetailResponse {
     private String ChatLieuName;
     private Integer trangThai;
     private  UUID idImage;
-    //private  String ImageName;
     private  UUID idSize;
     private  UUID idMauSac;
     private  UUID idChatLieu;

@@ -1,11 +1,7 @@
 package com.example.duantotnghiep.controller;
 
-import com.example.duantotnghiep.entity.ChatLieu;
-import com.example.duantotnghiep.entity.GiamGia;
-import com.example.duantotnghiep.request.CreateKhachRequest;
 import com.example.duantotnghiep.request.GiamGiaRequest;
 import com.example.duantotnghiep.response.*;
-import com.example.duantotnghiep.service.impl.ChatLieuServiceImpl;
 import com.example.duantotnghiep.service.impl.GiamGiaServiceimpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,7 +40,6 @@ public class GiamGiaController {
     public ResponseEntity<List<ProductDetailResponse>> getAllProduct() {
         return new ResponseEntity<>(Service.getAllProduct(), HttpStatus.OK);
     }
-
 
     @GetMapping("detail")
     public ResponseEntity<List<ProductDetailResponse>> search(@RequestParam(name = "id") UUID id) {

@@ -1,14 +1,11 @@
 package com.example.duantotnghiep.controller;
 
-import com.example.duantotnghiep.entity.HoaDon;
+import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.IdGioHangResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.OrderCounterCartsResponse;
-import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
-import com.example.duantotnghiep.response.HoaDonResponse;
-import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.impl.HoaDonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,9 +54,17 @@ public class HoaDonController {
     }
 
     @PostMapping("create-hoa-don-chi-tiet")
-    public ResponseEntity<MessageResponse> taoHoaDonDetial(@RequestParam("idHoaDon") UUID idHoaDon,
+    public ResponseEntity<MessageResponse> taoHoaDonDetial(
+            @RequestParam("idHoaDon") UUID idHoaDon,
             @RequestBody HoaDonThanhToanRequest hoaDonThanhToanRequest) {
         return new ResponseEntity<>(hoaDonService.updateHoaDon(idHoaDon, hoaDonThanhToanRequest), HttpStatus.CREATED);
+    }
+
+    @PostMapping("create-hoa-don-chi-tiet-giao")
+    public ResponseEntity<MessageResponse> taoHoaDonGiao(
+            @RequestParam("idHoaDon") UUID idHoaDon,
+            @RequestBody HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest) {
+        return new ResponseEntity<>(hoaDonService.updateHoaDonGiaoTaiQuay(idHoaDon, hoaDonGiaoThanhToanRequest), HttpStatus.CREATED);
     }
 
 }

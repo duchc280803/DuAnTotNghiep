@@ -1,10 +1,8 @@
 package com.example.duantotnghiep.repository;
 
 import com.example.duantotnghiep.entity.HoaDon;
-import com.example.duantotnghiep.mapper.TongTienCustom;
 import com.example.duantotnghiep.response.HoaDonDTOResponse;
 import com.example.duantotnghiep.response.HoaDonResponse;
-import com.example.duantotnghiep.response.ThongTinDonHang;
 import com.example.duantotnghiep.response.IdGioHangResponse;
 import com.example.duantotnghiep.response.OrderCounterCartsResponse;
 import org.springframework.data.domain.Page;
@@ -20,18 +18,37 @@ import java.util.UUID;
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
 
-        @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonResponse(hd.id, hd.ma, tknv.name, hd.ngayTao, tkkh.name, ld.tenLoaiDon, hd.trangThai)"
-                        +
-                        "FROM HoaDon hd " +
-                        "JOIN hd.loaiDon ld " +
-                        "JOIN hd.taiKhoanNhanVien tknv " +
-                        "LEFT JOIN hd.taiKhoanKhachHang tkkh " +
-                        "WHERE hd.trangThai = 1 AND ld.trangThai = 2 " +
-                        "ORDER BY hd.ngayTao DESC")
-        Page<HoaDonResponse> viewHoaDonTaiQuay(Pageable pageable);
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonResponse(hd.id, hd.ma, tknv.name, hd.ngayTao, tkkh.name, ld.tenLoaiDon, hd.trangThai)" +
+            "FROM HoaDon hd " +
+            "JOIN hd.loaiDon ld " +
+            "JOIN hd.taiKhoanNhanVien tknv " +
+            "LEFT JOIN hd.taiKhoanKhachHang tkkh " +
+            "WHERE hd.trangThai = 1 AND ld.trangThai = 2 " +
+            "ORDER BY hd.ngayTao DESC")
+    Page<HoaDonResponse> viewHoaDonTaiQuay(Pageable pageable);
 
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonResponse(hd.id, hd.ma, tknv.name, hd.ngayTao, tkkh.name, ld.tenLoaiDon, hd.trangThai)" +
+            " FROM HoaDon hd " +
+            "JOIN hd.loaiDon ld " +
+            "JOIN hd.taiKhoanNhanVien tknv " +
+            "LEFT JOIN hd.taiKhoanKhachHang tkkh " +
+            "WHERE hd.trangThai = 1 AND ld.trangThai = 2 AND hd.ma = :ma " +
+            "ORDER BY hd.ngayTao DESC")
+    List<HoaDonResponse> findByCodeOrder(@Param("ma") String ma);
 
-    // TODO Hiển thị hóa đơn của Admin
+    @Query("SELECT NEW com.example.duantotnghiep.response.OrderCounterCartsResponse" +
+            "(tkkh.id, hd.ma, tkkh.name, hd.ngayTao, dc.diaChi, tkkh.email, tkkh.soDienThoai)" +
+            "FROM HoaDon hd " +
+            "JOIN hd.taiKhoanKhachHang tkkh " +
+            "LEFT JOIN tkkh.diaChiList dc WHERE hd.id = :id")
+    OrderCounterCartsResponse findByHoaDon(@Param("id") UUID id);
+
+    @Query("SELECT new com.example.duantotnghiep.response.IdGioHangResponse(gh.id) " +
+            "FROM HoaDon hd " +
+            "JOIN hd.taiKhoanKhachHang tk " +
+            "JOIN tk.gioHangList gh WHERE hd.trangThai = 1 AND gh.trangThai = 1 AND hd.id = :id")
+    IdGioHangResponse showIdGioHangCt(@Param("id") UUID id);
+
     @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonDTOResponse(hd.id, hd.ma, hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.thanhTien, SUM(hdct.tienGiamGia), hd.ngayTao, tknv.name, ld.tenLoaiDon, hd.trangThai)\n" +
             "FROM HoaDon hd\n" +
             "LEFT JOIN hd.hoaDonChiTietList hdct\n" +
@@ -66,33 +83,5 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
             "GROUP BY hd.id, hd.ma, hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.thanhTien, hd.ngayTao, tknv.name, ld.tenLoaiDon, hd.trangThai\n" +
             "ORDER BY hd.ngayTao DESC")
     Page<HoaDonDTOResponse> getAllHoaDonCTTStaff(@Param("loaiDon") Integer loaiDon, @Param("ma") String ma, @Param("soDienThoai") String soDienThoai, Pageable pageable);
-
-
-
-
-
-
-        @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonResponse(hd.id, hd.ma, tknv.name, hd.ngayTao, tkkh.name, ld.tenLoaiDon, hd.trangThai)"
-                        +
-                        " FROM HoaDon hd " +
-                        "JOIN hd.loaiDon ld " +
-                        "JOIN hd.taiKhoanNhanVien tknv " +
-                        "LEFT JOIN hd.taiKhoanKhachHang tkkh " +
-                        "WHERE hd.trangThai = 1 AND ld.trangThai = 2 AND hd.ma = :ma " +
-                        "ORDER BY hd.ngayTao DESC")
-        List<HoaDonResponse> findByCodeOrder(@Param("ma") String ma);
-
-        @Query("SELECT NEW com.example.duantotnghiep.response.OrderCounterCartsResponse" +
-                        "(tkkh.id, hd.ma, tkkh.name, hd.ngayTao, dc.diaChi, tkkh.email, tkkh.soDienThoai)" +
-                        "FROM HoaDon hd " +
-                        "JOIN hd.taiKhoanKhachHang tkkh " +
-                        "LEFT JOIN tkkh.diaChiList dc WHERE hd.id = :id")
-        OrderCounterCartsResponse findByHoaDon(@Param("id") UUID id);
-
-        @Query("SELECT new com.example.duantotnghiep.response.IdGioHangResponse(gh.id) " +
-                        "FROM HoaDon hd " +
-                        "JOIN hd.taiKhoanKhachHang tk " +
-                        "JOIN tk.gioHangList gh WHERE hd.trangThai = 1 AND tk.id = :id")
-        IdGioHangResponse showIdGioHangCt(@Param("id") UUID id);
 
 }

@@ -13,5 +13,4 @@ public interface ThongTinDonHang {
 
     String getGhiChu();
 
-
 }

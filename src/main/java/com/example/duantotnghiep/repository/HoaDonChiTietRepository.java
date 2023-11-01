@@ -40,6 +40,4 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
             "LEFT JOIN taikhoan TKNV ON HD.idnhanvien = TKNV.id WHERE HD.id = ?1\n", nativeQuery = true)
     List<HinhThucThanhToanResponse> getLichSuThanhToan(UUID idHoaDon);
 
-
-
 }

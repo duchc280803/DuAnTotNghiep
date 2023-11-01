@@ -1,6 +1,5 @@
 package com.example.duantotnghiep.controller;
 
-import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.response.HinhThucThanhToanResponse;
 import com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse;
 import com.example.duantotnghiep.response.ThongTinDonHang;
@@ -23,7 +22,7 @@ public class HoaDonChiTietController {
     @Autowired
     private TrangThaiHoaDonServiceImpl trangThaiHoaDonService;
 
-    @GetMapping("hien-thi-don/{idHoaDon}eeeeeeeeeeeeeeeeeeeeee")
+    @GetMapping("hien-thi-don/{idHoaDon}")
     public ResponseEntity<ThongTinDonHang> viewThongTinDonHang(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(hoaDonChiTietService.getThongTinDonHang(idHoaDon), HttpStatus.OK);
     }

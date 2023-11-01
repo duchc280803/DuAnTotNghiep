@@ -1,9 +1,7 @@
 package com.example.duantotnghiep.service.impl;
 
-import com.example.duantotnghiep.entity.DiaChi;
-import com.example.duantotnghiep.entity.GioHang;
-import com.example.duantotnghiep.entity.HoaDon;
-import com.example.duantotnghiep.entity.TaiKhoan;
+import com.example.duantotnghiep.entity.*;
+import com.example.duantotnghiep.enums.TypeAccountEnum;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.CreateKhachRequest;
 import com.example.duantotnghiep.response.KhachHangResponse;
@@ -31,6 +29,9 @@ public class KhachHangServiceImpl implements KhachHangService {
     @Autowired
     private GioHangRepository gioHangRepository;
 
+    @Autowired
+    private LoaiTaiKhoanRepository loaiTaiKhoanRepository;
+
     @Override
     public List<KhachHangResponse> getKhachHang() {
         return khachHangRepository.findlistKhachHang();
@@ -43,23 +44,26 @@ public class KhachHangServiceImpl implements KhachHangService {
 
     @Override
     public MessageResponse createKhachHang(CreateKhachRequest createKhachRequest) {
+        LoaiTaiKhoan loaiTaiKhoan = loaiTaiKhoanRepository.findByName(TypeAccountEnum.USER).get();
         TaiKhoan taiKhoan = new TaiKhoan();
         taiKhoan.setId(UUID.randomUUID());
         taiKhoan.setName(createKhachRequest.getHoTen());
         taiKhoan.setSoDienThoai(createKhachRequest.getSoDienThoai());
         taiKhoan.setEmail(createKhachRequest.getEmail());
         taiKhoan.setNgaySinh(createKhachRequest.getNgaySinh());
+        taiKhoan.setLoaiTaiKhoan(loaiTaiKhoan);
         khachHangRepository.save(taiKhoan);
         DiaChi diaChi = new DiaChi();
         diaChi.setId(UUID.randomUUID());
         diaChi.setDiaChi(createKhachRequest.getDiaChi());
         diaChi.setTaiKhoan(taiKhoan);
+        diaChi.setTrangThai(1);
         diaChiRepository.save(diaChi);
         return MessageResponse.builder().message("Thêm Thành Công").build();
     }
 
     @Override
-    public MessageResponse updateHoaDon(UUID id, UUID idHoaDon) {
+    public MessageResponse updateHoaDon(UUID id, UUID idHoaDon, UUID idGioHang) {
 
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
         if (hoaDon.isEmpty()) {
@@ -71,6 +75,10 @@ public class KhachHangServiceImpl implements KhachHangService {
         }
         hoaDon.get().setTaiKhoanKhachHang(khachHang.get());
         hoaDonRepository.save(hoaDon.get());
+
+        GioHang gioHang = gioHangRepository.findById(idGioHang).get();
+        gioHang.setTaiKhoan(khachHang.get());
+        gioHangRepository.save(gioHang);
 
         return MessageResponse.builder().message("Update Thành Công").build();
     }

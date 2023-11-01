@@ -41,9 +41,12 @@ public class KhachHangController {
     }
 
     @PutMapping("update-hoa-don")
-    public ResponseEntity<MessageResponse> updateHoaDon(@RequestParam(name = "id") UUID id,
-            @RequestParam(name = "idHoaDon") UUID idHoaDon) {
-        return new ResponseEntity<>(khachHangService.updateHoaDon(id, idHoaDon), HttpStatus.OK);
+    public ResponseEntity<MessageResponse> updateHoaDon(
+            @RequestParam(name = "id") UUID id,
+            @RequestParam(name = "idHoaDon") UUID idHoaDon,
+            @RequestParam(name = "idGioHang") UUID idGioHang
+    ) {
+        return new ResponseEntity<>(khachHangService.updateHoaDon(id, idHoaDon, idGioHang), HttpStatus.OK);
     }
 
 }
