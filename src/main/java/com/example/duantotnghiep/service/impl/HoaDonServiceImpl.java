@@ -5,10 +5,15 @@ import com.example.duantotnghiep.enums.TypeOrderEnums;
 import com.example.duantotnghiep.enums.StatusOrderEnums;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
+import com.example.duantotnghiep.response.HoaDonDTOResponse;
 import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.IdGioHangResponse;
 import com.example.duantotnghiep.response.MessageResponse;
+
+import com.example.duantotnghiep.response.ThongTinDonHang;
+
 import com.example.duantotnghiep.response.OrderCounterCartsResponse;
+
 import com.example.duantotnghiep.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -122,6 +127,29 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
+
+    public List<HoaDonDTOResponse> getAllHoaDonAdmin(Integer trangThaiHD, Integer loaiDon, String tenNhanVien, String ma, String soDienThoai, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<HoaDonDTOResponse> pageList = hoaDonRepository.getAllHoaDonAdmin(trangThaiHD, loaiDon, tenNhanVien, ma, soDienThoai, pageable);
+        return pageList.getContent();
+    }
+
+    @Override
+    public List<HoaDonDTOResponse> getAllHoaDonStaff(Integer trangThaiHD, Integer loaiDon, String ma, String soDienThoai, String username, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<HoaDonDTOResponse> pageList = hoaDonRepository.getAllHoaDonStaff(trangThaiHD, loaiDon, ma, soDienThoai, username, pageable);
+        return pageList.getContent();
+    }
+
+    @Override
+    public List<HoaDonDTOResponse> getAllHoaDonCTTStaff(Integer loaiDon, String ma, String soDienThoai, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<HoaDonDTOResponse> pageList = hoaDonRepository.getAllHoaDonCTTStaff(loaiDon, ma, soDienThoai, pageable);
+        return pageList.getContent();
+    }
+
+
+
     public OrderCounterCartsResponse findByHoaDon(UUID id) {
         return hoaDonRepository.findByHoaDon(id);
     }
@@ -130,4 +158,5 @@ public class HoaDonServiceImpl implements HoaDonService {
     public IdGioHangResponse showIdGioHangCt(UUID id) {
         return hoaDonRepository.showIdGioHangCt(id);
     }
+
 }

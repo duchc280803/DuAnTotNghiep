@@ -17,7 +17,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "trangthaihoadon")
 public class TrangThaiHoaDon {
-
     @Id
     @Column(name = "id")
     private UUID id;
