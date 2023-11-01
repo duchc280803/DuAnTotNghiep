@@ -14,4 +14,6 @@ public class TokenResponse {
     private String token;
 
     private String message;
+
+    private String role;
 }

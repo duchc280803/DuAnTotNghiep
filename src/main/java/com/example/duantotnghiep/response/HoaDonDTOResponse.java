@@ -28,7 +28,7 @@ public class HoaDonDTOResponse {
 
     private Date ngayTao;
 
-    private String nguoiXacNhan;
+    private String tenNhanVien;
 
     private String loaiDon;
 

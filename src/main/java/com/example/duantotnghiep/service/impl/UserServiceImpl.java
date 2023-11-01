@@ -62,6 +62,7 @@ public class UserServiceImpl implements UserService {
             return TokenResponse.builder()
                     .accessToken(jwtToken)
                     .token(refreshToken.getToken())
+                    .role(optionalPhatTu.get().getLoaiTaiKhoan().getName().name())
                     .message("Login thành công")
                     .build();
         } else {
