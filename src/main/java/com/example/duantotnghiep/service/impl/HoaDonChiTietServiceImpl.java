@@ -13,10 +13,7 @@ import java.util.UUID;
 
 @Service
 public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
-<<<<<<< HEAD
 
-=======
->>>>>>> 2ee2821ddc2018f3497374646b8de782ba7e6791
     @Autowired
     HoaDonChiTietRepository hoaDonChiTietRepository;
 
@@ -34,8 +31,4 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     public List<HinhThucThanhToanResponse> getLichSuThanhToan(UUID idHoaDon) {
         return hoaDonChiTietRepository.getLichSuThanhToan(idHoaDon);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 2ee2821ddc2018f3497374646b8de782ba7e6791

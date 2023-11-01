@@ -44,9 +44,4 @@ public class TrangThaiHoaDonServiceImpl {
             trangThaiHoaDonRepository.save(trangThaiHoaDon);
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
-
->>>>>>> 2ee2821ddc2018f3497374646b8de782ba7e6791

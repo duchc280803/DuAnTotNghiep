@@ -19,20 +19,13 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/manager/hoa-don/")
 public class HoaDonDTOController {
-<<<<<<< HEAD
 
-=======
->>>>>>> 2ee2821ddc2018f3497374646b8de782ba7e6791
     @Autowired
     private HoaDonServiceImpl hoaDonService;
 
     @Autowired
     private TaiKhoanServiceImpl taiKhoanService;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 2ee2821ddc2018f3497374646b8de782ba7e6791
     @GetMapping("hien-thi")
     public ResponseEntity<List<HoaDonDTOResponse>> getAll(
             @RequestParam(name = "trangThaiHD", required = false) Integer trangThaiHD,
@@ -59,8 +52,4 @@ public class HoaDonDTOController {
         }
 
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 2ee2821ddc2018f3497374646b8de782ba7e6791

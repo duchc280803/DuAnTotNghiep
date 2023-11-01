@@ -5,19 +5,12 @@ import com.example.duantotnghiep.enums.*;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
-<<<<<<< HEAD
-import com.example.duantotnghiep.response.*;
-=======
 import com.example.duantotnghiep.response.HoaDonDTOResponse;
 import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.IdGioHangResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 
-import com.example.duantotnghiep.response.ThongTinDonHang;
-
 import com.example.duantotnghiep.response.OrderCounterCartsResponse;
-
->>>>>>> 2ee2821ddc2018f3497374646b8de782ba7e6791
 import com.example.duantotnghiep.service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,8 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -95,7 +86,7 @@ public class HoaDonServiceImpl implements HoaDonService {
 
         TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
         trangThaiHoaDon.setId(UUID.randomUUID());
-        trangThaiHoaDon.setTrangThai(StatusOrderDetailEnums.HOAN_THANH.getValue());
+        trangThaiHoaDon.setTrangThai(StatusOrderDetailEnums.CHO_XAC_NHAN.getValue());
         trangThaiHoaDon.setThoiGian(timestamp);
         trangThaiHoaDon.setGhiChu("Nhân viên tạo đơn cho khách");
         trangThaiHoaDon.setHoaDon(hoaDon);
@@ -146,37 +137,13 @@ public class HoaDonServiceImpl implements HoaDonService {
                 hoaDonChiTiet.setTrangThai(1);
                 hoaDonChiTietRepository.save(hoaDonChiTiet);
 
-//                SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(gioHangChiTiet.get().getSanPhamChiTiet().getId()).get();
-//                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - gioHangChiTiet.get().getSoLuong());
-//                chiTietSanPhamRepository.save(sanPhamChiTiet);
+                SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(gioHangChiTiet.get().getSanPhamChiTiet().getId()).get();
+                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - gioHangChiTiet.get().getSoLuong());
+                chiTietSanPhamRepository.save(sanPhamChiTiet);
             }
         }
         return MessageResponse.builder().message("Thanh Toán Thành Công").build();
     }
-
-    @Override
-
-    public List<HoaDonDTOResponse> getAllHoaDonAdmin(Integer trangThaiHD, Integer loaiDon, String tenNhanVien, String ma, String soDienThoai, Integer pageNumber, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<HoaDonDTOResponse> pageList = hoaDonRepository.getAllHoaDonAdmin(trangThaiHD, loaiDon, tenNhanVien, ma, soDienThoai, pageable);
-        return pageList.getContent();
-    }
-
-    @Override
-    public List<HoaDonDTOResponse> getAllHoaDonStaff(Integer trangThaiHD, Integer loaiDon, String ma, String soDienThoai, String username, Integer pageNumber, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<HoaDonDTOResponse> pageList = hoaDonRepository.getAllHoaDonStaff(trangThaiHD, loaiDon, ma, soDienThoai, username, pageable);
-        return pageList.getContent();
-    }
-
-    @Override
-    public List<HoaDonDTOResponse> getAllHoaDonCTTStaff(Integer loaiDon, String ma, String soDienThoai, Integer pageNumber, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<HoaDonDTOResponse> pageList = hoaDonRepository.getAllHoaDonCTTStaff(loaiDon, ma, soDienThoai, pageable);
-        return pageList.getContent();
-    }
-
-
 
     public OrderCounterCartsResponse findByHoaDon(UUID id) {
         return hoaDonRepository.findByHoaDon(id);
@@ -187,7 +154,6 @@ public class HoaDonServiceImpl implements HoaDonService {
         return hoaDonRepository.showIdGioHangCt(id);
     }
 
-<<<<<<< HEAD
     @Override
     public MessageResponse updateHoaDonGiaoTaiQuay(UUID idHoaDon, HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest) {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
@@ -221,11 +187,11 @@ public class HoaDonServiceImpl implements HoaDonService {
                 hoaDonChiTiet.setSoLuong(gioHangChiTiet.get().getSoLuong());
                 hoaDonChiTiet.setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
                 hoaDonChiTietRepository.save(hoaDonChiTiet);
-//
-//                SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(gioHangChiTiet.get().getSanPhamChiTiet().getId()).get();
-//                System.out.println(gioHangChiTiet.get().getSanPhamChiTiet().getId());
-//                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - gioHangChiTiet.get().getSoLuong());
-//                chiTietSanPhamRepository.save(sanPhamChiTiet);
+
+                SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(gioHangChiTiet.get().getSanPhamChiTiet().getId()).get();
+                System.out.println(gioHangChiTiet.get().getSanPhamChiTiet().getId());
+                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - gioHangChiTiet.get().getSoLuong());
+                chiTietSanPhamRepository.save(sanPhamChiTiet);
             }
         }
         return MessageResponse.builder().message("Thanh Toán Thành Công").build();
@@ -251,6 +217,4 @@ public class HoaDonServiceImpl implements HoaDonService {
         Page<HoaDonDTOResponse> pageList = hoaDonRepository.getAllHoaDonCTTStaff(loaiDon, ma, soDienThoai, pageable);
         return pageList.getContent();
     }
-=======
->>>>>>> 2ee2821ddc2018f3497374646b8de782ba7e6791
 }
