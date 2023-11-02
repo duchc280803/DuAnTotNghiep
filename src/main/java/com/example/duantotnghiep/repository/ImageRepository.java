@@ -22,6 +22,6 @@ public interface ImageRepository extends JpaRepository<Image, UUID> {
             "JOIN sp.thuongHieu th " +
             "JOIN sp.danhMuc dm " +
             "JOIN sp.xuatXu xx " +
-            "JOIN spct.listImage i WHERE i.isDefault = true AND sp.id = :id ")
+            "JOIN sp.listImage i WHERE i.isDefault = true AND sp.id = :id ")
     List<ProductDetailResponse> listProductResponse(@Param("id") UUID id);
 }

@@ -8,9 +8,4 @@ import java.util.UUID;
 
 public interface ProductService {
 
-    ProductDetailResponse detailProduct(String name);
-
-    List<SizeProductDetailResponse> detailSizeProduct(String name);
-
-    QuantityDetailResponse quantityDetailResponse(UUID id);
 }

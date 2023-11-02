@@ -20,9 +20,8 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
             "FROM SanPham sp " +
             "LEFT JOIN sp.spGiamGiaList spgg " +
             "LEFT JOIN spgg.giamGia gg " +
-            "JOIN sp.listSanPhamChiTiet spct " +
-            "LEFT JOIN spct.listImage i " +
-            "WHERE i.isDefault = true AND (spgg IS NULL OR (gg.trangThai = 1 AND spgg.trangThai = 1))")
+            "JOIN sp.listImage i " +
+            "WHERE i.isDefault = true")
     List<SanPhamGiamGiaResponse> getAllSpGiamGia();
 
 }

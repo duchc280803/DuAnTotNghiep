@@ -66,4 +66,8 @@ public class SanPham {
     @JsonManagedReference
     private List<SpGiamGia> spGiamGiaList;
 
+    @OneToMany(mappedBy = "sanPham", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Image> listImage;
+
 }

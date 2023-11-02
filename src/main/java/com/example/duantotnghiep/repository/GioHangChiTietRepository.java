@@ -16,10 +16,12 @@ import java.util.UUID;
 
 public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, UUID> {
 
-    @Query("SELECT new com.example.duantotnghiep.mapper.GioHangCustom(ghct.id, i.tenImage, sp.tenSanPham, sp.giaBan, ghct.soLuong, s.size, kd.tenDe,ms.tenMauSac) " +
+    @Query("SELECT new com.example.duantotnghiep.mapper.GioHangCustom(ghct.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam,ghct.soLuong, s.size, kd.tenDe,ms.tenMauSac) " +
             "FROM SanPhamChiTiet spct " +
-            "JOIN spct.listImage i " +
             "JOIN spct.sanPham sp " +
+            "JOIN sp.listImage i " +
+            "LEFT JOIN sp.spGiamGiaList spgg " +
+            "LEFT JOIN spgg.giamGia gg " +
             "JOIN spct.size s " +
             "JOIN spct.kieuDe kd " +
             "JOIN spct.mauSac ms " +

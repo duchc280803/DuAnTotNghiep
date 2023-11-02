@@ -12,21 +12,4 @@ import java.util.UUID;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private SanPhamRepository sanPhamRepository;
-
-    @Override
-    public ProductDetailResponse detailProduct(String name) {
-        return sanPhamRepository.detailProduct(name);
-    }
-
-    @Override
-    public List<SizeProductDetailResponse> detailSizeProduct(String name) {
-        return sanPhamRepository.detailSizeProduct(name);
-    }
-
-    @Override
-    public QuantityDetailResponse quantityDetailResponse(UUID id) {
-        return sanPhamRepository.quantityDetailResponse(id);
-    }
 }
