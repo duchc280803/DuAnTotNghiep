@@ -32,7 +32,6 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-
                         .requestMatchers("/api/v1/hoa-don-chi-tiet/**").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
                         .requestMatchers("/api/manager/hoa-don/**").permitAll()
@@ -56,7 +55,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/giam-gia/**").permitAll()
                         .requestMatchers("/api/v1/invoice/**").permitAll()
                         .requestMatchers("/api/v1/chat-lieu/**").permitAll()
-                        // .requestMatchers("/api/v1/exel/**").permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(

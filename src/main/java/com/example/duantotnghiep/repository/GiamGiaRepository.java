@@ -22,8 +22,7 @@ import java.util.UUID;
 @Repository
 public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
 
-        @Query("SELECT DISTINCT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id, gg.tenGiamGia, gg.maGiamGia, gg.ngayBatDau, gg.ngayKetThuc, gg.hinhThucGiam, gg.trangThai, spgg.mucGiam) "
-                        +
+        @Query("SELECT DISTINCT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id, gg.tenGiamGia, gg.maGiamGia, gg.ngayBatDau, gg.ngayKetThuc, gg.hinhThucGiam, gg.trangThai, spgg.mucGiam) " +
                         "FROM GiamGia gg " +
                         "JOIN gg.spGiamGiaList spgg " +
                         "JOIN spgg.sanPham sp " +
@@ -82,7 +81,7 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
                         " JOIN spct.mauSac ms " +
                         "JOIN spct.kieuDe kd " +
                         "JOIN spct.chatLieu ct " +
-                        "JOIN spct.listImage i WHERE sp.tenSanPham  LIKE :key   ")
+                        "JOIN sp.listImage i WHERE sp.tenSanPham  LIKE :key   ")
         List<ProductDetailResponse> ProductDetailResponse(@Param("key") String key);
 
         @Query("SELECT new com.example.duantotnghiep.response.ProductDetailResponse(sp.id, i.tenImage, sp.tenSanPham,s.size,kd.tenDe,ms.tenMauSac,ct.tenChatLieu,sp.trangThai,i.id,s.id,ms.id,ct.id,kd.id) "
@@ -96,7 +95,7 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
                 "JOIN sp.danhMuc dm " +
                 "JOIN sp.xuatXu xx " +
                 "JOIN spct.chatLieu ct " +
-                "JOIN spct.listImage i ")
+                "JOIN sp.listImage i ")
         List<ProductDetailResponse> ListProductResponse();
 
         @Query("SELECT new com.example.duantotnghiep.response.ProductDetailResponse(sp.id, i.tenImage, sp.tenSanPham,s.size,kd.tenDe,ms.tenMauSac,ct.tenChatLieu,sp.trangThai) "
@@ -110,7 +109,7 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
                         "JOIN sp.danhMuc dm " +
                         "JOIN sp.xuatXu xx " +
                         "JOIN spct.chatLieu ct " +
-                        "JOIN spct.listImage i where s.id =:id or ms.id = :id or kd.id = :id or sp.id = :id or th.id = :id or dm.id = :id or xx.id = :id or ct.id = :id")
+                        "JOIN sp.listImage i where s.id =:id or ms.id = :id or kd.id = :id or sp.id = :id or th.id = :id or dm.id = :id or xx.id = :id or ct.id = :id")
         List<ProductDetailResponse> ListSearchDanhMuc(@Param("id") UUID id);
 
         @Query("SELECT COUNT(spgg.id) FROM GiamGia gg JOIN gg.spGiamGiaList spgg WHERE spgg.sanPham.id = :productId")

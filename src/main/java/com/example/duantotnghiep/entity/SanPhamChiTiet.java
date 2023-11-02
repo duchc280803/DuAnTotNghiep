@@ -70,7 +70,4 @@ public class SanPhamChiTiet {
     @JsonManagedReference
     private List<HoaDonChiTiet> hoaDonChiTietList;
 
-    @OneToMany(mappedBy = "sanPhamChiTiet", fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<Image> listImage;
 }

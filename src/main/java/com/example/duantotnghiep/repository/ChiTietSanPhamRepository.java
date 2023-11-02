@@ -20,13 +20,12 @@ import java.util.UUID;
 public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, UUID> {
         // load sản phẩm với 1 ảnh mặc định
         @Query("SELECT new com.example.duantotnghiep.mapper.ChiTietSanPhamCustom" +
-                        "(i.tenImage, spct.id, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam,spct.soLuong, kd.tenDe, ms.tenMauSac, s.size, cl.tenChatLieu) "
-                        +
+                        "(i.tenImage, spct.id, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam,spct.soLuong, kd.tenDe, ms.tenMauSac, s.size, cl.tenChatLieu) " +
                         "FROM SanPham sp " +
                         "LEFT JOIN sp.spGiamGiaList spgg " +
                         "LEFT JOIN spgg.giamGia gg " +
                         "JOIN sp.listSanPhamChiTiet spct " +
-                        "JOIN spct.listImage i " +
+                        "JOIN sp.listImage i " +
                         "JOIN spct.size s " +
                         "JOIN spct.kieuDe kd " +
                         "JOIN spct.chatLieu cl " +
@@ -42,7 +41,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
                         "LEFT JOIN sp.spGiamGiaList spgg " +
                         "LEFT JOIN spgg.giamGia gg " +
                         "JOIN sp.listSanPhamChiTiet spct " +
-                        "JOIN spct.listImage i " +
+                        "JOIN sp.listImage i " +
                         "JOIN spct.size s " +
                         "JOIN spct.kieuDe kd " +
                         "JOIN spct.chatLieu cl " +
@@ -57,7 +56,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
                         "JOIN sp.xuatXu xx " +
                         "JOIN sp.thuongHieu th " +
                         "JOIN sp.listSanPhamChiTiet spct " +
-                        "JOIN spct.listImage i " +
+                        "JOIN sp.listImage i " +
                         "WHERE sp.id = :id AND i.isDefault = true ")
         SanPhamGetAllResponse getByIdSp(@Param("id") UUID id);
 

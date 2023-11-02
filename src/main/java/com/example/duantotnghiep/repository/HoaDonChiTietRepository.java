@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Repository
 public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UUID> {
-    @Query(value = "SELECT TOP 1 TTHD.trangthai, LD.tenloaidon,\n" +
+    @Query(value = "SELECT TOP 1 hd.trangthai, LD.tenloaidon,\n" +
             "CONCAT(DC.diachi, ' - ', DC.Xa, ' - ', DC.huyen, ' - ', DC.tinh, ' - ', DC.quocgia) as diachi,\n" +
             "HD.tennguoinhan, HD.sdtnguoinhan, TTHD.ghichu\n" +
             "FROM\n" +
