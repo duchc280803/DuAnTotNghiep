@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.service.impl;
 
+import com.example.duantotnghiep.mapper.not_login.loadsanpham_not_login;
 import com.example.duantotnghiep.repository.SpGiamGiaRepository;
 import com.example.duantotnghiep.response.SanPhamGiamGiaResponse;
 import com.example.duantotnghiep.service.SanPhamGiamGiaService;
@@ -15,7 +16,7 @@ public class SanPhamGiamGiaServiceImpl implements SanPhamGiamGiaService {
     private SpGiamGiaRepository spGiamGiaRepository;
 
     @Override
-    public List<SanPhamGiamGiaResponse> getAllSpGiamGia() {
+    public List<loadsanpham_not_login> getAllSpGiamGia() {
         return spGiamGiaRepository.getAllSpGiamGia();
     }
 }
