@@ -40,6 +40,11 @@ public class SanPham {
     @JsonBackReference
     private XuatXu xuatXu;
 
+    @ManyToOne
+    @JoinColumn(name = "idsanpham")
+    @JsonBackReference
+    private KieuDe kieuDe;
+
     @Column(name = "masanpham")
     private String maSanPham;
 

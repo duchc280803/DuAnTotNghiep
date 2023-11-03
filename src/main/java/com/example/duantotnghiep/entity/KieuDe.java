@@ -37,6 +37,6 @@ public class KieuDe {
 
     @OneToMany(mappedBy = "kieuDe",fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<SanPhamChiTiet> sanPhamChiTietList;
+    private List<SanPham> sanPhamList;
 
 }
