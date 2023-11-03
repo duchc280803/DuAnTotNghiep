@@ -41,7 +41,7 @@ public class SanPham {
     private XuatXu xuatXu;
 
     @ManyToOne
-    @JoinColumn(name = "idsanpham")
+    @JoinColumn(name = "idkieude")
     @JsonBackReference
     private KieuDe kieuDe;
 

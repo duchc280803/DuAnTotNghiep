@@ -45,19 +45,11 @@ public class SanPhamChiTiet {
     @JsonBackReference
     private Size size;
 
-    @ManyToOne
-    @JoinColumn(name = "idkieude")
-    @JsonBackReference
-    private KieuDe kieuDe;
-
     @Column(name = "soluong")
     private Integer soLuong;
 
     @Column(name = "qrcode")
     private String qrcode;
-
-    // @Column(name = "gioitinh")
-    // private Boolean gioiTinh;
 
     @Column(name = "trangthai")
     private Integer trangThai;

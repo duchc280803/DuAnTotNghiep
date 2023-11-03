@@ -1,7 +1,7 @@
 package com.example.duantotnghiep.schedulingtasks;
 
 
-import com.example.duantotnghiep.service.impl.GiamGiaServiceimpl;
+import com.example.duantotnghiep.service.giam_gia_service.impl.GiamGiaServiceimpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
