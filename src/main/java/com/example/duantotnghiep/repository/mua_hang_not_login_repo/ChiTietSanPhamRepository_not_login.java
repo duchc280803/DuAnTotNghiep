@@ -21,7 +21,7 @@ public interface ChiTietSanPhamRepository_not_login extends JpaRepository<SanPha
             "LEFT JOIN sp.spGiamGiaList spgg " +
             "LEFT JOIN spgg.giamGia gg " +
             "JOIN sp.listSanPhamChiTiet spct " +
-            "JOIN spct.listImage i " +
+            "JOIN sp.listImage i " +
             "JOIN spct.size s " +
             "JOIN spct.kieuDe kd " +
             "JOIN spct.chatLieu cl " +
@@ -38,7 +38,7 @@ public interface ChiTietSanPhamRepository_not_login extends JpaRepository<SanPha
             "LEFT JOIN sp.spGiamGiaList spgg " +
             "LEFT JOIN spgg.giamGia gg " +
             "JOIN sp.listSanPhamChiTiet spct " +
-            "JOIN spct.listImage i " +
+            "JOIN sp.listImage i " +
             "JOIN spct.size s " +
             "JOIN spct.kieuDe kd " +
             "JOIN spct.chatLieu cl " +
@@ -53,7 +53,7 @@ public interface ChiTietSanPhamRepository_not_login extends JpaRepository<SanPha
             "JOIN sp.xuatXu xx " +
             "JOIN sp.thuongHieu th " +
             "JOIN sp.listSanPhamChiTiet spct " +
-            "JOIN spct.listImage i " +
+            "JOIN sp.listImage i " +
             "WHERE sp.id = :id AND i.isDefault = true ")
     SanPhamGetAllResponse getByIdSp(@Param("id") UUID id);
 
