@@ -23,7 +23,7 @@ public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, 
             "LEFT JOIN sp.spGiamGiaList spgg " +
             "LEFT JOIN spgg.giamGia gg " +
             "JOIN spct.size s " +
-            "JOIN spct.kieuDe kd " +
+            "JOIN sp.kieuDe kd " +
             "JOIN spct.mauSac ms " +
             "JOIN spct.gioHangChiTietList ghct " +
             "JOIN ghct.gioHang gh " +

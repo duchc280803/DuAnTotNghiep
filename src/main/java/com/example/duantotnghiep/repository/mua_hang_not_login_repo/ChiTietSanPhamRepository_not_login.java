@@ -23,7 +23,7 @@ public interface ChiTietSanPhamRepository_not_login extends JpaRepository<SanPha
             "JOIN sp.listSanPhamChiTiet spct " +
             "JOIN sp.listImage i " +
             "JOIN spct.size s " +
-            "JOIN spct.kieuDe kd " +
+            "JOIN sp.kieuDe kd " +
             "JOIN spct.chatLieu cl " +
             "JOIN spct.mauSac ms " +
             "WHERE i.isDefault = TRUE AND " +
@@ -40,7 +40,7 @@ public interface ChiTietSanPhamRepository_not_login extends JpaRepository<SanPha
             "JOIN sp.listSanPhamChiTiet spct " +
             "JOIN sp.listImage i " +
             "JOIN spct.size s " +
-            "JOIN spct.kieuDe kd " +
+            "JOIN sp.kieuDe kd " +
             "JOIN spct.chatLieu cl " +
             "JOIN spct.mauSac ms " +
             "WHERE i.isDefault = TRUE AND sp.tenSanPham = :name")

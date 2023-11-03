@@ -26,12 +26,6 @@ public class KieuDe {
     @Column(name = "tende")
     private String tenDe;
 
-    @Column(name = "mausac")
-    private String mauSac;
-
-    @Column(name = "kichthuoc")
-    private String kichThuoc;
-
     @Column(name = "trangthai")
     private Integer trangThai;
 
