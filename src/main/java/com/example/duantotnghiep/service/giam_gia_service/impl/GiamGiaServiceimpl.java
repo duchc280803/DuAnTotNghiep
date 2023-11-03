@@ -24,22 +24,12 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
     @Autowired
     private GiamGiaRepository Repository;
+
     @Autowired
     private SpGiamGiaRepository spggRepository;
-    @Autowired
-    private ProductDetailRepository spctRepository;
+
     @Autowired
     private SanPhamRepository spRepository;
-    @Autowired
-    private KieuDeRepository kdRepository;
-    @Autowired
-    private ChatLieuRepository clRepository;
-    @Autowired
-    private SizeRepository sizeRepository;
-    @Autowired
-    private MauSacRepository msRepository;
-    @Autowired
-    private ImageRepository iRepository;
 
     @Override
     public List<GiamGiaResponse> getAll() {
