@@ -23,9 +23,13 @@ public class SanPhamGiamGiaController {
     @Autowired
     private SpGiamGiaRepository spGiamGiaRepository;
 
+    @GetMapping("show")
+    public ResponseEntity<List<loadsanpham_not_login>> show() {
+        return ResponseEntity.ok(spGiamGiaRepository.getAllSpGiamGia());
+    }
+
     @GetMapping("show-name-price-image")
     public ResponseEntity<List<loadsanpham_not_login>> getNamePriceImage(@RequestParam UUID idsanpham) {
-
         return ResponseEntity.ok(spGiamGiaRepository.getNamePriceImageByIdSanPham(idsanpham));
     }
     @GetMapping("show-all-mau-sac")
