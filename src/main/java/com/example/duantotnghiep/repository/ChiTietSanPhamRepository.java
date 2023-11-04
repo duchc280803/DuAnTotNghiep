@@ -13,41 +13,68 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.awt.print.Pageable;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, UUID> {
-    // load sản phẩm với 1 ảnh mặc định
-    @Query("SELECT new com.example.duantotnghiep.mapper.ChiTietSanPhamCustom" +
-            "(i.tenImage, spct.id, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam,spct.soLuong, kd.tenDe, ms.tenMauSac, s.size, cl.tenChatLieu) " +
-            "FROM SanPham sp " +
-            "LEFT JOIN sp.spGiamGiaList spgg " +
-            "LEFT JOIN spgg.giamGia gg " +
-            "JOIN sp.listSanPhamChiTiet spct " +
-            "JOIN sp.listImage i " +
-            "JOIN sp.kieuDe kd " +
-            "JOIN spct.size s " +
-            "JOIN spct.chatLieu cl " +
-            "JOIN spct.mauSac ms " +
-            "WHERE i.isDefault = TRUE ")
-    List<ChiTietSanPhamCustom> getAll();
 
-    // tìm kiếm sản phẩm theo tên
-    @Query("SELECT new com.example.duantotnghiep.mapper.ChiTietSanPhamCustom" +
-            "(i.tenImage, spct.id, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam,spct.soLuong, kd.tenDe, ms.tenMauSac, s.size, cl.tenChatLieu) "
-            +
+    @Query("SELECT s.giaBan - COALESCE(SUM(gg.mucGiam), 0) - COALESCE(SUM(gg.donGiaKhiGiam), 0)AS GiaGocMinusGiaCuoiCuong " +
+            "FROM SanPham s " +
+            "LEFT JOIN s.spGiamGiaList gg " +
+            "WHERE s.id = :id AND gg.trangThai = 1 " +
+            "GROUP BY s.giaBan")
+    BigDecimal calculatePriceDifference(@Param("id") UUID id);
+
+    // TODO: Load sản phẩm ở quầy
+    @Query("SELECT sp.id, spct.id, i.tenImage, sp.tenSanPham, sp.giaBan, spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu " +
             "FROM SanPham sp " +
-            "LEFT JOIN sp.spGiamGiaList spgg " +
-            "LEFT JOIN spgg.giamGia gg " +
-            "JOIN sp.listSanPhamChiTiet spct " +
             "JOIN sp.listImage i " +
             "JOIN sp.kieuDe kd " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "JOIN sp.listSanPhamChiTiet spct " +
             "JOIN spct.size s " +
             "JOIN spct.chatLieu cl " +
             "JOIN spct.mauSac ms " +
-            "WHERE i.isDefault = TRUE AND sp.tenSanPham = :name")
-    List<ChiTietSanPhamCustom> searchByName(String name);
+            "WHERE i.isDefault = TRUE " +
+            "AND kd.trangThai = 1 " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND dm.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "AND spct.trangThai = 1 " +
+            "AND s.trangThai = 1 " +
+            "AND cl.trangThai = 1 " +
+            "AND ms.trangThai = 1")
+    List<Object[]> getAll();
+
+    //     tìm kiếm sản phẩm theo tên
+    @Query("SELECT spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu " +
+            "FROM SanPham sp " +
+            "JOIN sp.listImage i " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "JOIN sp.listSanPhamChiTiet spct " +
+            "JOIN spct.size s " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.mauSac ms " +
+            "WHERE i.isDefault = TRUE " +
+            "AND kd.trangThai = 1 " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND dm.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "AND spct.trangThai = 1 " +
+            "AND s.trangThai = 1 " +
+            "AND cl.trangThai = 1 " +
+            "AND ms.trangThai = 1 " +
+            "AND sp.tenSanPham = :name")
+    List<Object[]> searchByName(String name);
 
     @Query("SELECT new com.example.duantotnghiep.response.SanPhamGetAllResponse(" +
             "sp.id, sp.tenSanPham, i.tenImage, th.tenThuongHieu, dm.tenDanhMuc, xx.tenXuatXu, sp.giaBan) " +

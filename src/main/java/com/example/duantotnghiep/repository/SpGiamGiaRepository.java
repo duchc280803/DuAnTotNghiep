@@ -117,4 +117,6 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
             "            WHERE i.isDefault = 'true' and ms.id=?1 and s.id=?2\n" +
             "            and sp.id=?3",nativeQuery = true)
     List<findIdSpctAndSoLuong_not_login> findIdspctAndSoluong(UUID idmausac, UUID idsize, UUID idsanpham);
+
+    List<SpGiamGia> findBySanPham_Id(UUID id);
 }

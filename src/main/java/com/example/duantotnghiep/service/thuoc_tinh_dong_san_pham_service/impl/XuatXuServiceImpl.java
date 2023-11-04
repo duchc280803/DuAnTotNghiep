@@ -16,6 +16,6 @@ public class XuatXuServiceImpl implements XuatXuService {
 
     @Override
     public List<XuatXu> getAll() {
-        return xuatSuRepository.findAll();
+        return xuatSuRepository.findByTrangThai(1);
     }
 }

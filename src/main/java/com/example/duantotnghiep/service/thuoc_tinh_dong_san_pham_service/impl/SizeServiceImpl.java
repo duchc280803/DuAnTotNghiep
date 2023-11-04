@@ -16,6 +16,6 @@ public class SizeServiceImpl implements SizeService {
 
     @Override
     public List<Size> getAll() {
-        return sizeRepository.findAll();
+        return sizeRepository.findByTrangThai(1);
     }
 }

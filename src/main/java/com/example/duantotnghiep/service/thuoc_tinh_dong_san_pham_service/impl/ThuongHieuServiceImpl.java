@@ -16,6 +16,6 @@ public class ThuongHieuServiceImpl implements ThuongHieuService {
 
     @Override
     public List<ThuongHieu> getALL() {
-        return thuongHieuRepository.findAll();
+        return thuongHieuRepository.findByTrangThai(1);
     }
 }
