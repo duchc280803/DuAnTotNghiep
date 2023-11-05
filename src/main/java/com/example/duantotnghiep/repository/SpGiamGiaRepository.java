@@ -106,6 +106,7 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
     List<loadmausac_not_login> findMauSacBySize(String tensanpham,UUID idsize);
 
     //load sp chi tiet
+
     @Query(value = "SELECT* FROM SanPham sp\n" +
             "                        LEFT JOIN spgiamgia spgg ON sp.id = spgg.idsanpham\n" +
             "                        LEFT JOIN GiamGia gg ON spgg.idgiamgia = gg.id\n" +
@@ -133,4 +134,5 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
             "                            )\n" +
             "                        )",nativeQuery = true)
     List<findIdSpctAndSoLuong_not_login> findIdspctAndSoluong(@Param("idmausac") UUID idmausac,@Param("idsize") UUID idsize, @Param("tensanpham") String tensanpham);
+
 }

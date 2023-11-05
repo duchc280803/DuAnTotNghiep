@@ -16,6 +16,6 @@ public class KieuDeServiceImpl implements KieuDeService {
 
     @Override
     public List<KieuDe> getAll() {
-        return kieuDeRepository.findAll();
+        return kieuDeRepository.findByTrangThai(1);
     }
 }

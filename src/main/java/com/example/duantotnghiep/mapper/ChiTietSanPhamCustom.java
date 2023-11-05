@@ -14,9 +14,9 @@ import java.util.UUID;
 @Setter
 public class ChiTietSanPhamCustom {
 
-    private String imgage;
+    private UUID idSanPhamChiTiet;
 
-    private UUID id;
+    private String imgage;
 
     private String tenSanPham;
 
@@ -24,11 +24,7 @@ public class ChiTietSanPhamCustom {
 
     private BigDecimal giaGiamGia;
 
-    private Long mucGiam;
-
     private Integer soLuong;
-
-    private String kieuDe;
 
     private String mauSac;
 
