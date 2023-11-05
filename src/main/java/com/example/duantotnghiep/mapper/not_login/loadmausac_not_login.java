@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public interface loadmausac_not_login {
- UUID getId();
- String getTenmausac();
+
+    UUID getId();
+
+    String getTenmausac();
 }

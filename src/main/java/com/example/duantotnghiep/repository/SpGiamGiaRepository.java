@@ -21,6 +21,8 @@ import java.util.UUID;
 @Repository
 public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
 
+    List<SpGiamGia> findBySanPham_Id(UUID id);
+
     //load sanpham on shop
     @Query(value = "SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam\n" +
             "FROM SanPham sp\n" +
@@ -67,7 +69,7 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
             "                    )\n" +
             "                )\n" +
             "            )",nativeQuery = true)
-    List<loadsanpham_not_login> getNamePriceImageByIdSanPham(String tenSanPham);
+    loadsanpham_not_login getNamePriceImageByIdSanPham(String tenSanPham);
 
     //load all mau sac
     @Query(value = "SELECT DISTINCT ms.id, ms.tenmausac\n" +
@@ -106,7 +108,6 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
     List<loadmausac_not_login> findMauSacBySize(String tensanpham,UUID idsize);
 
     //load sp chi tiet
-
     @Query(value = "SELECT* FROM SanPham sp\n" +
             "                        LEFT JOIN spgiamgia spgg ON sp.id = spgg.idsanpham\n" +
             "                        LEFT JOIN GiamGia gg ON spgg.idgiamgia = gg.id\n" +
@@ -133,6 +134,6 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
             "                                )\n" +
             "                            )\n" +
             "                        )",nativeQuery = true)
-    List<findIdSpctAndSoLuong_not_login> findIdspctAndSoluong(@Param("idmausac") UUID idmausac,@Param("idsize") UUID idsize, @Param("tensanpham") String tensanpham);
+    findIdSpctAndSoLuong_not_login findIdspctAndSoluong(@Param("idmausac") UUID idmausac,@Param("idsize") UUID idsize, @Param("tensanpham") String tensanpham);
 
 }

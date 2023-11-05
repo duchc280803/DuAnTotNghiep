@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface ProductCounterService {
 
-    List<ChiTietSanPhamCustom> getAll();
+    List<ChiTietSanPhamCustom> getAll(Integer pageNumber, Integer pageSize);
 
     List<ChiTietSanPhamCustom> searchByName(String name);
 

@@ -8,6 +8,9 @@ import com.example.duantotnghiep.response.DetailQuantityToSizeReponse;
 import com.example.duantotnghiep.response.SanPhamGetAllResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.ProductCounterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -36,10 +39,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
     }
 
     @Override
-    public List<ChiTietSanPhamCustom> getAll() {
+    public List<ChiTietSanPhamCustom> getAll(Integer pageNumber, Integer pageSize) {
         List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
-        List<Object[]> queryResult = chiTietSanPhamRepository.getAll();
-        for (Object[] result : queryResult) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = chiTietSanPhamRepository.getAll(pageable);
+        for (Object[] result : queryResult.getContent()) {
             UUID idSp = (UUID) result[0];
             UUID idCtsp = (UUID) result[1];
             String imgage = (String) result[2];

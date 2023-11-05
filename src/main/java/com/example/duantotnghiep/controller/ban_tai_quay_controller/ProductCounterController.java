@@ -10,15 +10,17 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/chi-tiet-sp")
+@RequestMapping("/api/chi-tiet-sp/")
 public class ProductCounterController {
 
     @Autowired
     private ProductCounterServiceImpl chiTietSanPhamService;
 
     @GetMapping("hien-thi")
-    public ResponseEntity<List<ChiTietSanPhamCustom>> getAll() {
-        return ResponseEntity.ok(chiTietSanPhamService.getAll());
+    public ResponseEntity<List<ChiTietSanPhamCustom>> getAll(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "8") Integer pageSize) {
+        return ResponseEntity.ok(chiTietSanPhamService.getAll(pageNumber, pageSize));
     }
 
     @GetMapping("search-name")

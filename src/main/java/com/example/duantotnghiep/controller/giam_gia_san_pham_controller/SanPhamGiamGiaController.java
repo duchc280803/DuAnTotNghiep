@@ -26,9 +26,10 @@ public class SanPhamGiamGiaController {
     }
 
     @GetMapping("show-name-price-image/{name}")
-    public ResponseEntity<List<loadsanpham_not_login>> getNamePriceImage(@PathVariable String name) {
+    public ResponseEntity<loadsanpham_not_login> getNamePriceImage(@PathVariable String name) {
         return ResponseEntity.ok(spGiamGiaRepository.getNamePriceImageByIdSanPham(name));
     }
+
     @GetMapping("show-all-mau-sac/{name}")
     public ResponseEntity<List<loadmausac_not_login>> getAllMauSac(@PathVariable String name) {
         return new ResponseEntity<>(spGiamGiaRepository.getAllMauSac(name), HttpStatus.OK);
@@ -40,17 +41,18 @@ public class SanPhamGiamGiaController {
     }
 
     @GetMapping("find-size-by-mau-sac/{name}")
-    public ResponseEntity<List<loadsize_not_login>> findSizeByMauSac(@PathVariable String name,@RequestParam UUID idmausac) {
+    public ResponseEntity<List<loadsize_not_login>> findSizeByMauSac(@PathVariable(name = "name") String name,@RequestParam UUID idmausac) {
         return new ResponseEntity<>(spGiamGiaRepository.findSizeByMauSac(name,idmausac), HttpStatus.OK);
     }
 
     @GetMapping("find-mau-sac-by-size/{name}")
-    public ResponseEntity<List<loadmausac_not_login>> findMauSacBySize(@PathVariable String name,@RequestParam UUID idsize) {
+    public ResponseEntity<List<loadmausac_not_login>> findMauSacBySize(@PathVariable(name = "name") String name,@RequestParam UUID idsize) {
         return new ResponseEntity<>(spGiamGiaRepository.findMauSacBySize(name,idsize), HttpStatus.OK);
     }
 
     @GetMapping("find-idspct-soluong/{name}")
-    public ResponseEntity<List<findIdSpctAndSoLuong_not_login>> findIdSpctAndSoLuong_not_login(@RequestParam UUID idmausac, @RequestParam UUID idsize,@PathVariable String name) {
+    public ResponseEntity<findIdSpctAndSoLuong_not_login> findIdSpctAndSoLuong_not_login(@RequestParam UUID idmausac, @RequestParam UUID idsize,@PathVariable String name) {
         return new ResponseEntity<>(spGiamGiaRepository.findIdspctAndSoluong(idmausac,idsize,name), HttpStatus.OK);
     }
+
 }
