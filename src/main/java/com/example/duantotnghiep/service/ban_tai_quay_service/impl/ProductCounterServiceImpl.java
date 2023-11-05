@@ -39,10 +39,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
     }
 
     @Override
-    public List<ChiTietSanPhamCustom> getAll() {
+    public List<ChiTietSanPhamCustom> getAll(Integer pageNumber, Integer pageSize) {
         List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
-        List<Object[]> queryResult = chiTietSanPhamRepository.getAll();
-        for (Object[] result : queryResult) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = chiTietSanPhamRepository.getAll(pageable);
+        for (Object[] result : queryResult.getContent()) {
             UUID idSp = (UUID) result[0];
             UUID idCtsp = (UUID) result[1];
             String imgage = (String) result[2];
@@ -75,7 +76,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer size = (Integer) result[7];
             String chatLieu = (String) result[8];
-            BigDecimal giaGiam = chiTietSanPhamRepository.calculatePriceDifference(idSp);
+            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
                     idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
@@ -85,13 +86,164 @@ public class ProductCounterServiceImpl implements ProductCounterService {
     }
 
     @Override
-    public SanPhamGetAllResponse getByIdSp(UUID id) {
-        return chiTietSanPhamRepository.getByIdSp(id);
+    public List<ChiTietSanPhamCustom> filterBrand(String name) {
+        List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
+        List<Object[]> queryResult = chiTietSanPhamRepository.filterBrand(name);
+        for (Object[] result : queryResult) {
+            UUID idSp = (UUID) result[0];
+            UUID idCtsp = (UUID) result[1];
+            String imgage = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Integer soLuong = (Integer) result[5];
+            String mauSac = (String) result[6];
+            Integer size = (Integer) result[7];
+            String chatLieu = (String) result[8];
+            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+
+            ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
+                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
+            resultList.add(chiTietSanPhamCustom);
+        }
+        return resultList;
     }
 
     @Override
-    public DetailQuantityToSizeReponse getDetailQuantityToSizeReponse(UUID id, Integer size) {
-        return chiTietSanPhamRepository.getDetailQuantityToSizeReponse(id, size);
+    public List<ChiTietSanPhamCustom> filterCategory(String name) {
+        List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
+        List<Object[]> queryResult = chiTietSanPhamRepository.filterCategory(name);
+        for (Object[] result : queryResult) {
+            UUID idSp = (UUID) result[0];
+            UUID idCtsp = (UUID) result[1];
+            String imgage = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Integer soLuong = (Integer) result[5];
+            String mauSac = (String) result[6];
+            Integer size = (Integer) result[7];
+            String chatLieu = (String) result[8];
+            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+
+            ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
+                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
+            resultList.add(chiTietSanPhamCustom);
+        }
+        return resultList;
+    }
+
+    @Override
+    public List<ChiTietSanPhamCustom> filterSole(String name) {
+        List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
+        List<Object[]> queryResult = chiTietSanPhamRepository.filterSole(name);
+        for (Object[] result : queryResult) {
+            UUID idSp = (UUID) result[0];
+            UUID idCtsp = (UUID) result[1];
+            String imgage = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Integer soLuong = (Integer) result[5];
+            String mauSac = (String) result[6];
+            Integer size = (Integer) result[7];
+            String chatLieu = (String) result[8];
+            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+
+            ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
+                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
+            resultList.add(chiTietSanPhamCustom);
+        }
+        return resultList;
+    }
+
+    @Override
+    public List<ChiTietSanPhamCustom> filterOrigin(String name) {
+        List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
+        List<Object[]> queryResult = chiTietSanPhamRepository.filterOrigin(name);
+        for (Object[] result : queryResult) {
+            UUID idSp = (UUID) result[0];
+            UUID idCtsp = (UUID) result[1];
+            String imgage = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Integer soLuong = (Integer) result[5];
+            String mauSac = (String) result[6];
+            Integer size = (Integer) result[7];
+            String chatLieu = (String) result[8];
+            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+
+            ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
+                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
+            resultList.add(chiTietSanPhamCustom);
+        }
+        return resultList;
+    }
+
+    @Override
+    public List<ChiTietSanPhamCustom> filterSize(Integer size) {
+        List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
+        List<Object[]> queryResult = chiTietSanPhamRepository.filterSize(size);
+        for (Object[] result : queryResult) {
+            UUID idSp = (UUID) result[0];
+            UUID idCtsp = (UUID) result[1];
+            String imgage = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Integer soLuong = (Integer) result[5];
+            String mauSac = (String) result[6];
+            Integer ssize = (Integer) result[7];
+            String chatLieu = (String) result[8];
+            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+
+            ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
+                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, ssize, chatLieu);
+            resultList.add(chiTietSanPhamCustom);
+        }
+        return resultList;
+    }
+
+    @Override
+    public List<ChiTietSanPhamCustom> filterMaterial(String name) {
+        List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
+        List<Object[]> queryResult = chiTietSanPhamRepository.filterMaterial(name);
+        for (Object[] result : queryResult) {
+            UUID idSp = (UUID) result[0];
+            UUID idCtsp = (UUID) result[1];
+            String imgage = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Integer soLuong = (Integer) result[5];
+            String mauSac = (String) result[6];
+            Integer ssize = (Integer) result[7];
+            String chatLieu = (String) result[8];
+            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+
+            ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
+                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, ssize, chatLieu);
+            resultList.add(chiTietSanPhamCustom);
+        }
+        return resultList;
+    }
+
+    @Override
+    public List<ChiTietSanPhamCustom> filterColor(String name) {
+        List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
+        List<Object[]> queryResult = chiTietSanPhamRepository.filterColor(name);
+        for (Object[] result : queryResult) {
+            UUID idSp = (UUID) result[0];
+            UUID idCtsp = (UUID) result[1];
+            String imgage = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Integer soLuong = (Integer) result[5];
+            String mauSac = (String) result[6];
+            Integer ssize = (Integer) result[7];
+            String chatLieu = (String) result[8];
+            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+
+            ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
+                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, ssize, chatLieu);
+            resultList.add(chiTietSanPhamCustom);
+        }
+        return resultList;
     }
 
 }
