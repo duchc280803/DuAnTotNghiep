@@ -13,8 +13,18 @@ public interface ProductCounterService {
 
     List<ChiTietSanPhamCustom> searchByName(String name);
 
-    SanPhamGetAllResponse getByIdSp(UUID id);
+    List<ChiTietSanPhamCustom> filterBrand(String name);
 
-    DetailQuantityToSizeReponse getDetailQuantityToSizeReponse(UUID id, Integer size);
+    List<ChiTietSanPhamCustom> filterCategory(String name);
+
+    List<ChiTietSanPhamCustom> filterSole(String name);
+
+    List<ChiTietSanPhamCustom> filterOrigin(String name);
+
+    List<ChiTietSanPhamCustom> filterSize(Integer size);
+
+    List<ChiTietSanPhamCustom> filterMaterial(String name);
+
+    List<ChiTietSanPhamCustom> filterColor(String name);
 
 }
