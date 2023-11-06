@@ -92,7 +92,7 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
     List<loadchatlieu_not_login> getAllChatLieu(String tensanpham);
 
     //find by //SIZE// load  //MAUSAC + CHATLIEU//
-    @Query(value = "SELECT DISTINCT spct.idMauSac,ms.tenMauSac , spct.idChatLieu ,cl.tenChatLieu\n" +
+    @Query(value = "SELECT DISTINCT spct.idsize,ms.tenMauSac ,cl.tenChatLieu\n" +
             "        FROM sanpham sp\n" +
             "        JOIN sanphamchitiet spct ON sp.id = spct.idsanpham\n" +
             "        JOIN size s ON spct.idsize = s.id\n" +
@@ -103,7 +103,7 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
     List<loadmausac_chatlieu_not_login> findMauSacChatLieu(String tensanpham, UUID idsize);
 
     //find by //MAUSAC// load  //SIZE + CHATLIEU//
-    @Query(value = "\t\tSELECT DISTINCT spct.idsize,s.size , spct.idchatlieu ,cl.tenchatlieu\n" +
+    @Query(value = "\t\tSELECT DISTINCT spct.idmausac,s.size ,cl.tenchatlieu\n" +
             "        FROM sanpham sp\n" +
             "        JOIN sanphamchitiet spct ON sp.id = spct.idsanpham\n" +
             "        JOIN size s ON spct.idsize = s.id\n" +
@@ -114,7 +114,7 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
     List<loadsize_chatlieu_not_login> findSizeChatLieu(@Param("tensanpham") String tensanpham, @Param("idmausac") UUID idmausac);
 
     //find by //CHATLIEU// load  //SIZE + MAUSAC//
-    @Query(value = "SELECT DISTINCT  spct.idsize,s.size, spct.idmausac,ms.tenmausac\n" +
+    @Query(value = "SELECT DISTINCT  spct.idchatlieu,s.size,ms.tenmausac\n" +
             "        FROM sanpham sp\n" +
             "        JOIN sanphamchitiet spct ON sp.id = spct.idsanpham\n" +
             "        JOIN size s ON spct.idsize = s.id\n" +
