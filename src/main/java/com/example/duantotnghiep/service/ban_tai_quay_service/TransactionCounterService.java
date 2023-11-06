@@ -16,5 +16,6 @@ public interface TransactionCounterService {
 
     List<TransactionResponse> findAllTran(UUID id);
 
-    JsonNode callPaymentApi(HttpServletRequest req,UUID idHoaDon, UUID id, TransactionVnPayRequest transactionVnPayRequest);
+    MessageResponse cashVnPay(UUID idHoaDon, UUID id, TransactionVnPayRequest transactionVnPayRequest);
+
 }

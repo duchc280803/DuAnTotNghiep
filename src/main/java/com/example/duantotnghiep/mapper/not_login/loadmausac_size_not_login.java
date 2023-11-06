@@ -5,6 +5,5 @@ import java.util.UUID;
 public interface loadmausac_size_not_login {
  UUID getIdSize();
  String getSize();
- UUID getIdMauSac();
  String getTenMauSac();
 }
