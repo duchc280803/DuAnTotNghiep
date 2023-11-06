@@ -5,22 +5,17 @@ import com.example.duantotnghiep.mapper.not_login.findIdSpctAndSoLuong_not_login
 import com.example.duantotnghiep.mapper.not_login.loadmausac_not_login;
 import com.example.duantotnghiep.mapper.not_login.loadsanpham_not_login;
 import com.example.duantotnghiep.mapper.not_login.loadsize_not_login;
-import com.example.duantotnghiep.request.GiamGiaRequest;
-import com.example.duantotnghiep.response.SanPhamGiamGiaResponse;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
-
+     List<SpGiamGia> findBySanPham_Id(UUID id);
     //load sanpham on shop
     @Query(value = "SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam\n" +
             "FROM SanPham sp\n" +

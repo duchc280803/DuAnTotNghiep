@@ -4,6 +4,7 @@ import com.example.duantotnghiep.repository.HoaDonChiTietRepository;
 import com.example.duantotnghiep.response.HinhThucThanhToanResponse;
 import com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse;
 import com.example.duantotnghiep.response.ThongTinDonHang;
+import com.example.duantotnghiep.response.TrangThaiHoaDonResponse;
 import com.example.duantotnghiep.service.hoa_don_service.HoaDonChiTietService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,5 +31,10 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     @Override
     public List<HinhThucThanhToanResponse> getLichSuThanhToan(UUID idHoaDon) {
         return hoaDonChiTietRepository.getLichSuThanhToan(idHoaDon);
+    }
+
+    @Override
+    public List<TrangThaiHoaDonResponse> getAllTrangThaiHoaDon(UUID idHoaDon) {
+        return hoaDonChiTietRepository.getAllTrangThaiHoaDon(idHoaDon);
     }
 }
