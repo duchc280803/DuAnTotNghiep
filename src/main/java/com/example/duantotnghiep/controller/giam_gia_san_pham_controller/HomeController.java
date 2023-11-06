@@ -1,4 +1,4 @@
-package com.example.duantotnghiep.controller;
+package com.example.duantotnghiep.controller.giam_gia_san_pham_controller;
 
 import com.example.duantotnghiep.response.SanPhamResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.SanPhamServiceImpl;

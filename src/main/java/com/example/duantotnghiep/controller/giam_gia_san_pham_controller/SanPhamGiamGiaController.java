@@ -37,6 +37,11 @@ public class SanPhamGiamGiaController {
         return new ResponseEntity<>(spGiamGiaRepository.getAllSize(name), HttpStatus.OK);
     }
 
+    @GetMapping("show-all-chat-lieu/{name}")
+    public ResponseEntity<List<loadchatlieu_not_login>> getAllChatLieu(@PathVariable String name) {
+        return new ResponseEntity<>(spGiamGiaRepository.getAllChatLieu(name), HttpStatus.OK);
+    }
+
     @GetMapping("find-by-mau-sac/{name}")
     public ResponseEntity<List<loadsize_chatlieu_not_login>> findByMauSac(@PathVariable(name = "name") String name, @RequestParam UUID idmausac) {
         return new ResponseEntity<>(spGiamGiaRepository.findSizeChatLieu(name, idmausac), HttpStatus.OK);
@@ -53,7 +58,8 @@ public class SanPhamGiamGiaController {
     }
 
     @GetMapping("find-idspct-soluong/{name}")
-    public ResponseEntity<findIdSpctAndSoLuong_not_login> findIdSpctAndSoLuong_not_login(@RequestParam UUID idmausac, @RequestParam UUID idsize, @PathVariable String name) {
-        return new ResponseEntity<>(spGiamGiaRepository.findIdspctAndSoluong(idmausac, idsize, name), HttpStatus.OK);
+    public ResponseEntity<findIdSpctAndSoLuong_not_login> findIdSpctAndSoLuong_not_login(@RequestParam UUID idmausac, @RequestParam UUID idsize,@RequestParam UUID idchatlieu, @PathVariable String name) {
+        return new ResponseEntity<>(spGiamGiaRepository.findIdspctAndSoluong(idmausac, idsize, idchatlieu, name), HttpStatus.OK);
     }
+
 }

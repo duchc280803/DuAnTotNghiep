@@ -23,7 +23,7 @@ public class CartDetailCounterController {
     public ResponseEntity<List<GioHangCustom>> show(
             @RequestParam(name = "id") UUID id,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "2") Integer pageSize) {
+            @RequestParam(name = "pageSize", defaultValue = "3") Integer pageSize) {
         return ResponseEntity.ok(gioHangChiTietService.loadGH(id, pageNumber, pageSize));
     }
 
@@ -54,4 +54,5 @@ public class CartDetailCounterController {
         gioHangChiTietService.deleteProductInCart(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }
