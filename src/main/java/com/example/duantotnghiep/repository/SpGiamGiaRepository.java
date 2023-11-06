@@ -151,7 +151,7 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
             "                                )\n" +
             "                            )\n" +
             "                        )",nativeQuery = true)
-    findIdSpctAndSoLuong_not_login findIdspctAndSoluong(@Param("idmausac") UUID idmausac,@Param("idsize") UUID idsize, @Param("tensanpham") String tensanpham);
+    findIdSpctAndSoLuong_not_login findIdspctAndSoluong(@Param("idmausac") UUID idmausac,@Param("idsize") UUID idsize,@Param("idchatlieu") UUID idchatlieu, @Param("tensanpham") String tensanpham);
 
     List<SpGiamGia> findBySanPham_Id(UUID id);
 }
