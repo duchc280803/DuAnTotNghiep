@@ -3,6 +3,7 @@ package com.example.duantotnghiep.controller.hoa_don_controller;
 import com.example.duantotnghiep.response.HinhThucThanhToanResponse;
 import com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse;
 import com.example.duantotnghiep.response.ThongTinDonHang;
+import com.example.duantotnghiep.response.TrangThaiHoaDonResponse;
 import com.example.duantotnghiep.service.hoa_don_service.impl.HoaDonChiTietServiceImpl;
 import com.example.duantotnghiep.service.hoa_don_service.impl.TrangThaiHoaDonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,10 @@ public class HoaDonChiTietController {
     @GetMapping("hien-thi-lich-su/{idHoaDon}")
     public ResponseEntity<List<HinhThucThanhToanResponse>> getLichSuThanhToan(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(hoaDonChiTietService.getLichSuThanhToan(idHoaDon), HttpStatus.OK);
+    }
+    @GetMapping("hien-thi-trang-thai/{idHoaDon}")
+    public ResponseEntity<List<TrangThaiHoaDonResponse>> getAllTrangThaiHoaDon(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
+        return new ResponseEntity<>(hoaDonChiTietService.getAllTrangThaiHoaDon(idHoaDon), HttpStatus.OK);
     }
 
     @PostMapping("hien-thi-status/{hoadonId}")
