@@ -47,27 +47,24 @@ public class SanPhamGiamGiaController {
         return new ResponseEntity<>(spGiamGiaRepository.findSizeChatLieu(name, idmausac), HttpStatus.OK);
     }
 
-    @GetMapping("find-mausac-chatlieu-by-size/{name}")
+    @GetMapping("find-by-size/{name}")
     public ResponseEntity<List<loadmausac_chatlieu_not_login>> findMauSacChatLieuBySize(@PathVariable String
                                                                                                 name, @RequestParam UUID idsize) {
         return new ResponseEntity<>(spGiamGiaRepository.findMauSacChatLieu(name, idsize), HttpStatus.OK);
     }
 
-    @GetMapping("find-size-chatlieu-by-mausac/{name}")
-    public ResponseEntity<List<loadsize_chatlieu_not_login>> findSizeChatLieuByMauSac(@PathVariable String
-                                                                                              name, @RequestParam UUID idmausac) {
-        return new ResponseEntity<>(spGiamGiaRepository.findSizeChatLieu(name, idmausac), HttpStatus.OK);
-    }
-
-    @GetMapping("find-size-mausac-by-chatlieu/{name}")
+    @GetMapping("find-by-chat-lieu/{name}")
     public ResponseEntity<List<loadmausac_size_not_login>> findSizeMauSacByChatLieu(@PathVariable String
                                                                                             name, @RequestParam UUID idchatlieu) {
         return new ResponseEntity<>(spGiamGiaRepository.findSizeMauSac(name, idchatlieu), HttpStatus.OK);
     }
 
     @GetMapping("find-idspct-soluong/{name}")
-    public ResponseEntity<findIdSpctAndSoLuong_not_login> findIdSpctAndSoLuong_not_login(@RequestParam UUID
-                                                                                                 idmausac, @RequestParam UUID idsize, @RequestParam UUID idchatlieu, @PathVariable String name) {
+    public ResponseEntity<findIdSpctAndSoLuong_not_login> findIdSpctAndSoLuong_not_login(
+            @RequestParam UUID idmausac,
+            @RequestParam UUID idsize,
+            @RequestParam UUID idchatlieu,
+            @PathVariable String name) {
         return new ResponseEntity<>(spGiamGiaRepository.findIdspctAndSoluong(idmausac, idsize, idchatlieu, name), HttpStatus.OK);
     }
 
