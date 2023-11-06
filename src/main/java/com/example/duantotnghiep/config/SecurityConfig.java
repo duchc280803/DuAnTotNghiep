@@ -60,6 +60,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/giam-gia/**").permitAll()
                         .requestMatchers("/api/v1/invoice/**").permitAll()
                         .requestMatchers("/api/v1/chat-lieu/**").permitAll()
+                        .requestMatchers("/api/v1/payment/**").permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(
