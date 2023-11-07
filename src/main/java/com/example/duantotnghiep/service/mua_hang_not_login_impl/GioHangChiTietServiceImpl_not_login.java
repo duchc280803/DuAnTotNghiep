@@ -50,7 +50,7 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
             sanPhamChiTiet.setId(idSanPhamChiTiet);
 
             //set quantity product in stock when adding to cart
-            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong()-soLuong);
+//            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong()-soLuong);
 
             gioHangChiTiet.setSanPhamChiTiet(sanPhamChiTiet);
 
