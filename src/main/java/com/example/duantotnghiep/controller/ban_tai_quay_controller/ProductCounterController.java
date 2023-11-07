@@ -33,12 +33,10 @@ public class ProductCounterController {
         return ResponseEntity.ok(chiTietSanPhamService.filterBrand(name));
     }
 
-
     @GetMapping("filter-category")
     public ResponseEntity<List<ChiTietSanPhamCustom>> filterCategory(@RequestParam String name) {
         return ResponseEntity.ok(chiTietSanPhamService.filterCategory(name));
     }
-
 
     @GetMapping("filter-sole")
     public ResponseEntity<List<ChiTietSanPhamCustom>> filterSole(@RequestParam String name) {
@@ -64,6 +62,5 @@ public class ProductCounterController {
     public ResponseEntity<List<ChiTietSanPhamCustom>> filterColor(@RequestParam String name) {
         return ResponseEntity.ok(chiTietSanPhamService.filterColor(name));
     }
-
 
 }
