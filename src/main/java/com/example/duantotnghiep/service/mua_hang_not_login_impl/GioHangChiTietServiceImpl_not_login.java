@@ -49,10 +49,15 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
             SanPhamChiTiet sanPhamChiTiet = new SanPhamChiTiet();
             sanPhamChiTiet.setId(idSanPhamChiTiet);
 
+            //set quantity product in stock when adding to cart
+            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong()-soLuong);
+
             gioHangChiTiet.setSanPhamChiTiet(sanPhamChiTiet);
 
             // Set số lượng
             gioHangChiTiet.setSoLuong(soLuong);
+
+
         }
 
         // Lưu hoặc cập nhật GioHangChiTiet
