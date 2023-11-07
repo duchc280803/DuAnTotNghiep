@@ -44,6 +44,8 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
             gioHang.setId(idGioHang);
 
             gioHangChiTiet.setGioHang(gioHang);
+            // Set số lượng
+            gioHangChiTiet.setSoLuong(soLuong);
 
             // Tạo một đối tượng SanPhamChiTiet để set mối quan hệ với GioHangChiTiet
             SanPhamChiTiet sanPhamChiTiet = new SanPhamChiTiet();
@@ -53,10 +55,6 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
 //            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong()-soLuong);
 
             gioHangChiTiet.setSanPhamChiTiet(sanPhamChiTiet);
-
-            // Set số lượng
-            gioHangChiTiet.setSoLuong(soLuong);
-
 
         }
 
