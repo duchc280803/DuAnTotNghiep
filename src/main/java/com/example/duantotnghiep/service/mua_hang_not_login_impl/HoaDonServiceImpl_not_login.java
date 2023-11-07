@@ -150,17 +150,16 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
             }
         }//End step 3
 
-        //Step 4 : Xử lí hóa đơn chi tiết cập nhật số lượng trong kho
-        for (UUID idGioHangChiTiet : createKhachRequest_not_login.getGioHangChiTietList()) {
-            Optional<GioHangChiTiet> gioHangChiTiet = gioHangChiTietRepository.findById(idGioHangChiTiet);
-
-            if (gioHangChiTiet.isPresent()) {
-                // Giảm số lượng sản phẩm trong kho đi số lượng đã bán trong chi tiết hóa đơn
-                gioHangChiTiet.get().getSanPhamChiTiet().setSoLuong(gioHangChiTiet.get().getSanPhamChiTiet().getSoLuong() - gioHangChiTiet.get().getSoLuong());
-                chiTietSanPhamRepository.save(gioHangChiTiet.get().getSanPhamChiTiet());
-
-            }
-        }//End step 4
+//        //Step 4 : Xử lí hóa đơn chi tiết cập nhật số lượng trong kho
+//        for (UUID idGioHangChiTiet : createKhachRequest_not_login.getGioHangChiTietList()) {
+//            Optional<GioHangChiTiet> gioHangChiTiet = gioHangChiTietRepository.findById(idGioHangChiTiet);
+//
+//            if (gioHangChiTiet.isPresent()) {
+//                // Giảm số lượng sản phẩm trong kho đi số lượng đã bán trong chi tiết hóa đơn
+//                gioHangChiTiet.get().getSanPhamChiTiet().setSoLuong(gioHangChiTiet.get().getSanPhamChiTiet().getSoLuong() - gioHangChiTiet.get().getSoLuong());
+//                chiTietSanPhamRepository.save(gioHangChiTiet.get().getSanPhamChiTiet());
+//            }
+//        }//End step 4
 
         //Step 5 : Cập nhật trạng thái của giỏ hàng thành 2 sau khi thanh toán
         for (UUID idGioHangChiTiet : createKhachRequest_not_login.getGioHangChiTietList()) {
