@@ -13,13 +13,11 @@ import java.util.UUID;
 @Repository
 public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UUID> {
     @Query(value = "SELECT TOP 1 hd.trangthai, LD.tenloaidon,\n" +
-            "CONCAT(DC.diachi, ' - ', DC.Xa, ' - ', DC.huyen, ' - ', DC.tinh, ' - ', DC.quocgia) as diachi,\n" +
+            "HD.diachi,\n" +
             "HD.tennguoinhan, HD.sdtnguoinhan, TTHD.ghichu\n" +
             "FROM\n" +
             "hoadon HD JOIN loaidon LD ON HD.idloaidon = LD.id\n" +
             "JOIN trangthaihoadon TTHD ON TTHD.idhoadon = HD.id\n" +
-            "LEFT JOIN taikhoan TKKH ON TKKH.id = HD.idkhachhang \n" +
-            "LEFT JOIN diachi DC ON DC.idtaikhoan = TKKH.id\n" +
             "WHERE TTHD.idhoadon = ?1\n" +
             "ORDER BY TTHD.thoigian DESC", nativeQuery = true)
     ThongTinDonHang getThongTinDonHang(UUID idHoaDon);
@@ -33,7 +31,7 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
             "LEFT JOIN image IM ON IM.idsanpham = SP.id WHERE IM.isdefault = 1 AND HD.id = ?1", nativeQuery = true)
     List<SanPhamHoaDonChiTietResponse> getSanPhamHDCT(UUID idHoaDon);
 
-    @Query(value = "SELECT HD.ma, HTTT.sotientra, HTTT.ngaytao, HTTT.phuongthucthanhtoan, HTTT.ghichu, TKNV.fullname FROM hoadon HD\n" +
+    @Query(value = "SELECT HD.ma, HTTT.sotientra, HTTT.ngaytao, HTTT.phuongthucthanhtoan, HTTT.ghichu, HTTT.trangthai, TKNV.fullname FROM hoadon HD\n" +
             "LEFT JOIN hinhthucthanhtoan HTTT ON HD.id = HTTT.idhoadon\n" +
             "JOIN taikhoan TKNV ON HD.idnhanvien = TKNV.id WHERE HD.id = ?1\n", nativeQuery = true)
     List<HinhThucThanhToanResponse> getLichSuThanhToan(UUID idHoaDon);
