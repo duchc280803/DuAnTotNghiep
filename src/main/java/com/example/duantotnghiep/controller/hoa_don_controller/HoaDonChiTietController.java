@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.controller.hoa_don_controller;
 
+import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.response.HinhThucThanhToanResponse;
 import com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse;
 import com.example.duantotnghiep.response.ThongTinDonHang;
@@ -42,10 +43,9 @@ public class HoaDonChiTietController {
         return new ResponseEntity<>(hoaDonChiTietService.getAllTrangThaiHoaDon(idHoaDon), HttpStatus.OK);
     }
 
-    @PostMapping("hien-thi-status/{hoadonId}")
-    public ResponseEntity<?> updateTrangThaiHoaDon(@PathVariable UUID hoadonId, @RequestBody Integer newTrangThai, @RequestBody String ghiChu) {
-        trangThaiHoaDonService.updateTrangThaiHoaDon(hoadonId, newTrangThai,ghiChu);
+    @PostMapping("confirm-order/{hoadonId}")
+    public ResponseEntity<String> confirmOrder(@PathVariable UUID hoadonId, @RequestBody TrangThaiHoaDonRequest request) {
+        trangThaiHoaDonService.confirmOrder(hoadonId, request);
         return ResponseEntity.ok("Trạng thái hóa đơn đã được cập nhật.");
     }
-
 }

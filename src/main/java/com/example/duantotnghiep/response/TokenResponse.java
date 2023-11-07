@@ -2,6 +2,8 @@ package com.example.duantotnghiep.response;
 
 import lombok.*;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -16,4 +18,6 @@ public class TokenResponse {
     private String message;
 
     private String role;
+
+    private UUID idTaiKhoan;
 }

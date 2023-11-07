@@ -7,7 +7,6 @@ import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.IdGioHangResponse;
 import com.example.duantotnghiep.response.MessageResponse;
-
 import com.example.duantotnghiep.response.OrderCounterCartsResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.OrderCounterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.UUID;
 
 @Service
-public class OrderCounterServiceImpl implements OrderCounterService {
+public class OrderCounterServiceImpl implements OrderCounterService
+{
 
     @Autowired
     private HoaDonRepository hoaDonRepository;
