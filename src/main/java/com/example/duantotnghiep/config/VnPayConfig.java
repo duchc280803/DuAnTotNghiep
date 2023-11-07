@@ -9,8 +9,10 @@ import java.util.Random;
 
 public class VnPayConfig {
 
-    public static String vnp_Returnurl = "http://localhost/admin/index.html";
+    public static String vnp_Returnurl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+
     public static String vnp_TmnCode = "NYJQ9FD8";
 
     public static String secretKey = "JRHLUKOVKSZRQPBUOMJDPJSKVPRGHADO";

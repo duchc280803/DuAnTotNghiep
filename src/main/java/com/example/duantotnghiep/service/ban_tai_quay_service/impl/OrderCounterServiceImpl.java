@@ -106,9 +106,10 @@ public class OrderCounterServiceImpl implements OrderCounterService {
 
     @Override
     public MessageResponse updateHoaDon(UUID idHoaDon, HoaDonThanhToanRequest hoaDonThanhToanRequest) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
-        hoaDon.get().setNgayNhan(new java.sql.Date(System.currentTimeMillis()));
-        hoaDon.get().setNgayThanhToan(new java.sql.Date(System.currentTimeMillis()));
+        hoaDon.get().setNgayNhan(timestamp);
+        hoaDon.get().setNgayThanhToan(timestamp);
         hoaDon.get().setTienKhachTra(hoaDonThanhToanRequest.getTienKhachTra());
         hoaDon.get().setTienThua(hoaDonThanhToanRequest.getTienThua());
         hoaDon.get().setThanhTien(hoaDonThanhToanRequest.getTongTien());
@@ -140,6 +141,15 @@ public class OrderCounterServiceImpl implements OrderCounterService {
                 chiTietSanPhamRepository.save(sanPhamChiTiet);
             }
         }
+
+        TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+        trangThaiHoaDon.setId(UUID.randomUUID());
+        trangThaiHoaDon.setTrangThai(StatusOrderDetailEnums.CHO_XAC_NHAN.getValue());
+        trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setGhiChu("Nhân viên xác nhận đơn cho khách");
+        trangThaiHoaDon.setHoaDon(hoaDon.get());
+        trangThaiHoaDonRepository.save(trangThaiHoaDon);
+
         return MessageResponse.builder().message("Thanh Toán Thành Công").build();
     }
 

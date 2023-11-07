@@ -25,7 +25,7 @@ public class OrdersCounterController {
     @GetMapping("show")
     public ResponseEntity<List<HoaDonResponse>> viewHoaDonTaiQuay(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "4") Integer pageSize) {
+            @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
         if (pageNumber <= 0) {
             pageNumber = 0;
         }
