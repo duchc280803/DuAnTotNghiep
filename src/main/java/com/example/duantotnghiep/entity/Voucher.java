@@ -49,20 +49,8 @@ public class Voucher {
     @Column(name = "giatrigiam")
     private Long giaTriGiam;
 
-    @Column(name = "giatritoida")
-    private Long giaTriToiDa;
-
-    @Column(name = "giatridontoithieu")
-    private Long giaTriToiThieu;
-
     @Column(name = "hinhthucgiam")
     private Integer hinhThucGiam;
-
-    @Column(name = "idnhanvien")
-    private UUID idNhanVien;
-
-    @Column(name = "loaivoucher")
-    private String loaiGiamGia;
 
     @Column(name = "trangthai")
     private Integer trangThai;
