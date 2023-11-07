@@ -22,7 +22,6 @@ import java.util.UUID;
 
 @Repository
 public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
-     List<SpGiamGia> findBySanPham_Id(UUID id);
     //load sanpham on shop
     @Query(value = "SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam\n" +
             "FROM SanPham sp\n" +
