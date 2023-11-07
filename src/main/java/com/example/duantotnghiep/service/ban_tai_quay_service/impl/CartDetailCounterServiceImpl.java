@@ -38,15 +38,12 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
             return MessageResponse.builder().message("Giỏ Hàng Null").build();
         }
 
-        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
         GioHangChiTiet ghct = gioHangChiTietRepository.findByGioHangAndSanPhamChiTiet_Id(gioHang, idSanPhamChiTiet);
         SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(idSanPhamChiTiet).get();
         if (ghct != null) {
-            // Nếu sản phẩm đã tồn tại trong giỏ hàng, cập nhật số lượng
             ghct.setSoLuong(ghct.getSoLuong() + soLuong);
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
         } else {
-            // Nếu sản phẩm chưa có trong giỏ hàng, tạo bản ghi mới
             ghct = new GioHangChiTiet();
             ghct.setId(UUID.randomUUID());
             ghct.setGioHang(gioHang);
@@ -58,7 +55,36 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
             ghct.setSoLuong(soLuong);
         }
 
-        // Lưu giỏ hàng chi tiết vào cơ sở dữ liệu
+        chiTietSanPhamRepository.save(sanPhamChiTiet);
+        gioHangChiTietRepository.save(ghct);
+
+        return MessageResponse.builder().message("Thêm thành công").build();
+    }
+
+    @Override
+    public MessageResponse themSanPhamVaoGioHangChiTietQrCode(UUID idGioHang, String qrCode) {
+        GioHang gioHang = gioHangRepository.findByGioHang(idGioHang);
+        if (gioHang == null) {
+            return MessageResponse.builder().message("Giỏ Hàng Null").build();
+        }
+
+        GioHangChiTiet ghct = gioHangChiTietRepository.findByGioHang(gioHang);
+        SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findByQrcode(qrCode);
+        if (ghct != null) {
+            ghct.setSoLuong(ghct.getSoLuong() + 1);
+            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - 1);
+        } else {
+            ghct = new GioHangChiTiet();
+            ghct.setId(UUID.randomUUID());
+            ghct.setGioHang(gioHang);
+
+            sanPhamChiTiet.setId(sanPhamChiTiet.getId());
+            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - 1);
+            ghct.setSanPhamChiTiet(sanPhamChiTiet);
+
+            ghct.setSoLuong(1);
+        }
+
         chiTietSanPhamRepository.save(sanPhamChiTiet);
         gioHangChiTietRepository.save(ghct);
 
@@ -81,7 +107,6 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         chiTietSanPhamRepository.save(sanPhamChiTiet);
     }
 
-    // Cập nhật số lượng trong GioHangChiTiet
     public void capNhatSoLuong(UUID idgiohangchitiet, int soLuongMoi) {
         Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findById(idgiohangchitiet);
         if (optionalGioHangChiTiet.isPresent()) {
