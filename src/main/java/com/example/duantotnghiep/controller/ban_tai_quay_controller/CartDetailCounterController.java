@@ -37,6 +37,15 @@ public class CartDetailCounterController {
                 HttpStatus.CREATED);
     }
 
+    @PostMapping("them-san-pham-qrcode")
+    public ResponseEntity<MessageResponse> themSanPhamVaoGioHangChiTietQrcode(
+            @RequestParam(name = "idGioHang") UUID idGioHang,
+            @RequestParam(name = "qrCode") String qrCode) {
+        return new ResponseEntity<>(
+                gioHangChiTietService.themSanPhamVaoGioHangChiTietQrCode(idGioHang, qrCode),
+                HttpStatus.CREATED);
+    }
+
     @PutMapping("update-quantity")
     public ResponseEntity<String> capNhatSoLuong(
             @RequestParam(name = "idgiohangchitiet") UUID idgiohangchitiet,

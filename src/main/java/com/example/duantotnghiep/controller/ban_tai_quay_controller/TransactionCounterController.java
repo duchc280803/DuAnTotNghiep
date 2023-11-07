@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @RestController
@@ -37,9 +38,9 @@ public class TransactionCounterController {
     public ResponseEntity<MessageResponse> createTransactionVnPay(
             @RequestParam(name = "idHoaDon") UUID idHoaDon,
             @RequestParam(name = "id") UUID id,
-            @RequestBody TransactionVnPayRequest transactionVnPayRequest
+            @RequestParam("vnp_Amount") BigDecimal vnpAmount
     ) {
-        return new ResponseEntity<>(transactionService.cashVnPay(idHoaDon, id, transactionVnPayRequest), HttpStatus.CREATED);
+        return new ResponseEntity<>(transactionService.cashVnPay(idHoaDon, id, vnpAmount), HttpStatus.CREATED);
     }
 
 }

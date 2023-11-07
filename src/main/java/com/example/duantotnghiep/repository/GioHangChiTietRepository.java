@@ -34,4 +34,6 @@ public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, 
     // Tìm mục trong giỏ hàng chi tiết dựa trên idGioHang và idSanPhamChiTiet
     GioHangChiTiet findByGioHangAndSanPhamChiTiet_Id(GioHang gioHang, UUID idSanPhamChiTiet);
 
+    GioHangChiTiet findByGioHang(GioHang gioHang);
+
 }

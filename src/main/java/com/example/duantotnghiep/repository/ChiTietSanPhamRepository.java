@@ -253,4 +253,5 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND ms.tenMauSac = :name")
     List<Object[]> filterColor(@Param("name") String name);
 
+    SanPhamChiTiet findByQrcode(String qrCode);
 }
