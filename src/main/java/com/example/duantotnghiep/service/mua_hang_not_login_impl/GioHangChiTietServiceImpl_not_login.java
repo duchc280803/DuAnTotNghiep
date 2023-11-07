@@ -91,12 +91,6 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
             int soLuongCu = gioHangChiTiet.getSoLuong();
             int soLuongHienTai = gioHangChiTiet.getSanPhamChiTiet().getSoLuong(); // Số lượng hiện tại trong kho
 
-            // Xử lý tình huống khi số lượng mới lớn hơn số lượng hiện tại trong kho
-            if (soLuongHienTai==0) {
-                System.out.println("Hết hàng cho sản phẩm này");
-                return; // Thông báo cho người dùng và không cập nhật
-            }
-
             // Xử lý tình huống khi số lượng mới nhỏ hơn hoặc bằng số lượng hiện tại trong kho
             int soLuongThayDoi = soLuongMoi - soLuongCu; // Số lượng thay đổi
             gioHangChiTiet.setSoLuong(soLuongMoi);
