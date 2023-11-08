@@ -9,6 +9,7 @@ import com.example.duantotnghiep.response.GiamGiaResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.ProductDetailResponse;
 import com.example.duantotnghiep.service.giam_gia_service.GiamGiaService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -64,6 +66,9 @@ public class GiamGiaServiceimpl implements GiamGiaService {
         return Repository.findbyValueString(key);
     }
 
+
+
+
     @Override
     public List<ProductDetailResponse> findbyProduct(String key) {
         return Repository.ProductDetailResponse(key);
@@ -104,7 +109,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     }
 
     @Override
-    public List<GiamGiaDetailResponse> ListGiamGiaDeatil(UUID id) {
+    public List<GiamGiaResponse> ListGiamGiaDeatil(UUID id) {
         return Repository.listGiamGiaDetail(id);
     }
     @Override

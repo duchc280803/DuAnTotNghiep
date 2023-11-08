@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -40,13 +41,13 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
             "ORDER BY gg.ngayBatDau DESC")
     Page<GiamGiaResponse> listGiamGias(Pageable pageable);
 
-    @Query("SELECT new com.example.duantotnghiep.response.GiamGiaDetailResponse(gg.id,sp.tenSanPham,spgg.donGiaKhiGiam,sp.giaBan) "
-            +
+    @Query("SELECT  new com.example.duantotnghiep.response.GiamGiaResponse(gg.id, gg.tenGiamGia, gg.maGiamGia, gg.ngayBatDau, gg.ngayKetThuc, gg.hinhThucGiam, gg.trangThai, spgg.mucGiam) " +
             "FROM GiamGia gg " +
             "JOIN gg.spGiamGiaList spgg " +
             "JOIN spgg.sanPham sp " +
-            "where gg.id = :id ")
-    List<GiamGiaDetailResponse> listGiamGiaDetail(@Param("id") UUID id);
+            "WHERE gg.trangThai = 1 and  gg.id = :id ")
+    List<GiamGiaResponse> listGiamGiaDetail(@Param("id") UUID id);
+
 
     @Query("SELECT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id,gg.tenGiamGia,gg.maGiamGia,gg.ngayBatDau,gg.ngayKetThuc,gg.hinhThucGiam,gg.trangThai,spgg.mucGiam) "
             +
@@ -144,4 +145,5 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
                        @Param("ngayKetThuc") Date ngayKetThuc,
                        @Param("hinhThucGiam") Integer hinhThucGiam,
                        @Param("trangThai") Integer trangThai);
+
 }

@@ -52,7 +52,7 @@ public class GiamGiaController {
         return new ResponseEntity<>(Service.ListSearch(id), HttpStatus.OK);
     }
     @GetMapping("detailList")
-    public ResponseEntity<List<GiamGiaDetailResponse>> ListDetail(@RequestParam(name = "id") UUID id) {
+    public ResponseEntity<List<GiamGiaResponse>> ListDetail(@RequestParam(name = "id") UUID id) {
         return new ResponseEntity<>(Service.ListGiamGiaDeatil(id), HttpStatus.OK);
     }
 
