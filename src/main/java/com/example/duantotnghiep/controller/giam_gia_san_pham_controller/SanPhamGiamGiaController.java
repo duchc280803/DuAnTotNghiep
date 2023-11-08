@@ -21,6 +21,11 @@ public class SanPhamGiamGiaController {
     public ResponseEntity<List<loadsanpham_not_login>> show() {
         return ResponseEntity.ok(spGiamGiaRepository.getAllSpGiamGia());
     }
+    @GetMapping("show-sp-lien-quan")
+    public ResponseEntity<List<loadsanpham_not_login>> showSpLienQuan(@RequestParam UUID idthuonghieu) {
+        return ResponseEntity.ok(spGiamGiaRepository.getSanPhamLienQuan(idthuonghieu));
+    }
+
 
     @GetMapping("show-name-price-image/{name}")
     public ResponseEntity<loadsanpham_not_login> getNamePriceImage(@PathVariable String name) {
