@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin
 @RestController
@@ -61,6 +62,11 @@ public class ProductCounterController {
     @GetMapping("filter-color")
     public ResponseEntity<List<ChiTietSanPhamCustom>> filterColor(@RequestParam String name) {
         return ResponseEntity.ok(chiTietSanPhamService.filterColor(name));
+    }
+
+    @GetMapping("tien-cuoi-cung")
+    public Long getGiaGiamCuoiCung(@RequestParam UUID id) {
+        return chiTietSanPhamService.getGiaGiamCuoiCung(id);
     }
 
 }

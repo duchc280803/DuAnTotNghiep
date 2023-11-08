@@ -19,9 +19,8 @@ public class GioHangCustom {
     String tenSanPham;
     BigDecimal giaBan;
     BigDecimal giaGiam;
-    Long mucGiam;
     Integer soLuong;
     Integer size;
-    String kieuDe;
+    String chatLieu;
     String mauSac;
 }

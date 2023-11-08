@@ -26,12 +26,6 @@ public class HoaDonController {
     @Autowired
     private TaiKhoanService.TaiKhoanServiceImpl taiKhoanService;
 
-    @PostMapping("create-hoa-don-chi-tiet-giao")
-    public ResponseEntity<MessageResponse> taoHoaDonGiao(
-            @RequestParam("idHoaDon") UUID idHoaDon,
-            @RequestBody HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest) {
-        return new ResponseEntity<>(hoaDonService.updateHoaDonGiaoTaiQuay(idHoaDon, hoaDonGiaoThanhToanRequest), HttpStatus.CREATED);
-    }
 
     @GetMapping("hien-thi")
     public ResponseEntity<List<HoaDonDTOResponse>> getAll(
