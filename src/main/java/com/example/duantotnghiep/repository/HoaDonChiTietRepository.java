@@ -27,7 +27,16 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
             "LEFT JOIN hoadonchitiet HDCT ON HD.id = HDCT.idhoadon\n" +
             "LEFT JOIN sanphamchitiet SPCT ON SPCT.id = HDCT.idsanphamchitiet\n" +
             "LEFT JOIN sanpham SP ON SP.id = SPCT.idsanpham\n" +
-            "JOIN image IM ON IM.idsanpham = SP.id WHERE IM.isdefault = 1 AND HD.id = ?1", nativeQuery = true)
+            "LEFT JOIN spgiamgia SPGG ON SPGG.idsanpham = SP.id\n" +
+            "LEFT JOIN image IM ON IM.idsanpham = SP.id WHERE IM.isdefault = 1 AND HD.id = ?1  AND (\n" +
+            "                           spgg.id IS NULL\n" +
+            "                            OR ( \n" +
+            "                               spgg.id IS NOT NULL\n" +
+            "                               AND spgg.id = (\n" +
+            "                                   SELECT MIN(spgg_inner.id)\n" +
+            "                                    FROM spgiamgia spgg_inner\n" +
+            "                                    WHERE spgg_inner.idsanpham = sp.id)))", nativeQuery = true)
+
     List<SanPhamHoaDonChiTietResponse> getSanPhamHDCT(UUID idHoaDon);
 
     @Query(value = "SELECT HD.ma, HTTT.sotientra, HTTT.ngaytao, LHTT.tenloai, HTTT.phuongthucthanhtoan, HTTT.ghichu, HTTT.trangthai, TKNV.fullname FROM hoadon HD\n" +
