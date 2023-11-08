@@ -49,6 +49,7 @@ public class HoaDonChiTietController {
         trangThaiHoaDonService.confirmOrder(hoadonId, request);
         return ResponseEntity.ok("Trạng thái hóa đơn đã được cập nhật.");
     }
+
     @PostMapping("confirm-thanh-toan/{hoadonId}")
     public ResponseEntity<String> confirmThanhToan(@PathVariable UUID hoadonId, @RequestBody XacNhanThanhToanRequest request) {
         hoaDonChiTietService.confirmThanhToan(hoadonId, request);
