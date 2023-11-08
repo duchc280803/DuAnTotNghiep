@@ -17,8 +17,8 @@ public interface GiamGiaService {
 
     List<ProductDetailResponse> getAllProduct();
 
+    public void updateGiamGia(UUID giamGiaId, GiamGiaRequest updateGiamGiaRequest) ;
     List<GiamGiaResponse> findbyValueString(String key);
-
     List<ProductDetailResponse> findbyProduct(String key);
 
     List<GiamGiaResponse> findbyValueDate(Date key1, Date key2);
@@ -29,7 +29,7 @@ public interface GiamGiaService {
 
     List<ProductDetailResponse> ListSearch(UUID id);
 
-    List<GiamGiaDetailResponse> ListGiamGiaDeatil(UUID id);
+    List<GiamGiaResponse> ListGiamGiaDeatil(UUID id);
 
     MessageResponse createGiamGia(GiamGiaRequest createKhachRequest);
 
