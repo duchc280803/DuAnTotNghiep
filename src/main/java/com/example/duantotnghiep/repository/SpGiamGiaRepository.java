@@ -78,7 +78,7 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
     List<loadsanpham_not_login> getSanPhamLienQuan(UUID idthuonghieu);
 
     //load thong tin san pham detail
-    @Query(value = "SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam\n" +
+    @Query(value = "SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam,sp.idThuongHieu\n" +
             "                        FROM SanPham sp\n" +
             "                        LEFT JOIN spgiamgia spgg ON sp.id = spgg.idsanpham\n" +
             "                        LEFT JOIN GiamGia gg ON spgg.idgiamgia = gg.id\n" +
