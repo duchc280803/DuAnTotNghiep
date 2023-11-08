@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
                     .accessToken(jwtToken)
                     .token(refreshToken.getToken())
                     .role(optionalPhatTu.get().getLoaiTaiKhoan().getName().name())
-                    .idTaiKhoan(optionalPhatTu.get().getId())
+                    .username(optionalPhatTu.get().getUsername())
                     .message("Login thành công")
                     .build();
         } else {

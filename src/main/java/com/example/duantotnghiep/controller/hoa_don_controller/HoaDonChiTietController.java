@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.controller.hoa_don_controller;
 
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
+import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
 import com.example.duantotnghiep.response.HinhThucThanhToanResponse;
 import com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse;
 import com.example.duantotnghiep.response.ThongTinDonHang;
@@ -47,5 +48,10 @@ public class HoaDonChiTietController {
     public ResponseEntity<String> confirmOrder(@PathVariable UUID hoadonId, @RequestBody TrangThaiHoaDonRequest request) {
         trangThaiHoaDonService.confirmOrder(hoadonId, request);
         return ResponseEntity.ok("Trạng thái hóa đơn đã được cập nhật.");
+    }
+    @PostMapping("confirm-thanh-toan/{hoadonId}")
+    public ResponseEntity<String> confirmThanhToan(@PathVariable UUID hoadonId, @RequestBody XacNhanThanhToanRequest request) {
+        hoaDonChiTietService.confirmThanhToan(hoadonId, request);
+        return ResponseEntity.ok("Hóa đơn đã được thanh toán.");
     }
 }

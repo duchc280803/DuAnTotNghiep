@@ -8,6 +8,7 @@ import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonDTOResponse;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.response.TokenResponse;
 import com.example.duantotnghiep.service.hoa_don_service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,6 +37,9 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     @Autowired
     private ChiTietSanPhamRepository chiTietSanPhamRepository;
+
+    @Autowired
+    private TaiKhoanRepository taiKhoanRepository;
 
     @Override
     public MessageResponse updateHoaDonGiaoTaiQuay(UUID idHoaDon, HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest) {
@@ -100,4 +104,21 @@ public class HoaDonServiceImpl implements HoaDonService {
         Page<HoaDonDTOResponse> pageList = hoaDonRepository.getAllHoaDonCTTStaff(loaiDon, ma, soDienThoai, pageable);
         return pageList.getContent();
     }
+
+    @Override
+    public HoaDon updateHoaDon(UUID hoaDonId, String name) {
+        Optional<HoaDon> hoaDonOptional = hoaDonRepository.findById(hoaDonId);
+        if (hoaDonOptional.isPresent()) {
+            HoaDon hoaDon = hoaDonOptional.get();
+            Optional<TaiKhoan> taiKhoanOptional = taiKhoanRepository.findByUsername(name);
+            if (taiKhoanOptional.isPresent()) {
+                TaiKhoan taiKhoan = taiKhoanOptional.get();
+                hoaDon.setTaiKhoanNhanVien(taiKhoan);
+            }
+            return hoaDonRepository.save(hoaDon); // Lưu hóa đơn đã cập nhật và trả về nó
+        }
+        return null; // Xử lý khi hóa đơn không tồn tại
+    }
+
 }
+
