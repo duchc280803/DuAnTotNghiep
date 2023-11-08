@@ -19,5 +19,5 @@ public class TokenResponse {
 
     private String role;
 
-    private UUID idTaiKhoan;
+    private String username;
 }
