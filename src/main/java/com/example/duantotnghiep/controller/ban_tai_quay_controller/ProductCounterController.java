@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin
 @RestController
@@ -19,7 +20,7 @@ public class ProductCounterController {
     @GetMapping("hien-thi")
     public ResponseEntity<List<ChiTietSanPhamCustom>> getAll(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "8") Integer pageSize) {
+            @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
         return ResponseEntity.ok(chiTietSanPhamService.getAll(pageNumber, pageSize));
     }
 
@@ -33,12 +34,10 @@ public class ProductCounterController {
         return ResponseEntity.ok(chiTietSanPhamService.filterBrand(name));
     }
 
-
     @GetMapping("filter-category")
     public ResponseEntity<List<ChiTietSanPhamCustom>> filterCategory(@RequestParam String name) {
         return ResponseEntity.ok(chiTietSanPhamService.filterCategory(name));
     }
-
 
     @GetMapping("filter-sole")
     public ResponseEntity<List<ChiTietSanPhamCustom>> filterSole(@RequestParam String name) {
@@ -65,5 +64,9 @@ public class ProductCounterController {
         return ResponseEntity.ok(chiTietSanPhamService.filterColor(name));
     }
 
+    @GetMapping("tien-cuoi-cung")
+    public Long getGiaGiamCuoiCung(@RequestParam UUID id) {
+        return chiTietSanPhamService.getGiaGiamCuoiCung(id);
+    }
 
 }

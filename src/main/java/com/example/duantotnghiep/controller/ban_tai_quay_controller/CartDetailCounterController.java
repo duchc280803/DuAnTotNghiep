@@ -23,7 +23,7 @@ public class CartDetailCounterController {
     public ResponseEntity<List<GioHangCustom>> show(
             @RequestParam(name = "id") UUID id,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "3") Integer pageSize) {
+            @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
         return ResponseEntity.ok(gioHangChiTietService.loadGH(id, pageNumber, pageSize));
     }
 
@@ -34,6 +34,15 @@ public class CartDetailCounterController {
             @RequestParam(name = "soLuong") int soLuong) {
         return new ResponseEntity<>(
                 gioHangChiTietService.themSanPhamVaoGioHangChiTiet(idGioHang, idSanPhamChiTiet, soLuong),
+                HttpStatus.CREATED);
+    }
+
+    @PostMapping("them-san-pham-qrcode")
+    public ResponseEntity<MessageResponse> themSanPhamVaoGioHangChiTietQrcode(
+            @RequestParam(name = "idGioHang") UUID idGioHang,
+            @RequestParam(name = "qrCode") String qrCode) {
+        return new ResponseEntity<>(
+                gioHangChiTietService.themSanPhamVaoGioHangChiTietQrCode(idGioHang, qrCode),
                 HttpStatus.CREATED);
     }
 

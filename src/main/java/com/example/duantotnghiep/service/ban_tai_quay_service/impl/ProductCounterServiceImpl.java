@@ -27,15 +27,26 @@ public class ProductCounterServiceImpl implements ProductCounterService {
     @Autowired
     private SpGiamGiaRepository spGiamGiaRepository;
 
-    public BigDecimal getGiaGiamCuoiCung(UUID id) {
-        BigDecimal giaGiamCuoiCung = BigDecimal.ZERO; // Khởi tạo giá trị ban đầu
-
+    public Long getGiaGiamCuoiCung(UUID id) {
+        long sumPriceTien = 0L;
+        long sumPricePhanTram = 0L;
         List<SpGiamGia> spGiamGiaList = spGiamGiaRepository.findBySanPham_Id(id);
-        for (SpGiamGia spGiamGia : spGiamGiaList) {
-            giaGiamCuoiCung = spGiamGia.getDonGiaKhiGiam();
-        }
 
-        return giaGiamCuoiCung;
+        for (SpGiamGia spGiamGia : spGiamGiaList) {
+            long mucGiam = spGiamGia.getMucGiam();
+            if (spGiamGia.getGiamGia().getHinhThucGiam() == 1) {
+                System.out.println(mucGiam + "đ");
+                sumPriceTien += mucGiam;
+            }
+            if (spGiamGia.getGiamGia().getHinhThucGiam() == 2) {
+                System.out.println(mucGiam + "%");
+                long donGiaAsLong = spGiamGia.getDonGia().longValue();
+                double giamGia = (double) mucGiam / 100;
+                long giaTienSauGiamGia = (long) (donGiaAsLong * giamGia);
+                sumPricePhanTram += giaTienSauGiamGia;
+            }
+        }
+        return sumPriceTien + sumPricePhanTram;
     }
 
     @Override
@@ -53,7 +64,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer size = (Integer) result[7];
             String chatLieu = (String) result[8];
-            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
                     idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
@@ -76,7 +87,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer size = (Integer) result[7];
             String chatLieu = (String) result[8];
-            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
                     idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
@@ -99,7 +110,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer size = (Integer) result[7];
             String chatLieu = (String) result[8];
-            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
                     idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
@@ -122,7 +133,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer size = (Integer) result[7];
             String chatLieu = (String) result[8];
-            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
                     idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
@@ -145,7 +156,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer size = (Integer) result[7];
             String chatLieu = (String) result[8];
-            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
                     idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
@@ -168,7 +179,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer size = (Integer) result[7];
             String chatLieu = (String) result[8];
-            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
                     idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
@@ -191,7 +202,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer ssize = (Integer) result[7];
             String chatLieu = (String) result[8];
-            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
                     idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, ssize, chatLieu);
@@ -214,7 +225,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer ssize = (Integer) result[7];
             String chatLieu = (String) result[8];
-            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
                     idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, ssize, chatLieu);
@@ -237,7 +248,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer ssize = (Integer) result[7];
             String chatLieu = (String) result[8];
-            BigDecimal giaGiam = getGiaGiamCuoiCung(idSp);
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
                     idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, ssize, chatLieu);

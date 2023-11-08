@@ -8,13 +8,13 @@ import com.example.duantotnghiep.repository.HinhThucThanhToanRepository;
 import com.example.duantotnghiep.repository.HoaDonRepository;
 import com.example.duantotnghiep.repository.KhachHangRepository;
 import com.example.duantotnghiep.request.TransactionRequest;
-import com.example.duantotnghiep.request.TransactionVnPayRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.TransactionResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.TransactionCounterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.*;
 
@@ -54,14 +54,14 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
     }
 
     @Override
-    public MessageResponse cashVnPay(UUID idHoaDon, UUID id, TransactionVnPayRequest transactionVnPayRequest) {
+    public MessageResponse cashVnPay(UUID idHoaDon, UUID id, BigDecimal vnpAmount) {
         Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
         HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
         hinhThucThanhToan.setId(UUID.randomUUID());
         hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
         hinhThucThanhToan.setTaiKhoan(taiKhoan.get());
-        hinhThucThanhToan.setTongSoTien(transactionVnPayRequest.getAmountParam());
+        hinhThucThanhToan.setTongSoTien( vnpAmount);
         hinhThucThanhToan.setPhuongThucThanhToan(2);
         hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
         hinhThucThanhToan.setHoaDon(hoaDon.get());

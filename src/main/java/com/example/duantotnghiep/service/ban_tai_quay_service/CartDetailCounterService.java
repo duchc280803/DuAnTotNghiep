@@ -10,6 +10,8 @@ public interface CartDetailCounterService {
 
     MessageResponse themSanPhamVaoGioHangChiTiet(UUID idGioHang, UUID idSanPhamChiTiet, int soLuong);
 
+    MessageResponse themSanPhamVaoGioHangChiTietQrCode(UUID idGioHang, String qrCode);
+
     List<GioHangCustom> loadGH(UUID id, Integer pageNumber, Integer pageSize);
 
     void deleteProductInCart(UUID id);

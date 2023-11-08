@@ -1,7 +1,6 @@
 package com.example.duantotnghiep.config;
 
 import jakarta.servlet.http.HttpServletRequest;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
@@ -9,8 +8,10 @@ import java.util.Random;
 
 public class VnPayConfig {
 
-    public static String vnp_Returnurl = "http://localhost/admin/index.html";
+    public static String vnp_Returnurl = "http://127.0.0.1:5503/src/pages/QRCODE.html";
+
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+
     public static String vnp_TmnCode = "NYJQ9FD8";
 
     public static String secretKey = "JRHLUKOVKSZRQPBUOMJDPJSKVPRGHADO";

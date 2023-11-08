@@ -6,11 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -21,12 +19,14 @@ import java.util.*;
 public class VnpayController {
 
     @PostMapping("pay")
-    public ResponseEntity<JsonNode> callPaymentApi(HttpServletRequest req, @RequestParam(name = "amount") String amoutParam) {
+    public ResponseEntity<JsonNode> customerPostAPI(
+            HttpServletRequest req,
+            @RequestParam(name = "amount") String amoutParam)
+            throws UnsupportedEncodingException {
         ObjectMapper mapper;
         ObjectNode node = null;
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
-        String vnp_OrderInfo = "Thanh toan hoa don";
 
         String vnp_TxnRef = VnPayConfig.getRandomNumber(8);
         String vnp_IpAddr = VnPayConfig.getIpAddress(req);
@@ -43,7 +43,7 @@ public class VnpayController {
             vnp_Params.put("vnp_BankCode", "NCB");
         }
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", vnp_OrderInfo);
+        vnp_Params.put("vnp_OrderInfo", "ok");
         vnp_Params.put("vnp_OrderType", "OK");
 
         if ("vn" != null && !"vn".isEmpty()) {

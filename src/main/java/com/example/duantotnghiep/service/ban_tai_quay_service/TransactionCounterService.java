@@ -7,6 +7,7 @@ import com.example.duantotnghiep.response.TransactionResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +17,6 @@ public interface TransactionCounterService {
 
     List<TransactionResponse> findAllTran(UUID id);
 
-    MessageResponse cashVnPay(UUID idHoaDon, UUID id, TransactionVnPayRequest transactionVnPayRequest);
+    MessageResponse cashVnPay(UUID idHoaDon, UUID id, BigDecimal vnpAmount);
 
 }

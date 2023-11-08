@@ -16,22 +16,22 @@ import java.util.UUID;
 
 public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, UUID> {
 
-    @Query("SELECT new com.example.duantotnghiep.mapper.GioHangCustom(ghct.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam,ghct.soLuong, s.size, kd.tenDe,ms.tenMauSac) " +
+    @Query("SELECT sp.id, ghct.id, i.tenImage, sp.tenSanPham, sp.giaBan,ghct.soLuong, s.size, cl.tenChatLieu,ms.tenMauSac " +
             "FROM SanPhamChiTiet spct " +
             "JOIN spct.sanPham sp " +
             "JOIN sp.listImage i " +
-            "LEFT JOIN sp.spGiamGiaList spgg " +
-            "LEFT JOIN spgg.giamGia gg " +
             "JOIN spct.size s " +
-            "JOIN sp.kieuDe kd " +
             "JOIN spct.mauSac ms " +
+            "JOIN spct.chatLieu cl " +
             "JOIN spct.gioHangChiTietList ghct " +
             "JOIN ghct.gioHang gh " +
             "JOIN gh.taiKhoan tk " +
             "WHERE i.isDefault = true AND tk.id = :id")
-    Page<GioHangCustom> loadOnGioHang(@Param("id") UUID id, Pageable pageable);
+    Page<Object[]> loadOnGioHang(@Param("id") UUID id, Pageable pageable);
 
     // Tìm mục trong giỏ hàng chi tiết dựa trên idGioHang và idSanPhamChiTiet
     GioHangChiTiet findByGioHangAndSanPhamChiTiet_Id(GioHang gioHang, UUID idSanPhamChiTiet);
+
+    GioHangChiTiet findByGioHang(GioHang gioHang);
 
 }
