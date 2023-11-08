@@ -10,5 +10,6 @@ public interface loadsanpham_not_login {
     BigDecimal getGiaban();
     BigDecimal getDonGiaKhiGiam();
     Long getMucGiam();
+    UUID getIdThuongHieu();
 
 }

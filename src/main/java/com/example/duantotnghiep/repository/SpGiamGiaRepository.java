@@ -23,7 +23,7 @@ import java.util.UUID;
 @Repository
 public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
     //load sanpham on shop
-    @Query(value = "SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam\n" +
+    @Query(value = "SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam,sp.idThuongHieu\n" +
             "FROM SanPham sp\n" +
             "LEFT JOIN spgiamgia spgg ON sp.id = spgg.idsanpham\n" +
             "LEFT JOIN GiamGia gg ON spgg.idgiamgia = gg.id\n" +
@@ -45,6 +45,37 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
             "    )\n" +
             ")", nativeQuery = true)
     List<loadsanpham_not_login> getAllSpGiamGia();
+
+    //load sanpham lien quan
+    @Query(value = "SELECT \n" +
+            "    sp.id, \n" +
+            "    i.tenImage, \n" +
+            "    sp.tenSanPham, \n" +
+            "    sp.giaBan, \n" +
+            "    spgg.donGiaKhiGiam, \n" +
+            "    spgg.mucGiam,sp.idThuongHieu\n" +
+            "FROM SanPham sp\n" +
+            "LEFT JOIN spgiamgia spgg ON sp.id = spgg.idsanpham\n" +
+            "LEFT JOIN GiamGia gg ON spgg.idgiamgia = gg.id\n" +
+            "JOIN Image i ON sp.id = i.idsanpham\n" +
+            "JOIN ThuongHieu th ON sp.idthuonghieu = th.id\n" +
+            "JOIN DanhMuc dm ON sp.iddanhmuc = dm.id\n" +
+            "JOIN XuatXu xx ON sp.idxuatxu = xx.id\n" +
+            "JOIN kieude kd ON kd.id = sp.idkieude\n" +
+            "WHERE i.isDefault = 'true'\n" +
+            "AND th.id = ?\n" +
+            "AND (\n" +
+            "    spgg.id IS NULL \n" +
+            "    OR (\n" +
+            "        spgg.id IS NOT NULL\n" +
+            "        AND spgg.id = (\n" +
+            "            SELECT MIN(spgg_inner.id)\n" +
+            "            FROM spgiamgia spgg_inner\n" +
+            "            WHERE spgg_inner.idsanpham = sp.id\n" +
+            "        )\n" +
+            "    )\n" +
+            ")", nativeQuery = true)
+    List<loadsanpham_not_login> getSanPhamLienQuan(UUID idthuonghieu);
 
     //load thong tin san pham detail
     @Query(value = "SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam\n" +
