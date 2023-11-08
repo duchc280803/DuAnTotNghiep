@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.controller.ban_tai_quay_controller;
 
+import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonResponse;
@@ -49,7 +50,7 @@ public class OrdersCounterController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<MessageResponse> taoHoaDon(Principal principal) {
+    public ResponseEntity<HoaDon> taoHoaDon(Principal principal) {
         return new ResponseEntity<>(hoaDonService.taoHoaDon(principal.getName()), HttpStatus.CREATED);
     }
 

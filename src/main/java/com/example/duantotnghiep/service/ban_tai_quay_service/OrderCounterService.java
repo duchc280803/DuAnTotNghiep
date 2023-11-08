@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.service.ban_tai_quay_service;
 
+import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonResponse;
@@ -14,7 +15,7 @@ import java.util.UUID;
 
 public interface OrderCounterService {
 
-    MessageResponse taoHoaDon(String name);
+    HoaDon taoHoaDon(String name);
 
     List<HoaDonResponse> viewHoaDonTaiQuay(Integer pageNumber, Integer pageSize);
 

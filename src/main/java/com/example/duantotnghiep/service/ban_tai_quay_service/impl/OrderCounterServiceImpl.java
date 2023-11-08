@@ -54,7 +54,7 @@ public class OrderCounterServiceImpl implements OrderCounterService
     @Override
     @Transactional
     // TODO Thêm hóa đơn tại quầy
-    public MessageResponse taoHoaDon(String name) {
+    public HoaDon taoHoaDon(String name) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<TaiKhoan> findByNhanVien = taiKhoanRepository.findByUsername(name);
 
@@ -94,7 +94,7 @@ public class OrderCounterServiceImpl implements OrderCounterService
         trangThaiHoaDon.setGhiChu("Nhân viên tạo đơn cho khách");
         trangThaiHoaDon.setHoaDon(hoaDon);
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
-        return MessageResponse.builder().message("Tạo hóa đơn thành công").build();
+        return hoaDon;
     }
 
     @Override
