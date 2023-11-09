@@ -43,8 +43,8 @@ public class Voucher {
     @Column(name = "soluongdung")
     private Integer soLuongDung;
 
-    @Column(name = "dieukiengiamgia")
-    private Long dieuKienGiamGia;
+    @Column(name = "giatritoithieudonhang")
+    private Long giaTriToiThieuDonhang;
 
     @Column(name = "giatrigiam")
     private Long giaTriGiam;

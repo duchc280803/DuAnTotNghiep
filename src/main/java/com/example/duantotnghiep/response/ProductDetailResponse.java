@@ -32,7 +32,6 @@ public class ProductDetailResponse {
     private Long soLanGiam;
     private BigDecimal GiaGiam;
 
-
     public ProductDetailResponse(UUID id, String image, String productName, Integer sizeName, String kieuDeName, String mauSacName, String chatLieuName, Integer trangThai, UUID idImage, UUID idSize, UUID idMauSac, UUID idChatLieu, UUID idKieuDe) {
         this.id = id;
         this.image = image;

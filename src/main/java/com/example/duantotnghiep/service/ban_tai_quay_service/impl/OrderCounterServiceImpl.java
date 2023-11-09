@@ -149,7 +149,7 @@ public class OrderCounterServiceImpl implements OrderCounterService
 
         TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
         trangThaiHoaDon.setId(UUID.randomUUID());
-        trangThaiHoaDon.setTrangThai(StatusOrderDetailEnums.CHO_XAC_NHAN.getValue());
+        trangThaiHoaDon.setTrangThai(StatusOrderDetailEnums.HOAN_THANH.getValue());
         trangThaiHoaDon.setThoiGian(timestamp);
         trangThaiHoaDon.setGhiChu("Nhân viên xác nhận đơn cho khách");
         trangThaiHoaDon.setHoaDon(hoaDon.get());
@@ -202,7 +202,7 @@ public class OrderCounterServiceImpl implements OrderCounterService
 
         TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
         trangThaiHoaDon.setId(UUID.randomUUID());
-        trangThaiHoaDon.setTrangThai(StatusOrderDetailEnums.CHO_XAC_NHAN.getValue());
+        trangThaiHoaDon.setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
         trangThaiHoaDon.setThoiGian(timestamp);
         trangThaiHoaDon.setGhiChu("Nhân viên xác nhận đơn cho khách");
         trangThaiHoaDon.setHoaDon(hoaDon.get());

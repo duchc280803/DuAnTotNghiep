@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-    @RequestMapping("/api/v1/hoa-don-chi-tiet/")
+@RequestMapping("/api/v1/hoa-don-chi-tiet/")
 public class HoaDonChiTietController {
 
     @Autowired
@@ -30,6 +30,7 @@ public class HoaDonChiTietController {
     public ResponseEntity<ThongTinDonHang> viewThongTinDonHang(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(hoaDonChiTietService.getThongTinDonHang(idHoaDon), HttpStatus.OK);
     }
+
     @GetMapping("hien-thi-san-pham/{idHoaDon}")
     public ResponseEntity<List<SanPhamHoaDonChiTietResponse>> getSanPhamHDCT(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(hoaDonChiTietService.getSanPhamHDCT(idHoaDon), HttpStatus.OK);
@@ -39,6 +40,7 @@ public class HoaDonChiTietController {
     public ResponseEntity<List<HinhThucThanhToanResponse>> getLichSuThanhToan(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(hoaDonChiTietService.getLichSuThanhToan(idHoaDon), HttpStatus.OK);
     }
+
     @GetMapping("hien-thi-trang-thai/{idHoaDon}")
     public ResponseEntity<List<TrangThaiHoaDonResponse>> getAllTrangThaiHoaDon(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(hoaDonChiTietService.getAllTrangThaiHoaDon(idHoaDon), HttpStatus.OK);

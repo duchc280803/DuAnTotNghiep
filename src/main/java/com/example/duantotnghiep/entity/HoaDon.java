@@ -77,6 +77,9 @@ public class HoaDon {
     @Column(name = "qrcode")
     private String qrcode;
 
+    @Column(name = "tiengiamgia")
+    private BigDecimal tienGiamGia;
+
     @OneToMany(mappedBy = "hoaDon", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<HoaDonChiTiet> hoaDonChiTietList;

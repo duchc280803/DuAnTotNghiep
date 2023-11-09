@@ -49,7 +49,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
             "JOIN tk.gioHangList gh WHERE hd.trangThai = 1 AND gh.trangThai = 1 AND hd.id = :id")
     IdGioHangResponse showIdGioHangCt(@Param("id") UUID id);
 
-    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonDTOResponse(hd.id, hd.ma, hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.thanhTien, SUM(hdct.tienGiamGia), hd.ngayTao, tknv.name, ld.tenLoaiDon, hd.trangThai)\n" +
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonDTOResponse(hd.id, hd.ma, hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.thanhTien, SUM(hd.tienGiamGia), hd.ngayTao, tknv.name, ld.tenLoaiDon, hd.trangThai)\n" +
             "FROM HoaDon hd\n" +
             "LEFT JOIN hd.hoaDonChiTietList hdct\n" +
             "LEFT JOIN hd.taiKhoanNhanVien tknv\n" +
@@ -61,7 +61,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
     Page<HoaDonDTOResponse> getAllHoaDonAdmin(@Param("trangThaiHD") Integer trangThaiHD, @Param("loaiDon") Integer loaiDon, @Param("tenNhanVien") String tenNhanVien, @Param("ma") String ma, @Param("soDienThoai") String soDienThoai, Pageable pageable);
 
     // TODO Hiển thị hóa đơn Staff
-    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonDTOResponse(hd.id, hd.ma, hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.thanhTien, SUM(hdct.tienGiamGia), hd.ngayTao, tknv.name, ld.tenLoaiDon, hd.trangThai)\n" +
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonDTOResponse(hd.id, hd.ma, hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.thanhTien, SUM(hd.tienGiamGia), hd.ngayTao, tknv.name, ld.tenLoaiDon, hd.trangThai)\n" +
             "FROM HoaDon hd\n" +
             "LEFT JOIN hd.hoaDonChiTietList hdct\n" +
             "LEFT JOIN hd.taiKhoanNhanVien tknv\n" +
@@ -73,7 +73,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
     Page<HoaDonDTOResponse> getAllHoaDonStaff(@Param("trangThaiHD") Integer trangThaiHD, @Param("loaiDon") Integer loaiDon, @Param("ma") String ma, @Param("soDienThoai") String soDienThoai, @Param("username") String username, Pageable pageable);
 
     // TODO Hiển thị hóa đơn chưa thanh toán cho staff
-    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonDTOResponse(hd.id, hd.ma, hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.thanhTien, SUM(hdct.tienGiamGia), hd.ngayTao, tknv.name, ld.tenLoaiDon, hd.trangThai)\n" +
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonDTOResponse(hd.id, hd.ma, hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.thanhTien, SUM(hd.tienGiamGia), hd.ngayTao, tknv.name, ld.tenLoaiDon, hd.trangThai)\n" +
             "FROM HoaDon hd\n" +
             "LEFT JOIN hd.hoaDonChiTietList hdct\n" +
             "LEFT JOIN hd.taiKhoanNhanVien tknv\n" +
