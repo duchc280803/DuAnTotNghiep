@@ -2,6 +2,7 @@ package com.example.duantotnghiep.repository;
 
 import com.example.duantotnghiep.entity.GiamGia;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import com.example.duantotnghiep.response.GiamGiaDetailResponse;
@@ -14,9 +15,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -26,23 +29,25 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
             "FROM GiamGia gg " +
             "JOIN gg.spGiamGiaList spgg " +
             "JOIN spgg.sanPham sp " +
-            "ORDER BY gg.ngayBatDau DESC")
+            "WHERE gg.trangThai = 1 " +
+            "ORDER BY gg.ngayBatDau DESC ")
     List<GiamGiaResponse> listGiamGia();
 
     @Query("SELECT DISTINCT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id, gg.tenGiamGia, gg.maGiamGia, gg.ngayBatDau, gg.ngayKetThuc, gg.hinhThucGiam, gg.trangThai, spgg.mucGiam) " +
             "FROM GiamGia gg " +
             "JOIN gg.spGiamGiaList spgg " +
             "JOIN spgg.sanPham sp " +
+            "WHERE gg.trangThai = 1 " +
             "ORDER BY gg.ngayBatDau DESC")
     Page<GiamGiaResponse> listGiamGias(Pageable pageable);
 
-    @Query("SELECT new com.example.duantotnghiep.response.GiamGiaDetailResponse(gg.id,sp.tenSanPham,spgg.donGiaKhiGiam,sp.giaBan) "
-            +
+    @Query("SELECT  new com.example.duantotnghiep.response.GiamGiaResponse(gg.id, gg.tenGiamGia, gg.maGiamGia, gg.ngayBatDau, gg.ngayKetThuc, gg.hinhThucGiam, gg.trangThai, spgg.mucGiam) " +
             "FROM GiamGia gg " +
             "JOIN gg.spGiamGiaList spgg " +
             "JOIN spgg.sanPham sp " +
-            "where gg.id = :id ")
-    List<GiamGiaDetailResponse> listGiamGiaDetail(@Param("id") UUID id);
+            "WHERE gg.trangThai = 1 and  gg.id = :id ")
+    List<GiamGiaResponse> listGiamGiaDetail(@Param("id") UUID id);
+
 
     @Query("SELECT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id,gg.tenGiamGia,gg.maGiamGia,gg.ngayBatDau,gg.ngayKetThuc,gg.hinhThucGiam,gg.trangThai,spgg.mucGiam) "
             +
@@ -83,21 +88,25 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
             "JOIN sp.listImage i WHERE sp.tenSanPham  LIKE :key   ")
     List<ProductDetailResponse> ProductDetailResponse(@Param("key") String key);
 
-    @Query("SELECT new com.example.duantotnghiep.response.ProductDetailResponse(sp.id, i.tenImage, sp.tenSanPham,s.size,kd.tenDe,ms.tenMauSac,ct.tenChatLieu,sp.trangThai,i.id,s.id,ms.id,ct.id,kd.id) " +
+    @Query("SELECT new com.example.duantotnghiep.response.ProductDetailResponse(sp.id, i.tenImage, sp.tenSanPham, s.size, kd.tenDe, ms.tenMauSac, ct.tenChatLieu, sp.trangThai, i.id, s.id, ms.id, ct.id, kd.id, sp.giaBan, COUNT(spgg.id), sp.giaBan - COALESCE(SUM(spgg.donGia), 0)) " +
             "FROM SanPhamChiTiet spct " +
-            "JOIN spct.size s" +
-            " JOIN spct.mauSac ms " +
+            "JOIN spct.size s " +
+            "JOIN spct.mauSac ms " +
             "JOIN spct.sanPham sp " +
+            "LEFT JOIN sp.spGiamGiaList spgg " +
             "JOIN sp.kieuDe kd " +
             "JOIN sp.thuongHieu th " +
             "JOIN sp.danhMuc dm " +
             "JOIN sp.xuatXu xx " +
             "JOIN spct.chatLieu ct " +
-            "JOIN sp.listImage i ")
-    List<ProductDetailResponse> ListProductResponse();
+            "JOIN sp.listImage i " +
+            "GROUP BY sp.id, i.tenImage, sp.tenSanPham, s.size, kd.tenDe, ms.tenMauSac, ct.tenChatLieu, sp.trangThai, i.id, s.id, ms.id, ct.id, kd.id, sp.giaBan")
+    List<ProductDetailResponse> listProductResponse();
 
-    @Query("SELECT new com.example.duantotnghiep.response.ProductDetailResponse(sp.id, i.tenImage, sp.tenSanPham,s.size,kd.tenDe,ms.tenMauSac,ct.tenChatLieu,sp.trangThai) "
-            +
+
+
+
+    @Query("SELECT new com.example.duantotnghiep.response.ProductDetailResponse(sp.id, i.tenImage, sp.tenSanPham,s.size,kd.tenDe,ms.tenMauSac,ct.tenChatLieu,sp.trangThai ) " +
             "FROM SanPhamChiTiet spct " +
             "JOIN spct.size s" +
             " JOIN spct.mauSac ms " +
@@ -125,4 +134,16 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
             " JOIN sp.listSanPhamChiTiet spct " +
             " WHERE sp.danhMuc.id = :danhMucId or sp.thuongHieu.id = :danhMucId or sp.xuatXu.id = :danhMucId or spct.chatLieu.id  = :danhMucId or sp.kieuDe.id =:danhMucId or spct.mauSac.id =:danhMucId or spct.size.id =:danhMucId ")
     List<UUID> findProductIdsByDanhMucId(@Param("danhMucId") UUID danhMucId);
+
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE GiamGia gg SET gg.tenGiamGia = :tenGiamGia, gg.ngayBatDau = :ngayBatDau, gg.ngayKetThuc = :ngayKetThuc, gg.hinhThucGiam = :hinhThucGiam, gg.trangThai = :trangThai WHERE gg.id = :giamGiaId")
+    void updateGiamGia(@Param("giamGiaId") UUID giamGiaId,
+                       @Param("tenGiamGia") String tenGiamGia,
+                       @Param("ngayBatDau") Date ngayBatDau,
+                       @Param("ngayKetThuc") Date ngayKetThuc,
+                       @Param("hinhThucGiam") Integer hinhThucGiam,
+                       @Param("trangThai") Integer trangThai);
+
 }

@@ -18,7 +18,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/giam-gia/")
 public class GiamGiaController {
-
     @Autowired
     private GiamGiaServiceimpl Service;
 
@@ -26,12 +25,16 @@ public class GiamGiaController {
     public ResponseEntity<List<GiamGiaResponse>> getAllGiamGia() {
         return new ResponseEntity<>(Service.getAll(), HttpStatus.OK);
     }
-
     @GetMapping("showhh")
     public ResponseEntity<Page<GiamGiaResponse>> getAllGiamGia(@RequestParam(defaultValue = "0") int page,
                                                                @RequestParam(defaultValue = "10") int size) {
         Page<GiamGiaResponse> resultPage = Service.getAll(PageRequest.of(page, size));
         return new ResponseEntity<>(resultPage, HttpStatus.OK);
+    }
+    @PutMapping("update/{id}")
+    public ResponseEntity<MessageResponse> updateGiamGia(@PathVariable UUID id, @RequestBody GiamGiaRequest updateGiamGiaRequest) {
+        Service.updateGiamGia(id, updateGiamGiaRequest);
+        return new ResponseEntity<>(MessageResponse.builder().message("Cập nhật thông tin giảm giá thành công.").build(), HttpStatus.OK);
     }
 
     // search by
@@ -39,7 +42,6 @@ public class GiamGiaController {
     public ResponseEntity<List<GiamGiaResponse>>findByKhachHangByIdHoaDon(@RequestParam(name = "key") String key) {
         return new ResponseEntity<>(Service.findbyValueString(key), HttpStatus.OK);
     }
-
     @GetMapping("showproduct")
     public ResponseEntity<List<ProductDetailResponse>> getAllProduct() {
         return new ResponseEntity<>(Service.getAllProduct(), HttpStatus.OK);
@@ -49,9 +51,8 @@ public class GiamGiaController {
     public ResponseEntity<List<ProductDetailResponse>> search(@RequestParam(name = "id") UUID id) {
         return new ResponseEntity<>(Service.ListSearch(id), HttpStatus.OK);
     }
-
     @GetMapping("detailList")
-    public ResponseEntity<List<GiamGiaDetailResponse>> ListDetail(@RequestParam(name = "id") UUID id) {
+    public ResponseEntity<List<GiamGiaResponse>> ListDetail(@RequestParam(name = "id") UUID id) {
         return new ResponseEntity<>(Service.ListGiamGiaDeatil(id), HttpStatus.OK);
     }
 
@@ -68,23 +69,19 @@ public class GiamGiaController {
     public ResponseEntity<List<ProductDetailResponse>>findProduct(@RequestParam(name = "key") String key) {
         return new ResponseEntity<>(Service.findbyProduct(key), HttpStatus.OK);
     }
-
     @GetMapping("searchStatus_bykey")
     public ResponseEntity<List<GiamGiaResponse>>findByKha(@RequestParam(name = "key") Integer key) {
         return new ResponseEntity<>(Service.findbyValueStatus(key), HttpStatus.OK);
     }
-
     @PostMapping("create")
     public ResponseEntity<MessageResponse> createKhachHang(@RequestBody GiamGiaRequest createKhachRequest) {
         return new ResponseEntity<>(Service.createGiamGia(createKhachRequest), HttpStatus.CREATED);
     }
-
     @GetMapping("checkTenGiamGia")
     public ResponseEntity<Boolean> checkTenGiamGia(@RequestParam String tenGiamGia) {
         boolean exists = Service.isTenGiamGiaExists(tenGiamGia);
         return new ResponseEntity<>(exists, HttpStatus.OK);
     }
-
     @GetMapping("check-product-record-count")
     public ResponseEntity<Boolean> checkProductRecordCount(@RequestParam(name = "idsanpham") UUID productId) {
         boolean result = Service.checkProductRecordCount(productId);

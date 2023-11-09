@@ -54,6 +54,7 @@ public class HoaDonController {
             return new ResponseEntity<>(hoaDonService.getAllHoaDonAdmin(trangThaiHD, loaiDon, tenNhanVien, ma, soDienThoai, pageNumber, pageSize), HttpStatus.OK);
         }
     }
+
     @PutMapping("update/{hoaDonId}")
     public ResponseEntity<HoaDon> updateHoaDonWithIdNhanVien(
             @PathVariable("hoaDonId") UUID hoaDonId,

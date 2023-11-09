@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -26,6 +28,25 @@ public class ProductDetailResponse {
     private  UUID idMauSac;
     private  UUID idChatLieu;
     private  UUID idKieuDe;
+    private BigDecimal GiaBan;
+    private Long soLanGiam;
+    private BigDecimal GiaGiam;
+
+    public ProductDetailResponse(UUID id, String image, String productName, Integer sizeName, String kieuDeName, String mauSacName, String chatLieuName, Integer trangThai, UUID idImage, UUID idSize, UUID idMauSac, UUID idChatLieu, UUID idKieuDe) {
+        this.id = id;
+        this.image = image;
+        this.productName = productName;
+        SizeName = sizeName;
+        KieuDeName = kieuDeName;
+        MauSacName = mauSacName;
+        ChatLieuName = chatLieuName;
+        this.trangThai = trangThai;
+        this.idImage = idImage;
+        this.idSize = idSize;
+        this.idMauSac = idMauSac;
+        this.idChatLieu = idChatLieu;
+        this.idKieuDe = idKieuDe;
+    }
 
     public ProductDetailResponse(UUID id, String image, String productName, Integer sizeName, String kieuDeName, String mauSacName, String chatLieuName, Integer trangThai) {
         this.id = id;
@@ -37,4 +58,5 @@ public class ProductDetailResponse {
         ChatLieuName = chatLieuName;
         this.trangThai = trangThai;
     }
+
 }

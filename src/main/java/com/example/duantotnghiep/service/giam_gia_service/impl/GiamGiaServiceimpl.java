@@ -9,6 +9,7 @@ import com.example.duantotnghiep.response.GiamGiaResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.ProductDetailResponse;
 import com.example.duantotnghiep.service.giam_gia_service.GiamGiaService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -43,13 +45,29 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
     @Override
     public List<ProductDetailResponse> getAllProduct() {
-        return Repository.ListProductResponse();
+        return Repository.listProductResponse();
     }
+
+    @Override
+    public void updateGiamGia(UUID giamGiaId, GiamGiaRequest updateGiamGiaRequest) {
+        Repository.updateGiamGia(
+                giamGiaId,
+                updateGiamGiaRequest.getTenGiamGia(),
+                updateGiamGiaRequest.getNgayBatDau(),
+                updateGiamGiaRequest.getNgayKetThuc(),
+                updateGiamGiaRequest.getHinhThucGiam(),
+                updateGiamGiaRequest.getTrangThai()
+        );
+    }
+
 
     @Override
     public List<GiamGiaResponse> findbyValueString(String key) {
         return Repository.findbyValueString(key);
     }
+
+
+
 
     @Override
     public List<ProductDetailResponse> findbyProduct(String key) {
@@ -91,10 +109,9 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     }
 
     @Override
-    public List<GiamGiaDetailResponse> ListGiamGiaDeatil(UUID id) {
+    public List<GiamGiaResponse> ListGiamGiaDeatil(UUID id) {
         return Repository.listGiamGiaDetail(id);
     }
-
     @Override
     public MessageResponse createGiamGia(GiamGiaRequest createKhachRequest) {
         // Tạo đối tượng GiamGia
@@ -107,26 +124,46 @@ public class GiamGiaServiceimpl implements GiamGiaService {
         giamGia.setHinhThucGiam(createKhachRequest.getHinhThucGiam());
         giamGia.setTrangThai(createKhachRequest.getTrangThai());
         Repository.save(giamGia);
+
         for (UUID sanPhamId : createKhachRequest.getIdsanpham()) {
-            SanPham sanPham= spRepository.findById(sanPhamId).orElse(null);
+            SanPham sanPham = spRepository.findById(sanPhamId).orElse(null);
             if (sanPham != null) {
                 SpGiamGia spGiamGia = new SpGiamGia();
                 spGiamGia.setId(UUID.randomUUID());
                 spGiamGia.setMucGiam(createKhachRequest.getMucGiam());
                 spGiamGia.setGiamGia(giamGia);
                 spGiamGia.setSanPham(sanPham);
+
                 if (createKhachRequest.getHinhThucGiam() == 1) {
-                    // HinhThucGiam = 1, set donGiaKhiGiam = dongia - mucgiam
-                    spGiamGia.setDonGiaKhiGiam(sanPham.getGiaBan().subtract(BigDecimal.valueOf(createKhachRequest.getMucGiam())));
-                }else if (createKhachRequest.getHinhThucGiam() == 2) {
-                    spGiamGia.setDonGiaKhiGiam(sanPham.getGiaBan().multiply(BigDecimal.ONE.subtract(BigDecimal.valueOf(createKhachRequest.getMucGiam()).divide(BigDecimal.valueOf(100)))));
+                    // HinhThucGiam = 1
+                    // dongia = muc giam
+                    BigDecimal dongia = BigDecimal.valueOf(createKhachRequest.getMucGiam());
+                    spGiamGia.setDonGia(dongia);
+                    // donGiaKhiGiam = gia ban - dongia
+                    BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
+                    spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
+                } else if (createKhachRequest.getHinhThucGiam() == 2) {
+                    // HinhThucGiam = 2
+                    // dongia = gia ban x (muc giam / 100)
+                    BigDecimal dongia = sanPham.getGiaBan().multiply(BigDecimal.valueOf(createKhachRequest.getMucGiam()).divide(BigDecimal.valueOf(100)));
+                    // donGiaKhiGiam = gia ban -
+                    spGiamGia.setDonGia(dongia);
+                    BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
+                    // sanpham.giaban =
+                    spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
                 }
+
+
                 spggRepository.save(spGiamGia);
+                spRepository.save(sanPham);
             } else {
+                // Handle the case where the product is not found
             }
         }
+
         // danh muc
         List<UUID> productIds = Repository.findProductIdsByDanhMucId(createKhachRequest.getIdDanhMuc());
+
         // Associate each product with the discount
         for (UUID sanPhamId : productIds) {
             SanPham sanPham = spRepository.findById(sanPhamId).orElse(null);
@@ -136,20 +173,41 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                 spGiamGia.setMucGiam(createKhachRequest.getMucGiam());
                 spGiamGia.setGiamGia(giamGia);
                 spGiamGia.setSanPham(sanPham);
+
                 if (createKhachRequest.getHinhThucGiam() == 1) {
-                    spGiamGia.setDonGiaKhiGiam(sanPham.getGiaBan().subtract(BigDecimal.valueOf(createKhachRequest.getMucGiam())));
+                    // HinhThucGiam = 1
+                    // dongia = muc giam
+                    BigDecimal dongia = BigDecimal.valueOf(createKhachRequest.getMucGiam());
+                    spGiamGia.setDonGia(dongia);
+                    // donGiaKhiGiam = gia ban - dongia
+                    BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
+                    spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
+                    sanPham.setGiaBan(donGiaKhiGiam);
                 } else if (createKhachRequest.getHinhThucGiam() == 2) {
-                    spGiamGia.setDonGiaKhiGiam(sanPham.getGiaBan().multiply(BigDecimal.ONE.subtract(BigDecimal.valueOf(createKhachRequest.getMucGiam()).divide(BigDecimal.valueOf(100)))));
+                    // HinhThucGiam = 2
+                    // dongia = gia ban x (muc giam / 100)
+                    BigDecimal dongia = sanPham.getGiaBan().multiply(BigDecimal.valueOf(createKhachRequest.getMucGiam()).divide(BigDecimal.valueOf(100)));
+                    // donGiaKhiGiam = gia ban -
+                    spGiamGia.setDonGia(dongia);
+                    BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
+                    // sanpham.giaban =
+                    spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
+                    sanPham.setGiaBan(donGiaKhiGiam);
                 }
+
+
                 spggRepository.save(spGiamGia);
+                spRepository.save(sanPham);
             } else {
                 // Handle the case where the product is not found
             }
         }
-        //
+
         // Trả về thông báo thành công
         return MessageResponse.builder().message("Thêm Thành Công").build();
     }
+
+
 
     @Override
     public boolean isTenGiamGiaExists(String tenGiamGia) {
@@ -159,7 +217,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     @Override
     public boolean checkProductRecordCount(UUID productId) {
         int recordCount = Repository.countByProductId(productId);
-        return recordCount < 1;
+        return recordCount < 9;
     }
 
 

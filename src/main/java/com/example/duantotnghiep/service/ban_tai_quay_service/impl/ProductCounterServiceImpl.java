@@ -35,11 +35,9 @@ public class ProductCounterServiceImpl implements ProductCounterService {
         for (SpGiamGia spGiamGia : spGiamGiaList) {
             long mucGiam = spGiamGia.getMucGiam();
             if (spGiamGia.getGiamGia().getHinhThucGiam() == 1) {
-                System.out.println(mucGiam + "đ");
                 sumPriceTien += mucGiam;
             }
             if (spGiamGia.getGiamGia().getHinhThucGiam() == 2) {
-                System.out.println(mucGiam + "%");
                 long donGiaAsLong = spGiamGia.getDonGia().longValue();
                 double giamGia = (double) mucGiam / 100;
                 long giaTienSauGiamGia = (long) (donGiaAsLong * giamGia);
