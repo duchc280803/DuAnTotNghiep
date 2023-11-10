@@ -6,17 +6,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class SanPhamHoaDonChiTietResponse {
 
-public interface SanPhamHoaDonChiTietResponse {
-    String getTenImage();
+    private UUID idHoaDonChiTiet;
 
-    String getTenSanPham();
+    private String tenImage;
 
-    BigDecimal getGiaBan();
+    private String tenSanPham;
 
-    BigDecimal getDonGiaSauGiam();
+    private BigDecimal giaBan;
 
-    Integer getSoLuong();
+    private BigDecimal donGiaSauGiam;
+
+    private Integer soLuong;
 
 }

@@ -2,17 +2,16 @@ package com.example.duantotnghiep.controller.hoa_don_controller;
 
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
-import com.example.duantotnghiep.response.HinhThucThanhToanResponse;
-import com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse;
-import com.example.duantotnghiep.response.ThongTinDonHang;
-import com.example.duantotnghiep.response.TrangThaiHoaDonResponse;
+import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.hoa_don_service.impl.HoaDonChiTietServiceImpl;
 import com.example.duantotnghiep.service.hoa_don_service.impl.TrangThaiHoaDonServiceImpl;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -57,4 +56,27 @@ public class HoaDonChiTietController {
         hoaDonChiTietService.confirmThanhToan(hoadonId, request);
         return ResponseEntity.ok("Hóa đơn đã được thanh toán.");
     }
+
+    @PostMapping("them-san-pham")
+    public ResponseEntity<MessageResponse> themSanPhamVaoGioHangChiTiet(
+            @RequestParam(name = "idHoaDon") UUID idHoaDon,
+            @RequestParam(name = "idSanPhamChiTiet") UUID idSanPhamChiTiet,
+            @RequestParam(name = "soLuong") int soLuong) {
+        return new ResponseEntity<>(
+                hoaDonChiTietService.themSanPhamVaoHoaDonChiTiet(idHoaDon, idSanPhamChiTiet, soLuong),
+                HttpStatus.CREATED);
+    }
+
+    @PutMapping("update-quantity")
+    public ResponseEntity<String> capNhatSL(
+            @RequestParam(name = "idHoaDonChiTiet") UUID idHoaDonChiTiet,
+            @RequestParam(name = "quantity") Integer quantity) {
+        try {
+            hoaDonChiTietService.capNhatSoLuong(idHoaDonChiTiet, quantity);
+            return ResponseEntity.ok("Số lượng đã được cập nhật.(-> nên xem lại Console log)");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body("Không tìm thấy sản phẩm trong giỏ hàng.");
+        }
+    }
+
 }

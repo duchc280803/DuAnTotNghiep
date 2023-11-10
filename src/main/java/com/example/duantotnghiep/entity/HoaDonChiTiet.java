@@ -39,6 +39,9 @@ public class HoaDonChiTiet {
     @Column(name = "dongia")
     private BigDecimal donGia;
 
+    @Column(name = "dongiasaugiam")
+    private BigDecimal donGiaSauGiam;
+
     @Column(name = "comment")
     private String comment;
 
