@@ -1,21 +1,24 @@
 package com.example.duantotnghiep.controller.thuoc_tinh_dong_san_pham;
 
 import com.example.duantotnghiep.entity.ChatLieu;
+import com.example.duantotnghiep.entity.DanhMuc;
+import com.example.duantotnghiep.request.ChatLieuRequest;
+import com.example.duantotnghiep.request.DanhMucRequest;
+import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.ChatLieuServiceImpl;
 import com.example.duantotnghiep.schedulingtasks.UserExcelExporter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/chat-lieu/")
@@ -44,5 +47,29 @@ public class ChatLieuController {
         UserExcelExporter excelExporter = new UserExcelExporter(listUsers);
 
         excelExporter.export(response);
+    }
+
+    @GetMapping("hien-thi/{id}")
+    public ChatLieu getDanhMucById(@PathVariable UUID id) {
+        return chatLieuService.getById(id);
+    }
+
+    @PostMapping("create")
+    public ResponseEntity<MessageResponse> createDanhMuc(@RequestBody ChatLieuRequest chatLieuRequest) {
+        return new ResponseEntity<>(chatLieuService.create(chatLieuRequest), HttpStatus.CREATED);
+    }
+
+    @PutMapping("update/{id}")
+    public ResponseEntity<MessageResponse> updateDanhMuc(@PathVariable UUID id, @RequestBody ChatLieuRequest chatLieuRequest) {
+        try {
+            MessageResponse response = chatLieuService.update(id, chatLieuRequest);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PutMapping("delete/{id}")
+    public ResponseEntity<MessageResponse> deleteDanhMuc(@PathVariable UUID id) {
+        return new ResponseEntity<>(chatLieuService.delete(id), HttpStatus.OK);
     }
 }

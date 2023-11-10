@@ -2,10 +2,7 @@ package com.example.duantotnghiep.controller.hoa_don_controller;
 
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
-import com.example.duantotnghiep.response.HinhThucThanhToanResponse;
-import com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse;
-import com.example.duantotnghiep.response.ThongTinDonHang;
-import com.example.duantotnghiep.response.TrangThaiHoaDonResponse;
+import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.hoa_don_service.impl.HoaDonChiTietServiceImpl;
 import com.example.duantotnghiep.service.hoa_don_service.impl.TrangThaiHoaDonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +53,9 @@ public class HoaDonChiTietController {
     public ResponseEntity<String> confirmThanhToan(@PathVariable UUID hoadonId, @RequestBody XacNhanThanhToanRequest request) {
         hoaDonChiTietService.confirmThanhToan(hoadonId, request);
         return ResponseEntity.ok("Hóa đơn đã được thanh toán.");
+    }
+    @GetMapping("thanh-tien/{idHoaDon}")
+    public ResponseEntity<MoneyResponse> getAllMoneyByHoaDon(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
+        return new ResponseEntity<>(hoaDonChiTietService.getMoneyByHoaDon(idHoaDon), HttpStatus.OK);
     }
 }

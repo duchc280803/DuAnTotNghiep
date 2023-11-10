@@ -6,10 +6,7 @@ import com.example.duantotnghiep.repository.HinhThucThanhToanRepository;
 import com.example.duantotnghiep.repository.HoaDonChiTietRepository;
 import com.example.duantotnghiep.repository.HoaDonRepository;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
-import com.example.duantotnghiep.response.HinhThucThanhToanResponse;
-import com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse;
-import com.example.duantotnghiep.response.ThongTinDonHang;
-import com.example.duantotnghiep.response.TrangThaiHoaDonResponse;
+import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.hoa_don_service.HoaDonChiTietService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,6 +63,11 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             hinhThucThanhToanRepository.save(hinhThucThanhToan);
 
         }
+    }
+
+    @Override
+    public MoneyResponse getMoneyByHoaDon(UUID idHoaDon) {
+        return hoaDonChiTietRepository.getAllMoneyByHoaDon(idHoaDon);
     }
 
 
