@@ -4,6 +4,7 @@ package com.example.duantotnghiep.service.giam_gia_service.impl;
 import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.GiamGiaRequest;
+import com.example.duantotnghiep.request.UpdateGiamGiaResquest;
 import com.example.duantotnghiep.response.GiamGiaDetailResponse;
 import com.example.duantotnghiep.response.GiamGiaResponse;
 import com.example.duantotnghiep.response.MessageResponse;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -47,19 +49,127 @@ public class GiamGiaServiceimpl implements GiamGiaService {
         public List<ProductDetailResponse> getAllProduct() {
         return Repository.listProductResponse();
     }
+//    @Override
+////    @Transactional
+//    public MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest) {
+//        // Kiểm tra xem đối tượng GiamGia có tồn tại không
+//        GiamGia existingGiamGia = Repository.findById(id).orElse(null);
+//
+//        if (existingGiamGia != null) {
+//            // Cập nhật thông tin của đối tượng GiamGia
+//            existingGiamGia.setMaGiamGia(updateGiamGiaRequest.getMaGiamGia());
+//            existingGiamGia.setTenGiamGia(updateGiamGiaRequest.getTenGiamGia());
+//            existingGiamGia.setNgayBatDau(updateGiamGiaRequest.getNgayBatDau());
+//            existingGiamGia.setNgayKetThuc(updateGiamGiaRequest.getNgayKetThuc());
+//            existingGiamGia.setHinhThucGiam(updateGiamGiaRequest.getHinhThucGiam());
+//            existingGiamGia.setTrangThai(updateGiamGiaRequest.getTrangThai());
+//
+//            // Lưu cập nhật vào Repository
+//            Repository.save(existingGiamGia);
+//            // Xóa tất cả các liên kết giảm giá của sản phẩm với đối tượng giảm giá cũ
+////          spggRepository.deleteByGiamGia(existingGiamGia);
+//            // Lặp qua danh sách sản phẩm mới và tạo các liên kết giảm giá mới
+//
+//
+//            // Trả về thông báo thành công
+//            return MessageResponse.builder().message("Cập nhật Thành Công").build();
+//        } else {
+//            // Handle the case where the discount is not found
+//            return MessageResponse.builder().message("Không tìm thấy giảm giá").build();
+//        }
+//    }
+
+//    @Override
+//    public void updateGiamGia(UUID giamGiaId, GiamGiaRequest updateGiamGiaRequest) {
+//        Repository.updateGiamGia(
+//                giamGiaId,
+//                updateGiamGiaRequest.getTenGiamGia(),
+//                updateGiamGiaRequest.getNgayBatDau(),
+//                updateGiamGiaRequest.getNgayKetThuc(),
+//                updateGiamGiaRequest.getHinhThucGiam(),
+//                updateGiamGiaRequest.getTrangThai()
+//        );
+//    }
 
     @Override
-    public void updateGiamGia(UUID giamGiaId, GiamGiaRequest updateGiamGiaRequest) {
-        Repository.updateGiamGia(
-                giamGiaId,
-                updateGiamGiaRequest.getTenGiamGia(),
-                updateGiamGiaRequest.getNgayBatDau(),
-                updateGiamGiaRequest.getNgayKetThuc(),
-                updateGiamGiaRequest.getHinhThucGiam(),
-                updateGiamGiaRequest.getTrangThai()
-        );
+    @Transactional
+    public MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest) {
+        // Kiểm tra xem đối tượng GiamGia có tồn tại không
+        GiamGia existingGiamGia = Repository.findById(id).orElse(null);
+
+        if (existingGiamGia != null) {
+            // Cập nhật thông tin của đối tượng GiamGia
+            existingGiamGia.setMaGiamGia(updateGiamGiaRequest.getMaGiamGia());
+            existingGiamGia.setTenGiamGia(updateGiamGiaRequest.getTenGiamGia());
+            existingGiamGia.setNgayBatDau(updateGiamGiaRequest.getNgayBatDau());
+            existingGiamGia.setNgayKetThuc(updateGiamGiaRequest.getNgayKetThuc());
+            existingGiamGia.setHinhThucGiam(updateGiamGiaRequest.getHinhThucGiam());
+            existingGiamGia.setTrangThai(updateGiamGiaRequest.getTrangThai());
+
+            // Lưu cập nhật vào Repository
+            Repository.save(existingGiamGia);
+            // Xóa tất cả các liên kết giảm giá của sản phẩm với đối tượng giảm giá cũ
+            spggRepository.deleteByGiamGia(existingGiamGia);
+            // Lặp qua danh sách sản phẩm mới và tạo các liên kết giảm giá mới
+            for (UUID sanPhamId : updateGiamGiaRequest.getIdsanpham()) {
+                SanPham sanPham = spRepository.findById(sanPhamId).orElse(null);
+                if (sanPham != null) {
+                    SpGiamGia spGiamGia = new SpGiamGia();
+                    spGiamGia.setId(UUID.randomUUID());
+                    spGiamGia.setMucGiam(updateGiamGiaRequest.getMucGiam());
+                    spGiamGia.setGiamGia(existingGiamGia);
+                    spGiamGia.setSanPham(sanPham);
+                    if (updateGiamGiaRequest.getHinhThucGiam() == 1) {
+                        // HinhThucGiam = 1
+                        // dongia = muc giam
+                        BigDecimal dongia = BigDecimal.valueOf(updateGiamGiaRequest.getMucGiam());
+                        spGiamGia.setDonGia(dongia);
+                        // donGiaKhiGiam = gia ban - dongia
+                        BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
+                        spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
+                    } else if (updateGiamGiaRequest.getHinhThucGiam() == 2) {
+                        // HinhThucGiam = 2
+                        // dongia = gia ban x (muc giam / 100)
+                        BigDecimal dongia = sanPham.getGiaBan().multiply(BigDecimal.valueOf(updateGiamGiaRequest.getMucGiam()).divide(BigDecimal.valueOf(100)));
+                        // donGiaKhiGiam = gia ban -
+                        spGiamGia.setDonGia(dongia);
+                        BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
+                        // sanpham.giaban =
+                        spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
+                    }
+
+
+
+                    spggRepository.save(spGiamGia);
+                    spRepository.save(sanPham);
+                } else {
+                    // Handle the case where the product is not found
+                }
+            }
+
+            // Trả về thông báo thành công
+            return MessageResponse.builder().message("Cập nhật Thành Công").build();
+        } else {
+            // Handle the case where the discount is not found
+            return MessageResponse.builder().message("Không tìm thấy giảm giá").build();
+        }
     }
 
+    @Override
+    @Transactional
+    public MessageResponse updateGiamGiaStaus(UUID id) {
+        // Kiểm tra xem đối tượng GiamGia có tồn tại không
+        GiamGia existingGiamGia = Repository.findById(id).orElse(null);
+
+        if (existingGiamGia != null) {
+
+            spggRepository.deleteByGiamGia(existingGiamGia);
+            return MessageResponse.builder().message("Cập nhật Thành Công").build();
+        } else {
+            // Handle the case where the discount is not found
+            return MessageResponse.builder().message("Không tìm thấy giảm giá").build();
+        }
+    }
 
     @Override
     public List<GiamGiaResponse> findbyValueString(String key) {
@@ -211,7 +321,8 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
     @Override
     public boolean isTenGiamGiaExists(String tenGiamGia) {
-        return Repository.existsByTenGiamGia(tenGiamGia);
+        Boolean result = Repository.existsByGiamGia_TenGiamGia(tenGiamGia);
+        return result != null && result;
     }
 
     @Override

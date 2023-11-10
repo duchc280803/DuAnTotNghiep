@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.repository;
 
+import com.example.duantotnghiep.entity.GiamGia;
 import com.example.duantotnghiep.entity.SanPham;
 import com.example.duantotnghiep.entity.SpGiamGia;
 import com.example.duantotnghiep.mapper.not_login.findIdSpctAndSoLuong_not_login;
@@ -11,7 +12,9 @@ import com.example.duantotnghiep.response.SanPhamGiamGiaResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -118,4 +121,10 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
             "            WHERE i.isDefault = 'true' and ms.id=?1 and s.id=?2\n" +
             "            and sp.id=?3",nativeQuery = true)
     List<findIdSpctAndSoLuong_not_login> findIdspctAndSoluong(UUID idmausac, UUID idsize, UUID idsanpham);
+
+    @Modifying
+    @Query("DELETE FROM SpGiamGia spgg WHERE spgg.giamGia = :giamGia")
+    void deleteByGiamGia(@Param("giamGia") GiamGia giamGia);
+
+
 }

@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class GiamGiaRequest {
 
@@ -39,4 +39,25 @@ public class GiamGiaRequest {
     private UUID idKieuDe;
     private UUID idSize;
     private UUID idXuatXu;
+
+    public GiamGiaRequest(String maGiamGia, String tenGiamGia, Date ngayBatDau, Date ngayKetThuc, Integer hinhThucGiam, BigDecimal donGiaKhiGiam, BigDecimal giaBan, BigDecimal donGia, Integer trangThai, Long mucGiam, List<UUID> idsanpham, UUID idDanhMuc, UUID idThuongHieu, UUID idChatLieu, UUID idMauSac, UUID idKieuDe, UUID idSize, UUID idXuatXu) {
+        this.maGiamGia = maGiamGia;
+        this.tenGiamGia = tenGiamGia;
+        this.ngayBatDau = ngayBatDau;
+        this.ngayKetThuc = ngayKetThuc;
+        this.hinhThucGiam = hinhThucGiam;
+        this.donGiaKhiGiam = donGiaKhiGiam;
+        this.giaBan = giaBan;
+        this.donGia = donGia;
+        this.trangThai = trangThai;
+        this.mucGiam = mucGiam;
+        this.idsanpham = idsanpham;
+        this.idDanhMuc = idDanhMuc;
+        this.idThuongHieu = idThuongHieu;
+        this.idChatLieu = idChatLieu;
+        this.idMauSac = idMauSac;
+        this.idKieuDe = idKieuDe;
+        this.idSize = idSize;
+        this.idXuatXu = idXuatXu;
+    }
 }

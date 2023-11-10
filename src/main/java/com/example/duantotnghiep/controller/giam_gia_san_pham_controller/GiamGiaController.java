@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.controller.giam_gia_san_pham_controller;
 
 import com.example.duantotnghiep.request.GiamGiaRequest;
+import com.example.duantotnghiep.request.UpdateGiamGiaResquest;
 import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.giam_gia_service.impl.GiamGiaServiceimpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,15 @@ public class GiamGiaController {
         return new ResponseEntity<>(resultPage, HttpStatus.OK);
     }
     @PutMapping("update/{id}")
-    public ResponseEntity<MessageResponse> updateGiamGia(@PathVariable UUID id, @RequestBody GiamGiaRequest updateGiamGiaRequest) {
+    public ResponseEntity<MessageResponse> updateGiamGia(@PathVariable UUID id, @RequestBody UpdateGiamGiaResquest updateGiamGiaRequest) {
         Service.updateGiamGia(id, updateGiamGiaRequest);
         return new ResponseEntity<>(MessageResponse.builder().message("Cập nhật thông tin giảm giá thành công.").build(), HttpStatus.OK);
     }
-
+    @GetMapping("updateStatus/{id}")
+    public ResponseEntity<MessageResponse> updateGiamGiabyStaus(@PathVariable UUID id) {
+        Service.updateGiamGiaStaus(id);
+        return new ResponseEntity<>(MessageResponse.builder().message("Cập nhật giảm giá thành công.").build(), HttpStatus.OK);
+    }
     // search by
     @GetMapping("searchString_bykey")
     public ResponseEntity<List<GiamGiaResponse>>findByKhachHangByIdHoaDon(@RequestParam(name = "key") String key) {
@@ -78,7 +83,7 @@ public class GiamGiaController {
         return new ResponseEntity<>(Service.createGiamGia(createKhachRequest), HttpStatus.CREATED);
     }
     @GetMapping("checkTenGiamGia")
-    public ResponseEntity<Boolean> checkTenGiamGia(@RequestParam String tenGiamGia) {
+    public ResponseEntity<Boolean> checkTenGiamGia(@RequestParam(name = "tenGiamGia")  String tenGiamGia) {
         boolean exists = Service.isTenGiamGiaExists(tenGiamGia);
         return new ResponseEntity<>(exists, HttpStatus.OK);
     }
