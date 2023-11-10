@@ -24,8 +24,7 @@ import java.util.Random;
 import java.util.UUID;
 
 @Service
-public class OrderCounterServiceImpl implements OrderCounterService
-{
+public class OrderCounterServiceImpl implements OrderCounterService {
 
     @Autowired
     private HoaDonRepository hoaDonRepository;
@@ -141,7 +140,8 @@ public class OrderCounterServiceImpl implements OrderCounterService
                 hoaDonChiTiet.setTrangThai(1);
                 hoaDonChiTietRepository.save(hoaDonChiTiet);
 
-                SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(gioHangChiTiet.get().getSanPhamChiTiet().getId()).get();
+                SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository
+                        .findById(gioHangChiTiet.get().getSanPhamChiTiet().getId()).get();
                 sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - gioHangChiTiet.get().getSoLuong());
                 chiTietSanPhamRepository.save(sanPhamChiTiet);
             }
@@ -159,7 +159,8 @@ public class OrderCounterServiceImpl implements OrderCounterService
     }
 
     @Override
-    public MessageResponse updateHoaDonGiaoTaiQuay(UUID idHoaDon, HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest) {
+    public MessageResponse updateHoaDonGiaoTaiQuay(UUID idHoaDon,
+            HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
         hoaDon.get().setNgayNhan(timestamp);
@@ -193,7 +194,8 @@ public class OrderCounterServiceImpl implements OrderCounterService
                 hoaDonChiTiet.setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
                 hoaDonChiTietRepository.save(hoaDonChiTiet);
 
-                SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(gioHangChiTiet.get().getSanPhamChiTiet().getId()).get();
+                SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository
+                        .findById(gioHangChiTiet.get().getSanPhamChiTiet().getId()).get();
                 System.out.println(gioHangChiTiet.get().getSanPhamChiTiet().getId());
                 sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - gioHangChiTiet.get().getSoLuong());
                 chiTietSanPhamRepository.save(sanPhamChiTiet);

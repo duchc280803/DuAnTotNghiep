@@ -96,7 +96,8 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             return MessageResponse.builder().message("Hóa Đơn Null").build();
         }
         SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(idSanPhamChiTiet).get();
-        HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findByHoaDonAndSanPhamChiTiet_Id(findByHoaDon.get(), idSanPhamChiTiet);
+        HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findByHoaDonAndSanPhamChiTiet_Id(findByHoaDon.get(),
+                idSanPhamChiTiet);
         if (hoaDonChiTiet != null) {
             hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() + soLuong);
             hoaDonChiTiet.setDonGiaSauGiam(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId())));

@@ -32,7 +32,8 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
 
     @Override
     public void themSanPhamVaoGioHangChiTiet(UUID idGioHang, UUID idSanPhamChiTiet, int soLuong) {
-        GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findByGioHang_IdAndSanPhamChiTiet_Id(idGioHang, idSanPhamChiTiet);
+        GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findByGioHang_IdAndSanPhamChiTiet_Id(idGioHang,
+                idSanPhamChiTiet);
 
         if (gioHangChiTiet != null) {
             // Sản phẩm đã tồn tại trong giỏ hàng chi tiết, cập nhật số lượng
@@ -65,8 +66,6 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
         gioHangChiTietRepository.save(gioHangChiTiet);
     }
 
-
-
     @Override
     public List<GioHangCustom_not_login> loadGH(UUID idgh) {
         return gioHangChiTietRepository.loadOnGioHang(idgh);
@@ -91,7 +90,8 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
             int soLuongCu = gioHangChiTiet.getSoLuong();
             int soLuongHienTai = gioHangChiTiet.getSanPhamChiTiet().getSoLuong(); // Số lượng hiện tại trong kho
 
-            // Xử lý tình huống khi số lượng mới nhỏ hơn hoặc bằng số lượng hiện tại trong kho
+            // Xử lý tình huống khi số lượng mới nhỏ hơn hoặc bằng số lượng hiện tại trong
+            // kho
             int soLuongThayDoi = soLuongMoi - soLuongCu; // Số lượng thay đổi
             gioHangChiTiet.setSoLuong(soLuongMoi);
 
@@ -105,7 +105,6 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
             System.out.println("ID sản phẩm chi tiết không tồn tại");
         }
     }
-
 
     // Xóa sản phẩm khỏi giỏ hàng và cộng trả lại số lượng vào kho
     public void xoaSanPhamKhoiGioHang(UUID idgiohangchitiet) {
@@ -130,9 +129,6 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
             System.out.println("Không tìm thấy sản phẩm trong giỏ hàng");
         }
     }
-
-
-
 
     // Xóa tất cả sản phẩm khỏi giỏ hàng và cộng trả lại số lượng vào kho
     public void xoaTatCaSanPhamKhoiGioHang(UUID idGioHang) {
@@ -162,7 +158,5 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
             throw new EntityNotFoundException("Không tìm thấy id trong giỏ hàng");
         }
     }
-
-
 
 }

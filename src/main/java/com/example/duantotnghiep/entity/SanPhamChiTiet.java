@@ -63,4 +63,3 @@ public class SanPhamChiTiet {
     private List<HoaDonChiTiet> hoaDonChiTietList;
 
 
-}

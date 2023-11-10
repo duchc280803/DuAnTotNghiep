@@ -29,17 +29,16 @@ public class TransactionCounterController {
     public ResponseEntity<MessageResponse> createTransaction(
             @RequestParam(name = "idHoaDon") UUID idHoaDon,
             @RequestParam(name = "id") UUID id,
-            @RequestBody TransactionRequest transactionRequest
-    ) {
-        return new ResponseEntity<>(transactionService.createTransaction(idHoaDon, id, transactionRequest), HttpStatus.CREATED);
+            @RequestBody TransactionRequest transactionRequest) {
+        return new ResponseEntity<>(transactionService.createTransaction(idHoaDon, id, transactionRequest),
+                HttpStatus.CREATED);
     }
 
     @PostMapping("create-vnpay")
     public ResponseEntity<MessageResponse> createTransactionVnPay(
             @RequestParam(name = "idHoaDon") UUID idHoaDon,
             @RequestParam(name = "id") UUID id,
-            @RequestParam("vnp_Amount") BigDecimal vnpAmount
-    ) {
+            @RequestParam("vnp_Amount") BigDecimal vnpAmount) {
         return new ResponseEntity<>(transactionService.cashVnPay(idHoaDon, id, vnpAmount), HttpStatus.CREATED);
     }
 

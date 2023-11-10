@@ -31,28 +31,33 @@ public class HoaDonChiTietController {
     }
 
     @GetMapping("hien-thi-san-pham/{idHoaDon}")
-    public ResponseEntity<List<SanPhamHoaDonChiTietResponse>> getSanPhamHDCT(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
+    public ResponseEntity<List<SanPhamHoaDonChiTietResponse>> getSanPhamHDCT(
+            @PathVariable(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(hoaDonChiTietService.getSanPhamHDCT(idHoaDon), HttpStatus.OK);
     }
 
     @GetMapping("hien-thi-lich-su/{idHoaDon}")
-    public ResponseEntity<List<HinhThucThanhToanResponse>> getLichSuThanhToan(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
+    public ResponseEntity<List<HinhThucThanhToanResponse>> getLichSuThanhToan(
+            @PathVariable(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(hoaDonChiTietService.getLichSuThanhToan(idHoaDon), HttpStatus.OK);
     }
 
     @GetMapping("hien-thi-trang-thai/{idHoaDon}")
-    public ResponseEntity<List<TrangThaiHoaDonResponse>> getAllTrangThaiHoaDon(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
+    public ResponseEntity<List<TrangThaiHoaDonResponse>> getAllTrangThaiHoaDon(
+            @PathVariable(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(hoaDonChiTietService.getAllTrangThaiHoaDon(idHoaDon), HttpStatus.OK);
     }
 
     @PostMapping("confirm-order/{hoadonId}")
-    public ResponseEntity<String> confirmOrder(@PathVariable UUID hoadonId, @RequestBody TrangThaiHoaDonRequest request) {
+    public ResponseEntity<String> confirmOrder(@PathVariable UUID hoadonId,
+            @RequestBody TrangThaiHoaDonRequest request) {
         trangThaiHoaDonService.confirmOrder(hoadonId, request);
         return ResponseEntity.ok("Trạng thái hóa đơn đã được cập nhật.");
     }
 
     @PostMapping("confirm-thanh-toan/{hoadonId}")
-    public ResponseEntity<String> confirmThanhToan(@PathVariable UUID hoadonId, @RequestBody XacNhanThanhToanRequest request) {
+    public ResponseEntity<String> confirmThanhToan(@PathVariable UUID hoadonId,
+            @RequestBody XacNhanThanhToanRequest request) {
         hoaDonChiTietService.confirmThanhToan(hoadonId, request);
         return ResponseEntity.ok("Hóa đơn đã được thanh toán.");
     }
