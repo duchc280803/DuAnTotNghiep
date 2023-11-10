@@ -68,7 +68,7 @@ public class HoaDonChiTietController {
     }
 
     @PutMapping("update-quantity")
-    public ResponseEntity<String> capNhatSoLuong(
+    public ResponseEntity<String> capNhatSL(
             @RequestParam(name = "idHoaDonChiTiet") UUID idHoaDonChiTiet,
             @RequestParam(name = "quantity") Integer quantity) {
         try {
