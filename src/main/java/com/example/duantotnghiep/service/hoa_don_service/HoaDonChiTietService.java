@@ -19,6 +19,8 @@ public interface HoaDonChiTietService {
 
     void confirmThanhToan(UUID hoadonId, XacNhanThanhToanRequest request);
 
+    MoneyResponse getMoneyByHoaDon(UUID idHoaDon);
+
     MessageResponse themSanPhamVaoHoaDonChiTiet(UUID idHoaDon, UUID idSanPhamChiTiet, int soLuong);
 
     void capNhatSoLuong(UUID idHoaDonChiTiet, int soLuongMoi);

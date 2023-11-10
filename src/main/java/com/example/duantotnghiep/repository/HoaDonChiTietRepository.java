@@ -18,7 +18,7 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
 
     @Query(value = "SELECT TOP 1 hd.trangthai, LD.tenloaidon,\n" +
             "HD.diachi,\n" +
-            "HD.tennguoinhan, HD.sdtnguoinhan, TTHD.ghichu\n" +
+            "HD.tennguoinhan, HD.sdtnguoinhan,  HD.ngayship, HD.sdtnguoiship, TTHD.ghichu\n" +
             "FROM\n" +
             "hoadon HD JOIN loaidon LD ON HD.idloaidon = LD.id\n" +
             "JOIN trangthaihoadon TTHD ON TTHD.idhoadon = HD.id\n" +
@@ -47,6 +47,11 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
             "JOIN hd.trangThaiHoaDonList tthd " +
             "JOIN hd.taiKhoanNhanVien tknv WHERE hd.id = :id ORDER BY tthd.thoiGian ASC ")
     List<TrangThaiHoaDonResponse> getAllTrangThaiHoaDon(@Param("id") UUID id);
+
+    @Query(value = "SELECT HD.thanhtien, HD.tienship, HD.tiengiamgia, HD.tienkhachtra, HD.tienthua, " +
+            "SUM(COALESCE(HD.thanhtien, 0) + COALESCE(HD.tienship, 0) - COALESCE(HD.tiengiamgia, 0)) AS tongtien " +
+            "FROM hoadon HD WHERE HD.id = ?1 GROUP BY HD.thanhtien, HD.tienship, HD.tiengiamgia, HD.tienkhachtra, HD.tienthua", nativeQuery = true)
+    MoneyResponse getAllMoneyByHoaDon(UUID idHoaDon);
 
 
 

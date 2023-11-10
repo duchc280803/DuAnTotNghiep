@@ -69,6 +69,11 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         }
     }
 
+    @Override
+    public MoneyResponse getMoneyByHoaDon(UUID idHoaDon) {
+        return hoaDonChiTietRepository.getAllMoneyByHoaDon(idHoaDon);
+    }
+
     public Long getGiaGiamCuoiCung(UUID id) {
         long sumPriceTien = 0L;
         long sumPricePhanTram = 0L;
@@ -115,6 +120,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hoaDonChiTietRepository.save(hoaDonChiTiet);
         return MessageResponse.builder().message("Thêm thành công").build();
     }
+
 
     public void capNhatSoLuong(UUID idHoaDonChiTiet, int soLuongMoi) {
         Optional<HoaDonChiTiet> hoaDonChiTietOptional = hoaDonChiTietRepository.findById(idHoaDonChiTiet);

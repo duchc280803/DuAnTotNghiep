@@ -57,6 +57,12 @@ public class HoaDonChiTietController {
         return ResponseEntity.ok("Hóa đơn đã được thanh toán.");
     }
 
+    @GetMapping("thanh-tien/{idHoaDon}")
+    public ResponseEntity<MoneyResponse> getAllMoneyByHoaDon(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
+        return new ResponseEntity<>(hoaDonChiTietService.getMoneyByHoaDon(idHoaDon), HttpStatus.OK);
+    }
+
+
     @PostMapping("them-san-pham")
     public ResponseEntity<MessageResponse> themSanPhamVaoGioHangChiTiet(
             @RequestParam(name = "idHoaDon") UUID idHoaDon,

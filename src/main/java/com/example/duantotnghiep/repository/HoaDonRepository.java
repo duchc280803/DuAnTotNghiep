@@ -1,10 +1,7 @@
 package com.example.duantotnghiep.repository;
 
 import com.example.duantotnghiep.entity.HoaDon;
-import com.example.duantotnghiep.response.HoaDonDTOResponse;
-import com.example.duantotnghiep.response.HoaDonResponse;
-import com.example.duantotnghiep.response.IdGioHangResponse;
-import com.example.duantotnghiep.response.OrderCounterCartsResponse;
+import com.example.duantotnghiep.response.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -83,5 +80,8 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
             "GROUP BY hd.id, hd.ma, hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.thanhTien, hd.ngayTao, tknv.name, ld.tenLoaiDon, hd.trangThai\n" +
             "ORDER BY hd.ngayTao DESC")
     Page<HoaDonDTOResponse> getAllHoaDonCTTStaff(@Param("loaiDon") Integer loaiDon, @Param("ma") String ma, @Param("soDienThoai") String soDienThoai, Pageable pageable);
+
+
+
 
 }

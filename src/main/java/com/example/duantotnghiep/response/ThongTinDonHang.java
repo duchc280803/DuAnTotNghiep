@@ -11,6 +11,10 @@ public interface ThongTinDonHang {
 
     String getSdtNguoiNhan();
 
+    String getTenNguoiShp();
+
+    String getSdtNguoiShip();
+
     String getGhiChu();
 
 }
