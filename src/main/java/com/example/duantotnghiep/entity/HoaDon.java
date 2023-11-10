@@ -59,7 +59,7 @@ public class HoaDon {
     @Column(name = "tennguoiship")
     private String tenNguoiShip;
 
-    @Column(name = "tienKhachtra")
+    @Column(name = "tienkhachtra")
     private BigDecimal tienKhachTra;
 
     @Column(name = "tienship")
