@@ -1,5 +1,7 @@
 package com.example.duantotnghiep.controller.ban_tai_quay_controller;
 
+import com.example.duantotnghiep.entity.HoaDon;
+import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.IdGioHangResponse;
@@ -25,7 +27,7 @@ public class OrdersCounterController {
     @GetMapping("show")
     public ResponseEntity<List<HoaDonResponse>> viewHoaDonTaiQuay(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "4") Integer pageSize) {
+            @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
         if (pageNumber <= 0) {
             pageNumber = 0;
         }
@@ -48,7 +50,7 @@ public class OrdersCounterController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<MessageResponse> taoHoaDon(Principal principal) {
+    public ResponseEntity<HoaDon> taoHoaDon(Principal principal) {
         return new ResponseEntity<>(hoaDonService.taoHoaDon(principal.getName()), HttpStatus.CREATED);
     }
 
@@ -59,5 +61,12 @@ public class OrdersCounterController {
         return new ResponseEntity<>(hoaDonService.updateHoaDon(idHoaDon, hoaDonThanhToanRequest), HttpStatus.CREATED);
     }
 
+    @PostMapping("create-hoa-don-chi-tiet-giao")
+    public ResponseEntity<MessageResponse> taoHoaDonGiao(
+            @RequestParam("idHoaDon") UUID idHoaDon,
+            @RequestBody HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest) {
+        return new ResponseEntity<>(hoaDonService.updateHoaDonGiaoTaiQuay(idHoaDon, hoaDonGiaoThanhToanRequest),
+                HttpStatus.CREATED);
+    }
 
 }

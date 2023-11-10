@@ -39,8 +39,10 @@ public class GiamGiaResponse {
     private String productName;
     private BigDecimal giaBan;
     private BigDecimal donGiaKhiGiam;
-private  UUID idSanPham;
-    public GiamGiaResponse(UUID id, String maGiamGia, String tenGiamGia, Date ngayBatDau, Date ngayKetThuc, Integer hinhThucGiam, Integer trangThai, Long mucGiam) {
+    private UUID idSanPham;
+
+    public GiamGiaResponse(UUID id, String maGiamGia, String tenGiamGia, Date ngayBatDau, Date ngayKetThuc,
+            Integer hinhThucGiam, Integer trangThai, Long mucGiam) {
         this.id = id;
         this.maGiamGia = maGiamGia;
         this.tenGiamGia = tenGiamGia;
@@ -51,7 +53,8 @@ private  UUID idSanPham;
         this.mucGiam = mucGiam;
     }
 
-    public GiamGiaResponse(UUID id, String maGiamGia, String tenGiamGia, Date ngayBatDau, Date ngayKetThuc, Integer hinhThucGiam, Integer trangThai) {
+    public GiamGiaResponse(UUID id, String maGiamGia, String tenGiamGia, Date ngayBatDau, Date ngayKetThuc,
+            Integer hinhThucGiam, Integer trangThai) {
         this.id = id;
         this.maGiamGia = maGiamGia;
         this.tenGiamGia = tenGiamGia;
@@ -60,24 +63,27 @@ private  UUID idSanPham;
         this.hinhThucGiam = hinhThucGiam;
         this.trangThai = trangThai;
     }
-//    public GiamGiaResponse(UUID id, String maGiamGia, String tenGiamGia, Date ngayBatDau, Date ngayKetThuc, Integer hinhThucGiam, Integer trangThai, Long mucGiam) {
-//        this.id = id;
-//        this.maGiamGia = maGiamGia;
-//        this.tenGiamGia = tenGiamGia;
-//        this.ngayBatDau = ngayBatDau;
-//        this.ngayKetThuc = ngayKetThuc;
-//        this.hinhThucGiam = hinhThucGiam;
-//        this.trangThai = trangThai;
-//        this.mucGiam = mucGiam;
-//    }
+    // public GiamGiaResponse(UUID id, String maGiamGia, String tenGiamGia, Date
+    // ngayBatDau, Date ngayKetThuc, Integer hinhThucGiam, Integer trangThai, Long
+    // mucGiam) {
+    // this.id = id;
+    // this.maGiamGia = maGiamGia;
+    // this.tenGiamGia = tenGiamGia;
+    // this.ngayBatDau = ngayBatDau;
+    // this.ngayKetThuc = ngayKetThuc;
+    // this.hinhThucGiam = hinhThucGiam;
+    // this.trangThai = trangThai;
+    // this.mucGiam = mucGiam;
+    // }
 
-//    public GiamGiaResponse(UUID id, String maGiamGia, String tenGiamGia, Date ngayBatDau, Date ngayKetThuc, Integer hinhThucGiam, Integer trangThai) {
-//        this.id = id;
-//        this.maGiamGia = maGiamGia;
-//        this.tenGiamGia = tenGiamGia;
-//        this.ngayBatDau = ngayBatDau;
-//        this.ngayKetThuc = ngayKetThuc;
-//        this.hinhThucGiam = hinhThucGiam;
-//        this.trangThai = trangThai;
-//    }
+    // public GiamGiaResponse(UUID id, String maGiamGia, String tenGiamGia, Date
+    // ngayBatDau, Date ngayKetThuc, Integer hinhThucGiam, Integer trangThai) {
+    // this.id = id;
+    // this.maGiamGia = maGiamGia;
+    // this.tenGiamGia = tenGiamGia;
+    // this.ngayBatDau = ngayBatDau;
+    // this.ngayKetThuc = ngayKetThuc;
+    // this.hinhThucGiam = hinhThucGiam;
+    // this.trangThai = trangThai;
+    // }
 }

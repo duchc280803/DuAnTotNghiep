@@ -18,8 +18,8 @@ public interface GiamGiaService {
 
     List<ProductDetailResponse> getAllProduct();
 
-
     List<GiamGiaResponse> findbyValueString(String key);
+
     List<ProductDetailResponse> findbyProduct(String key);
 
     List<GiamGiaResponse> findbyValueDate(Date key1, Date key2);
@@ -37,6 +37,8 @@ public interface GiamGiaService {
     boolean isTenGiamGiaExists(String tenGiamGia);
 
     boolean checkProductRecordCount(UUID productId);
-    MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest) ;
-    MessageResponse updateGiamGiaStaus(UUID id) ;
+
+    MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest);
+
+    MessageResponse updateGiamGiaStaus(UUID id);
 }

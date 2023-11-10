@@ -49,9 +49,7 @@ public class UserServiceImpl implements UserService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
+                        loginRequest.getPassword()));
         // Kiểm tra xem tài khoản đã tồn tại hay không
         Optional<TaiKhoan> optionalPhatTu = taiKhoanRepository.findByUsername(loginRequest.getUsername());
         if (optionalPhatTu.isPresent()) {
@@ -63,6 +61,7 @@ public class UserServiceImpl implements UserService {
                     .accessToken(jwtToken)
                     .token(refreshToken.getToken())
                     .role(optionalPhatTu.get().getLoaiTaiKhoan().getName().name())
+                    .username(optionalPhatTu.get().getUsername())
                     .message("Login thành công")
                     .build();
         } else {
@@ -114,7 +113,7 @@ public class UserServiceImpl implements UserService {
         return refreshTokenRepository.save(refreshToken);
     }
 
-    @Override// TODO kiểm tra xem token hết hạn chưa
+    @Override // TODO kiểm tra xem token hết hạn chưa
     public RefreshToken verifyExpiration(RefreshToken token) {
         // trả về thời gian hết hạn của token < Thời gian hiện tại tức token hết hạn
         if (token.getThoiGianHetHan().compareTo(ChronoLocalDate.from(Instant.now())) < 0) {

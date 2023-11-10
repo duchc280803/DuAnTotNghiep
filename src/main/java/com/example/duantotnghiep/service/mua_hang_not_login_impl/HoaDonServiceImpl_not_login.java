@@ -10,7 +10,6 @@ import com.example.duantotnghiep.service.mua_hang_not_login_service.HoaDonServic
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -46,10 +45,11 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
     @Override
     public MessageResponse thanhToanKhongDangNhap(CreateKhachRequest_not_login createKhachRequest_not_login) {
-        List<TaiKhoan> khachHangList = khachHangRepository_not_login.getKhachHangByEmailAndSdt(createKhachRequest_not_login.getEmail(), createKhachRequest_not_login.getSoDienThoai());
+        List<TaiKhoan> khachHangList = khachHangRepository_not_login.getKhachHangByEmailAndSdt(
+                createKhachRequest_not_login.getEmail(), createKhachRequest_not_login.getSoDienThoai());
         TaiKhoan khachHang;
 
-        //Step1 : Xử lí khách hàng và địa chỉ
+        // Step1 : Xử lí khách hàng và địa chỉ
         if (!khachHangList.isEmpty()) {
             // Nếu tài khoản khách hàng đã tồn tại, sử dụng tài khoản đó.
             khachHang = khachHangList.get(0);
@@ -67,7 +67,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
             khachHangRepository_not_login.save(khachHang);
 
-            //Tạo địa chỉ cho khách luôn
+            // Tạo địa chỉ cho khách luôn
 
             DiaChi diaChi = new DiaChi();
 
@@ -87,9 +87,9 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
             diaChiRepository.save(diaChi);
 
-        }//End step 1
+        } // End step 1
 
-        //Step2 : Xử lí hóa đơn
+        // Step2 : Xử lí hóa đơn
 
         // Tạo hóa đơn mới và gán thông tin tài khoản khách hàng.
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -106,7 +106,8 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
         hoaDon.setNgayTao(timestamp);
 
         hoaDon.setTrangThai(StatusOrderEnums.CHO_XAC_NHAN.getValue());
-        hoaDon.setDiaChi(createKhachRequest_not_login.getDiaChi()+" "+createKhachRequest_not_login.getPhuongXa()+" "+createKhachRequest_not_login.getQuanHuyen()+" "+createKhachRequest_not_login.getThanhPho());
+        hoaDon.setDiaChi(createKhachRequest_not_login.getDiaChi() + " " + createKhachRequest_not_login.getPhuongXa()
+                + " " + createKhachRequest_not_login.getQuanHuyen() + " " + createKhachRequest_not_login.getThanhPho());
         hoaDon.setSdtNguoiNhan(createKhachRequest_not_login.getSoDienThoai());
         hoaDon.setTenNguoiNhan(createKhachRequest_not_login.getHoTen());
         hoaDon.setTaiKhoanKhachHang(khachHang);
@@ -118,9 +119,9 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
         hoaDon.setTienKhachTra(createKhachRequest_not_login.getTienKhachTra());
 
         hoaDonRepository.save(hoaDon);
-        //End step 2
+        // End step 2
 
-        //Step3 : Xử lí hóa đơn chi tiết
+        // Step3 : Xử lí hóa đơn chi tiết
         for (UUID idGioHangChiTiet : createKhachRequest_not_login.getGioHangChiTietList()) {
             // Tạo chi tiết hóa đơn cho mỗi sản phẩm trong giỏ hàng.
 
@@ -148,21 +149,23 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
                 System.out.println("giỏ hàng chi tiết không tồn tại !");
                 return MessageResponse.builder().message("Thanh Toán thất bại").build();
             }
-        }//End step 3
+        } // End step 3
 
-        //Step 4 : Xử lí hóa đơn chi tiết cập nhật số lượng trong kho
-        for (UUID idGioHangChiTiet : createKhachRequest_not_login.getGioHangChiTietList()) {
-            Optional<GioHangChiTiet> gioHangChiTiet = gioHangChiTietRepository.findById(idGioHangChiTiet);
+        // //Step 4 : Xử lí hóa đơn chi tiết cập nhật số lượng trong kho
+        // for (UUID idGioHangChiTiet :
+        // createKhachRequest_not_login.getGioHangChiTietList()) {
+        // Optional<GioHangChiTiet> gioHangChiTiet =
+        // gioHangChiTietRepository.findById(idGioHangChiTiet);
+        //
+        // if (gioHangChiTiet.isPresent()) {
+        // // Giảm số lượng sản phẩm trong kho đi số lượng đã bán trong chi tiết hóa đơn
+        // gioHangChiTiet.get().getSanPhamChiTiet().setSoLuong(gioHangChiTiet.get().getSanPhamChiTiet().getSoLuong()
+        // - gioHangChiTiet.get().getSoLuong());
+        // chiTietSanPhamRepository.save(gioHangChiTiet.get().getSanPhamChiTiet());
+        // }
+        // }//End step 4
 
-            if (gioHangChiTiet.isPresent()) {
-                // Giảm số lượng sản phẩm trong kho đi số lượng đã bán trong chi tiết hóa đơn
-                gioHangChiTiet.get().getSanPhamChiTiet().setSoLuong(gioHangChiTiet.get().getSanPhamChiTiet().getSoLuong() - gioHangChiTiet.get().getSoLuong());
-                chiTietSanPhamRepository.save(gioHangChiTiet.get().getSanPhamChiTiet());
-
-            }
-        }//End step 4
-
-        //Step 5 : Cập nhật trạng thái của giỏ hàng thành 2 sau khi thanh toán
+        // Step 5 : Cập nhật trạng thái của giỏ hàng thành 2 sau khi thanh toán
         for (UUID idGioHangChiTiet : createKhachRequest_not_login.getGioHangChiTietList()) {
 
             Optional<GioHangChiTiet> gioHangChiTiet = gioHangChiTietRepository.findById(idGioHangChiTiet);
@@ -173,9 +176,9 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
                 gioHangRepository_not_login.save(gioHangChiTiet.get().getGioHang());
             }
 
-        }//End step 5
+        } // End step 5
 
-        //Step 6 : Đặt số lượng tất cả các sản phẩm trong giỏ hàng về 0
+        // Step 6 : Đặt số lượng tất cả các sản phẩm trong giỏ hàng về 0
         for (UUID idGioHangChiTiet : createKhachRequest_not_login.getGioHangChiTietList()) {
 
             Optional<GioHangChiTiet> gioHangChiTiet = gioHangChiTietRepository.findById(idGioHangChiTiet);
@@ -185,7 +188,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
                 gioHangChiTietRepository.save(gioHangChiTiet.get());
             }
 
-        }//End step 6
+        } // End step 6
 
         return MessageResponse.builder().message("Thanh Toán Thành Công").build();
 

@@ -1,6 +1,5 @@
 package com.example.duantotnghiep.service.giam_gia_service.impl;
 
-
 import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.GiamGiaRequest;
@@ -46,50 +45,52 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     }
 
     @Override
-        public List<ProductDetailResponse> getAllProduct() {
+    public List<ProductDetailResponse> getAllProduct() {
         return Repository.listProductResponse();
     }
-//    @Override
-////    @Transactional
-//    public MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest) {
-//        // Kiểm tra xem đối tượng GiamGia có tồn tại không
-//        GiamGia existingGiamGia = Repository.findById(id).orElse(null);
-//
-//        if (existingGiamGia != null) {
-//            // Cập nhật thông tin của đối tượng GiamGia
-//            existingGiamGia.setMaGiamGia(updateGiamGiaRequest.getMaGiamGia());
-//            existingGiamGia.setTenGiamGia(updateGiamGiaRequest.getTenGiamGia());
-//            existingGiamGia.setNgayBatDau(updateGiamGiaRequest.getNgayBatDau());
-//            existingGiamGia.setNgayKetThuc(updateGiamGiaRequest.getNgayKetThuc());
-//            existingGiamGia.setHinhThucGiam(updateGiamGiaRequest.getHinhThucGiam());
-//            existingGiamGia.setTrangThai(updateGiamGiaRequest.getTrangThai());
-//
-//            // Lưu cập nhật vào Repository
-//            Repository.save(existingGiamGia);
-//            // Xóa tất cả các liên kết giảm giá của sản phẩm với đối tượng giảm giá cũ
-////          spggRepository.deleteByGiamGia(existingGiamGia);
-//            // Lặp qua danh sách sản phẩm mới và tạo các liên kết giảm giá mới
-//
-//
-//            // Trả về thông báo thành công
-//            return MessageResponse.builder().message("Cập nhật Thành Công").build();
-//        } else {
-//            // Handle the case where the discount is not found
-//            return MessageResponse.builder().message("Không tìm thấy giảm giá").build();
-//        }
-//    }
+    // @Override
+    //// @Transactional
+    // public MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest
+    // updateGiamGiaRequest) {
+    // // Kiểm tra xem đối tượng GiamGia có tồn tại không
+    // GiamGia existingGiamGia = Repository.findById(id).orElse(null);
+    //
+    // if (existingGiamGia != null) {
+    // // Cập nhật thông tin của đối tượng GiamGia
+    // existingGiamGia.setMaGiamGia(updateGiamGiaRequest.getMaGiamGia());
+    // existingGiamGia.setTenGiamGia(updateGiamGiaRequest.getTenGiamGia());
+    // existingGiamGia.setNgayBatDau(updateGiamGiaRequest.getNgayBatDau());
+    // existingGiamGia.setNgayKetThuc(updateGiamGiaRequest.getNgayKetThuc());
+    // existingGiamGia.setHinhThucGiam(updateGiamGiaRequest.getHinhThucGiam());
+    // existingGiamGia.setTrangThai(updateGiamGiaRequest.getTrangThai());
+    //
+    // // Lưu cập nhật vào Repository
+    // Repository.save(existingGiamGia);
+    // // Xóa tất cả các liên kết giảm giá của sản phẩm với đối tượng giảm giá cũ
+    //// spggRepository.deleteByGiamGia(existingGiamGia);
+    // // Lặp qua danh sách sản phẩm mới và tạo các liên kết giảm giá mới
+    //
+    //
+    // // Trả về thông báo thành công
+    // return MessageResponse.builder().message("Cập nhật Thành Công").build();
+    // } else {
+    // // Handle the case where the discount is not found
+    // return MessageResponse.builder().message("Không tìm thấy giảm giá").build();
+    // }
+    // }
 
-//    @Override
-//    public void updateGiamGia(UUID giamGiaId, GiamGiaRequest updateGiamGiaRequest) {
-//        Repository.updateGiamGia(
-//                giamGiaId,
-//                updateGiamGiaRequest.getTenGiamGia(),
-//                updateGiamGiaRequest.getNgayBatDau(),
-//                updateGiamGiaRequest.getNgayKetThuc(),
-//                updateGiamGiaRequest.getHinhThucGiam(),
-//                updateGiamGiaRequest.getTrangThai()
-//        );
-//    }
+    // @Override
+    // public void updateGiamGia(UUID giamGiaId, GiamGiaRequest
+    // updateGiamGiaRequest) {
+    // Repository.updateGiamGia(
+    // giamGiaId,
+    // updateGiamGiaRequest.getTenGiamGia(),
+    // updateGiamGiaRequest.getNgayBatDau(),
+    // updateGiamGiaRequest.getNgayKetThuc(),
+    // updateGiamGiaRequest.getHinhThucGiam(),
+    // updateGiamGiaRequest.getTrangThai()
+    // );
+    // }
 
     @Override
     @Transactional
@@ -130,15 +131,14 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                     } else if (updateGiamGiaRequest.getHinhThucGiam() == 2) {
                         // HinhThucGiam = 2
                         // dongia = gia ban x (muc giam / 100)
-                        BigDecimal dongia = sanPham.getGiaBan().multiply(BigDecimal.valueOf(updateGiamGiaRequest.getMucGiam()).divide(BigDecimal.valueOf(100)));
+                        BigDecimal dongia = sanPham.getGiaBan().multiply(
+                                BigDecimal.valueOf(updateGiamGiaRequest.getMucGiam()).divide(BigDecimal.valueOf(100)));
                         // donGiaKhiGiam = gia ban -
                         spGiamGia.setDonGia(dongia);
                         BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
                         // sanpham.giaban =
                         spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
                     }
-
-
 
                     spggRepository.save(spGiamGia);
                     spRepository.save(sanPham);
@@ -176,9 +176,6 @@ public class GiamGiaServiceimpl implements GiamGiaService {
         return Repository.findbyValueString(key);
     }
 
-
-
-
     @Override
     public List<ProductDetailResponse> findbyProduct(String key) {
         return Repository.ProductDetailResponse(key);
@@ -186,14 +183,14 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
     @Override
     public List<GiamGiaResponse> findbyValueDate(Date key1, Date key2) {
-        return Repository.findbyValueDate(key1,key2);
+        return Repository.findbyValueDate(key1, key2);
     }
-
 
     @Override
     public List<GiamGiaResponse> findbyValueStatus(Integer key) {
         return Repository.findbyValueStatus(key);
     }
+
     @Override
     public List<GiamGiaResponse> checkAndSetStatus() {
         List<GiamGia> giamGiaList = Repository.findAll();
@@ -203,7 +200,8 @@ public class GiamGiaServiceimpl implements GiamGiaService {
             if (giamGia.getNgayKetThuc().before(currentDate)) {
                 // Nếu ngày kết thúc đã qua so với ngày hiện tại
                 if (giamGia.getTrangThai() == 1) {
-                    // Nếu trạng thái là 1 (đang hoạt động), thì cập nhật trạng thái thành 2 (đã kết thúc)
+                    // Nếu trạng thái là 1 (đang hoạt động), thì cập nhật trạng thái thành 2 (đã kết
+                    // thúc)
                     giamGia.setTrangThai(2);
                     Repository.save(giamGia);
                 }
@@ -222,6 +220,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     public List<GiamGiaResponse> ListGiamGiaDeatil(UUID id) {
         return Repository.listGiamGiaDetail(id);
     }
+
     @Override
     public MessageResponse createGiamGia(GiamGiaRequest createKhachRequest) {
         // Tạo đối tượng GiamGia
@@ -255,14 +254,14 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                 } else if (createKhachRequest.getHinhThucGiam() == 2) {
                     // HinhThucGiam = 2
                     // dongia = gia ban x (muc giam / 100)
-                    BigDecimal dongia = sanPham.getGiaBan().multiply(BigDecimal.valueOf(createKhachRequest.getMucGiam()).divide(BigDecimal.valueOf(100)));
+                    BigDecimal dongia = sanPham.getGiaBan().multiply(
+                            BigDecimal.valueOf(createKhachRequest.getMucGiam()).divide(BigDecimal.valueOf(100)));
                     // donGiaKhiGiam = gia ban -
                     spGiamGia.setDonGia(dongia);
                     BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
                     // sanpham.giaban =
                     spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
                 }
-
 
                 spggRepository.save(spGiamGia);
                 spRepository.save(sanPham);
@@ -296,7 +295,8 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                 } else if (createKhachRequest.getHinhThucGiam() == 2) {
                     // HinhThucGiam = 2
                     // dongia = gia ban x (muc giam / 100)
-                    BigDecimal dongia = sanPham.getGiaBan().multiply(BigDecimal.valueOf(createKhachRequest.getMucGiam()).divide(BigDecimal.valueOf(100)));
+                    BigDecimal dongia = sanPham.getGiaBan().multiply(
+                            BigDecimal.valueOf(createKhachRequest.getMucGiam()).divide(BigDecimal.valueOf(100)));
                     // donGiaKhiGiam = gia ban -
                     spGiamGia.setDonGia(dongia);
                     BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
@@ -304,7 +304,6 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                     spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
                     sanPham.setGiaBan(donGiaKhiGiam);
                 }
-
 
                 spggRepository.save(spGiamGia);
                 spRepository.save(sanPham);
@@ -317,20 +316,10 @@ public class GiamGiaServiceimpl implements GiamGiaService {
         return MessageResponse.builder().message("Thêm Thành Công").build();
     }
 
-
-
-    @Override
-    public boolean isTenGiamGiaExists(String tenGiamGia) {
-        Boolean result = Repository.existsByGiamGia_TenGiamGia(tenGiamGia);
-        return result != null && result;
-    }
-
     @Override
     public boolean checkProductRecordCount(UUID productId) {
         int recordCount = Repository.countByProductId(productId);
         return recordCount < 9;
     }
-
-
 
 }

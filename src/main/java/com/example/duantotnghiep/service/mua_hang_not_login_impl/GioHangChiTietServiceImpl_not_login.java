@@ -6,6 +6,7 @@ import com.example.duantotnghiep.entity.SanPhamChiTiet;
 import com.example.duantotnghiep.mapper.GioHangCustom_not_login;
 import com.example.duantotnghiep.mapper.NameAndQuantityCart_Online;
 import com.example.duantotnghiep.mapper.TongTienCustom_Online;
+import com.example.duantotnghiep.repository.mua_hang_not_login_repo.ChiTietSanPhamRepository_not_login;
 import com.example.duantotnghiep.repository.mua_hang_not_login_repo.GioHangChiTietRepository_not_login;
 import com.example.duantotnghiep.repository.mua_hang_not_login_repo.GioHangRepository_not_login;
 import com.example.duantotnghiep.service.mua_hang_not_login_service.GioHangChiTietService_not_login;
@@ -26,36 +27,42 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
     @Autowired
     GioHangRepository_not_login gioHangRepository_not_login;
 
+    @Autowired
+    ChiTietSanPhamRepository_not_login chiTietSanPhamRepository_not_login;
+
     @Override
     public void themSanPhamVaoGioHangChiTiet(UUID idGioHang, UUID idSanPhamChiTiet, int soLuong) {
-        // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chi tiết chưa
-        GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findByGioHang_IdAndSanPhamChiTiet_Id(idGioHang, idSanPhamChiTiet);
+        GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findByGioHang_IdAndSanPhamChiTiet_Id(idGioHang,
+                idSanPhamChiTiet);
 
         if (gioHangChiTiet != null) {
             // Sản phẩm đã tồn tại trong giỏ hàng chi tiết, cập nhật số lượng
             gioHangChiTiet.setSoLuong(gioHangChiTiet.getSoLuong() + soLuong);
+
+            SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository_not_login.findById(idSanPhamChiTiet).get();
+
+            // Trừ số lượng sản phẩm trong kho của phiên bản ban đầu
+            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
+
+            gioHangChiTiet.setSanPhamChiTiet(sanPhamChiTiet);
         } else {
-            // Sản phẩm chưa tồn tại trong giỏ hàng chi tiết, tạo mới
             gioHangChiTiet = new GioHangChiTiet();
             gioHangChiTiet.setId(UUID.randomUUID());
 
-            // Tạo một đối tượng GioHang để set mối quan hệ với GioHangChiTiet
             GioHang gioHang = new GioHang();
             gioHang.setId(idGioHang);
 
             gioHangChiTiet.setGioHang(gioHang);
 
-            // Tạo một đối tượng SanPhamChiTiet để set mối quan hệ với GioHangChiTiet
-            SanPhamChiTiet sanPhamChiTiet = new SanPhamChiTiet();
-            sanPhamChiTiet.setId(idSanPhamChiTiet);
+            SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository_not_login.findById(idSanPhamChiTiet).get();
+
+            // Trừ số lượng sản phẩm trong kho của phiên bản ban đầu
+            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
 
             gioHangChiTiet.setSanPhamChiTiet(sanPhamChiTiet);
-
-            // Set số lượng
             gioHangChiTiet.setSoLuong(soLuong);
         }
 
-        // Lưu hoặc cập nhật GioHangChiTiet
         gioHangChiTietRepository.save(gioHangChiTiet);
     }
 
@@ -74,33 +81,48 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
         return gioHangChiTietRepository.getNameAndQuantity(idgh);
     }
 
-    // Cập nhật số lượng trong GioHangChiTiet
     public void capNhatSoLuong(UUID idgiohangchitiet, int soLuongMoi) {
         Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findById(idgiohangchitiet);
-        System.out.println(idgiohangchitiet);
-//        System.out.println(optionalGioHangChiTiet.get());
 
-        // Xử lý tình huống khi tìm thấy sản phẩm trong giỏ hàng
         if (optionalGioHangChiTiet.isPresent()) {
-
             GioHangChiTiet gioHangChiTiet = optionalGioHangChiTiet.get();
 
+            int soLuongCu = gioHangChiTiet.getSoLuong();
+            int soLuongHienTai = gioHangChiTiet.getSanPhamChiTiet().getSoLuong(); // Số lượng hiện tại trong kho
+
+            // Xử lý tình huống khi số lượng mới nhỏ hơn hoặc bằng số lượng hiện tại trong
+            // kho
+            int soLuongThayDoi = soLuongMoi - soLuongCu; // Số lượng thay đổi
             gioHangChiTiet.setSoLuong(soLuongMoi);
+
+            // Cập nhật số lượng trong kho bằng cách cộng số lượng thay đổi
+            int soLuongMoiTrongKho = soLuongHienTai - soLuongThayDoi;
+            gioHangChiTiet.getSanPhamChiTiet().setSoLuong(soLuongMoiTrongKho);
 
             gioHangChiTietRepository.save(gioHangChiTiet);
         } else {
             // Xử lý tình huống khi không tìm thấy sản phẩm trong giỏ hàng
             System.out.println("ID sản phẩm chi tiết không tồn tại");
         }
-
     }
-    //xoa san pham khoi gio hang
+
+    // Xóa sản phẩm khỏi giỏ hàng và cộng trả lại số lượng vào kho
     public void xoaSanPhamKhoiGioHang(UUID idgiohangchitiet) {
-        System.out.println(idgiohangchitiet);
         Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findById(idgiohangchitiet);
 
         if (optionalGioHangChiTiet.isPresent()) {
             GioHangChiTiet gioHangChiTiet = optionalGioHangChiTiet.get();
+
+            // Lấy số lượng sản phẩm cần xóa từ chi tiết giỏ hàng
+            int soLuongXoa = gioHangChiTiet.getSoLuong();
+
+            // Lấy sản phẩm tương ứng
+            SanPhamChiTiet sanPhamChiTiet = gioHangChiTiet.getSanPhamChiTiet();
+
+            // Cộng số lượng vào kho
+            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + soLuongXoa);
+
+            // Xóa sản phẩm khỏi giỏ hàng chi tiết
             gioHangChiTietRepository.delete(gioHangChiTiet);
         } else {
             // Xử lý tình huống khi không tìm thấy sản phẩm trong giỏ hàng
@@ -108,11 +130,8 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
         }
     }
 
-
-
-    //xóa tất cả sản phẩm trong giỏ hàng
+    // Xóa tất cả sản phẩm khỏi giỏ hàng và cộng trả lại số lượng vào kho
     public void xoaTatCaSanPhamKhoiGioHang(UUID idGioHang) {
-        // Tìm giỏ hàng dựa trên idgiohang
         Optional<GioHang> gioHangOptional = gioHangRepository_not_login.findById(idGioHang);
 
         if (gioHangOptional.isPresent()) {
@@ -121,19 +140,23 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
             // Lấy danh sách chi tiết giỏ hàng
             List<GioHangChiTiet> chiTietList = gioHang.getGioHangChiTietList();
 
-            // Xóa tất cả chi tiết giỏ hàng
             for (GioHangChiTiet chiTiet : chiTietList) {
-                gioHangChiTietRepository.delete(chiTiet);
+                int soLuongXoa = chiTiet.getSoLuong();
+                SanPhamChiTiet sanPhamChiTiet = chiTiet.getSanPhamChiTiet();
+
+                // Cộng số lượng vào kho
+                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + soLuongXoa);
             }
 
-            // Cập nhật lại giỏ hàng sau khi xóa
-            gioHang.setGioHangChiTietList(new ArrayList<>()); // Đặt lại danh sách chi tiết giỏ hàng thành rỗng
-            gioHangRepository_not_login.save(gioHang);
+            // Xóa tất cả chi tiết giỏ hàng
+            gioHangChiTietRepository.deleteAll(chiTietList);
 
-        }else {
-            throw new EntityNotFoundException("K tìm thấy id trong giỏ hàng");
+            // Đặt lại danh sách chi tiết giỏ hàng thành rỗng
+            gioHang.setGioHangChiTietList(new ArrayList<>());
+            gioHangRepository_not_login.save(gioHang);
+        } else {
+            throw new EntityNotFoundException("Không tìm thấy id trong giỏ hàng");
         }
     }
-
 
 }
