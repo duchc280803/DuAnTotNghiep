@@ -4,6 +4,7 @@ import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
 import com.example.duantotnghiep.response.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,5 +20,9 @@ public interface HoaDonChiTietService {
     void confirmThanhToan(UUID hoadonId, XacNhanThanhToanRequest request);
 
     MoneyResponse getMoneyByHoaDon(UUID idHoaDon);
+
+    MessageResponse themSanPhamVaoHoaDonChiTiet(UUID idHoaDon, UUID idSanPhamChiTiet, int soLuong);
+
+    void capNhatSoLuong(UUID idHoaDonChiTiet, int soLuongMoi);
 
 }

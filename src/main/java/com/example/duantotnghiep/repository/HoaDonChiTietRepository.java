@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.repository;
 
+import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.entity.HoaDonChiTiet;
 import com.example.duantotnghiep.response.*;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +13,9 @@ import java.util.UUID;
 
 @Repository
 public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UUID> {
+
+    HoaDonChiTiet findByHoaDonAndSanPhamChiTiet_Id(HoaDon hoaDon, UUID idSpCt);
+
     @Query(value = "SELECT TOP 1 hd.trangthai, LD.tenloaidon,\n" +
             "HD.diachi,\n" +
             "HD.tennguoinhan, HD.sdtnguoinhan,  HD.ngayship, HD.sdtnguoiship, TTHD.ghichu\n" +
@@ -23,21 +27,15 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
     ThongTinDonHang getThongTinDonHang(UUID idHoaDon);
 
 
-    @Query(value = "SELECT IM.tenimage, SP.tensanpham, SP.giaban, HDCT.dongiasaugiam, HDCT.soluong FROM hoadon HD \n" +
-            "LEFT JOIN hoadonchitiet HDCT ON HD.id = HDCT.idhoadon\n" +
-            "LEFT JOIN sanphamchitiet SPCT ON SPCT.id = HDCT.idsanphamchitiet\n" +
-            "LEFT JOIN sanpham SP ON SP.id = SPCT.idsanpham\n" +
-            "LEFT JOIN spgiamgia SPGG ON SPGG.idsanpham = SP.id\n" +
-            "LEFT JOIN image IM ON IM.idsanpham = SP.id WHERE IM.isdefault = 1 AND HD.id = ?1  AND (\n" +
-            "                           spgg.id IS NULL\n" +
-            "                            OR ( \n" +
-            "                               spgg.id IS NOT NULL\n" +
-            "                               AND spgg.id = (\n" +
-            "                                   SELECT MIN(spgg_inner.id)\n" +
-            "                                    FROM spgiamgia spgg_inner\n" +
-            "                                    WHERE spgg_inner.idsanpham = sp.id)))", nativeQuery = true)
-
-    List<SanPhamHoaDonChiTietResponse> getSanPhamHDCT(UUID idHoaDon);
+    @Query("SELECT new com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse" +
+            "(hdct.id, i.tenImage, sp.tenSanPham, hdct.donGia, hdct.donGiaSauGiam, hdct.soLuong) " +
+            "FROM HoaDon hd JOIN " +
+            "hd.hoaDonChiTietList hdct " +
+            "JOIN hdct.sanPhamChiTiet spct" +
+            " JOIN spct.sanPham sp " +
+            "JOIN sp.listImage i " +
+            "WHERE i.isDefault = true AND hd.id = :idHoaDon")
+    List<SanPhamHoaDonChiTietResponse> getSanPhamHDCT(@Param("idHoaDon") UUID idHoaDon);
 
     @Query(value = "SELECT HD.ma, HTTT.sotientra, HTTT.ngaytao, LHTT.tenloai, HTTT.phuongthucthanhtoan, HTTT.ghichu, HTTT.trangthai, TKNV.fullname FROM hoadon HD\n" +
             "LEFT JOIN hinhthucthanhtoan HTTT ON HD.id = HTTT.idhoadon LEFT JOIN loaihinhthucthanhtoan LHTT ON HTTT.idloai = LHTT.id\n" +
