@@ -1,25 +1,24 @@
 package com.example.duantotnghiep.response;
 
-import org.springframework.data.jpa.repository.Query;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.UUID;
 
-public interface MoneyResponse {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class MoneyResponse {
 
-    BigDecimal getThanhTien();
+    private BigDecimal tongTien;
 
-    BigDecimal getTienShip();
+    private BigDecimal tienShip;
 
-    BigDecimal getTienGiamGia();
+    private BigDecimal tienThua;
 
-    BigDecimal getTienKhachTra();
-
-    BigDecimal getTienThua();
-
-    BigDecimal getTongTien();
-
-
+    private BigDecimal tienGiamGia;
 
 }
