@@ -5,15 +5,11 @@ import com.example.duantotnghiep.request.TransactionVnPayRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.TransactionResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.impl.TransactionCounterServiceImpl;
-import com.fasterxml.jackson.databind.JsonNode;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.UUID;
 import java.math.BigDecimal;
 import java.util.*;
 

@@ -322,4 +322,10 @@ public class GiamGiaServiceimpl implements GiamGiaService {
         return recordCount < 9;
     }
 
+    @Override
+    public boolean isTenGiamGiaExists(String tenGiamGia) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isTenGiamGiaExists'");
+    }
+
 }

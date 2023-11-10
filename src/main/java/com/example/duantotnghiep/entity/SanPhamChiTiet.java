@@ -62,4 +62,4 @@ public class SanPhamChiTiet {
     @JsonManagedReference
     private List<HoaDonChiTiet> hoaDonChiTietList;
 
-}
+

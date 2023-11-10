@@ -46,4 +46,5 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             trangThaiHoaDonRepository.save(trangThaiHoaDon);
         }
     }
+
 }

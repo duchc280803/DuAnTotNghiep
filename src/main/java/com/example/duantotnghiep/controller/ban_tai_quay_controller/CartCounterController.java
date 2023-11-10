@@ -18,7 +18,7 @@ public class CartCounterController {
 
     @PutMapping("/update")
     public ResponseEntity<MessageResponse> updateGioHang(@RequestParam("idGioHang") UUID idGioHang,
-                                                         @RequestParam("idKhachHang") UUID idAccount) {
+            @RequestParam("idKhachHang") UUID idAccount) {
         return new ResponseEntity<>(gioHangService.updateGioHang(idGioHang, idAccount), HttpStatus.OK);
     }
 

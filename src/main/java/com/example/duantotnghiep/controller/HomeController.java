@@ -19,7 +19,7 @@ public class HomeController {
     private SanPhamServiceImpl sanPhamService;
 
     @GetMapping("home")
-    public ResponseEntity<List<SanPhamResponse>> getAll(){
+    public ResponseEntity<List<SanPhamResponse>> getAll() {
         return new ResponseEntity<>(sanPhamService.getNewProduct(), HttpStatus.OK);
     }
 }
