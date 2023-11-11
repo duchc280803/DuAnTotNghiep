@@ -45,7 +45,7 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
     @Query("SELECT new com.example.duantotnghiep.response.TrangThaiHoaDonResponse(tthd.trangThai, tthd.thoiGian, tknv.name, tthd.ghiChu) " +
             "FROM HoaDon hd " +
             "JOIN hd.trangThaiHoaDonList tthd " +
-            "JOIN hd.taiKhoanNhanVien tknv WHERE hd.id = :id ORDER BY tthd.thoiGian ASC ")
+            "LEFT JOIN hd.taiKhoanNhanVien tknv WHERE hd.id = :id ORDER BY tthd.thoiGian ASC ")
     List<TrangThaiHoaDonResponse> getAllTrangThaiHoaDon(@Param("id") UUID id);
 
 
