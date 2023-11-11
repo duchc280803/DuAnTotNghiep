@@ -31,7 +31,7 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
     ChiTietSanPhamRepository_not_login chiTietSanPhamRepository_not_login;
 
     @Override
-    public void themSanPhamVaoGioHangChiTiet(UUID idGioHang, UUID idSanPhamChiTiet, int soLuong) {
+    public GioHangChiTiet themSanPhamVaoGioHangChiTiet(UUID idGioHang, UUID idSanPhamChiTiet, int soLuong) {
         GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findByGioHang_IdAndSanPhamChiTiet_Id(idGioHang, idSanPhamChiTiet);
 
         if (gioHangChiTiet != null) {
@@ -62,8 +62,9 @@ public class GioHangChiTietServiceImpl_not_login implements GioHangChiTietServic
             gioHangChiTiet.setSoLuong(soLuong);
         }
 
-        gioHangChiTietRepository.save(gioHangChiTiet);
+        return gioHangChiTietRepository.save(gioHangChiTiet);
     }
+
 
 
 
