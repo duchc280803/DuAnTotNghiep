@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.controller.mua_hang_not_login_controller;
 
 import com.example.duantotnghiep.entity.GioHangChiTiet;
+import com.example.duantotnghiep.repository.mua_hang_not_login_repo.GioHangChiTietRepository_not_login;
 import com.example.duantotnghiep.service.mua_hang_not_login_impl.GioHangChiTietServiceImpl_not_login;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ public class GioHangChiTietController_not_login {
 
     @Autowired
     GioHangChiTietServiceImpl_not_login gioHangServiceImpl_not_login;
+
+    @Autowired
+    GioHangChiTietRepository_not_login gioHangChiTietRepository_not_login;
 
     @GetMapping("hien-thi")
     public ResponseEntity<?> show(@RequestParam UUID idgh){
@@ -72,5 +76,10 @@ public class GioHangChiTietController_not_login {
     @GetMapping("/name-quantity")
     public ResponseEntity<?> getNameQuantity(@RequestParam UUID idgh){
         return ResponseEntity.ok(gioHangServiceImpl_not_login.getNameAndQuantity(idgh));
+    }
+    //lấy tổng số lượng
+    @GetMapping("/quantity")
+    public ResponseEntity<?> getQuantity(@RequestParam UUID idgh){
+        return ResponseEntity.ok(gioHangChiTietRepository_not_login.getQuanTiTyAll(idgh));
     }
 }
