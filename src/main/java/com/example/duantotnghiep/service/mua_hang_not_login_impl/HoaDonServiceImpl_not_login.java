@@ -3,6 +3,7 @@ package com.example.duantotnghiep.service.mua_hang_not_login_impl;
 import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.enums.StatusOrderEnums;
 import com.example.duantotnghiep.enums.TypeOrderEnums;
+import com.example.duantotnghiep.repository.TrangThaiHoaDonRepository;
 import com.example.duantotnghiep.repository.mua_hang_not_login_repo.*;
 import com.example.duantotnghiep.request.not_login.CreateKhachRequest_not_login;
 import com.example.duantotnghiep.response.MessageResponse;
@@ -43,6 +44,9 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
     @Autowired
     private DiaChiRepository_not_login diaChiRepository;
+
+    @Autowired
+    private TrangThaiHoaDonRepository trangThaiHoaDonRepository;
 
     @Override
     public MessageResponse thanhToanKhongDangNhap(CreateKhachRequest_not_login createKhachRequest_not_login) {
@@ -119,6 +123,14 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
         hoaDonRepository.save(hoaDon);
         //End step 2
+
+        TrangThaiHoaDon tthd = new TrangThaiHoaDon();
+        tthd.setGhiChu("Người mua tạo đơn hàng");
+        tthd.setTrangThai(1);
+        tthd.setThoiGian(timestamp);
+        tthd.setHoaDon(hoaDon);
+
+        trangThaiHoaDonRepository.save(tthd);
 
         //Step3 : Xử lí hóa đơn chi tiết
         for (UUID idGioHangChiTiet : createKhachRequest_not_login.getGioHangChiTietList()) {
