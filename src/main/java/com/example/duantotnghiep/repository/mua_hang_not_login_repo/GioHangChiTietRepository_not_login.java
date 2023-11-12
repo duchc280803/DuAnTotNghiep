@@ -4,6 +4,7 @@ import com.example.duantotnghiep.entity.GioHangChiTiet;
 import com.example.duantotnghiep.mapper.GioHangCustom_not_login;
 import com.example.duantotnghiep.mapper.NameAndQuantityCart_Online;
 import com.example.duantotnghiep.mapper.TongTienCustom_Online;
+import com.example.duantotnghiep.mapper.not_login.loadquantity_not_login;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -49,5 +50,14 @@ public interface GioHangChiTietRepository_not_login extends JpaRepository<GioHan
             "JOIN sanpham sp ON sct.idsanpham = sp.id\n" +
             "WHERE gh.id = :idgh and gh.trangthai=1", nativeQuery = true)
     List<NameAndQuantityCart_Online> getNameAndQuantity(@Param("idgh") UUID idgh);
+
+    @Query(value = "SELECT\n" +
+            "    COUNT(*) AS tongSoLuong\n" +
+            "FROM giohang gh\n" +
+            "JOIN giohangchitiet ghct ON gh.id = ghct.idgiohang\n" +
+            "JOIN sanphamchitiet sct ON ghct.idsanphamchitiet = sct.id\n" +
+            "JOIN sanpham sp ON sct.idsanpham = sp.id\n" +
+            "WHERE gh.id = :idgh AND gh.trangthai = 1;\n", nativeQuery = true)
+    loadquantity_not_login getQuanTiTyAll(@Param("idgh") UUID idgh);
 
 }
