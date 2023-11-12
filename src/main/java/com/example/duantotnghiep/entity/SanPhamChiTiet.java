@@ -61,5 +61,6 @@ public class SanPhamChiTiet {
     @OneToMany(mappedBy = "sanPhamChiTiet", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<HoaDonChiTiet> hoaDonChiTietList;
+}
 
 
