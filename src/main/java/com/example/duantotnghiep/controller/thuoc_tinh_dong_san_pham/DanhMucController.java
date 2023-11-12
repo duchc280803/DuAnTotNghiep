@@ -25,6 +25,17 @@ public class DanhMucController {
     public ResponseEntity<List<DanhMuc>> getAllSanPhamGiamGia() {
         return new ResponseEntity<>(danhMucService.getAll(), HttpStatus.OK);
     }
+
+    @GetMapping("hien-thi")
+    public ResponseEntity<List<DanhMuc>> getAllDanhMuc(
+            @RequestParam(name = "tenDanhMuc", required = false) String tenDanhMuc,
+            @RequestParam(name = "trangThai", required = false) Integer trangThai,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
+    ) {
+        return new ResponseEntity<>(danhMucService.getAllDanhMuc(trangThai, tenDanhMuc, pageNumber, pageSize), HttpStatus.OK);
+    }
+
     @GetMapping("hien-thi/{id}")
     public DanhMuc getDanhMucById(@PathVariable UUID id) {
         return danhMucService.getById(id);

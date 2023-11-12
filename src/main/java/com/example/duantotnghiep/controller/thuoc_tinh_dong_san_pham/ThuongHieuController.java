@@ -20,9 +20,15 @@ public class ThuongHieuController {
     private ThuongHieuServiceImpl thuongHieuService;
 
     @GetMapping("hien-thi")
-    public ResponseEntity<List<ThuongHieu>> getAllSanPhamGiamGia() {
-        return new ResponseEntity<>(thuongHieuService.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<ThuongHieu>> getAllThuongHieu(
+            @RequestParam(name = "tenThuongHieu", required = false) String tenThuongHieu,
+            @RequestParam(name = "trangThai", required = false) Integer trangThai,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
+    ) {
+        return new ResponseEntity<>(thuongHieuService.getAllThuongHieu(trangThai, tenThuongHieu, pageNumber, pageSize), HttpStatus.OK);
     }
+
     @GetMapping("hien-thi/{id}")
     public ThuongHieu getThuongHieuById(@PathVariable UUID id) {
         return thuongHieuService.getById(id);

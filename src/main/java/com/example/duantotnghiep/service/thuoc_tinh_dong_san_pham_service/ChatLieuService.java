@@ -12,6 +12,8 @@ import java.util.UUID;
 public interface ChatLieuService {
     List<ChatLieu> getAll();
 
+    List<ChatLieu> getAllChatLieu(Integer trangThai, String tenChatLieu, Integer pageNumber, Integer pageSize);
+
     ChatLieu getById(UUID id);
 
     MessageResponse create(ChatLieuRequest request);

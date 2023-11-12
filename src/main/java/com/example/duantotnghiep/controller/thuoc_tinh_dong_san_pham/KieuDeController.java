@@ -25,6 +25,17 @@ public class KieuDeController {
     public ResponseEntity<List<KieuDe>> getAllSanPhamGiamGia() {
         return new ResponseEntity<>(kieuDeService.getAll(), HttpStatus.OK);
     }
+
+    @GetMapping("hien-thi")
+    public ResponseEntity<List<KieuDe>> getAllKieuDe(
+            @RequestParam(name = "tenKieuDe", required = false) String tenKieuDe,
+            @RequestParam(name = "trangThai", required = false) Integer trangThai,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
+    ) {
+        return new ResponseEntity<>(kieuDeService.getAllKieuDe(trangThai, tenKieuDe, pageNumber, pageSize), HttpStatus.OK);
+    }
+
     @GetMapping("hien-thi/{id}")
     public KieuDe getKieuDeById(@PathVariable UUID id) {
         return kieuDeService.getById(id);

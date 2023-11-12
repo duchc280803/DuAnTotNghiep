@@ -11,6 +11,8 @@ public interface XuatXuService {
 
     List<XuatXu> getAll();
 
+    List<XuatXu> getAllXuatXu(Integer trangThai, String tenXuatXu, Integer pageNumber, Integer pageSize);
+
     XuatXu getById(UUID id);
 
     MessageResponse create(XuatXuRequest xuatXuRequest);

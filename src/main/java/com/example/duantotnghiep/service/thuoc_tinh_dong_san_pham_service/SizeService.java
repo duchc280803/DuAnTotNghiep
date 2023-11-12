@@ -11,6 +11,8 @@ public interface SizeService {
 
     List<Size> getAll();
 
+    List<Size> getAllSize(Integer trangThai, Integer size, Integer pageNumber, Integer pageSize);
+
     Size getById(UUID id);
 
     MessageResponse create(SizeRequest sizeRequest);

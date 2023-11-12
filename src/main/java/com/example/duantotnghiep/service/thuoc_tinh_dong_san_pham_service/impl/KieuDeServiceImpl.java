@@ -6,8 +6,12 @@ import com.example.duantotnghiep.request.KieuDeRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.KieuDeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,10 +22,20 @@ public class KieuDeServiceImpl implements KieuDeService {
     @Autowired
     private KieuDeRepository kieuDeRepository;
 
+    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
     @Override
     public List<KieuDe> getAll() {
         return kieuDeRepository.findByTrangThai(1);
     }
+
+    @Override
+    public List<KieuDe> getAllKieuDe(Integer trangThai, String tenKieuDe, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<KieuDe> pageList = kieuDeRepository.getAllKieuDe(trangThai, tenKieuDe, pageable);
+        return pageList.getContent();
+    }
+
 
     @Override
     public KieuDe getById(UUID id) {
@@ -34,6 +48,7 @@ public class KieuDeServiceImpl implements KieuDeService {
         kieuDe.setId(UUID.randomUUID());
         kieuDe.setTenDe(request.getTenKieuDe());
         kieuDe.setTrangThai(request.getTrangThai());
+        kieuDe.setNgayTao(timestamp);
         kieuDeRepository.save(kieuDe);
         return MessageResponse.builder().message("Thêm thành công").build();
     }
@@ -45,6 +60,7 @@ public class KieuDeServiceImpl implements KieuDeService {
             KieuDe kieuDe = kieuDeOptional.get();
             kieuDe.setTenDe(request.getTenKieuDe());
             kieuDe.setTrangThai(request.getTrangThai());
+            kieuDe.setNgayCapNhat(timestamp);
             kieuDeRepository.save(kieuDe);
             return MessageResponse.builder().message("Cập nhật thành công").build();
         } else {
@@ -58,6 +74,7 @@ public class KieuDeServiceImpl implements KieuDeService {
         if (kieuDeOptional.isPresent()) {
             KieuDe kieuDe = kieuDeOptional.get();
             kieuDe.setTrangThai(2);
+            kieuDe.setNgayCapNhat(timestamp);
             kieuDeRepository.save(kieuDe);
             return MessageResponse.builder().message("Delete thành công").build();
         } else {

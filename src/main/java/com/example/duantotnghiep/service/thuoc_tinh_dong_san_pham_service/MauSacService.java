@@ -11,6 +11,8 @@ public interface MauSacService {
 
     List<MauSac> getAll();
 
+    List<MauSac> getAllMauSac(Integer trangThai, String tenMauSac, Integer pageNumber, Integer pageSize);
+
     MauSac getById(UUID id);
 
     MessageResponse create(MauSacRequest mauSacRequest);

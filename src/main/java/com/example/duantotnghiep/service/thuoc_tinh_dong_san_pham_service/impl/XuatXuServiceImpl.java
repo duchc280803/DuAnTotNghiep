@@ -6,8 +6,12 @@ import com.example.duantotnghiep.request.XuatXuRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.XuatXuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,10 +22,18 @@ public class XuatXuServiceImpl implements XuatXuService {
     @Autowired
     private XuatSuRepository xuatSuRepository;
 
+    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
     @Override
     public List<XuatXu> getAll() {
         return xuatSuRepository.findByTrangThai(1);
+    }
+
+    @Override
+    public List<XuatXu> getAllXuatXu(Integer trangThai, String tenXuatXu, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<XuatXu> pageList = xuatSuRepository.getAllXuatXu(trangThai, tenXuatXu, pageable);
+        return pageList.getContent();
     }
 
     @Override
@@ -34,6 +46,7 @@ public class XuatXuServiceImpl implements XuatXuService {
         XuatXu xuatXu = new XuatXu();
         xuatXu.setTenXuatXu(request.getTenXuatXu());
         xuatXu.setTrangThai(request.getTrangThai());
+        xuatXu.setNgayTao(timestamp);
         xuatSuRepository.save(xuatXu);
         return MessageResponse.builder().message("Thêm thành công").build();
     }
@@ -45,6 +58,7 @@ public class XuatXuServiceImpl implements XuatXuService {
             XuatXu xuatXu = optionalXuatXu.get();
             xuatXu.setTenXuatXu(request.getTenXuatXu());
             xuatXu.setTrangThai(request.getTrangThai());
+            xuatXu.setNgayCapNhat(timestamp);
             xuatSuRepository.save(xuatXu);
             return MessageResponse.builder().message("Cập nhật thành công").build();
         } else {
@@ -58,6 +72,7 @@ public class XuatXuServiceImpl implements XuatXuService {
         if (optionalXuatXu.isPresent()) {
             XuatXu xuatXu = optionalXuatXu.get();
             xuatXu.setTrangThai(2);
+            xuatXu.setNgayCapNhat(timestamp);
             xuatSuRepository.save(xuatXu);
             return MessageResponse.builder().message("Delete thành công").build();
         } else {

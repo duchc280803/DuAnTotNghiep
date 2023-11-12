@@ -25,6 +25,17 @@ public class MauSacController {
     public ResponseEntity<List<MauSac>> getAllSanPhamGiamGia() {
         return new ResponseEntity<>(mauSacService.getAll(), HttpStatus.OK);
     }
+
+    @GetMapping("hien-thi")
+    public ResponseEntity<List<MauSac>> getAllMauSac(
+            @RequestParam(name = "tenMauSac", required = false) String tenMauSac,
+            @RequestParam(name = "trangThai", required = false) Integer trangThai,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
+    ) {
+        return new ResponseEntity<>(mauSacService.getAllMauSac(trangThai, tenMauSac, pageNumber, pageSize), HttpStatus.OK);
+    }
+
     @GetMapping("hien-thi/{id}")
     public MauSac getSizeById(@PathVariable UUID id) {
         return mauSacService.getById(id);
