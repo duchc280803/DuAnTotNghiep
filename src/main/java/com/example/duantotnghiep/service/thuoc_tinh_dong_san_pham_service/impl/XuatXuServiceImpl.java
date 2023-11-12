@@ -1,11 +1,15 @@
 package com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl;
 
+import com.example.duantotnghiep.entity.ThuongHieu;
 import com.example.duantotnghiep.entity.XuatXu;
 import com.example.duantotnghiep.repository.XuatSuRepository;
 import com.example.duantotnghiep.request.XuatXuRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.XuatXuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +26,13 @@ public class XuatXuServiceImpl implements XuatXuService {
     @Override
     public List<XuatXu> getAll() {
         return xuatSuRepository.findByTrangThai(1);
+    }
+
+    @Override
+    public List<XuatXu> getAllXuatXu(Integer trangThai, String tenXuatXu, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<XuatXu> pageList = xuatSuRepository.getAllXuatXu(trangThai, tenXuatXu, pageable);
+        return pageList.getContent();
     }
 
     @Override

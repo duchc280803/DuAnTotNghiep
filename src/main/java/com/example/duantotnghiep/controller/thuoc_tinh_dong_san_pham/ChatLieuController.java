@@ -32,6 +32,16 @@ public class ChatLieuController {
         return new ResponseEntity<>(chatLieuService.getAll(), HttpStatus.OK);
     }
 
+    @GetMapping("hien-thi")
+    public ResponseEntity<List<ChatLieu>> getAllChatLieu(
+            @RequestParam(name = "tenChatLieu", required = false) String tenChatLieu,
+            @RequestParam(name = "trangThai", required = false) Integer trangThai,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
+    ) {
+        return new ResponseEntity<>(chatLieuService.getAllChatLieu(trangThai, tenChatLieu, pageNumber, pageSize), HttpStatus.OK);
+    }
+
     @GetMapping("/users/export/excel")
     public void exportToExcel(HttpServletResponse response) throws IOException {
         response.setContentType("application/octet-stream");

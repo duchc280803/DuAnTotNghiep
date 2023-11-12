@@ -37,4 +37,9 @@ public class ThuongHieu {
     @JsonManagedReference
     private List<SanPham> sanPhamList;
 
+    public ThuongHieu(UUID id, String tenThuongHieu, Integer trangThai) {
+        this.id = id;
+        this.tenThuongHieu = tenThuongHieu;
+        this.trangThai = trangThai;
+    }
 }

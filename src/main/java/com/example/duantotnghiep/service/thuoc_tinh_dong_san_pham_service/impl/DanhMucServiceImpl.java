@@ -1,11 +1,15 @@
 package com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl;
 
 import com.example.duantotnghiep.entity.DanhMuc;
+import com.example.duantotnghiep.entity.KieuDe;
 import com.example.duantotnghiep.repository.DanhMucRepository;
 import com.example.duantotnghiep.request.DanhMucRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.DanhMucService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +25,14 @@ public class DanhMucServiceImpl implements DanhMucService {
     @Override
     public List<DanhMuc> getAll() {
         return danhMucRepository.findByTrangThai(1);
+    }
+
+
+    @Override
+    public List<DanhMuc> getAllDanhMuc(Integer trangThai, String tenDanhMuc, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<DanhMuc> pageList = danhMucRepository.getAllDanhMuc(trangThai, tenDanhMuc, pageable);
+        return pageList.getContent();
     }
 
     @Override
