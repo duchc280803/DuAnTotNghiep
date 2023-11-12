@@ -125,6 +125,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
         //End step 2
 
         TrangThaiHoaDon tthd = new TrangThaiHoaDon();
+        tthd.setId(UUID.randomUUID());
         tthd.setGhiChu("Người mua tạo đơn hàng");
         tthd.setTrangThai(1);
         tthd.setThoiGian(timestamp);

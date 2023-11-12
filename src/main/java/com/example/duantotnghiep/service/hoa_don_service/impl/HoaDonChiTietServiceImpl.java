@@ -1,7 +1,9 @@
 package com.example.duantotnghiep.service.hoa_don_service.impl;
 
+import com.example.duantotnghiep.config.VnPayConfig;
 import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.repository.*;
+import com.example.duantotnghiep.request.TransactionRequest;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
 import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.hoa_don_service.HoaDonChiTietService;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +34,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
     @Autowired
     private SpGiamGiaRepository spGiamGiaRepository;
+
+    @Autowired
+    private KhachHangRepository khachHangRepository;
 
     @Override
     public ThongTinDonHang getThongTinDonHang(UUID idHoaDon) {
@@ -65,7 +71,6 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             hinhThucThanhToan.setTrangThai(request.getHinhThuc());
             hinhThucThanhToan.setHoaDon(hoaDon);
             hinhThucThanhToanRepository.save(hinhThucThanhToan);
-
         }
     }
 
@@ -104,7 +109,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findByHoaDonAndSanPhamChiTiet_Id(findByHoaDon.get(), idSanPhamChiTiet);
         if (hoaDonChiTiet != null) {
             hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() + soLuong);
-            hoaDonChiTiet.setDonGiaSauGiam(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId())));
+            hoaDonChiTiet.setDonGiaSauGiam(sanPhamChiTiet.getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId()))));
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
         } else {
             hoaDonChiTiet = new HoaDonChiTiet();
@@ -113,15 +118,34 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             hoaDonChiTiet.setHoaDon(findByHoaDon.get());
             hoaDonChiTiet.setSoLuong(soLuong);
             hoaDonChiTiet.setDonGia(sanPhamChiTiet.getSanPham().getGiaBan());
-            hoaDonChiTiet.setDonGiaSauGiam(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId())));
+            hoaDonChiTiet.setDonGiaSauGiam(sanPhamChiTiet.getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId()))));
             hoaDonChiTiet.setTrangThai(1);
         }
+
         chiTietSanPhamRepository.save(sanPhamChiTiet);
         hoaDonChiTietRepository.save(hoaDonChiTiet);
+        BigDecimal tongTienDonGia = BigDecimal.ZERO;
+        BigDecimal tongTienDonGiaSauGIam = BigDecimal.ZERO;
+        BigDecimal tongTienHang = BigDecimal.ZERO;
+        for (HoaDonChiTiet hdct : findByHoaDon.get().getHoaDonChiTietList()) {
+            if (hdct.getDonGiaSauGiam().compareTo(BigDecimal.ZERO) == 0) {
+                tongTienDonGia = tongTienDonGia.add(hdct.getDonGia().multiply(new BigDecimal(hdct.getSoLuong())));
+            }
+            if (hdct.getDonGiaSauGiam().compareTo(BigDecimal.ZERO) != 0) {
+                tongTienDonGiaSauGIam = tongTienDonGiaSauGIam.add(hdct.getDonGiaSauGiam().multiply(new BigDecimal(hdct.getSoLuong())));
+            }
+        }
+        if (findByHoaDon.get().getTienShip() == null) {
+            findByHoaDon.get().setThanhTien(tongTienHang.add(tongTienDonGia.add(tongTienDonGiaSauGIam).add(findByHoaDon.get().getTienGiamGia())));
+        }
+        if (findByHoaDon.get().getTienShip() != null) {
+            findByHoaDon.get().setThanhTien(tongTienHang.add(tongTienDonGia.add(tongTienDonGiaSauGIam)).add(findByHoaDon.get().getTienGiamGia()).add(findByHoaDon.get().getTienShip()));
+        }
+        hoaDonRepository.save(findByHoaDon.get());
         return MessageResponse.builder().message("Thêm thành công").build();
     }
 
-
+    @Override
     public void capNhatSoLuong(UUID idHoaDonChiTiet, int soLuongMoi) {
         Optional<HoaDonChiTiet> hoaDonChiTietOptional = hoaDonChiTietRepository.findById(idHoaDonChiTiet);
         if (hoaDonChiTietOptional.isPresent()) {
@@ -130,5 +154,48 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         } else {
             System.out.println("ID sản phẩm chi tiết không tồn tại");
         }
+
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(hoaDonChiTietOptional.get().getHoaDon().getId());
+        BigDecimal tongTienDonGia = BigDecimal.ZERO;
+        BigDecimal tongTienDonGiaSauGIam = BigDecimal.ZERO;
+        BigDecimal tongTienHang = BigDecimal.ZERO;
+        for (HoaDonChiTiet hdct : hoaDon.get().getHoaDonChiTietList()) {
+            if (hdct.getDonGiaSauGiam().compareTo(BigDecimal.ZERO) == 0) {
+                tongTienDonGia = tongTienDonGia.add(hdct.getDonGia().multiply(new BigDecimal(hdct.getSoLuong())));
+            }
+            if (hdct.getDonGiaSauGiam().compareTo(BigDecimal.ZERO) != 0) {
+                tongTienDonGiaSauGIam = tongTienDonGiaSauGIam.add(hdct.getDonGiaSauGiam().multiply(new BigDecimal(hdct.getSoLuong())));
+            }
+        }
+        if (hoaDon.get().getTienShip() == null) {
+            hoaDon.get().setThanhTien(tongTienHang.add(tongTienDonGia.add(tongTienDonGiaSauGIam).add(hoaDon.get().getTienGiamGia())));
+        }
+        if (hoaDon.get().getTienShip() != null) {
+            hoaDon.get().setThanhTien(tongTienHang.add(tongTienDonGia.add(tongTienDonGiaSauGIam)).add(hoaDon.get().getTienGiamGia()).add(hoaDon.get().getTienShip()));
+        }
+        hoaDonRepository.save(hoaDon.get());
     }
+
+    @Override
+    public MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest) {
+        Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+
+        HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+        hinhThucThanhToan.setId(UUID.randomUUID());
+        hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+        hinhThucThanhToan.setTaiKhoan(taiKhoan.get());
+        hinhThucThanhToan.setTongSoTien(transactionRequest.getSoTien());
+        hinhThucThanhToan.setGhiChu(transactionRequest.getGhiChu());
+        hinhThucThanhToan.setPhuongThucThanhToan(transactionRequest.getTrangThai());
+        hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
+        hinhThucThanhToan.setHoaDon(hoaDon.get());
+        hinhThucThanhToan.setTrangThai(1);
+        hinhThucThanhToanRepository.save(hinhThucThanhToan);
+        hoaDon.get().setTienKhachTra(transactionRequest.getSoTien());
+        hoaDon.get().setTienThua(transactionRequest.getSoTien().subtract(hoaDon.get().getThanhTien()));
+        hoaDonRepository.save(hoaDon.get());
+        return MessageResponse.builder().message("Thanh toán thành công").build();
+    }
+
 }
