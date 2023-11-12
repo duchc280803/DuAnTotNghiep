@@ -5,13 +5,19 @@ import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.repository.LoaiTaiKhoanRepository;
 import com.example.duantotnghiep.repository.TaiKhoanRepository;
 import com.example.duantotnghiep.request.NhanVienDTORequest;
+import com.example.duantotnghiep.response.HoaDonDTOResponse;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.response.NhanVienDTOReponse;
 import com.example.duantotnghiep.service.account_service.NhanVienCustomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 @Service
@@ -25,6 +31,13 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
     private LoaiTaiKhoanRepository loaiTaiKhoanRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public List<NhanVienDTOReponse> getAllNhanVien(String maTaiKhoan, Integer trangThai, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<NhanVienDTOReponse> pageList = taiKhoanRepository.getAllNhanVien(maTaiKhoan, trangThai, pageable);
+        return pageList.getContent();
+    }
 
     @Override
     public MessageResponse create(NhanVienDTORequest request) {

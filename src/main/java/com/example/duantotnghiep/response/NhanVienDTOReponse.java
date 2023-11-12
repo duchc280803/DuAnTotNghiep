@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.response;
 
+import com.example.duantotnghiep.enums.TypeAccountEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ public class NhanVienDTOReponse {
 
     private Boolean gioiTinh;
 
-    private String loaiTaiKhoan;
+    private TypeAccountEnum loaiTaiKhoan;
 
     private Integer trangThai;
 
