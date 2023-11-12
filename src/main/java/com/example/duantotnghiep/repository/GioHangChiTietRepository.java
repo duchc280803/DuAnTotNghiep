@@ -16,7 +16,8 @@ import java.util.UUID;
 
 public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, UUID> {
 
-    @Query("SELECT sp.id, ghct.id, i.tenImage, sp.tenSanPham, sp.giaBan,ghct.soLuong, s.size, cl.tenChatLieu,ms.tenMauSac " +
+    @Query("SELECT sp.id, ghct.id, i.tenImage, sp.tenSanPham, sp.giaBan,ghct.soLuong, s.size, cl.tenChatLieu,ms.tenMauSac "
+            +
             "FROM SanPhamChiTiet spct " +
             "JOIN spct.sanPham sp " +
             "JOIN sp.listImage i " +

@@ -61,7 +61,7 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
         hinhThucThanhToan.setId(UUID.randomUUID());
         hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
         hinhThucThanhToan.setTaiKhoan(taiKhoan.get());
-        hinhThucThanhToan.setTongSoTien( vnpAmount);
+        hinhThucThanhToan.setTongSoTien(vnpAmount);
         hinhThucThanhToan.setPhuongThucThanhToan(2);
         hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
         hinhThucThanhToan.setHoaDon(hoaDon.get());

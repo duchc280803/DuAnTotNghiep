@@ -23,16 +23,18 @@ public class ProductDetailResponse {
     private String MauSacName;
     private String ChatLieuName;
     private Integer trangThai;
-    private  UUID idImage;
-    private  UUID idSize;
-    private  UUID idMauSac;
-    private  UUID idChatLieu;
-    private  UUID idKieuDe;
+    private UUID idImage;
+    private UUID idSize;
+    private UUID idMauSac;
+    private UUID idChatLieu;
+    private UUID idKieuDe;
     private BigDecimal GiaBan;
     private Long soLanGiam;
     private BigDecimal GiaGiam;
 
-    public ProductDetailResponse(UUID id, String image, String productName, Integer sizeName, String kieuDeName, String mauSacName, String chatLieuName, Integer trangThai, UUID idImage, UUID idSize, UUID idMauSac, UUID idChatLieu, UUID idKieuDe) {
+    public ProductDetailResponse(UUID id, String image, String productName, Integer sizeName, String kieuDeName,
+            String mauSacName, String chatLieuName, Integer trangThai, UUID idImage, UUID idSize, UUID idMauSac,
+            UUID idChatLieu, UUID idKieuDe) {
         this.id = id;
         this.image = image;
         this.productName = productName;
@@ -48,7 +50,8 @@ public class ProductDetailResponse {
         this.idKieuDe = idKieuDe;
     }
 
-    public ProductDetailResponse(UUID id, String image, String productName, Integer sizeName, String kieuDeName, String mauSacName, String chatLieuName, Integer trangThai) {
+    public ProductDetailResponse(UUID id, String image, String productName, Integer sizeName, String kieuDeName,
+            String mauSacName, String chatLieuName, Integer trangThai) {
         this.id = id;
         this.image = image;
         this.productName = productName;
