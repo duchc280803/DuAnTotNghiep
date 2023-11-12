@@ -1,7 +1,9 @@
 package com.example.duantotnghiep.service.hoa_don_service.impl;
 
+import com.example.duantotnghiep.config.VnPayConfig;
 import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.repository.*;
+import com.example.duantotnghiep.request.TransactionRequest;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
 import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.hoa_don_service.HoaDonChiTietService;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +34,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
     @Autowired
     private SpGiamGiaRepository spGiamGiaRepository;
+
+    @Autowired
+    private KhachHangRepository khachHangRepository;
 
     @Override
     public ThongTinDonHang getThongTinDonHang(UUID idHoaDon) {
@@ -121,7 +127,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         return MessageResponse.builder().message("Thêm thành công").build();
     }
 
-
+    @Override
     public void capNhatSoLuong(UUID idHoaDonChiTiet, int soLuongMoi) {
         Optional<HoaDonChiTiet> hoaDonChiTietOptional = hoaDonChiTietRepository.findById(idHoaDonChiTiet);
         if (hoaDonChiTietOptional.isPresent()) {
@@ -131,4 +137,23 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             System.out.println("ID sản phẩm chi tiết không tồn tại");
         }
     }
+
+    @Override
+    public MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest) {
+        Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+
+        HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+        hinhThucThanhToan.setId(UUID.randomUUID());
+        hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+        hinhThucThanhToan.setTaiKhoan(taiKhoan.get());
+        hinhThucThanhToan.setTongSoTien(transactionRequest.getSoTien());
+        hinhThucThanhToan.setPhuongThucThanhToan(transactionRequest.getTrangThai());
+        hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
+        hinhThucThanhToan.setHoaDon(hoaDon.get());
+        hinhThucThanhToan.setTrangThai(1);
+        hinhThucThanhToanRepository.save(hinhThucThanhToan);
+        return MessageResponse.builder().message("Thanh toán thành công").build();
+    }
+
 }

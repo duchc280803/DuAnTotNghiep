@@ -5,6 +5,7 @@ import com.example.duantotnghiep.entity.TrangThaiHoaDon;
 import com.example.duantotnghiep.repository.HoaDonRepository;
 import com.example.duantotnghiep.repository.TrangThaiHoaDonRepository;
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
+import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.hoa_don_service.TrangThaiHoaDonService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
     private TrangThaiHoaDonRepository trangThaiHoaDonRepository;
 
     @Override
-    public void confirmOrder(UUID hoadonId, TrangThaiHoaDonRequest request) {
+    public MessageResponse confirmOrder(UUID hoadonId, TrangThaiHoaDonRequest request) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDon> hoaDonOptional = hoaDonRepository.findById(hoadonId);
         if (hoaDonOptional.isPresent()) {
@@ -45,6 +46,7 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             hoaDonRepository.save(hoaDon);
             trangThaiHoaDonRepository.save(trangThaiHoaDon);
         }
+        return MessageResponse.builder().message("Thêm thành công").build();
     }
 
 }

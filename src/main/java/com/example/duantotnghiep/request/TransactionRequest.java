@@ -17,4 +17,6 @@ public class TransactionRequest {
 
     private BigDecimal tienThua = BigDecimal.ZERO;
 
+    private Integer trangThai;
+
 }

@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.controller.hoa_don_controller;
 
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
+import com.example.duantotnghiep.request.TransactionRequest;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
 import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.hoa_don_service.impl.HoaDonChiTietServiceImpl;
@@ -45,9 +46,8 @@ public class HoaDonChiTietController {
     }
 
     @PostMapping("confirm-order/{hoadonId}")
-    public ResponseEntity<String> confirmOrder(@PathVariable UUID hoadonId, @RequestBody TrangThaiHoaDonRequest request) {
-        trangThaiHoaDonService.confirmOrder(hoadonId, request);
-        return ResponseEntity.ok("Trạng thái hóa đơn đã được cập nhật.");
+    public ResponseEntity<MessageResponse> confirmOrder(@PathVariable UUID hoadonId, @RequestBody TrangThaiHoaDonRequest request) {
+        return new ResponseEntity<>(trangThaiHoaDonService.confirmOrder(hoadonId, request), HttpStatus.CREATED);
     }
 
     @PostMapping("confirm-thanh-toan/{hoadonId}")
@@ -81,6 +81,15 @@ public class HoaDonChiTietController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest().body("Không tìm thấy sản phẩm trong giỏ hàng.");
         }
+    }
+
+    @PostMapping("thanh-toan-hoa-don-online")
+    public ResponseEntity<MessageResponse> createTransaction(
+            @RequestParam(name = "idHoaDon") UUID idHoaDon,
+            @RequestParam(name = "id") UUID id,
+            @RequestBody TransactionRequest transactionRequest
+    ) {
+        return new ResponseEntity<>(hoaDonChiTietService.createTransaction(idHoaDon, id, transactionRequest), HttpStatus.CREATED);
     }
 
 }
