@@ -1,11 +1,15 @@
 package com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl;
 
 import com.example.duantotnghiep.entity.ChatLieu;
+import com.example.duantotnghiep.entity.DanhMuc;
 import com.example.duantotnghiep.repository.ChatLieuRepository;
 import com.example.duantotnghiep.request.ChatLieuRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.ChatLieuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +25,13 @@ public class ChatLieuServiceImpl implements ChatLieuService {
     @Override
     public List<ChatLieu> getAll() {
         return chatLieuRepository.findByTrangThai(1);
+    }
+
+    @Override
+    public List<ChatLieu> getAllChatLieu(Integer trangThai, String tenChatLieu, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<ChatLieu> pageList = chatLieuRepository.getAllChatLieu(trangThai, tenChatLieu, pageable);
+        return pageList.getContent();
     }
 
     @Override

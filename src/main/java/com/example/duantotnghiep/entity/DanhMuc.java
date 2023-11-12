@@ -32,4 +32,9 @@ public class DanhMuc {
     @JsonManagedReference
     List<SanPham> sanPhamList;
 
+    public DanhMuc(UUID id, String tenDanhMuc, Integer trangThai) {
+        this.id = id;
+        this.tenDanhMuc = tenDanhMuc;
+        this.trangThai = trangThai;
+    }
 }

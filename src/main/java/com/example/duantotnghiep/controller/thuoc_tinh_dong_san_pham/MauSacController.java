@@ -2,6 +2,7 @@ package com.example.duantotnghiep.controller.thuoc_tinh_dong_san_pham;
 
 import com.example.duantotnghiep.entity.MauSac;
 import com.example.duantotnghiep.entity.Size;
+import com.example.duantotnghiep.entity.ThuongHieu;
 import com.example.duantotnghiep.request.MauSacRequest;
 import com.example.duantotnghiep.request.SizeRequest;
 import com.example.duantotnghiep.response.MessageResponse;
@@ -24,6 +25,15 @@ public class MauSacController {
     @GetMapping("show")
     public ResponseEntity<List<MauSac>> getAllSanPhamGiamGia() {
         return new ResponseEntity<>(mauSacService.getAll(), HttpStatus.OK);
+    }
+    @GetMapping("hien-thi")
+    public ResponseEntity<List<MauSac>> getAllMauSac(
+            @RequestParam(name = "tenMauSac", required = false) String tenMauSac,
+            @RequestParam(name = "trangThai", required = false) Integer trangThai,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
+    ) {
+        return new ResponseEntity<>(mauSacService.getAllMauSac(trangThai, tenMauSac, pageNumber, pageSize), HttpStatus.OK);
     }
     @GetMapping("hien-thi/{id}")
     public MauSac getSizeById(@PathVariable UUID id) {
