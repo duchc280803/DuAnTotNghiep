@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/manager/hoa-don/**").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/khach-hang/**").permitAll()
-                        .requestMatchers("/api/nhan-vien/**").permitAll()
+                        .requestMatchers("/api/v1/nhan-vien/**").permitAll()
                         .requestMatchers("/api/chi-tiet-sp/**").permitAll()
                         .requestMatchers("/api/gio-hang/**").permitAll()
                         .requestMatchers("/api/gio-hang-chi-tiet/**").permitAll()

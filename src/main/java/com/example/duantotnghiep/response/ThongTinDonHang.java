@@ -20,6 +20,6 @@ public interface ThongTinDonHang {
 
     String getGhiChu();
 
-    UUID getIdKhachHang();
+    UUID getIdNhanVien();
 
 }
