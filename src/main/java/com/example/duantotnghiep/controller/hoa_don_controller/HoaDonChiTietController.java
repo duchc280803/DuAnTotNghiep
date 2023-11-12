@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,8 +48,10 @@ public class HoaDonChiTietController {
     }
 
     @PostMapping("confirm-order/{hoadonId}")
-    public ResponseEntity<MessageResponse> confirmOrder(@PathVariable UUID hoadonId, @RequestBody TrangThaiHoaDonRequest request) {
-        return new ResponseEntity<>(trangThaiHoaDonService.confirmOrder(hoadonId, request), HttpStatus.CREATED);
+    public ResponseEntity<MessageResponse> confirmOrder(
+            @PathVariable UUID hoadonId,
+            @RequestBody TrangThaiHoaDonRequest request, Principal principal) {
+        return new ResponseEntity<>(trangThaiHoaDonService.confirmOrder(hoadonId, request, principal.getName()), HttpStatus.CREATED);
     }
 
     @PostMapping("confirm-thanh-toan/{hoadonId}")

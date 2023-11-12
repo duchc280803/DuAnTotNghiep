@@ -6,5 +6,6 @@ import com.example.duantotnghiep.response.MessageResponse;
 import java.util.UUID;
 
 public interface TrangThaiHoaDonService {
-    MessageResponse confirmOrder(UUID hoadonId, TrangThaiHoaDonRequest request);
+
+    MessageResponse confirmOrder(UUID hoadonId, TrangThaiHoaDonRequest request, String name);
 }

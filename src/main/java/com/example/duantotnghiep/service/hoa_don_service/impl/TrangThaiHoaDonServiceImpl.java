@@ -1,8 +1,10 @@
 package com.example.duantotnghiep.service.hoa_don_service.impl;
 
 import com.example.duantotnghiep.entity.HoaDon;
+import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.entity.TrangThaiHoaDon;
 import com.example.duantotnghiep.repository.HoaDonRepository;
+import com.example.duantotnghiep.repository.TaiKhoanRepository;
 import com.example.duantotnghiep.repository.TrangThaiHoaDonRepository;
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.response.MessageResponse;
@@ -18,16 +20,21 @@ import java.util.UUID;
 
 @Service
 public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
+
     @Autowired
     private HoaDonRepository hoaDonRepository;
 
     @Autowired
     private TrangThaiHoaDonRepository trangThaiHoaDonRepository;
 
+    @Autowired
+    private TaiKhoanRepository taiKhoanRepository;
+
     @Override
-    public MessageResponse confirmOrder(UUID hoadonId, TrangThaiHoaDonRequest request) {
+    public MessageResponse confirmOrder(UUID hoadonId, TrangThaiHoaDonRequest request, String name) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDon> hoaDonOptional = hoaDonRepository.findById(hoadonId);
+        TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(name).get();
         if (hoaDonOptional.isPresent()) {
             HoaDon hoaDon = hoaDonOptional.get();
 
@@ -41,7 +48,7 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
 
             // Cập nhật trạng thái của Hóa Đơn
             hoaDon.setTrangThai(request.getNewTrangThai());
-
+            hoaDon.setTaiKhoanNhanVien(taiKhoan);
             // Lưu cả hai bảng
             hoaDonRepository.save(hoaDon);
             trangThaiHoaDonRepository.save(trangThaiHoaDon);

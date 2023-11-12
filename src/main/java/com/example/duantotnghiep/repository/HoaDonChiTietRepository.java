@@ -36,9 +36,9 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
             "WHERE i.isDefault = true AND hd.id = :idHoaDon")
     List<SanPhamHoaDonChiTietResponse> getSanPhamHDCT(@Param("idHoaDon") UUID idHoaDon);
 
-    @Query(value = "SELECT HD.ma, HTTT.sotientra, HTTT.ngaytao, LHTT.tenloai, HTTT.phuongthucthanhtoan, HTTT.ghichu, HTTT.trangthai, TKNV.fullname FROM hoadon HD\n" +
-            "LEFT JOIN hinhthucthanhtoan HTTT ON HD.id = HTTT.idhoadon LEFT JOIN loaihinhthucthanhtoan LHTT ON HTTT.idloai = LHTT.id\n" +
-            "JOIN taikhoan TKNV ON HD.idnhanvien = TKNV.id WHERE HD.id = ?1\n", nativeQuery = true)
+    @Query(value = "SELECT HD.ma, HTTT.sotientra, HTTT.ngaytao, HTTT.phuongthucthanhtoan, HTTT.ghichu, HTTT.trangthai, TKNV.fullname FROM hoadon HD\n" +
+            "            JOIN hinhthucthanhtoan HTTT ON HD.id = HTTT.idhoadon\n" +
+            "            JOIN taikhoan TKNV ON HD.idnhanvien = TKNV.id WHERE HD.id = ?1\n", nativeQuery = true)
     List<HinhThucThanhToanResponse> getLichSuThanhToan(UUID idHoaDon);
 
     @Query("SELECT new com.example.duantotnghiep.response.TrangThaiHoaDonResponse(tthd.trangThai, tthd.thoiGian, tknv.name, tthd.ghiChu) " +
