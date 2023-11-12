@@ -1,5 +1,7 @@
 package com.example.duantotnghiep.response;
 
+import java.util.UUID;
+
 public interface ThongTinDonHang {
     Integer getTrangThai();
 
@@ -11,6 +13,12 @@ public interface ThongTinDonHang {
 
     String getSdtNguoiNhan();
 
+    String getTenNguoiShp();
+
+    String getSdtNguoiShip();
+
     String getGhiChu();
+
+    UUID getIdNhanVien();
 
 }

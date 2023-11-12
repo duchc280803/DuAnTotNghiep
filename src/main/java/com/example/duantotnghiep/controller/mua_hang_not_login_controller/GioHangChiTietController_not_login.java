@@ -1,5 +1,7 @@
 package com.example.duantotnghiep.controller.mua_hang_not_login_controller;
 
+import com.example.duantotnghiep.entity.GioHangChiTiet;
+import com.example.duantotnghiep.repository.mua_hang_not_login_repo.GioHangChiTietRepository_not_login;
 import com.example.duantotnghiep.service.mua_hang_not_login_impl.GioHangChiTietServiceImpl_not_login;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +18,25 @@ public class GioHangChiTietController_not_login {
     @Autowired
     GioHangChiTietServiceImpl_not_login gioHangServiceImpl_not_login;
 
+    @Autowired
+    GioHangChiTietRepository_not_login gioHangChiTietRepository_not_login;
+
     @GetMapping("hien-thi")
     public ResponseEntity<?> show(@RequestParam UUID idgh){
         return ResponseEntity.ok(gioHangServiceImpl_not_login.loadGH(idgh));
     }
 
+    // Controller
     @PostMapping("/them-san-pham")
-    public ResponseEntity<String> themSanPhamVaoGioHangChiTiet(@RequestParam UUID idGioHang, @RequestParam UUID idSanPhamChiTiet, @RequestParam int soLuong) {
+    public ResponseEntity<GioHangChiTiet> themSanPhamVaoGioHangChiTiet(@RequestParam UUID idGioHang, @RequestParam UUID idSanPhamChiTiet, @RequestParam int soLuong) {
         try {
-            gioHangServiceImpl_not_login.themSanPhamVaoGioHangChiTiet(idGioHang, idSanPhamChiTiet, soLuong);
-            return ResponseEntity.ok("Sản phẩm đã được thêm vào giỏ hàng chi tiết.");
+            GioHangChiTiet gioHangChiTiet = gioHangServiceImpl_not_login.themSanPhamVaoGioHangChiTiet(idGioHang, idSanPhamChiTiet, soLuong);
+            return ResponseEntity.ok(gioHangChiTiet);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Không thể thêm sản phẩm vào giỏ hàng chi tiết.");
+            return ResponseEntity.badRequest().body(null); // hoặc có thể trả về ResponseEntity.error(...)
         }
     }
+
 
     @PutMapping("/update-quantity")
     public ResponseEntity<String> capNhatSoLuong(@RequestParam UUID idgiohangchitiet, @RequestParam int quantity) {
@@ -69,5 +76,10 @@ public class GioHangChiTietController_not_login {
     @GetMapping("/name-quantity")
     public ResponseEntity<?> getNameQuantity(@RequestParam UUID idgh){
         return ResponseEntity.ok(gioHangServiceImpl_not_login.getNameAndQuantity(idgh));
+    }
+    //lấy tổng số lượng
+    @GetMapping("/quantity")
+    public ResponseEntity<?> getQuantity(@RequestParam UUID idgh){
+        return ResponseEntity.ok(gioHangChiTietRepository_not_login.getQuanTiTyAll(idgh));
     }
 }

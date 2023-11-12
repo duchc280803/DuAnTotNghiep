@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -60,6 +59,11 @@ public class HoaDonChiTietController {
             @RequestBody XacNhanThanhToanRequest request) {
         hoaDonChiTietService.confirmThanhToan(hoadonId, request);
         return ResponseEntity.ok("Hóa đơn đã được thanh toán.");
+    }
+
+    @GetMapping("thanh-tien/{idHoaDon}")
+    public ResponseEntity<MoneyResponse> getAllMoneyByHoaDon(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
+        return new ResponseEntity<>(hoaDonChiTietService.getMoneyByHoaDon(idHoaDon), HttpStatus.OK);
     }
 
     @PostMapping("them-san-pham")
