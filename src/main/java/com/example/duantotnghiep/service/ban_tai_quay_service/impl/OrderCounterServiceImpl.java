@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +50,9 @@ public class OrderCounterServiceImpl implements OrderCounterService {
 
     @Autowired
     private ChiTietSanPhamRepository chiTietSanPhamRepository;
+
+    @Autowired
+    private SpGiamGiaRepository spGiamGiaRepository;
 
     @Override
     @Transactional
@@ -108,6 +112,26 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         return hoaDonRepository.findByCodeOrder(ma);
     }
 
+    public Long getGiaGiamCuoiCung(UUID id) {
+        long sumPriceTien = 0L;
+        long sumPricePhanTram = 0L;
+        List<SpGiamGia> spGiamGiaList = spGiamGiaRepository.findBySanPham_Id(id);
+
+        for (SpGiamGia spGiamGia : spGiamGiaList) {
+            long mucGiam = spGiamGia.getMucGiam();
+            if (spGiamGia.getGiamGia().getHinhThucGiam() == 1) {
+                sumPriceTien += mucGiam;
+            }
+            if (spGiamGia.getGiamGia().getHinhThucGiam() == 2) {
+                long donGiaAsLong = spGiamGia.getDonGia().longValue();
+                double giamGia = (double) mucGiam / 100;
+                long giaTienSauGiamGia = (long) (donGiaAsLong * giamGia);
+                sumPricePhanTram += giaTienSauGiamGia;
+            }
+        }
+        return sumPriceTien + sumPricePhanTram;
+    }
+
     @Override
     public MessageResponse updateHoaDon(UUID idHoaDon, HoaDonThanhToanRequest hoaDonThanhToanRequest) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -136,6 +160,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
                 hoaDonChiTiet.setHoaDon(hoaDon.get());
                 hoaDonChiTiet.setSanPhamChiTiet(gioHangChiTiet.get().getSanPhamChiTiet());
                 hoaDonChiTiet.setDonGia(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getGiaBan());
+                hoaDonChiTiet.setDonGiaSauGiam(new BigDecimal(getGiaGiamCuoiCung(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getId())));
                 hoaDonChiTiet.setSoLuong(gioHangChiTiet.get().getSoLuong());
                 hoaDonChiTiet.setTrangThai(1);
                 hoaDonChiTietRepository.save(hoaDonChiTiet);
@@ -190,6 +215,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
                 hoaDonChiTiet.setHoaDon(hoaDon.get());
                 hoaDonChiTiet.setSanPhamChiTiet(gioHangChiTiet.get().getSanPhamChiTiet());
                 hoaDonChiTiet.setDonGia(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getGiaBan());
+                hoaDonChiTiet.setDonGiaSauGiam(new BigDecimal(getGiaGiamCuoiCung(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getId())));
                 hoaDonChiTiet.setSoLuong(gioHangChiTiet.get().getSoLuong());
                 hoaDonChiTiet.setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
                 hoaDonChiTietRepository.save(hoaDonChiTiet);
