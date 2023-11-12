@@ -37,7 +37,7 @@ public interface TaiKhoanRepository extends JpaRepository<TaiKhoan, UUID> {
             "FROM TaiKhoan tk\n" +
             "JOIN tk.loaiTaiKhoan ltk\n" +
             "WHERE  (:trangThai IS NULL OR tk.trangThai = :trangThai) " +
-            "AND (:maNhanVien IS NULL OR tk.maTaiKhoan LIKE %:maNhanVien%)")
-    Page<NhanVienDTOReponse> getAllNhanVien(@Param("maNhanVien") String maNhanVien, @Param("trangThai") Integer trangThai, Pageable pageable);
+            "AND (:maNhanVien IS NULL OR tk.maTaiKhoan LIKE %:maNhanVien%) AND (:name IS NULL OR tk.name LIKE %:name%) AND (:soDienThoai IS NULL OR tk.soDienThoai LIKE %:soDienThoai%)")
+    Page<NhanVienDTOReponse> getAllNhanVien(@Param("maNhanVien") String maNhanVien, @Param("name") String name, @Param("soDienThoai") String soDienThoai, @Param("trangThai") Integer trangThai, Pageable pageable);
 
 }

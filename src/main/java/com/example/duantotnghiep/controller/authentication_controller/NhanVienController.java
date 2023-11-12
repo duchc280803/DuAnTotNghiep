@@ -24,10 +24,12 @@ public class NhanVienController {
     public ResponseEntity<List<NhanVienDTOReponse>> getAllSanPhamGiamGia(
             @RequestParam(name = "maNhanVien", required = false) String maNhanVien,
             @RequestParam(name = "trangThai", required = false) Integer trangThai,
+            @RequestParam(name = "name", required = false) String name,
+            @RequestParam(name = "soDienThoai", required = false) String soDienTHoai,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
     ) {
-        return new ResponseEntity<>(nhanVienService.getAllNhanVien(maNhanVien, trangThai, pageNumber, pageSize), HttpStatus.OK);
+        return new ResponseEntity<>(nhanVienService.getAllNhanVien(maNhanVien, name, soDienTHoai, trangThai, pageNumber, pageSize), HttpStatus.OK);
     }
 
 
@@ -36,8 +38,8 @@ public class NhanVienController {
         return new ResponseEntity<>(nhanVienService.create(request), HttpStatus.CREATED);
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<MessageResponse> updateThuongHieu(@PathVariable UUID id, @RequestBody NhanVienDTORequest request) {
+    @PutMapping("update")
+    public ResponseEntity<MessageResponse> updateThuongHieu(@RequestParam("idNhanVien") UUID id, @RequestBody NhanVienDTORequest request) {
         try {
             MessageResponse response = nhanVienService.update(id, request);
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -45,8 +47,8 @@ public class NhanVienController {
             return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PutMapping("delete/{id}")
-    public ResponseEntity<MessageResponse> deleteThuongHieu(@PathVariable UUID id) {
+    @PutMapping("delete")
+    public ResponseEntity<MessageResponse> deleteThuongHieu(@RequestParam("idNhanVien")  UUID id) {
         return new ResponseEntity<>(nhanVienService.delete(id), HttpStatus.OK);
     }
 }
