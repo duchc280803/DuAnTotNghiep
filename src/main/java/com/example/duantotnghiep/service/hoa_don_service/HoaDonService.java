@@ -11,13 +11,15 @@ import java.util.UUID;
 
 public interface HoaDonService {
 
-    List<HoaDonDTOResponse> getAllHoaDonAdmin(Integer trangThaiHD, Integer loaiDon, String tenNhanVien, String ma, String soDienThoai, Integer pageNumber, Integer pageSize);
+    List<HoaDonDTOResponse> getAllHoaDonAdmin(Integer trangThaiHD, Integer loaiDon, String tenNhanVien, String ma,
+            String soDienThoai, Integer pageNumber, Integer pageSize);
 
-    List<HoaDonDTOResponse> getAllHoaDonStaff(Integer trangThaiHD, Integer loaiDon, String ma, String soDienThoai, String username, Integer pageNumber, Integer pageSize);
+    List<HoaDonDTOResponse> getAllHoaDonStaff(Integer trangThaiHD, Integer loaiDon, String ma, String soDienThoai,
+            String username, Integer pageNumber, Integer pageSize);
 
-    List<HoaDonDTOResponse> getAllHoaDonCTTStaff(Integer loaiDon, String ma, String soDienThoai, Integer pageNumber, Integer pageSize);
+    List<HoaDonDTOResponse> getAllHoaDonCTTStaff(Integer loaiDon, String ma, String soDienThoai, Integer pageNumber,
+            Integer pageSize);
 
-    HoaDon updateHoaDon(UUID hoaDonId,  String username);
-
+    HoaDon updateHoaDon(UUID hoaDonId, String username);
 
 }

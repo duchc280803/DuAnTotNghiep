@@ -32,4 +32,10 @@ public class Size {
     @OneToMany(mappedBy = "size",fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<SanPhamChiTiet> sanPhamChiTietList;
+
+    public Size(UUID id, Integer size, Integer trangThai) {
+        this.id = id;
+        this.size = size;
+        this.trangThai = trangThai;
+    }
 }

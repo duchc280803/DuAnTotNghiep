@@ -6,6 +6,9 @@ import com.example.duantotnghiep.request.SizeRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.SizeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +24,13 @@ public class SizeServiceImpl implements SizeService {
     @Override
     public List<Size> getAll() {
         return sizeRepository.findByTrangThai(1);
+    }
+
+    @Override
+    public List<Size> getAllSize(Integer trangThai, Integer size, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Size> pageList = sizeRepository.getAllSize(trangThai, size, pageable);
+        return pageList.getContent();
     }
 
     @Override

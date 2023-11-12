@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service;
 
 import com.example.duantotnghiep.entity.KieuDe;
+import com.example.duantotnghiep.entity.MauSac;
 import com.example.duantotnghiep.entity.ThuongHieu;
 import com.example.duantotnghiep.request.KieuDeRequest;
 import com.example.duantotnghiep.request.MauSacRequest;
@@ -12,6 +13,8 @@ import java.util.UUID;
 public interface KieuDeService {
 
     List<KieuDe> getAll();
+
+    List<KieuDe> getAllKieuDe(Integer trangThai, String tenKieuDe, Integer pageNumber, Integer pageSize);
 
     KieuDe getById(UUID id);
 

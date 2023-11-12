@@ -42,8 +42,9 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
     @Override
     public MessageResponse create(NhanVienDTORequest request) {
         TaiKhoan taiKhoan = new TaiKhoan();
-        Optional<LoaiTaiKhoan> loaiTaiKhoanOptional = loaiTaiKhoanRepository.findById(request.getIdLoaiTaiKhoan());
+        Optional<LoaiTaiKhoan> loaiTaiKhoanOptional = loaiTaiKhoanRepository.findByName(request.getTenLoaiTaiKhoan());
         if (loaiTaiKhoanOptional.isPresent()) {
+            System.out.println("Tên loại tài khoản: " +loaiTaiKhoanOptional.get().toString());
             taiKhoan.setId(UUID.randomUUID());
             taiKhoan.setNgaySinh(request.getNgaySinh());
             taiKhoan.setSoDienThoai(request.getSoDienThoai());
@@ -66,7 +67,7 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
     public MessageResponse update(UUID id, NhanVienDTORequest request) {
         Optional<TaiKhoan> taiKhoanOptional = taiKhoanRepository.findById(id);
         if (taiKhoanOptional.isPresent()) {
-            Optional<LoaiTaiKhoan> loaiTaiKhoanOptional = loaiTaiKhoanRepository.findById(request.getIdLoaiTaiKhoan());
+            Optional<LoaiTaiKhoan> loaiTaiKhoanOptional = loaiTaiKhoanRepository.findByName(request.getTenLoaiTaiKhoan());
             if (loaiTaiKhoanOptional.isPresent()) {
                 TaiKhoan taiKhoan = taiKhoanOptional.get();
                 taiKhoan.setNgaySinh(request.getNgaySinh());

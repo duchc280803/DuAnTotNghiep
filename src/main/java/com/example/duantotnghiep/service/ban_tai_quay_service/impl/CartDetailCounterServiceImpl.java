@@ -26,7 +26,6 @@ import java.util.UUID;
 
 @Service
 public class CartDetailCounterServiceImpl implements CartDetailCounterService {
-
     @Autowired
     private GioHangChiTietRepository gioHangChiTietRepository;
 
@@ -149,7 +148,8 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
     public void deleteProductInCart(UUID id) {
         gioHangChiTietRepository.deleteById(id);
         GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findById(id).get();
-        SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(gioHangChiTiet.getSanPhamChiTiet().getId()).get();
+        SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(gioHangChiTiet.getSanPhamChiTiet().getId())
+                .get();
         sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + gioHangChiTiet.getSoLuong());
         chiTietSanPhamRepository.save(sanPhamChiTiet);
     }

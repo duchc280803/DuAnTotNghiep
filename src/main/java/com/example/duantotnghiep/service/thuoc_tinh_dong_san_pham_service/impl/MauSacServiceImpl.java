@@ -1,11 +1,15 @@
 package com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl;
 
 import com.example.duantotnghiep.entity.MauSac;
+import com.example.duantotnghiep.entity.ThuongHieu;
 import com.example.duantotnghiep.repository.MauSacRepository;
 import com.example.duantotnghiep.request.MauSacRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.MauSacService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +25,12 @@ public class MauSacServiceImpl implements MauSacService {
     @Override
     public List<MauSac> getAll() {
         return mauSacRepository.findByTrangThai(1);
+    }
+    @Override
+    public List<MauSac> getAllMauSac(Integer trangThai, String tenMauSac, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<MauSac> pageList = mauSacRepository.getAllMauSac(trangThai, tenMauSac, pageable);
+        return pageList.getContent();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.controller.thuoc_tinh_dong_san_pham;
 
 import com.example.duantotnghiep.entity.Size;
+import com.example.duantotnghiep.entity.XuatXu;
 import com.example.duantotnghiep.request.SizeRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.SizeServiceImpl;
@@ -22,6 +23,16 @@ public class SizeController {
     @GetMapping("show")
     public ResponseEntity<List<Size>> getAllSanPhamGiamGia() {
         return new ResponseEntity<>(sizeService.getAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("hien-thi")
+    public ResponseEntity<List<Size>> getAllSize(
+            @RequestParam(name = "size", required = false) Integer size,
+            @RequestParam(name = "trangThai", required = false) Integer trangThai,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
+    ) {
+        return new ResponseEntity<>(sizeService.getAllSize(trangThai, size, pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("hien-thi/{id}")

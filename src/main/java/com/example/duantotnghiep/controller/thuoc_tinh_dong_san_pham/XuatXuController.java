@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.controller.thuoc_tinh_dong_san_pham;
 
+import com.example.duantotnghiep.entity.ThuongHieu;
 import com.example.duantotnghiep.entity.XuatXu;
 import com.example.duantotnghiep.request.XuatXuRequest;
 import com.example.duantotnghiep.response.MessageResponse;
@@ -22,6 +23,15 @@ public class XuatXuController {
     @GetMapping("show")
     public ResponseEntity<List<XuatXu>> getAllSanPhamGiamGia() {
         return new ResponseEntity<>(xuatXuService.getAll(), HttpStatus.OK);
+    }
+    @GetMapping("hien-thi")
+    public ResponseEntity<List<XuatXu>> getAllXuatXu(
+            @RequestParam(name = "tenXuatXu", required = false) String tenXuatXu,
+            @RequestParam(name = "trangThai", required = false) Integer trangThai,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
+    ) {
+        return new ResponseEntity<>(xuatXuService.getAllXuatXu(trangThai, tenXuatXu, pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("hien-thi/{id}")

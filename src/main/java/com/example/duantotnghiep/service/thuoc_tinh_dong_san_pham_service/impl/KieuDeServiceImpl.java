@@ -1,11 +1,15 @@
 package com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl;
 
 import com.example.duantotnghiep.entity.KieuDe;
+import com.example.duantotnghiep.entity.MauSac;
 import com.example.duantotnghiep.repository.KieuDeRepository;
 import com.example.duantotnghiep.request.KieuDeRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.KieuDeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +25,13 @@ public class KieuDeServiceImpl implements KieuDeService {
     @Override
     public List<KieuDe> getAll() {
         return kieuDeRepository.findByTrangThai(1);
+    }
+
+    @Override
+    public List<KieuDe> getAllKieuDe(Integer trangThai, String tenKieuDe, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<KieuDe> pageList = kieuDeRepository.getAllKieuDe(trangThai, tenKieuDe, pageable);
+        return pageList.getContent();
     }
 
     @Override

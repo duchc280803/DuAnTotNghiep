@@ -65,7 +65,8 @@ public class OrdersCounterController {
     public ResponseEntity<MessageResponse> taoHoaDonGiao(
             @RequestParam("idHoaDon") UUID idHoaDon,
             @RequestBody HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest) {
-        return new ResponseEntity<>(hoaDonService.updateHoaDonGiaoTaiQuay(idHoaDon, hoaDonGiaoThanhToanRequest), HttpStatus.CREATED);
+        return new ResponseEntity<>(hoaDonService.updateHoaDonGiaoTaiQuay(idHoaDon, hoaDonGiaoThanhToanRequest),
+                HttpStatus.CREATED);
     }
 
 }

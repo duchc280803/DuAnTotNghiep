@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.request;
 
+import com.example.duantotnghiep.enums.TypeAccountEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +30,7 @@ public class NhanVienDTORequest {
 
     private String password;
 
-    private UUID idLoaiTaiKhoan;
+    private TypeAccountEnum tenLoaiTaiKhoan;
 
     private Integer trangThai;
 

@@ -3,9 +3,13 @@ package com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl;
 import com.example.duantotnghiep.entity.ThuongHieu;
 import com.example.duantotnghiep.repository.ThuongHieuRepository;
 import com.example.duantotnghiep.request.ThuongHieuRequest;
+import com.example.duantotnghiep.response.HoaDonDTOResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.ThuongHieuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +25,14 @@ public class ThuongHieuServiceImpl implements ThuongHieuService {
     @Override
     public List<ThuongHieu> getAll() {
         return thuongHieuRepository.findByTrangThai(1);
+    }
+
+
+    @Override
+    public List<ThuongHieu> getAllThuongHieu(Integer trangThai, String tenThuongHieu, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<ThuongHieu> pageList = thuongHieuRepository.getAllThuongHieu(trangThai, tenThuongHieu, pageable);
+        return pageList.getContent();
     }
 
     @Override

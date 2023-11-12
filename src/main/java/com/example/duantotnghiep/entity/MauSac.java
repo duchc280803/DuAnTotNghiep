@@ -32,4 +32,10 @@ public class MauSac {
     @OneToMany(mappedBy = "mauSac",fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<SanPhamChiTiet> sanPhamChiTietList;
+
+    public MauSac(UUID id, String tenMauSac, Integer trangThai) {
+        this.id = id;
+        this.tenMauSac = tenMauSac;
+        this.trangThai = trangThai;
+    }
 }
