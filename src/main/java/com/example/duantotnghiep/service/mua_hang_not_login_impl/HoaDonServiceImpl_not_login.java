@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -112,6 +113,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
         hoaDon.setTrangThai(StatusOrderEnums.CHO_XAC_NHAN.getValue());
         hoaDon.setDiaChi(createKhachRequest_not_login.getDiaChi()+" "+createKhachRequest_not_login.getPhuongXa()+" "+createKhachRequest_not_login.getQuanHuyen()+" "+createKhachRequest_not_login.getThanhPho());
         hoaDon.setSdtNguoiNhan(createKhachRequest_not_login.getSoDienThoai());
+        hoaDon.setTienGiamGia(BigDecimal.ZERO);
         hoaDon.setTenNguoiNhan(createKhachRequest_not_login.getHoTen());
         hoaDon.setTaiKhoanKhachHang(khachHang);
 
@@ -125,6 +127,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
         //End step 2
 
         TrangThaiHoaDon tthd = new TrangThaiHoaDon();
+        tthd.setId(UUID.randomUUID());
         tthd.setGhiChu("Người mua tạo đơn hàng");
         tthd.setTrangThai(1);
         tthd.setThoiGian(timestamp);
