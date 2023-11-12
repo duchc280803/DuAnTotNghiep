@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface NhanVienCustomService {
-    List<NhanVienDTOReponse> getAllNhanVien(String maTaiKhoan, Integer trangThai, Integer pageNumber, Integer pageSize);
+    List<NhanVienDTOReponse> getAllNhanVien(String maTaiKhoan, String name, String soDienThoai, Integer trangThai, Integer pageNumber, Integer pageSize);
 
     MessageResponse create(NhanVienDTORequest request);
 
