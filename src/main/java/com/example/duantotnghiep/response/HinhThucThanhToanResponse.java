@@ -8,8 +8,6 @@ public interface HinhThucThanhToanResponse {
 
     BigDecimal getSoTienTra();
 
-    String getTenLoai();
-
     Date getNgayTao();
 
     Integer getPhuongThucThanhToan();

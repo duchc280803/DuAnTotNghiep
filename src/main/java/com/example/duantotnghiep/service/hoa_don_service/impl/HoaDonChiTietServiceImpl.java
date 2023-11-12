@@ -148,11 +148,15 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
         hinhThucThanhToan.setTaiKhoan(taiKhoan.get());
         hinhThucThanhToan.setTongSoTien(transactionRequest.getSoTien());
+        hinhThucThanhToan.setGhiChu(transactionRequest.getGhiChu());
         hinhThucThanhToan.setPhuongThucThanhToan(transactionRequest.getTrangThai());
         hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
         hinhThucThanhToan.setHoaDon(hoaDon.get());
         hinhThucThanhToan.setTrangThai(1);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
+        hoaDon.get().setTienKhachTra(transactionRequest.getSoTien());
+        hoaDon.get().setTienThua(transactionRequest.getSoTien().subtract(hoaDon.get().getThanhTien()));
+        hoaDonRepository.save(hoaDon.get());
         return MessageResponse.builder().message("Thanh toán thành công").build();
     }
 

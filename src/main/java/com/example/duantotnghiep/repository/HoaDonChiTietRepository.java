@@ -26,7 +26,6 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
             "ORDER BY TTHD.thoigian DESC", nativeQuery = true)
     ThongTinDonHang getThongTinDonHang(UUID idHoaDon);
 
-
     @Query("SELECT new com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse" +
             "(hdct.id, i.tenImage, sp.tenSanPham, hdct.donGia, hdct.donGiaSauGiam, hdct.soLuong) " +
             "FROM HoaDon hd JOIN " +
