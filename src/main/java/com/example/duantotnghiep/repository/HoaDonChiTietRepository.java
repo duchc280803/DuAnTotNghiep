@@ -18,7 +18,7 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
 
     @Query(value = "SELECT TOP 1 hd.trangthai, LD.tenloaidon,\n" +
             "HD.diachi,\n" +
-            "HD.tennguoinhan, HD.sdtnguoinhan,  HD.ngayship, HD.sdtnguoiship, TTHD.ghichu, HD.idkhachhang\n" +
+            "HD.tennguoinhan, HD.sdtnguoinhan,  HD.ngayship, HD.sdtnguoiship, TTHD.ghichu, HD.idnhanvien\n" +
             "FROM\n" +
             "hoadon HD JOIN loaidon LD ON HD.idloaidon = LD.id\n" +
             "JOIN trangthaihoadon TTHD ON TTHD.idhoadon = HD.id\n" +

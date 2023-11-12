@@ -33,11 +33,11 @@ public interface TaiKhoanRepository extends JpaRepository<TaiKhoan, UUID> {
     NhanVienResponse getList(@Param("name") String name);
 
 
-//    @Query("SELECT NEW com.example.duantotnghiep.response.NhanVienDTOReponse(tk.id, tk.name, tk.maTaiKhoan, tk.soDienThoai, tk.gioiTinh, ltk.name, tk.trangThai, tk.image)\n" +
-//            "FROM TaiKhoan tk\n" +
-//            "JOIN tk.loaiTaiKhoan ltk\n" +
-//            "WHERE  (:trangThai IS NULL OR tk.trangThai = :trangThai) " +
-//            "AND (:maNhanVien IS NULL OR tk.maTaiKhoan LIKE %:maNhanVien%)")
-//    Page<NhanVienDTOReponse> getAllNhanVien(@Param("maNhanVien") String maNhanVien, @Param("trangThai") Integer trangThai, Pageable pageable);
+    @Query("SELECT NEW com.example.duantotnghiep.response.NhanVienDTOReponse(tk.id, tk.name, tk.maTaiKhoan, tk.soDienThoai, tk.gioiTinh, ltk.name, tk.trangThai, tk.image)\n" +
+            "FROM TaiKhoan tk\n" +
+            "JOIN tk.loaiTaiKhoan ltk\n" +
+            "WHERE  (:trangThai IS NULL OR tk.trangThai = :trangThai) " +
+            "AND (:maNhanVien IS NULL OR tk.maTaiKhoan LIKE %:maNhanVien%)")
+    Page<NhanVienDTOReponse> getAllNhanVien(@Param("maNhanVien") String maNhanVien, @Param("trangThai") Integer trangThai, Pageable pageable);
 
 }
