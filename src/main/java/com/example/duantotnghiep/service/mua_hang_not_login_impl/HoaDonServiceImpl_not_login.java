@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -120,6 +121,8 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
         hoaDon.setThanhTien(createKhachRequest_not_login.getTongTien());
 
         hoaDon.setTienKhachTra(createKhachRequest_not_login.getTienKhachTra());
+
+        hoaDon.setTienGiamGia(BigDecimal.ZERO);
 
         hoaDonRepository.save(hoaDon);
         //End step 2
