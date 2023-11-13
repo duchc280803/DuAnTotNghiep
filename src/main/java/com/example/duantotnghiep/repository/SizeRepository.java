@@ -18,7 +18,7 @@ public interface SizeRepository extends JpaRepository<Size, UUID> {
 
     @Query("SELECT NEW com.example.duantotnghiep.entity.Size(th.id, th.size, th.trangThai, th.ngayTao, th.ngayCapNhat)\n" +
             "FROM Size th\n" +
-            "WHERE (:trangThai IS NULL AND th.trangThai = 1) OR th.trangThai = :trangThai " +
+            "WHERE (:trangThai IS NULL OR th.trangThai = :trangThai) " +
             "AND (:size IS NULL OR th.size = :size) ORDER BY th.ngayTao DESC")
     Page<Size> getAllSize(@Param("trangThai") Integer trangThai, @Param("size") Integer size, Pageable pageable);
 }

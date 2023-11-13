@@ -18,7 +18,7 @@ public interface MauSacRepository extends JpaRepository<MauSac, UUID> {
 
     @Query("SELECT NEW com.example.duantotnghiep.entity.MauSac(th.id, th.tenMauSac, th.trangThai, th.ngayTao, th.ngayCapNhat)\n" +
             "FROM MauSac th\n" +
-            "WHERE (:trangThai IS NULL AND th.trangThai = 1) OR th.trangThai = :trangThai " +
+            "WHERE (:trangThai IS NULL OR th.trangThai = :trangThai) " +
             "AND (:tenMauSac IS NULL OR th.tenMauSac LIKE %:tenMauSac%) ORDER BY th.ngayTao DESC")
     Page<MauSac> getAllMauSac(@Param("trangThai") Integer trangThai, @Param("tenMauSac") String tenMauSac, Pageable pageable);
 }
