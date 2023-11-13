@@ -25,8 +25,7 @@ import java.util.Random;
 import java.util.UUID;
 
 @Service
-public class OrderCounterServiceImpl implements OrderCounterService
-{
+public class OrderCounterServiceImpl implements OrderCounterService {
 
     @Autowired
     private HoaDonRepository hoaDonRepository;
@@ -161,7 +160,7 @@ public class OrderCounterServiceImpl implements OrderCounterService
                 hoaDonChiTiet.setHoaDon(hoaDon.get());
                 hoaDonChiTiet.setSanPhamChiTiet(gioHangChiTiet.get().getSanPhamChiTiet());
                 hoaDonChiTiet.setDonGia(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getGiaBan());
-                hoaDonChiTiet.setDonGiaSauGiam(new BigDecimal(getGiaGiamCuoiCung(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getId())));
+                hoaDonChiTiet.setDonGiaSauGiam(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getId()))));
                 hoaDonChiTiet.setSoLuong(gioHangChiTiet.get().getSoLuong());
                 hoaDonChiTiet.setTrangThai(1);
                 hoaDonChiTietRepository.save(hoaDonChiTiet);
@@ -206,6 +205,7 @@ public class OrderCounterServiceImpl implements OrderCounterService
             gioHangChiTiet.get().setTrangThai(StatusCartDetailEnums.DA_THANH_TOAN.getValue());
             gioHangChiTietRepository.save(gioHangChiTiet.get());
             Optional<GioHang> gioHang = gioHangRepository.findById(gioHangChiTiet.get().getGioHang().getId());
+            gioHang.get().setNgayCapNhat(timestamp);
             gioHang.get().setTrangThai(StatusCartEnums.DA_THANH_TOAN.getValue());
             gioHangRepository.save(gioHang.get());
             if (gioHangChiTiet.isPresent()) {
@@ -214,7 +214,7 @@ public class OrderCounterServiceImpl implements OrderCounterService
                 hoaDonChiTiet.setHoaDon(hoaDon.get());
                 hoaDonChiTiet.setSanPhamChiTiet(gioHangChiTiet.get().getSanPhamChiTiet());
                 hoaDonChiTiet.setDonGia(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getGiaBan());
-                hoaDonChiTiet.setDonGiaSauGiam(new BigDecimal(getGiaGiamCuoiCung(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getId())));
+                hoaDonChiTiet.setDonGiaSauGiam(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getId()))));
                 hoaDonChiTiet.setSoLuong(gioHangChiTiet.get().getSoLuong());
                 hoaDonChiTiet.setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
                 hoaDonChiTietRepository.save(hoaDonChiTiet);

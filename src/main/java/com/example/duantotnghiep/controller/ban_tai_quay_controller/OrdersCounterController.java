@@ -55,7 +55,7 @@ public class OrdersCounterController {
     }
 
     @PostMapping("create-hoa-don-chi-tiet")
-    public ResponseEntity<MessageResponse> taoHoaDonDetial(
+    public ResponseEntity<MessageResponse> taoHoaDonDetail(
             @RequestParam("idHoaDon") UUID idHoaDon,
             @RequestBody HoaDonThanhToanRequest hoaDonThanhToanRequest) {
         return new ResponseEntity<>(hoaDonService.updateHoaDon(idHoaDon, hoaDonThanhToanRequest), HttpStatus.CREATED);

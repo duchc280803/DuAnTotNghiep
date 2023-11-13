@@ -30,7 +30,6 @@ public class NhanVienController {
         return new ResponseEntity<>(nhanVienService.getAllNhanVien(maNhanVien, name, soDienTHoai, trangThai, pageNumber, pageSize), HttpStatus.OK);
     }
 
-
     @PostMapping("create")
     public ResponseEntity<MessageResponse> createThuongHieu(@RequestBody NhanVienDTORequest request) {
         return new ResponseEntity<>(nhanVienService.create(request), HttpStatus.CREATED);
