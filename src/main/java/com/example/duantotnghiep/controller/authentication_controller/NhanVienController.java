@@ -1,8 +1,10 @@
 package com.example.duantotnghiep.controller.authentication_controller;
 
+import com.example.duantotnghiep.entity.LoaiTaiKhoan;
 import com.example.duantotnghiep.request.NhanVienDTORequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.NhanVienDTOReponse;
+import com.example.duantotnghiep.service.account_service.impl.LoaiTaiKhoanServiceImpl;
 import com.example.duantotnghiep.service.account_service.impl.NhanVienServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,9 @@ public class NhanVienController {
     @Autowired
     private NhanVienServiceImpl nhanVienService;
 
+    @Autowired
+    private LoaiTaiKhoanServiceImpl loaiTaiKhoanService;
+
     @GetMapping("hien-thi")
     public ResponseEntity<List<NhanVienDTOReponse>> getAllSanPhamGiamGia(
             @RequestParam(name = "maNhanVien", required = false) String maNhanVien,
@@ -28,6 +33,11 @@ public class NhanVienController {
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
     ) {
         return new ResponseEntity<>(nhanVienService.getAllNhanVien(maNhanVien, name, soDienTHoai, trangThai, pageNumber, pageSize), HttpStatus.OK);
+    }
+
+    @GetMapping("hien-thi-roles")
+    public ResponseEntity<List<LoaiTaiKhoan>> getRoles() {
+        return new ResponseEntity<>(loaiTaiKhoanService.findRoles(), HttpStatus.OK);
     }
 
     @PostMapping("create")
