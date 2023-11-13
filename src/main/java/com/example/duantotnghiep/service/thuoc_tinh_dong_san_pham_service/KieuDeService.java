@@ -13,7 +13,7 @@ public interface KieuDeService {
 
     List<KieuDe> getAll();
 
-    List<KieuDe> getAllKieuDe(Integer trangThai, String tenKieuDe, Integer pageNumber, Integer pageSize);
+    List<KieuDe> getAllKieuDe(Integer trangThai, String tenDe, Integer pageNumber, Integer pageSize);
 
     KieuDe getById(UUID id);
 

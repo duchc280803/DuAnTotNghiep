@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class KieuDeRequest {
-    private String tenKieuDe;
+    private String tenDe;
 
     private Integer trangThai;
 }
