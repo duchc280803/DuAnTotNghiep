@@ -81,7 +81,4 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
             "ORDER BY hd.ngayTao DESC")
     Page<HoaDonDTOResponse> getAllHoaDonCTTStaff(@Param("loaiDon") Integer loaiDon, @Param("ma") String ma, @Param("soDienThoai") String soDienThoai, Pageable pageable);
 
-
-
-
 }

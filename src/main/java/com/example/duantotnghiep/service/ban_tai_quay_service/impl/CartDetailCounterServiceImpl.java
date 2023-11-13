@@ -55,6 +55,8 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
             ghct = new GioHangChiTiet();
             ghct.setId(UUID.randomUUID());
             ghct.setGioHang(gioHang);
+            ghct.setDonGia(sanPhamChiTiet.getSanPham().getGiaBan());
+            ghct.setDonGiaKhiGiam(sanPhamChiTiet.getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId()))));
 
             sanPhamChiTiet.setId(idSanPhamChiTiet);
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
@@ -85,9 +87,12 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
             ghct = new GioHangChiTiet();
             ghct.setId(UUID.randomUUID());
             ghct.setGioHang(gioHang);
+            ghct.setDonGia(sanPhamChiTiet.getSanPham().getGiaBan());
+            ghct.setDonGiaKhiGiam(sanPhamChiTiet.getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId()))));
 
             sanPhamChiTiet.setId(sanPhamChiTiet.getId());
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - 1);
+
             ghct.setSanPhamChiTiet(sanPhamChiTiet);
 
             ghct.setSoLuong(1);
@@ -107,11 +112,9 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         for (SpGiamGia spGiamGia : spGiamGiaList) {
             long mucGiam = spGiamGia.getMucGiam();
             if (spGiamGia.getGiamGia().getHinhThucGiam() == 1) {
-                System.out.println(mucGiam + "đ");
                 sumPriceTien += mucGiam;
             }
             if (spGiamGia.getGiamGia().getHinhThucGiam() == 2) {
-                System.out.println(mucGiam + "%");
                 long donGiaAsLong = spGiamGia.getDonGia().longValue();
                 double giamGia = (double) mucGiam / 100;
                 long giaTienSauGiamGia = (long) (donGiaAsLong * giamGia);
@@ -124,25 +127,8 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
     @Override
     public List<GioHangCustom> loadGH(UUID id, Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Object[]> gioHangCustomPage = gioHangChiTietRepository.loadOnGioHang(id, pageable);
-        List<GioHangCustom> gioHangCustoms = new ArrayList<>();
-        for (Object[] result : gioHangCustomPage.getContent()) {
-            UUID idSp = (UUID) result[0];
-            UUID idGioHang = (UUID) result[1];
-            String imgage = (String) result[2];
-            String tenSanPham = (String) result[3];
-            BigDecimal giaBan = (BigDecimal) result[4];
-            Integer soLuong = (Integer) result[5];
-            Integer size = (Integer) result[6];
-            String chatLieu = (String) result[7];
-            String mauSac = (String) result[8];
-            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
-
-            GioHangCustom chiTietSanPhamCustom = new GioHangCustom(
-                    idGioHang, imgage, tenSanPham, giaBan, giaGiam, soLuong, size, chatLieu, mauSac);
-            gioHangCustoms.add(chiTietSanPhamCustom);
-        }
-        return gioHangCustoms;
+        Page<GioHangCustom> gioHangCustomPage = gioHangChiTietRepository.loadOnGioHang(id, pageable);
+        return gioHangCustomPage.getContent();
     }
 
     @Override
