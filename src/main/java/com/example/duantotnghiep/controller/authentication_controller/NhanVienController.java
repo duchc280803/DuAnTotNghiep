@@ -1,8 +1,6 @@
 package com.example.duantotnghiep.controller.authentication_controller;
 
-import com.example.duantotnghiep.entity.ThuongHieu;
 import com.example.duantotnghiep.request.NhanVienDTORequest;
-import com.example.duantotnghiep.request.ThuongHieuRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.NhanVienDTOReponse;
 import com.example.duantotnghiep.service.account_service.impl.NhanVienServiceImpl;
