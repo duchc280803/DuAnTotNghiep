@@ -13,6 +13,8 @@ public interface DanhMucService {
 
     List<DanhMuc> getAll();
 
+    List<DanhMuc> getAllDanhMuc(Integer trangThai, String tenDanhMuc, Integer pageNumber, Integer pageSize);
+
     DanhMuc getById(UUID id);
 
     MessageResponse create(DanhMucRequest danhMucRequest);

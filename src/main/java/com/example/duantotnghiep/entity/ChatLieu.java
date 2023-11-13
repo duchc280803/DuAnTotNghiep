@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -29,8 +30,21 @@ public class ChatLieu {
     @Column(name = "trangthai")
     private Integer trangThai;
 
+    @Column(name = "ngaytao")
+    private Date ngayTao;
+
+    @Column(name = "ngaycapnhat")
+    private Date ngayCapNhat;
+
     @OneToMany(mappedBy = "chatLieu",fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<SanPhamChiTiet> sanPhamChiTietList;
 
+    public ChatLieu(UUID id, String tenChatLieu, Integer trangThai, Date ngayTao, Date ngayCapNhat) {
+        this.id = id;
+        this.tenChatLieu = tenChatLieu;
+        this.trangThai = trangThai;
+        this.ngayTao = ngayTao;
+        this.ngayCapNhat = ngayCapNhat;
+    }
 }

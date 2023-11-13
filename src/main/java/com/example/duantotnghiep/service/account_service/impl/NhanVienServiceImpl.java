@@ -33,9 +33,9 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public List<NhanVienDTOReponse> getAllNhanVien(String maTaiKhoan, Integer trangThai, Integer pageNumber, Integer pageSize) {
+    public List<NhanVienDTOReponse> getAllNhanVien(String maTaiKhoan, String name, String soDienThoai, Integer trangThai, Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<NhanVienDTOReponse> pageList = taiKhoanRepository.getAllNhanVien(maTaiKhoan, trangThai, pageable);
+        Page<NhanVienDTOReponse> pageList = taiKhoanRepository.getAllNhanVien(maTaiKhoan, name, soDienThoai, trangThai, pageable);
         return pageList.getContent();
     }
 

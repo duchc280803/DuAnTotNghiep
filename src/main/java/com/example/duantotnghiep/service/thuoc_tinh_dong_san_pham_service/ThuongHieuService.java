@@ -11,6 +11,8 @@ public interface ThuongHieuService {
 
     List<ThuongHieu> getAll();
 
+    List<ThuongHieu> getAllThuongHieu(Integer trangThai, String tenThuongHieu, Integer pageNumber, Integer pageSize);
+
     ThuongHieu getById(UUID id);
 
     MessageResponse create(ThuongHieuRequest thuongHieu);

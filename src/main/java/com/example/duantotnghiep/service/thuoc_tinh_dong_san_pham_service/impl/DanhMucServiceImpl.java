@@ -6,8 +6,12 @@ import com.example.duantotnghiep.request.DanhMucRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.DanhMucService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,10 +22,20 @@ public class DanhMucServiceImpl implements DanhMucService {
     @Autowired
     private DanhMucRepository danhMucRepository;
 
+    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
     @Override
     public List<DanhMuc> getAll() {
         return danhMucRepository.findByTrangThai(1);
     }
+
+    @Override
+    public List<DanhMuc> getAllDanhMuc(Integer trangThai, String tenDanhMuc, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<DanhMuc> pageList = danhMucRepository.getAllDanhMuc(trangThai, tenDanhMuc, pageable);
+        return pageList.getContent();
+    }
+
 
     @Override
     public DanhMuc getById(UUID id) {
@@ -34,6 +48,7 @@ public class DanhMucServiceImpl implements DanhMucService {
         danhMuc.setId(UUID.randomUUID());
         danhMuc.setTenDanhMuc(request.getTenDanhMuc());
         danhMuc.setTrangThai(request.getTrangThai());
+        danhMuc.setNgayTao(timestamp);
         danhMucRepository.save(danhMuc);
         return MessageResponse.builder().message("Thêm thành công").build();
     }
@@ -45,6 +60,7 @@ public class DanhMucServiceImpl implements DanhMucService {
             DanhMuc danhMuc = danhMucOptional.get();
             danhMuc.setTenDanhMuc(request.getTenDanhMuc());
             danhMuc.setTrangThai(request.getTrangThai());
+            danhMuc.setNgayCapNhat(timestamp);
             danhMucRepository.save(danhMuc);
             return MessageResponse.builder().message("Cập nhật thành công").build();
         } else {
@@ -58,6 +74,7 @@ public class DanhMucServiceImpl implements DanhMucService {
         if (danhMucOptional.isPresent()) {
             DanhMuc danhMuc = danhMucOptional.get();
             danhMuc.setTrangThai(2);
+            danhMuc.setNgayCapNhat(timestamp);
             danhMucRepository.save(danhMuc);
             return MessageResponse.builder().message("Delete thành công").build();
         } else {
