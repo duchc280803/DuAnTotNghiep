@@ -18,7 +18,7 @@ public interface DanhMucRepository extends JpaRepository<DanhMuc, UUID> {
 
     @Query("SELECT NEW com.example.duantotnghiep.entity.DanhMuc(th.id, th.tenDanhMuc, th.trangThai, th.ngayTao, th.ngayCapNhat)\n" +
             "FROM DanhMuc th\n" +
-            "WHERE (:trangThai IS NULL AND th.trangThai = 1) OR th.trangThai = :trangThai " +
+            "WHERE (:trangThai IS NULL OR th.trangThai = :trangThai) " +
             "AND (:tenDanhMuc IS NULL OR th.tenDanhMuc LIKE %:tenDanhMuc%) ORDER BY th.ngayTao DESC")
     Page<DanhMuc> getAllDanhMuc(@Param("trangThai") Integer trangThai, @Param("tenDanhMuc") String tenDanhMuc, Pageable pageable);
 

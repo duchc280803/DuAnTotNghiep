@@ -17,7 +17,7 @@ public interface ChatLieuRepository extends JpaRepository<ChatLieu, UUID> {
     List<ChatLieu> findByTrangThai(Integer trangThai);
     @Query("SELECT NEW com.example.duantotnghiep.entity.ChatLieu(th.id, th.tenChatLieu, th.trangThai, th.ngayTao, th.ngayCapNhat)\n" +
             "FROM ChatLieu th\n" +
-            "WHERE (:trangThai IS NULL AND th.trangThai = 1) OR th.trangThai = :trangThai " +
+            "WHERE (:trangThai IS NULL OR th.trangThai = :trangThai) " +
             "AND (:tenChatLieu IS NULL OR th.tenChatLieu LIKE %:tenChatLieu%) ORDER BY th.ngayTao DESC")
     Page<ChatLieu> getAllChatLieu(@Param("trangThai") Integer trangThai, @Param("tenChatLieu") String tenChatLieu, Pageable pageable);
 }
