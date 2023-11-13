@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.service.giam_gia_service;
 
 import com.example.duantotnghiep.request.GiamGiaRequest;
+import com.example.duantotnghiep.request.UpdateGiamGiaResquest;
 import com.example.duantotnghiep.response.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +18,8 @@ public interface GiamGiaService {
 
     List<ProductDetailResponse> getAllProduct();
 
-    public void updateGiamGia(UUID giamGiaId, GiamGiaRequest updateGiamGiaRequest) ;
     List<GiamGiaResponse> findbyValueString(String key);
+
     List<ProductDetailResponse> findbyProduct(String key);
 
     List<GiamGiaResponse> findbyValueDate(Date key1, Date key2);
@@ -37,4 +38,7 @@ public interface GiamGiaService {
 
     boolean checkProductRecordCount(UUID productId);
 
+    MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest);
+
+    MessageResponse updateGiamGiaStaus(UUID id);
 }
