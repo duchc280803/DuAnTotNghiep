@@ -44,7 +44,7 @@ public class SizeController {
         return new ResponseEntity<>(sizeService.create(sizeRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping("update}")
+    @PutMapping("update")
     public ResponseEntity<MessageResponse> updateSize(@RequestParam UUID id, @RequestBody SizeRequest sizeRequest) {
         try {
             MessageResponse response = sizeService.update(id, sizeRequest);
