@@ -2,6 +2,7 @@ package com.example.duantotnghiep.controller.authentication_controller;
 
 import com.example.duantotnghiep.entity.LoaiTaiKhoan;
 import com.example.duantotnghiep.request.NhanVienDTORequest;
+import com.example.duantotnghiep.response.LoaiTaiKhoanResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.NhanVienDTOReponse;
 import com.example.duantotnghiep.service.account_service.impl.LoaiTaiKhoanServiceImpl;
@@ -36,7 +37,7 @@ public class NhanVienController {
     }
 
     @GetMapping("hien-thi-roles")
-    public ResponseEntity<List<LoaiTaiKhoan>> getRoles() {
+    public ResponseEntity<List<LoaiTaiKhoanResponse>> getRoles() {
         return new ResponseEntity<>(loaiTaiKhoanService.findRoles(), HttpStatus.OK);
     }
 
