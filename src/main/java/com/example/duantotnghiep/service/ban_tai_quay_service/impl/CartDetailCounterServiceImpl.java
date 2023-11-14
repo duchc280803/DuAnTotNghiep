@@ -108,17 +108,20 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         long sumPriceTien = 0L;
         long sumPricePhanTram = 0L;
         List<SpGiamGia> spGiamGiaList = spGiamGiaRepository.findBySanPham_Id(id);
-
-        for (SpGiamGia spGiamGia : spGiamGiaList) {
-            long mucGiam = spGiamGia.getMucGiam();
-            if (spGiamGia.getGiamGia().getHinhThucGiam() == 1) {
-                sumPriceTien += mucGiam;
-            }
-            if (spGiamGia.getGiamGia().getHinhThucGiam() == 2) {
-                long donGiaAsLong = spGiamGia.getDonGia().longValue();
-                double giamGia = (double) mucGiam / 100;
-                long giaTienSauGiamGia = (long) (donGiaAsLong * giamGia);
-                sumPricePhanTram += giaTienSauGiamGia;
+        if (spGiamGiaList.isEmpty()) {
+            return 0L;
+        } else {
+            for (SpGiamGia spGiamGia : spGiamGiaList) {
+                long mucGiam = spGiamGia.getMucGiam();
+                if (spGiamGia.getGiamGia().getHinhThucGiam() == 1) {
+                    sumPriceTien += mucGiam;
+                }
+                if (spGiamGia.getGiamGia().getHinhThucGiam() == 2) {
+                    long donGiaAsLong = spGiamGia.getDonGia().longValue();
+                    double giamGia = (double) mucGiam / 100;
+                    long giaTienSauGiamGia = (long) (donGiaAsLong * giamGia);
+                    sumPricePhanTram += giaTienSauGiamGia;
+                }
             }
         }
         return sumPriceTien + sumPricePhanTram;
