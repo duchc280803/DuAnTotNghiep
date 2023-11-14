@@ -1,25 +1,20 @@
 package com.example.duantotnghiep.service.voucher_service.impl;
 
-import com.example.duantotnghiep.entity.GiamGia;
-import com.example.duantotnghiep.entity.SanPham;
-import com.example.duantotnghiep.entity.SpGiamGia;
 import com.example.duantotnghiep.entity.Voucher;
-import com.example.duantotnghiep.repository.GiamGiaRepository;
-import com.example.duantotnghiep.repository.voucherRepository;
+import com.example.duantotnghiep.repository.VoucherRepository;
 import com.example.duantotnghiep.request.VoucherRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.voucher_service.VoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class VoucherServiceimpl implements VoucherService {
     @Autowired
-    private voucherRepository Repository;
+    private VoucherRepository Repository;
 
     @Override
     public List<Voucher> getAll() {
