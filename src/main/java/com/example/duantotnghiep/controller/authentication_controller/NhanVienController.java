@@ -1,6 +1,8 @@
 package com.example.duantotnghiep.controller.authentication_controller;
 
 import com.example.duantotnghiep.entity.LoaiTaiKhoan;
+import com.example.duantotnghiep.entity.TaiKhoan;
+import com.example.duantotnghiep.entity.XuatXu;
 import com.example.duantotnghiep.request.NhanVienDTORequest;
 import com.example.duantotnghiep.response.LoaiTaiKhoanResponse;
 import com.example.duantotnghiep.response.MessageResponse;
@@ -34,6 +36,10 @@ public class NhanVienController {
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
     ) {
         return new ResponseEntity<>(nhanVienService.getAllNhanVien(maNhanVien, name, soDienTHoai, trangThai, pageNumber, pageSize), HttpStatus.OK);
+    }
+    @GetMapping("detail")
+    public TaiKhoan getXuatXuById(@RequestParam UUID id) {
+        return nhanVienService.getById(id);
     }
 
     @GetMapping("hien-thi-roles")
