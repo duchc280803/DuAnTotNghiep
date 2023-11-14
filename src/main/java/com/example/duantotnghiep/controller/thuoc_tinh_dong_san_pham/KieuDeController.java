@@ -36,8 +36,8 @@ public class KieuDeController {
         return new ResponseEntity<>(kieuDeService.getAllKieuDe(trangThai, tenKieuDe, pageNumber, pageSize), HttpStatus.OK);
     }
 
-    @GetMapping("hien-thi/{id}")
-    public KieuDe getKieuDeById(@PathVariable UUID id) {
+    @GetMapping("detail")
+    public KieuDe getKieuDeById(@RequestParam UUID id) {
         return kieuDeService.getById(id);
     }
 
@@ -46,8 +46,8 @@ public class KieuDeController {
         return new ResponseEntity<>(kieuDeService.create(kieuDeRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<MessageResponse> updateKieuDe(@PathVariable UUID id, @RequestBody KieuDeRequest kieuDeRequest) {
+    @PutMapping("update")
+    public ResponseEntity<MessageResponse> updateKieuDe(@RequestParam UUID id, @RequestBody KieuDeRequest kieuDeRequest) {
         try {
             MessageResponse response = kieuDeService.update(id, kieuDeRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -55,8 +55,8 @@ public class KieuDeController {
             return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PutMapping("delete/{id}")
-    public ResponseEntity<MessageResponse> deleteKieuDe(@PathVariable UUID id) {
+    @PutMapping("delete")
+    public ResponseEntity<MessageResponse> deleteKieuDe(@RequestParam UUID id) {
         return new ResponseEntity<>(kieuDeService.delete(id), HttpStatus.OK);
     }
 }

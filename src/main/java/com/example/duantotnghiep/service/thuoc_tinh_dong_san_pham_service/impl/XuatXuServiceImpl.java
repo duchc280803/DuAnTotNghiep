@@ -44,6 +44,7 @@ public class XuatXuServiceImpl implements XuatXuService {
     @Override
     public MessageResponse create(XuatXuRequest request) {
         XuatXu xuatXu = new XuatXu();
+        xuatXu.setId(UUID.randomUUID());
         xuatXu.setTenXuatXu(request.getTenXuatXu());
         xuatXu.setTrangThai(request.getTrangThai());
         xuatXu.setNgayTao(timestamp);

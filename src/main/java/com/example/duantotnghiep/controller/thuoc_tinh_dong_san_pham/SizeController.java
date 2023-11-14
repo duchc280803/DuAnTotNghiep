@@ -34,7 +34,7 @@ public class SizeController {
         return new ResponseEntity<>(sizeService.getAllSize(trangThai, size, pageNumber, pageSize), HttpStatus.OK);
     }
 
-    @GetMapping("hien-thi/{id}")
+    @GetMapping("detail")
     public Size getSizeById(@PathVariable UUID id) {
         return sizeService.getById(id);
     }
@@ -44,8 +44,8 @@ public class SizeController {
         return new ResponseEntity<>(sizeService.create(sizeRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<MessageResponse> updateSize(@PathVariable UUID id, @RequestBody SizeRequest sizeRequest) {
+    @PutMapping("update")
+    public ResponseEntity<MessageResponse> updateSize(@RequestParam UUID id, @RequestBody SizeRequest sizeRequest) {
         try {
             MessageResponse response = sizeService.update(id, sizeRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -53,8 +53,8 @@ public class SizeController {
             return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PutMapping("delete/{id}")
-    public ResponseEntity<MessageResponse> deleteSize(@PathVariable UUID id) {
+    @PutMapping("delete")
+    public ResponseEntity<MessageResponse> deleteSize(@RequestParam UUID id) {
         return new ResponseEntity<>(sizeService.delete(id), HttpStatus.OK);
     }
 

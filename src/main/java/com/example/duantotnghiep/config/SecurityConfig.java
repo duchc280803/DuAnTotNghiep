@@ -46,6 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/gio-hang-not-login/**").permitAll()
                         .requestMatchers("/api/khach-hang-not-login/**").permitAll()
                         .requestMatchers("/api/checkout-not-login/**").permitAll()
+                        .requestMatchers("/api/v1/san-pham/**").permitAll()
                         .requestMatchers("/api/v1/product/**").permitAll()
                         .requestMatchers("/api/v1/don-hang/**").permitAll()
                         .requestMatchers("/api/v1/hoa-don/**").permitAll()

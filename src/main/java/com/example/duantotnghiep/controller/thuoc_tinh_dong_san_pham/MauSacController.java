@@ -36,8 +36,8 @@ public class MauSacController {
         return new ResponseEntity<>(mauSacService.getAllMauSac(trangThai, tenMauSac, pageNumber, pageSize), HttpStatus.OK);
     }
 
-    @GetMapping("hien-thi/{id}")
-    public MauSac getSizeById(@PathVariable UUID id) {
+    @GetMapping("detail")
+    public MauSac getSizeById(@RequestParam UUID id) {
         return mauSacService.getById(id);
     }
 
@@ -46,8 +46,8 @@ public class MauSacController {
         return new ResponseEntity<>(mauSacService.create(mauSacRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<MessageResponse> updateSize(@PathVariable UUID id, @RequestBody MauSacRequest mauSacRequest) {
+    @PutMapping("update")
+    public ResponseEntity<MessageResponse> updateSize(@RequestParam UUID id, @RequestBody MauSacRequest mauSacRequest) {
         try {
             MessageResponse response = mauSacService.update(id, mauSacRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -55,8 +55,8 @@ public class MauSacController {
             return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PutMapping("delete/{id}")
-    public ResponseEntity<MessageResponse> deleteSize(@PathVariable UUID id) {
+    @PutMapping("delete")
+    public ResponseEntity<MessageResponse> deleteSize(@RequestParam UUID id) {
         return new ResponseEntity<>(mauSacService.delete(id), HttpStatus.OK);
     }
 }

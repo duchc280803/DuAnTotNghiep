@@ -21,8 +21,6 @@ public class TaiKhoan {
     @Column(name = "id")
     private UUID id;
 
-
-
     @Column(name = "username")
     private String username;
 
@@ -52,6 +50,12 @@ public class TaiKhoan {
 
     @Column(name = "mataikhoan")
     private String maTaiKhoan;
+
+    @Column(name = "ngaytao")
+    private Date ngayTao;
+
+    @Column(name = "ngaycapnhat")
+    private Date ngayCapNhat;
 
     @ManyToOne
     @JoinColumn(name = "idloaitaikhoan")
