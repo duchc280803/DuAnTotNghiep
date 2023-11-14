@@ -59,8 +59,8 @@ public class ChatLieuController {
         excelExporter.export(response);
     }
 
-    @GetMapping("hien-thi/{id}")
-    public ChatLieu getDanhMucById(@PathVariable UUID id) {
+    @GetMapping("detail")
+    public ChatLieu getDanhMucById(@RequestParam UUID id) {
         return chatLieuService.getById(id);
     }
 
@@ -69,8 +69,8 @@ public class ChatLieuController {
         return new ResponseEntity<>(chatLieuService.create(chatLieuRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<MessageResponse> updateDanhMuc(@PathVariable UUID id, @RequestBody ChatLieuRequest chatLieuRequest) {
+    @PutMapping("update")
+    public ResponseEntity<MessageResponse> updateDanhMuc(@RequestParam UUID id, @RequestBody ChatLieuRequest chatLieuRequest) {
         try {
             MessageResponse response = chatLieuService.update(id, chatLieuRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -78,8 +78,8 @@ public class ChatLieuController {
             return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PutMapping("delete/{id}")
-    public ResponseEntity<MessageResponse> deleteDanhMuc(@PathVariable UUID id) {
+    @PutMapping("delete")
+    public ResponseEntity<MessageResponse> deleteDanhMuc(@RequestParam UUID id) {
         return new ResponseEntity<>(chatLieuService.delete(id), HttpStatus.OK);
     }
 }

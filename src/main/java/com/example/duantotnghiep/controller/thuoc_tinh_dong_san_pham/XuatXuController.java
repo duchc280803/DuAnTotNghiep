@@ -34,8 +34,8 @@ public class XuatXuController {
         return new ResponseEntity<>(xuatXuService.getAllXuatXu(trangThai, tenXuatXu, pageNumber, pageSize), HttpStatus.OK);
     }
 
-    @GetMapping("hien-thi/{id}")
-    public XuatXu getXuatXuById(@PathVariable UUID id) {
+    @GetMapping("detail")
+    public XuatXu getXuatXuById(@RequestParam UUID id) {
         return xuatXuService.getById(id);
     }
 
@@ -44,8 +44,8 @@ public class XuatXuController {
         return new ResponseEntity<>(xuatXuService.create(xuatXuRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<MessageResponse> updateXuatXu(@PathVariable UUID id, @RequestBody  XuatXuRequest xuatXuRequest) {
+    @PutMapping("update")
+    public ResponseEntity<MessageResponse> updateXuatXu(@RequestParam UUID id, @RequestBody  XuatXuRequest xuatXuRequest) {
         try {
             MessageResponse response = xuatXuService.update(id, xuatXuRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -53,8 +53,8 @@ public class XuatXuController {
             return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PutMapping("delete/{id}")
-    public ResponseEntity<MessageResponse> deleteXuatXu(@PathVariable UUID id) {
+    @PutMapping("delete")
+    public ResponseEntity<MessageResponse> deleteXuatXu(@RequestParam UUID id) {
         return new ResponseEntity<>(xuatXuService.delete(id), HttpStatus.OK);
     }
 }

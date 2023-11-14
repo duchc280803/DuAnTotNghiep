@@ -36,8 +36,8 @@ public class DanhMucController {
         return new ResponseEntity<>(danhMucService.getAllDanhMuc(trangThai, tenDanhMuc, pageNumber, pageSize), HttpStatus.OK);
     }
 
-    @GetMapping("hien-thi/{id}")
-    public DanhMuc getDanhMucById(@PathVariable UUID id) {
+    @GetMapping("detail")
+    public DanhMuc getDanhMucById(@RequestParam UUID id) {
         return danhMucService.getById(id);
     }
 
@@ -46,8 +46,8 @@ public class DanhMucController {
         return new ResponseEntity<>(danhMucService.create(danhMucRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<MessageResponse> updateDanhMuc(@PathVariable UUID id, @RequestBody DanhMucRequest danhMucRequest) {
+    @PutMapping("update")
+    public ResponseEntity<MessageResponse> updateDanhMuc(@RequestParam UUID id, @RequestBody DanhMucRequest danhMucRequest) {
         try {
             MessageResponse response = danhMucService.update(id, danhMucRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -55,8 +55,8 @@ public class DanhMucController {
             return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PutMapping("delete/{id}")
-    public ResponseEntity<MessageResponse> deleteDanhMuc(@PathVariable UUID id) {
+    @PutMapping("delete")
+    public ResponseEntity<MessageResponse> deleteDanhMuc(@RequestParam UUID id) {
         return new ResponseEntity<>(danhMucService.delete(id), HttpStatus.OK);
     }
 }
