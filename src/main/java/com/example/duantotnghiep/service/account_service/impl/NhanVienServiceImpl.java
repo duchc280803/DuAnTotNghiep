@@ -60,6 +60,7 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
             taiKhoan.setLoaiTaiKhoan(loaiTaiKhoanOptional.get());
             taiKhoan.setTrangThai(request.getTrangThai());
             taiKhoan.setImage("default.png");
+            taiKhoan.setName(request.getFullName());
             taiKhoan.setMaTaiKhoan(request.getMaTaiKhoan());
             taiKhoanRepository.save(taiKhoan);
             return MessageResponse.builder().message("Thêm thành công").build();
@@ -84,6 +85,7 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
                 taiKhoan.setLoaiTaiKhoan(loaiTaiKhoanOptional.get());
                 taiKhoan.setTrangThai(request.getTrangThai());
                 taiKhoan.setImage("default.png");
+                taiKhoan.setName(request.getFullName());
                 taiKhoan.setMaTaiKhoan(request.getMaTaiKhoan());
                 taiKhoanRepository.save(taiKhoan);
                 return MessageResponse.builder().message("Cập nhật thành công").build();
