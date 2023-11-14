@@ -40,6 +40,12 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
     }
 
     @Override
+    public TaiKhoan getById(UUID id) {
+        return taiKhoanRepository.findById(id).orElse(null);
+    }
+
+
+    @Override
     public MessageResponse create(NhanVienDTORequest request) {
         TaiKhoan taiKhoan = new TaiKhoan();
         Optional<LoaiTaiKhoan> loaiTaiKhoanOptional = loaiTaiKhoanRepository.findById(request.getIdLoaiTaiKhoan());
