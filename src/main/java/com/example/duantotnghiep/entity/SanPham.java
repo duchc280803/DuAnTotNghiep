@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -62,6 +63,12 @@ public class SanPham {
 
     @Column(name = "trangthai")
     private Integer trangThai;
+
+    @Column(name = "ngaytao")
+    private Date ngayTao;
+
+    @Column(name = "ngaycapnhat")
+    private Date ngayCapNhat;
 
     @OneToMany(mappedBy = "sanPham", fetch = FetchType.LAZY)
     @JsonManagedReference

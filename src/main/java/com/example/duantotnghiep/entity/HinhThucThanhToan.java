@@ -29,6 +29,11 @@ public class HinhThucThanhToan {
     @Column(name = "ngaycapnhap")
     private Date ngayCapNhap;
 
+    @Column(name = "ngaytao")
+    private Date ngayTao;
+
+
+
     @Column(name = "magiaodinh")
     private String codeTransaction;
 

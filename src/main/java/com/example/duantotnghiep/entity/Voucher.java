@@ -55,6 +55,10 @@ public class Voucher {
     @Column(name = "trangthai")
     private Integer trangThai;
 
+    @Column(name = "ngaytao")
+    private Date ngayTao;
+
+
     @OneToMany(mappedBy = "voucher", fetch = FetchType.LAZY)
     private List<HoaDon> hoaDonList;
 }
