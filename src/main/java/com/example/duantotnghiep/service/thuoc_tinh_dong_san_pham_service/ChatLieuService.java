@@ -5,10 +5,11 @@ import com.example.duantotnghiep.entity.DanhMuc;
 import com.example.duantotnghiep.request.ChatLieuRequest;
 import com.example.duantotnghiep.request.DanhMucRequest;
 import com.example.duantotnghiep.response.MessageResponse;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-
+@Service
 public interface ChatLieuService {
     List<ChatLieu> getAll();
 

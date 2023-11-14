@@ -46,7 +46,7 @@ public class KieuDeServiceImpl implements KieuDeService {
     public MessageResponse create(KieuDeRequest request) {
         KieuDe kieuDe = new KieuDe();
         kieuDe.setId(UUID.randomUUID());
-        kieuDe.setTenDe(request.getTenKieuDe());
+        kieuDe.setTenDe(request.getTenDe());
         kieuDe.setTrangThai(request.getTrangThai());
         kieuDe.setNgayTao(timestamp);
         kieuDeRepository.save(kieuDe);
@@ -58,7 +58,7 @@ public class KieuDeServiceImpl implements KieuDeService {
         Optional<KieuDe> kieuDeOptional= kieuDeRepository.findById(id);
         if (kieuDeOptional.isPresent()) {
             KieuDe kieuDe = kieuDeOptional.get();
-            kieuDe.setTenDe(request.getTenKieuDe());
+            kieuDe.setTenDe(request.getTenDe());
             kieuDe.setTrangThai(request.getTrangThai());
             kieuDe.setNgayCapNhat(timestamp);
             kieuDeRepository.save(kieuDe);

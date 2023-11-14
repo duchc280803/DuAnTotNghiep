@@ -3,10 +3,11 @@ package com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service;
 import com.example.duantotnghiep.entity.XuatXu;
 import com.example.duantotnghiep.request.XuatXuRequest;
 import com.example.duantotnghiep.response.MessageResponse;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-
+@Service
 public interface XuatXuService {
 
     List<XuatXu> getAll();

@@ -18,7 +18,7 @@ public interface XuatSuRepository extends JpaRepository<XuatXu, UUID> {
 
     @Query("SELECT NEW com.example.duantotnghiep.entity.XuatXu(th.id, th.tenXuatXu, th.trangThai, th.ngayTao, th.ngayCapNhat)\n" +
             "FROM XuatXu th\n" +
-            "WHERE (:trangThai IS NULL AND th.trangThai = 1) OR th.trangThai = :trangThai " +
+            "WHERE (:trangThai IS NULL OR th.trangThai = :trangThai) " +
             "AND (:tenXuatXu IS NULL OR th.tenXuatXu LIKE %:tenXuatXu%) ORDER BY th.ngayTao DESC")
     Page<XuatXu> getAllXuatXu(@Param("trangThai") Integer trangThai, @Param("tenXuatXu") String tenXuatXu, Pageable pageable);
 }

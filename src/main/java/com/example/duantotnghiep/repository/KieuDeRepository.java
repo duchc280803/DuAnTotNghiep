@@ -18,7 +18,7 @@ public interface KieuDeRepository extends JpaRepository<KieuDe, UUID> {
 
     @Query("SELECT NEW com.example.duantotnghiep.entity.KieuDe(th.id, th.tenDe, th.trangThai, th.ngayTao, th.ngayCapNhat)\n" +
             "FROM KieuDe th\n" +
-            "WHERE (:trangThai IS NULL AND th.trangThai = 1) OR th.trangThai = :trangThai " +
+            "WHERE (:trangThai IS NULL OR th.trangThai = :trangThai) " +
             "AND (:tenKieuDe IS NULL OR th.tenDe LIKE %:tenKieuDe%) ORDER BY th.ngayTao DESC")
     Page<KieuDe> getAllKieuDe(@Param("trangThai") Integer trangThai, @Param("tenKieuDe") String tenKieuDe, Pageable pageable);
 }
