@@ -2,11 +2,9 @@ package com.example.duantotnghiep.repository;
 
 import com.example.duantotnghiep.entity.SanPhamChiTiet;
 import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
-import com.example.duantotnghiep.response.DetailQuantityToSizeReponse;
+import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.mapper.GioHangCustom;
 import com.example.duantotnghiep.response.DetailQuantityToSizeReponse;
-import com.example.duantotnghiep.response.DetailSizeToProductResponse;
-import com.example.duantotnghiep.response.SanPhamGetAllResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -254,4 +252,53 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
     List<Object[]> filterColor(@Param("name") String name);
 
     SanPhamChiTiet findByQrcode(String qrCode);
+
+    @Query("SELECT new com.example.duantotnghiep.response.SanPhamChiTietResponse" +
+            "(i.tenImage, sp.tenSanPham, spct.soLuong, sp.giaBan, s.size, ms.tenMauSac, cl.tenChatLieu, spct.trangThai) " +
+            "FROM SanPhamChiTiet spct " +
+            "JOIN spct.sanPham sp " +
+            "JOIN sp.listImage i " +
+            "JOIN spct.size s " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.mauSac ms WHERE sp.id = :id AND i.isDefault = true AND spct.trangThai = 1 AND sp.trangThai = 1")
+    Page<SanPhamChiTietResponse> getAllSanPhamChiTiet(@Param("id") UUID id, Pageable pageable);
+
+    @Query("SELECT new com.example.duantotnghiep.response.SanPhamChiTietResponse" +
+            "(i.tenImage, sp.tenSanPham, spct.soLuong, sp.giaBan, s.size, ms.tenMauSac, cl.tenChatLieu, spct.trangThai) " +
+            "FROM SanPhamChiTiet spct " +
+            "JOIN spct.sanPham sp " +
+            "JOIN sp.listImage i " +
+            "JOIN spct.size s " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.mauSac ms WHERE sp.id = :id AND i.isDefault = true AND spct.trangThai = :trangThai AND sp.trangThai = 1")
+    Page<SanPhamChiTietResponse> finByTrangThai(@Param("id") UUID id, @Param("trangThai") Integer trangThai, Pageable pageable);
+
+    @Query("SELECT new com.example.duantotnghiep.response.SanPhamChiTietResponse" +
+            "(i.tenImage, sp.tenSanPham, spct.soLuong, sp.giaBan, s.size, ms.tenMauSac, cl.tenChatLieu, spct.trangThai) " +
+            "FROM SanPhamChiTiet spct " +
+            "JOIN spct.sanPham sp " +
+            "JOIN sp.listImage i " +
+            "JOIN spct.size s " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.mauSac ms WHERE " +
+            "sp.id = :id AND " +
+            "i.isDefault = true " +
+            "AND spct.trangThai = 1 " +
+            "AND sp.trangThai = 1 " +
+            "AND cl.tenChatLieu = :key OR ms.tenMauSac = :key")
+    Page<SanPhamChiTietResponse> finByKey(@Param("id") UUID id, @Param("key") String key, Pageable pageable);
+
+    @Query("SELECT new com.example.duantotnghiep.response.SanPhamChiTietResponse" +
+            "(i.tenImage, sp.tenSanPham, spct.soLuong, sp.giaBan, s.size, ms.tenMauSac, cl.tenChatLieu, spct.trangThai) " +
+            "FROM SanPhamChiTiet spct " +
+            "JOIN spct.sanPham sp " +
+            "JOIN sp.listImage i " +
+            "JOIN spct.size s " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.mauSac ms WHERE " +
+            "sp.id = :id AND i.isDefault = true " +
+            "AND spct.trangThai = 1 " +
+            "AND sp.trangThai = 1 " +
+            "AND s.size = :size")
+    Page<SanPhamChiTietResponse> finBySize(@Param("id") UUID id, @Param("size") Integer size, Pageable pageable);
 }

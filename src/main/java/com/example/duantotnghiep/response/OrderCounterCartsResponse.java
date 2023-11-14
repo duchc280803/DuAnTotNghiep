@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 
@@ -17,6 +18,8 @@ public class OrderCounterCartsResponse {
     private UUID idKhach;
 
     private String maHoaDon;
+
+    private BigDecimal tienGiamGia;
 
     private String tenKhach;
 
