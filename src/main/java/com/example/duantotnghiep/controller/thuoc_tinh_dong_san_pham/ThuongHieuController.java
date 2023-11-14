@@ -29,8 +29,8 @@ public class ThuongHieuController {
         return new ResponseEntity<>(thuongHieuService.getAllThuongHieu(trangThai, tenThuongHieu, pageNumber, pageSize), HttpStatus.OK);
     }
 
-    @GetMapping("hien-thi/{id}")
-    public ThuongHieu getThuongHieuById(@PathVariable UUID id) {
+    @GetMapping("detail")
+    public ThuongHieu getThuongHieuById(@RequestParam UUID id) {
         return thuongHieuService.getById(id);
     }
 
@@ -39,8 +39,8 @@ public class ThuongHieuController {
         return new ResponseEntity<>(thuongHieuService.create(thuongHieuRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping("update/{id}")
-    public ResponseEntity<MessageResponse> updateThuongHieu(@PathVariable UUID id, @RequestBody ThuongHieuRequest thuongHieuRequest) {
+    @PutMapping("update")
+    public ResponseEntity<MessageResponse> updateThuongHieu(@RequestParam UUID id, @RequestBody ThuongHieuRequest thuongHieuRequest) {
         try {
             MessageResponse response = thuongHieuService.update(id, thuongHieuRequest);
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -48,8 +48,8 @@ public class ThuongHieuController {
             return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @PutMapping("delete/{id}")
-    public ResponseEntity<MessageResponse> deleteThuongHieu(@PathVariable UUID id) {
+    @PutMapping("delete")
+    public ResponseEntity<MessageResponse> deleteThuongHieu(@RequestParam UUID id) {
         return new ResponseEntity<>(thuongHieuService.delete(id), HttpStatus.OK);
     }
 }
