@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.controller.hoa_don_controller;
 
+import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.request.TransactionRequest;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
@@ -94,6 +95,11 @@ public class HoaDonChiTietController {
             @RequestBody TransactionRequest transactionRequest
     ) {
         return new ResponseEntity<>(hoaDonChiTietService.createTransaction(idHoaDon, id, transactionRequest), HttpStatus.CREATED);
+    }
+
+    @GetMapping("status-order/{id}")
+    public ResponseEntity<HoaDon> getStatusOrder(@PathVariable(name = "id") UUID id) {
+        return new ResponseEntity<>(hoaDonChiTietService.findByHoaDon(id), HttpStatus.OK);
     }
 
 }

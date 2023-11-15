@@ -30,6 +30,7 @@ public class VoucherServiceimpl implements VoucherService {
         voucher.setGiaTriToiThieuDonhang(createVoucherRequest.getGiaTriToiThieuDonhang());
         voucher.setGiaTriGiam(createVoucherRequest.getGiaTriGiam());
         voucher.setSoLuongMa(createVoucherRequest.getSoLuongMa());
+        voucher.setSoLuongDung(0);
         voucher.setNgayBatDau(createVoucherRequest.getNgayBatDau());
         voucher.setNgayKetThuc(createVoucherRequest.getNgayKetThuc());
         voucher.setHinhThucGiam(createVoucherRequest.getHinhThucGiam());

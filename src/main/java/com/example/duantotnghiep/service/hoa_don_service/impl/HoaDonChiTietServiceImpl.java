@@ -2,6 +2,7 @@ package com.example.duantotnghiep.service.hoa_don_service.impl;
 
 import com.example.duantotnghiep.config.VnPayConfig;
 import com.example.duantotnghiep.entity.*;
+import com.example.duantotnghiep.enums.StatusOrderEnums;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.TransactionRequest;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
@@ -37,6 +38,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
     @Autowired
     private KhachHangRepository khachHangRepository;
+
+    @Autowired
+    private TrangThaiHoaDonRepository trangThaiHoaDonRepository;
 
     @Override
     public ThongTinDonHang getThongTinDonHang(UUID idHoaDon) {
@@ -101,6 +105,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
     @Override
     public MessageResponse themSanPhamVaoHoaDonChiTiet(UUID idHoaDon, UUID idSanPhamChiTiet, int soLuong) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDon> findByHoaDon = hoaDonRepository.findById(idHoaDon);
         if (findByHoaDon.isEmpty()) {
             return MessageResponse.builder().message("Hóa Đơn Null").build();
@@ -142,11 +147,20 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             findByHoaDon.get().setThanhTien(tongTienHang.add(tongTienDonGia.add(tongTienDonGiaSauGIam)).add(findByHoaDon.get().getTienGiamGia()).add(findByHoaDon.get().getTienShip()));
         }
         hoaDonRepository.save(findByHoaDon.get());
+
+        TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+        trangThaiHoaDon.setId(UUID.randomUUID());
+        trangThaiHoaDon.setHoaDon(findByHoaDon.get());
+        trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
+        trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
+        trangThaiHoaDonRepository.save(trangThaiHoaDon);
         return MessageResponse.builder().message("Thêm thành công").build();
     }
 
     @Override
     public void capNhatSoLuong(UUID idHoaDonChiTiet, int soLuongMoi) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDonChiTiet> hoaDonChiTietOptional = hoaDonChiTietRepository.findById(idHoaDonChiTiet);
         if (hoaDonChiTietOptional.isPresent()) {
             hoaDonChiTietOptional.get().setSoLuong(soLuongMoi);
@@ -174,6 +188,14 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             hoaDon.get().setThanhTien(tongTienHang.add(tongTienDonGia.add(tongTienDonGiaSauGIam)).add(hoaDon.get().getTienGiamGia()).add(hoaDon.get().getTienShip()));
         }
         hoaDonRepository.save(hoaDon.get());
+
+        TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+        trangThaiHoaDon.setId(UUID.randomUUID());
+        trangThaiHoaDon.setHoaDon(hoaDon.get());
+        trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
+        trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
+        trangThaiHoaDonRepository.save(trangThaiHoaDon);
     }
 
     @Override
@@ -196,6 +218,11 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hoaDon.get().setTienThua(transactionRequest.getSoTien().subtract(hoaDon.get().getThanhTien()));
         hoaDonRepository.save(hoaDon.get());
         return MessageResponse.builder().message("Thanh toán thành công").build();
+    }
+
+    @Override
+    public HoaDon findByHoaDon(UUID id) {
+        return hoaDonRepository.findById(id).get();
     }
 
 }

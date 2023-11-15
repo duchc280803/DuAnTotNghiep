@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.service.hoa_don_service;
 
+import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.request.TransactionRequest;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
 import com.example.duantotnghiep.response.*;
@@ -27,5 +28,7 @@ public interface HoaDonChiTietService {
     void capNhatSoLuong(UUID idHoaDonChiTiet, int soLuongMoi);
 
     MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest);
+
+    HoaDon findByHoaDon(UUID id);
 
 }
