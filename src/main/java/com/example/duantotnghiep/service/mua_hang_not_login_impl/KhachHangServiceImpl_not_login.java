@@ -44,6 +44,6 @@ public class KhachHangServiceImpl_not_login implements KhachHangService_not_logi
 
     @Override
     public List<TaiKhoan> findKhachHang(String email, String sodienthoai) {
-        return khachHangRepository_not_login.getKhachHangByEmailAndSdt(email,sodienthoai);
+        return khachHangRepository_not_login.getKhachHangByEmailOrSdt(email,sodienthoai);
     }
 }

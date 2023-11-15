@@ -21,6 +21,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/san-pham/")
 public class SanPhamController {
+
     @Autowired
     private DanhMucServiceImpl danhMucService;
 
@@ -48,7 +49,6 @@ public class SanPhamController {
             @Nullable @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @Nullable @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
          ) {
-
         return new ResponseEntity<>(sanPhamService.getHoaDonByFilter(trangThai, idDanhMuc, idThuongHieu, idKieuDe, idXuatXu, maSanPham, tenSanPham, pageNumber, pageSize), HttpStatus.OK);
     }
 
@@ -56,14 +56,17 @@ public class SanPhamController {
     public ResponseEntity<List<DanhMuc>> listDanhMuc(){
         return new ResponseEntity<>(danhMucService.getAll(), HttpStatus.OK);
     }
+
     @GetMapping("hien-thi-xuat-xu")
     public ResponseEntity<List<XuatXu>> listXuatXu(){
         return new ResponseEntity<>(xuatXuService.getAll(), HttpStatus.OK);
     }
+
     @GetMapping("hien-thi-thuong-hieu")
     public ResponseEntity<List<ThuongHieu>> listThuongHieu(){
         return new ResponseEntity<>(thuongHieuService.getAll(), HttpStatus.OK);
     }
+
     @GetMapping("hien-thi-kieu-de")
     public ResponseEntity<List<KieuDe>> listKieuDe(){
         return new ResponseEntity<>(kieuDeService.getAll(), HttpStatus.OK);

@@ -77,6 +77,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         hoaDon.setMa(maHd);
         hoaDon.setTenNguoiNhan("Khách lẻ");
         hoaDon.setNgayTao(timestamp);
+        hoaDon.setTienGiamGia(BigDecimal.ZERO);
         hoaDon.setTrangThai(StatusOrderEnums.CHO_XAC_NHAN.getValue());
         hoaDon.setTaiKhoanNhanVien(findByNhanVien.get());
         hoaDon.setTaiKhoanKhachHang(taiKhoan);
