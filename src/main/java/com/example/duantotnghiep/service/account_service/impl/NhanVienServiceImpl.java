@@ -87,9 +87,6 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
                 taiKhoan.setSoDienThoai(request.getSoDienThoai());
                 taiKhoan.setGioiTinh(request.getGioiTinh());
                 taiKhoan.setEmail(request.getEmail());
-                taiKhoan.setUsername(request.getUsername());
-                taiKhoan.setMatKhau(passwordEncoder.encode(request.getPassword()));
-                taiKhoan.setLoaiTaiKhoan(loaiTaiKhoanOptional.get());
                 taiKhoan.setTrangThai(request.getTrangThai());
                 taiKhoan.setImage("default.png");
                 taiKhoan.setName(request.getFullName());
