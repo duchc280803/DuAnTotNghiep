@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface KhachHangRepository_not_login extends JpaRepository<TaiKhoan, UUID> {
-    @Query(value = "SELECT * FROM taikhoan where email = ?1 AND sodienthoai=?2",nativeQuery = true)
-    List<TaiKhoan> getKhachHangByEmailAndSdt(String email, String sodienthoai);
+    @Query(value = "SELECT * FROM taikhoan where email = ?1 OR sodienthoai=?2",nativeQuery = true)
+    List<TaiKhoan> getKhachHangByEmailOrSdt(String email, String sodienthoai);
 }
