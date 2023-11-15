@@ -13,6 +13,8 @@ public interface NhanVienCustomService {
 
     TaiKhoan getById(UUID id);
 
+    NhanVienDTOReponse getNhanVienById(UUID id);
+
     MessageResponse create(NhanVienDTORequest request);
 
     MessageResponse update(UUID id, NhanVienDTORequest request);

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,13 +36,19 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
     @Override
     public List<NhanVienDTOReponse> getAllNhanVien(String maTaiKhoan, String name, String soDienThoai, Integer trangThai, Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<NhanVienDTOReponse> pageList = taiKhoanRepository.getAllNhanVien(maTaiKhoan, name, soDienThoai, trangThai, pageable);
+        List<Integer> trangThaiList = Arrays.asList(1, 2, 5);
+        Page<NhanVienDTOReponse> pageList = taiKhoanRepository.getAllNhanVien(trangThaiList, maTaiKhoan, name, soDienThoai, trangThai, pageable);
         return pageList.getContent();
     }
 
     @Override
     public TaiKhoan getById(UUID id) {
         return taiKhoanRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public NhanVienDTOReponse getNhanVienById(UUID id) {
+        return taiKhoanRepository.getNhanVienById(id);
     }
 
 
