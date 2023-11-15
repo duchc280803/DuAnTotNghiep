@@ -64,8 +64,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/chat-lieu/**").permitAll()
                         .requestMatchers("/api/v1/payment/**").permitAll()
                         .requestMatchers("/api/v1/voucher/**").permitAll()
+<<<<<<< HEAD
                         .requestMatchers("/api/v1/voucher-counter/**").permitAll()
                         .requestMatchers("/api/v1/san-pham-chi-tiet/**").permitAll()
+=======
+                        .requestMatchers("/api/v1/account/**").permitAll()
+>>>>>>> 43fdb74d340da615a7c5f2b623d76244fbc40572
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(

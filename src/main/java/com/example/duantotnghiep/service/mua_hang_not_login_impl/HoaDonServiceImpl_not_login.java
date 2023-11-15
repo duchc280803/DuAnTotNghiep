@@ -51,7 +51,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
     @Override
     public MessageResponse thanhToanKhongDangNhap(CreateKhachRequest_not_login createKhachRequest_not_login) {
-        List<TaiKhoan> khachHangList = khachHangRepository_not_login.getKhachHangByEmailAndSdt(createKhachRequest_not_login.getEmail(), createKhachRequest_not_login.getSoDienThoai());
+        List<TaiKhoan> khachHangList = khachHangRepository_not_login.getKhachHangByEmailOrSdt(createKhachRequest_not_login.getEmail(), createKhachRequest_not_login.getSoDienThoai());
         TaiKhoan khachHang;
 
         //Step1 : Xử lí khách hàng và địa chỉ
