@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,9 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
 
     @Autowired
     private LoaiTaiKhoanRepository loaiTaiKhoanRepository;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -51,9 +56,13 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
         return taiKhoanRepository.getNhanVienById(id);
     }
 
-
     @Override
     public MessageResponse create(NhanVienDTORequest request) {
+        return create(request, false);
+    }
+
+    @Override
+    public MessageResponse create(NhanVienDTORequest request, boolean sendEmail) {
         TaiKhoan taiKhoan = new TaiKhoan();
         Optional<LoaiTaiKhoan> loaiTaiKhoanOptional = loaiTaiKhoanRepository.findById(request.getIdLoaiTaiKhoan());
         if (loaiTaiKhoanOptional.isPresent()) {
@@ -70,10 +79,26 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
             taiKhoan.setName(request.getFullName());
             taiKhoan.setMaTaiKhoan(request.getMaTaiKhoan());
             taiKhoanRepository.save(taiKhoan);
+
+            if (sendEmail) {
+                sendConfirmationEmail(taiKhoan.getEmail(), taiKhoan.getUsername(), request.getPassword());
+                System.out.println("gửi mail");
+            }
+
             return MessageResponse.builder().message("Thêm thành công").build();
         }
         return MessageResponse.builder().message("Thêm thất bại").build();
+    }
 
+    private void sendConfirmationEmail(String email, String username, String password) {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(email);
+        simpleMailMessage.setSubject("Chào mừng bạn đến với Nice Shoe");
+        simpleMailMessage.setText("Tài khoản của bạn đã được tạo thành công. \n\n" +
+                "Thông tin đăng nhập:\n" +
+                "Username: " + username + "\n" +
+                "Password: " + password);
+        javaMailSender.send(simpleMailMessage);
     }
 
     @Override
@@ -110,4 +135,6 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
             return MessageResponse.builder().message("Không tìm thấy thương hiệu với ID: " + id).build();
         }
     }
+
+
 }

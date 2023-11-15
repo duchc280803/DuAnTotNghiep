@@ -20,6 +20,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/nhan-vien/")
 public class NhanVienController {
+
     @Autowired
     private NhanVienServiceImpl nhanVienService;
 
@@ -37,6 +38,7 @@ public class NhanVienController {
     ) {
         return new ResponseEntity<>(nhanVienService.getAllNhanVien(maNhanVien, name, soDienTHoai, trangThai, pageNumber, pageSize), HttpStatus.OK);
     }
+
     @GetMapping("detail")
     public NhanVienDTOReponse getXuatXuById(@RequestParam UUID id) {
         return nhanVienService.getNhanVienById(id);
@@ -49,7 +51,7 @@ public class NhanVienController {
 
     @PostMapping("create")
     public ResponseEntity<MessageResponse> createThuongHieu(@RequestBody NhanVienDTORequest request) {
-        return new ResponseEntity<>(nhanVienService.create(request), HttpStatus.CREATED);
+        return new ResponseEntity<>(nhanVienService.create(request, true), HttpStatus.CREATED);
     }
 
     @PutMapping("update")

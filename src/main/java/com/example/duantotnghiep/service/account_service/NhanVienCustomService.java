@@ -15,10 +15,11 @@ public interface NhanVienCustomService {
 
     NhanVienDTOReponse getNhanVienById(UUID id);
 
-    MessageResponse create(NhanVienDTORequest request);
+    MessageResponse create(NhanVienDTORequest request, boolean sendEmail);
 
     MessageResponse update(UUID id, NhanVienDTORequest request);
 
     MessageResponse delete(UUID id);
 
+    MessageResponse create(NhanVienDTORequest request);
 }
