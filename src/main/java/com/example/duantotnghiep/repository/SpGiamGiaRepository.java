@@ -2,12 +2,6 @@ package com.example.duantotnghiep.repository;
 
 import com.example.duantotnghiep.entity.GiamGia;
 import com.example.duantotnghiep.entity.SpGiamGia;
-
-import com.example.duantotnghiep.mapper.not_login.findIdSpctAndSoLuong_not_login;
-import com.example.duantotnghiep.mapper.not_login.loadmausac_not_login;
-import com.example.duantotnghiep.mapper.not_login.loadsanpham_not_login;
-import com.example.duantotnghiep.mapper.not_login.loadsize_not_login;
-import com.example.duantotnghiep.mapper.not_login.loadmausac_chatlieu_not_login;
 import com.example.duantotnghiep.mapper.not_login.*;
 import com.example.duantotnghiep.request.GiamGiaRequest;
 import com.example.duantotnghiep.response.SanPhamGiamGiaResponse;
@@ -200,4 +194,54 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
         @Modifying
         @Query("DELETE FROM SpGiamGia spgg WHERE spgg.giamGia = :giamGia")
         void deleteByGiamGia(@Param("giamGia") GiamGia giamGia);
+
+        // load sanpham on shop by key
+        @Query(value = "SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam, sp.idThuongHieu "
+                        +
+                        "FROM SanPham sp " +
+                        "LEFT JOIN spgiamgia spgg ON sp.id = spgg.idsanpham " +
+                        "LEFT JOIN GiamGia gg ON spgg.idgiamgia = gg.id " +
+                        "JOIN Image i ON sp.id = i.idsanpham " +
+                        "JOIN ThuongHieu th ON sp.idthuonghieu = th.id " +
+                        "JOIN DanhMuc dm ON sp.iddanhmuc = dm.id " +
+                        "JOIN XuatXu xx ON sp.idxuatxu = xx.id " +
+                        "JOIN kieude kd ON kd.id = sp.idkieude " +
+                        "WHERE (  th.id = :id OR dm.id = :id OR xx.id = :id OR kd.id = :id) " +
+                        "AND ( " +
+                        "    spgg.id IS NULL " +
+                        "    OR ( " +
+                        "        spgg.id IS NOT NULL " +
+                        "        AND spgg.id = ( " +
+                        "            SELECT MIN(spgg_inner.id) " +
+                        "            FROM spgiamgia spgg_inner " +
+                        "            WHERE spgg_inner.idsanpham = sp.id " +
+                        "        ) " +
+                        "    ) " +
+                        ")", nativeQuery = true)
+        List<loadsanpham_not_login> getAllSpGiamGiabyDanhMuc(@Param("id") UUID id);
+        // load sanpham on shop by ten
+        @Query(value = "SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam, sp.idThuongHieu "
+                +
+                "FROM SanPham sp " +
+                "LEFT JOIN spgiamgia spgg ON sp.id = spgg.idsanpham " +
+                "LEFT JOIN GiamGia gg ON spgg.idgiamgia = gg.id " +
+                "JOIN Image i ON sp.id = i.idsanpham " +
+                "JOIN ThuongHieu th ON sp.idthuonghieu = th.id " +
+                "JOIN DanhMuc dm ON sp.iddanhmuc = dm.id " +
+                "JOIN XuatXu xx ON sp.idxuatxu = xx.id " +
+                "JOIN kieude kd ON kd.id = sp.idkieude " +
+                "WHERE (  sp.tenSanPham  LIKE :key ) " +
+                "AND ( " +
+                "    spgg.id IS NULL " +
+                "    OR ( " +
+                "        spgg.id IS NOT NULL " +
+                "        AND spgg.id = ( " +
+                "            SELECT MIN(spgg_inner.id) " +
+                "            FROM spgiamgia spgg_inner " +
+                "            WHERE spgg_inner.idsanpham = sp.id " +
+                "        ) " +
+                "    ) " +
+                ")", nativeQuery = true)
+        List<loadsanpham_not_login> getAllSpGiamGiabyKey(@Param("key") String key);
+
 }
