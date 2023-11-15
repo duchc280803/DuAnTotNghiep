@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Date;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -22,10 +24,16 @@ public class NhanVienDTOReponse {
 
     private Boolean gioiTinh;
 
+    private Date ngaySinh;
+
     private TypeAccountEnum loaiTaiKhoan;
 
     private Integer trangThai;
 
+    private String email;
+
     private String image;
+
+    private UUID idLoaiTaiKhoan;
 
 }
