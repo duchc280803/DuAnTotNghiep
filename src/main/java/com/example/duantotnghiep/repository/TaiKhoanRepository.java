@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,8 +37,14 @@ public interface TaiKhoanRepository extends JpaRepository<TaiKhoan, UUID> {
     @Query("SELECT NEW com.example.duantotnghiep.response.NhanVienDTOReponse(tk.id, tk.name, tk.maTaiKhoan, tk.soDienThoai, tk.gioiTinh, ltk.name, tk.trangThai, tk.image)\n" +
             "FROM TaiKhoan tk\n" +
             "JOIN tk.loaiTaiKhoan ltk\n" +
-            "WHERE  (:trangThai IS NULL OR tk.trangThai = :trangThai) " +
+            "WHERE  (:trangThai IS NULL OR tk.trangThai = :trangThai)  AND ltk.trangThai IN (:trangThaiList) " +
             "AND (:maNhanVien IS NULL OR tk.maTaiKhoan LIKE %:maNhanVien%) AND (:name IS NULL OR tk.name LIKE %:name%) AND (:soDienThoai IS NULL OR tk.soDienThoai LIKE %:soDienThoai%)")
-    Page<NhanVienDTOReponse> getAllNhanVien(@Param("maNhanVien") String maNhanVien, @Param("name") String name, @Param("soDienThoai") String soDienThoai, @Param("trangThai") Integer trangThai, Pageable pageable);
+    Page<NhanVienDTOReponse> getAllNhanVien(@Param("trangThaiList") List<Integer> trangThaiList, @Param("maNhanVien") String maNhanVien, @Param("name") String name, @Param("soDienThoai") String soDienThoai, @Param("trangThai") Integer trangThai, Pageable pageable);
+
+    @Query("SELECT NEW com.example.duantotnghiep.response.NhanVienDTOReponse(tk.id, tk.name, tk.maTaiKhoan, tk.soDienThoai, tk.gioiTinh, ltk.name, tk.trangThai, tk.image)\n" +
+            "FROM TaiKhoan tk\n" +
+            "JOIN tk.loaiTaiKhoan ltk\n" +
+            "WHERE tk.id = :id")
+    NhanVienDTOReponse getNhanVienById(@Param("id") UUID id);
 
 }

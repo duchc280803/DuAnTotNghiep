@@ -38,8 +38,8 @@ public class NhanVienController {
         return new ResponseEntity<>(nhanVienService.getAllNhanVien(maNhanVien, name, soDienTHoai, trangThai, pageNumber, pageSize), HttpStatus.OK);
     }
     @GetMapping("detail")
-    public TaiKhoan getXuatXuById(@RequestParam UUID id) {
-        return nhanVienService.getById(id);
+    public NhanVienDTOReponse getXuatXuById(@RequestParam UUID id) {
+        return nhanVienService.getNhanVienById(id);
     }
 
     @GetMapping("hien-thi-roles")
