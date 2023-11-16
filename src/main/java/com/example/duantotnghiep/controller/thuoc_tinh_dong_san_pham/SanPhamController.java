@@ -4,16 +4,15 @@ import com.example.duantotnghiep.entity.DanhMuc;
 import com.example.duantotnghiep.entity.KieuDe;
 import com.example.duantotnghiep.entity.ThuongHieu;
 import com.example.duantotnghiep.entity.XuatXu;
+import com.example.duantotnghiep.request.ProductRequest;
+import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.SanPhamDTOResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.*;
 import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -70,6 +69,11 @@ public class SanPhamController {
     @GetMapping("hien-thi-kieu-de")
     public ResponseEntity<List<KieuDe>> listKieuDe(){
         return new ResponseEntity<>(kieuDeService.getAll(), HttpStatus.OK);
+    }
+
+    @PostMapping("create")
+    public ResponseEntity<MessageResponse> createProduct(@RequestBody ProductRequest productRequest) {
+        return new ResponseEntity<>(sanPhamService.createProduct(productRequest), HttpStatus.CREATED);
     }
 
 }

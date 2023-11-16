@@ -1,6 +1,9 @@
 package com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl;
 
-import com.example.duantotnghiep.repository.ChiTietSanPhamRepository;
+import com.example.duantotnghiep.entity.*;
+import com.example.duantotnghiep.repository.*;
+import com.example.duantotnghiep.request.ProductDetailRequest;
+import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.SanPhamChiTietResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.SanPhamChiTietService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -17,6 +21,18 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
 
     @Autowired
     private ChiTietSanPhamRepository chiTietSanPhamRepository;
+
+    @Autowired
+    private SanPhamRepository sanPhamRepository;
+
+    @Autowired
+    private SizeRepository sizeRepository;
+
+    @Autowired
+    private MauSacRepository mauSacRepository;
+
+    @Autowired
+    private ChatLieuRepository chatLieuRepository;
 
     @Override
     public List<SanPhamChiTietResponse> getAll(UUID id, Integer pageNumber, Integer pageSize) {
@@ -44,5 +60,23 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<SanPhamChiTietResponse> sanPhamChiTiet = chiTietSanPhamRepository.finBySize(id, size, pageable);
         return sanPhamChiTiet.getContent();
+    }
+
+    @Override
+    public MessageResponse createProductDetail(UUID idProduct, ProductDetailRequest productDetailRequest) {
+        Optional<SanPham> sanPham = sanPhamRepository.findById(idProduct);
+        Optional<Size> size = sizeRepository.findById(productDetailRequest.getIdSize());
+        Optional<ChatLieu> chatLieu = chatLieuRepository.findById(productDetailRequest.getIdChatLieu());
+        Optional<MauSac> mauSac = mauSacRepository.findById(productDetailRequest.getIdMauSac());
+        SanPhamChiTiet sanPhamChiTiet = new SanPhamChiTiet();
+        sanPhamChiTiet.setSoLuong(productDetailRequest.getSoLuong());
+        sanPhamChiTiet.setQrcode(productDetailRequest.getQrcode());
+        sanPhamChiTiet.setTrangThai(1);
+        sanPhamChiTiet.setSanPham(sanPham.get());
+        sanPhamChiTiet.setMauSac(mauSac.get());
+        sanPhamChiTiet.setSize(size.get());
+        sanPhamChiTiet.setChatLieu(chatLieu.get());
+        chiTietSanPhamRepository.save(sanPhamChiTiet);
+        return MessageResponse.builder().message("Tạo thành công").build();
     }
 }

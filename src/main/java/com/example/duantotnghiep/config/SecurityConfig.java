@@ -67,6 +67,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/voucher-counter/**").permitAll()
                         .requestMatchers("/api/v1/san-pham-chi-tiet/**").permitAll()
                         .requestMatchers("/api/v1/account/**").permitAll()
+                        .requestMatchers("/api/v1/images/**").permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(
