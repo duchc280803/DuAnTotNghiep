@@ -42,6 +42,11 @@ public class SanPhamServiceImpl implements SanPhamService {
     }
 
     @Override
+    public List<SanPhamResponse> getBestSellingProducts() {
+        return sanPhamRepository.getBestSellingProducts();
+    }
+
+    @Override
     public List<SanPhamDTOResponse> getHoaDonByFilter(Integer trangThai, UUID idDanhMuc, UUID idThuongHieu, UUID idKieuDe, UUID idXuatXu, String maSanPham, String tenSanPham, Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<SanPhamDTOResponse> pageList = sanPhamRepository.getHoaDonByFilter(trangThai, idDanhMuc, idThuongHieu, idKieuDe, idXuatXu, maSanPham, tenSanPham, pageable);
@@ -49,6 +54,7 @@ public class SanPhamServiceImpl implements SanPhamService {
     }
 
     @Override
+<<<<<<< HEAD
     public MessageResponse createProduct(ProductRequest productRequest) {
         Optional<KieuDe> kieuDe = kieuDeRepository.findById(productRequest.getIdKieuDe());
         Optional<XuatXu> xuatXu = xuatSuRepository.findById(productRequest.getIdXuatXu());
@@ -66,6 +72,15 @@ public class SanPhamServiceImpl implements SanPhamService {
         sanPham.setXuatXu(xuatXu.get());
         sanPhamRepository.save(sanPham);
         return MessageResponse.builder().message("Thêm thành công").build();
+=======
+    public List<SanPhamResponse> getNewProductbyId(UUID id) {
+       return sanPhamRepository.getNewProductbyId(id);
+    }
+
+    @Override
+    public List<SanPhamResponse> getBestSellingProductsbyId(UUID id) {
+        return sanPhamRepository.getBestSellingProductsbyId(id);
+>>>>>>> 116283c2c4aa6309d03797de57417a42fbf2cabb
     }
 
 }
