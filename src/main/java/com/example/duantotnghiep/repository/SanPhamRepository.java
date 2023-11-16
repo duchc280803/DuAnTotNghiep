@@ -21,7 +21,7 @@ import java.util.UUID;
 public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
 
     @Query(value = "SELECT TOP 8 sp.id, sp.tensanpham, im.tenimage, sp.giaban FROM sanpham sp JOIN sanphamchitiet spct ON sp.id = spct.idsanpham JOIN \n" +
-            "image im ON spct.id = im.idsanphamchitiet WHERE im.isdefault = 1 ORDER BY sp.ngaytao DESC", nativeQuery = true)
+            "            image im ON sp.id = im.idsanpham WHERE im.isdefault = 1 AND sp.trangthai = 1 ORDER BY sp.ngaytao DESC", nativeQuery = true)
     List<SanPhamResponse> getNewProduct();
 
     @Query("SELECT NEW com.example.duantotnghiep.response.SanPhamDTOResponse(sp.id, sp.maSanPham, sp.tenSanPham, im.tenImage, sp.giaBan, sp.ngayTao, sp.ngayCapNhat)\n" +

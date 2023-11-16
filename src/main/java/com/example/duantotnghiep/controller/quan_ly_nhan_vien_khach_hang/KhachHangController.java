@@ -34,7 +34,7 @@ public class KhachHangController {
 
     @PostMapping("/create")
     public ResponseEntity<MessageResponse> createKhachHang(@RequestBody CreateQLKhachHangRequest CreateQLKhachHangRequest) {
-        return new ResponseEntity<>(service.createKhachHang(CreateQLKhachHangRequest), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.createKhachHang(CreateQLKhachHangRequest, true), HttpStatus.CREATED);
     }
 
     @GetMapping("/detail")

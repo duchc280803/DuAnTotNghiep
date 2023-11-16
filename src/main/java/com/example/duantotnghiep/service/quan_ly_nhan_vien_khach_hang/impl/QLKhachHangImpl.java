@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +29,8 @@ public class QLKhachHangImpl implements QLKhachHangService {
     @Autowired
     private LoaiTaiKhoanRepository loaiTaiKhoanRepository;
 
+    @Autowired
+    private JavaMailSender javaMailSender;
     @Override
     public List<QLKhachHangResponse> getQLKhachHang(Integer trangThai, String name, String soDienThoai, String maTaiKhoan, Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
@@ -35,7 +39,7 @@ public class QLKhachHangImpl implements QLKhachHangService {
     }
 
     @Override
-    public MessageResponse createKhachHang(CreateQLKhachHangRequest createQLKhachHangRequest) {
+    public MessageResponse createKhachHang(CreateQLKhachHangRequest createQLKhachHangRequest, boolean sendEmail) {
         LoaiTaiKhoan loaiTaiKhoan = loaiTaiKhoanRepository.findByName(TypeAccountEnum.USER).get();
         TaiKhoan taiKhoan = new TaiKhoan();
         taiKhoan.setId(UUID.randomUUID());
@@ -51,9 +55,22 @@ public class QLKhachHangImpl implements QLKhachHangService {
         taiKhoan.setMaTaiKhoan(createQLKhachHangRequest.getMaTaiKhoan());
         taiKhoan.setLoaiTaiKhoan(loaiTaiKhoan);
         khachHangRepository.save(taiKhoan);
+        if (sendEmail) {
+            sendConfirmationEmail(taiKhoan.getEmail(), taiKhoan.getUsername(), createQLKhachHangRequest.getMatKhau());
+            System.out.println("gửi mail");
+        }
         return MessageResponse.builder().message("Thêm Thành Công").build();
     }
-
+    private void sendConfirmationEmail(String email, String username, String password) {
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(email);
+        simpleMailMessage.setSubject("Chào mừng bạn đến với Nice Shoe");
+        simpleMailMessage.setText("Tài khoản của bạn đã được tạo thành công. \n\n" +
+                "Thông tin đăng nhập:\n" +
+                "Username: " + username + "\n" +
+                "Password: " + password);
+        javaMailSender.send(simpleMailMessage);
+    }
     @Override
     public QLKhachHangResponse detailKhachHang(UUID id) {
         return khachHangRepository.detailQLKhachHang(id);
