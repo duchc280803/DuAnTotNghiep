@@ -25,10 +25,25 @@ public class SanPhamServiceImpl implements SanPhamService {
     }
 
     @Override
+    public List<SanPhamResponse> getBestSellingProducts() {
+        return sanPhamRepository.getBestSellingProducts();
+    }
+
+    @Override
     public List<SanPhamDTOResponse> getHoaDonByFilter(Integer trangThai, UUID idDanhMuc, UUID idThuongHieu, UUID idKieuDe, UUID idXuatXu, String maSanPham, String tenSanPham, Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<SanPhamDTOResponse> pageList = sanPhamRepository.getHoaDonByFilter(trangThai, idDanhMuc, idThuongHieu, idKieuDe, idXuatXu, maSanPham, tenSanPham, pageable);
         return pageList.getContent();
+    }
+
+    @Override
+    public List<SanPhamResponse> getNewProductbyId(UUID id) {
+       return sanPhamRepository.getNewProductbyId(id);
+    }
+
+    @Override
+    public List<SanPhamResponse> getBestSellingProductsbyId(UUID id) {
+        return sanPhamRepository.getBestSellingProductsbyId(id);
     }
 
 }
