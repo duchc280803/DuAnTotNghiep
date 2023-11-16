@@ -23,6 +23,15 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
     @Query(value = "SELECT TOP 8 sp.id, sp.tensanpham, im.tenimage, sp.giaban FROM sanpham sp JOIN sanphamchitiet spct ON sp.id = spct.idsanpham JOIN \n" +
             "            image im ON sp.id = im.idsanpham WHERE im.isdefault = 1 AND sp.trangthai = 1 ORDER BY sp.ngaytao DESC", nativeQuery = true)
     List<SanPhamResponse> getNewProduct();
+    @Query(value = "SELECT TOP 8 sp.id, sp.tensanpham, im.tenimage, sp.giaban " +
+            "FROM sanpham sp " +
+            "JOIN sanphamchitiet spct ON sp.id = spct.idsanpham " +
+            "JOIN image im ON sp.id = im.idsanpham " +
+            "LEFT JOIN ThuongHieu th ON sp.idthuonghieu = th.id " + // Assuming the correct join condition
+            "WHERE im.isdefault = 1 AND sp.trangthai = 1 AND th.id = :id " +
+            "ORDER BY sp.ngaytao DESC", nativeQuery = true)
+    List<SanPhamResponse> getNewProductbyId(@Param("id") UUID id);
+
 
     @Query("SELECT NEW com.example.duantotnghiep.response.SanPhamDTOResponse(sp.id, sp.maSanPham, sp.tenSanPham, im.tenImage, sp.giaBan, sp.ngayTao, sp.ngayCapNhat)\n" +
             "FROM SanPham sp JOIN sp.listImage im\n" +
@@ -41,4 +50,26 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
                                                @Param("maSanPham") String maSanPham,
                                                @Param("tenSanPham") String tenSanPham,
                                                Pageable pageable);
+    @Query(value = "SELECT TOP 8 sp.id, sp.tensanpham, im.tenimage, sp.giaban " +
+            "FROM sanpham sp " +
+            "JOIN sanphamchitiet spct ON sp.id = spct.idsanpham " +
+            "JOIN hoadonchitiet hdct ON spct.id = hdct.idsanphamchitiet " +
+            "JOIN hoadon hd ON hdct.idhoadon = hd.id " +
+            "JOIN image im ON sp.id = im.idsanpham " +
+            "WHERE hdct.trangthai = 1 " +
+            "GROUP BY sp.id, sp.tensanpham, im.tenimage, sp.giaban " +
+            "ORDER BY SUM(hdct.soluong) DESC", nativeQuery = true)
+    List<SanPhamResponse> getBestSellingProducts();
+    @Query(value = "SELECT TOP 8 sp.id, sp.tensanpham, im.tenimage, sp.giaban " +
+            "FROM sanpham sp " +
+            "LEFT JOIN ThuongHieu th ON sp.idthuonghieu = th.id " +
+            "JOIN sanphamchitiet spct ON sp.id = spct.idsanpham " +
+            "JOIN hoadonchitiet hdct ON spct.id = hdct.idsanphamchitiet " +
+            "JOIN hoadon hd ON hdct.idhoadon = hd.id " +
+            "JOIN image im ON sp.id = im.idsanpham " +
+            "WHERE hdct.trangthai = 1  AND th.id = :id " +
+            "GROUP BY sp.id, sp.tensanpham, im.tenimage, sp.giaban " +
+            "ORDER BY SUM(hdct.soluong) DESC", nativeQuery = true)
+    List<SanPhamResponse> getBestSellingProductsbyId(@Param("id") UUID id);
+
 }
