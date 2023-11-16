@@ -10,7 +10,7 @@ import java.util.UUID;
 public interface QLKhachHangService {
     List<QLKhachHangResponse> getQLKhachHang(Integer trangThai, String name, String soDienThoai, String maTaiKhoan, Integer pageNumber, Integer pageSize);
 
-    MessageResponse createKhachHang(CreateQLKhachHangRequest createQLKhachHangRequest);
+    MessageResponse createKhachHang(CreateQLKhachHangRequest createQLKhachHangRequest, boolean sendEmail);
 
     QLKhachHangResponse detailKhachHang(UUID id);
 
