@@ -4,6 +4,8 @@ import java.util.UUID;
 
 public interface ThongTinDonHang {
 
+    String getMa();
+
     Integer getTrangThai();
 
     String getTenLoaiDon();

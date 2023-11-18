@@ -1,9 +1,8 @@
 package com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service;
 
-import com.example.duantotnghiep.response.HoaDonDTOResponse;
-import com.example.duantotnghiep.response.ProductDetailResponse;
-import com.example.duantotnghiep.response.SanPhamDTOResponse;
-import com.example.duantotnghiep.response.SanPhamResponse;
+import com.example.duantotnghiep.entity.SanPham;
+import com.example.duantotnghiep.request.ProductRequest;
+import com.example.duantotnghiep.response.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +12,30 @@ import java.util.UUID;
 @Service
 public interface SanPhamService {
     List<SanPhamResponse> getNewProduct();
+
     List<SanPhamResponse> getBestSellingProducts();
-    List<SanPhamDTOResponse> getHoaDonByFilter(Integer trangThai, UUID idDanhMuc, UUID idThuongHieu, UUID idKieuDe, UUID idXuatXu,
-           String maSanPham, String tenSanPham, Integer pageNumber, Integer pageSize);
+
+    List<ProductResponse> findByThuongHieu(Integer pageNumber, Integer pageSize, String value);
+
+    List<ProductResponse> findByKieuDe(Integer pageNumber, Integer pageSize, String value);
+
+    List<ProductResponse> findByXuatXu(Integer pageNumber, Integer pageSize, String value);
+
+    List<ProductResponse> findByDanhMuc(Integer pageNumber, Integer pageSize, String value);
+
+    List<ProductResponse> findByNameOrCode(Integer pageNumber, Integer pageSize, String value);
+
+    List<ProductResponse> getHoaDonByFilter(Integer pageNumber, Integer pageSize);
+
+    List<ProductResponse> findByStatus(Integer pageNumber, Integer pageSize, Integer status);
+
+    SanPham createProduct(ProductRequest productRequest);
+
     List<SanPhamResponse> getNewProductbyId( UUID id);
+
     List<SanPhamResponse> getBestSellingProductsbyId( UUID id);
+
+    ProductUpdateResponse findByProduct(UUID id);
+
+    List<ProductDetailUpdateReponse> findByProductDetail(UUID id);
 }
