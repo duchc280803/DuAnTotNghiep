@@ -59,9 +59,14 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             hoaDon.setTrangThai(request.getNewTrangThai());
             hoaDon.setTaiKhoanNhanVien(taiKhoan);
 
-            hoaDonChiTietRepository.saveAll(hoaDonChiTietList.stream()
-                    .peek(hoaDonChiTiet -> hoaDonChiTiet.setTrangThai(request.getNewTrangThai()))
-                    .collect(Collectors.toList()));
+
+
+            hoaDonChiTietList.stream()
+                    .filter(hoaDonChiTiet -> hoaDonChiTiet.getTrangThai() != 7)
+                    .forEach(hoaDonChiTiet -> {
+                        hoaDonChiTiet.setTrangThai(request.getNewTrangThai());
+                        hoaDonChiTietRepository.save(hoaDonChiTiet);
+                    });
 
             // Lưu cả hai bảng
             hoaDonRepository.save(hoaDon);
