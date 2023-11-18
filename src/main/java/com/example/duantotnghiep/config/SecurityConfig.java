@@ -68,6 +68,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/san-pham-chi-tiet/**").permitAll()
                         .requestMatchers("/api/v1/account/**").permitAll()
                         .requestMatchers("/api/v1/don-hang-khach-hang/**").permitAll()
+                        .requestMatchers("/api/v1/don-hang-khach-hang-chi-tiet/**").permitAll()
+
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(
