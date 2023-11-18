@@ -16,7 +16,7 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
 
     HoaDonChiTiet findByHoaDonAndSanPhamChiTiet_Id(HoaDon hoaDon, UUID idSpCt);
 
-    @Query(value = "SELECT TOP 1 hd.trangthai, LD.tenloaidon,\n" +
+    @Query(value = "SELECT TOP 1 hd.ma, hd.trangthai, LD.tenloaidon,\n" +
             "HD.diachi,\n" +
             "HD.tennguoinhan, HD.sdtnguoinhan,  HD.ngayship, HD.sdtnguoiship, TTHD.ghichu, HD.idnhanvien\n" +
             "FROM\n" +
@@ -44,7 +44,7 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
     @Query("SELECT new com.example.duantotnghiep.response.TrangThaiHoaDonResponse(tthd.trangThai, tthd.thoiGian, tknv.name, tthd.ghiChu) " +
             "FROM HoaDon hd " +
             "JOIN hd.trangThaiHoaDonList tthd " +
-            "LEFT JOIN hd.taiKhoanNhanVien tknv WHERE hd.id = :id ORDER BY tthd.thoiGian ASC ")
+            "LEFT JOIN hd.taiKhoanNhanVien tknv WHERE hd.id = :id ORDER BY tthd.thoiGian DESC ")
     List<TrangThaiHoaDonResponse> getAllTrangThaiHoaDon(@Param("id") UUID id);
 
     @Query("SELECT new com.example.duantotnghiep.response.MoneyResponse(hd.thanhTien, hd.tienShip, hd.tienThua, hd.tienGiamGia)" +

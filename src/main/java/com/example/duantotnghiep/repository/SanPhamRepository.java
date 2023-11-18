@@ -23,6 +23,7 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
     @Query(value = "SELECT TOP 8 sp.id, sp.tensanpham, im.tenimage, sp.giaban FROM sanpham sp JOIN sanphamchitiet spct ON sp.id = spct.idsanpham JOIN \n" +
             "            image im ON sp.id = im.idsanpham WHERE im.isdefault = 1 AND sp.trangthai = 1 ORDER BY sp.ngaytao DESC", nativeQuery = true)
     List<SanPhamResponse> getNewProduct();
+
     @Query(value = "SELECT TOP 8 sp.id, sp.tensanpham, im.tenimage, sp.giaban " +
             "FROM sanpham sp " +
             "JOIN sanphamchitiet spct ON sp.id = spct.idsanpham " +
@@ -33,23 +34,123 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
     List<SanPhamResponse> getNewProductbyId(@Param("id") UUID id);
 
 
-    @Query("SELECT NEW com.example.duantotnghiep.response.SanPhamDTOResponse(sp.id, sp.maSanPham, sp.tenSanPham, im.tenImage, sp.giaBan, sp.ngayTao, sp.ngayCapNhat)\n" +
-            "FROM SanPham sp JOIN sp.listImage im\n" +
-            "JOIN sp.danhMuc dm JOIN sp.thuongHieu th \n" +
-            "JOIN sp.kieuDe kd JOIN sp.xuatXu xx \n" +
-            "WHERE im.isDefault = true AND (:idDanhMuc IS NULL OR dm.id = :idDanhMuc) AND (:idThuongHieu IS NULL OR th.id = :idThuongHieu) " +
-            "AND (:idKieuDe IS NULL OR kd.id = :idKieuDe) AND (:idXuatXu IS NULL OR xx.id = :idXuatXu)" +
-            "AND (:maSanPham IS NULL OR sp.maSanPham LIKE %:maSanPham%) AND (:tenSanPham IS NULL OR sp.tenSanPham LIKE %:tenSanPham%) " +
-            "AND (:trangThai IS NULL OR sp.trangThai = :trangThai)\n" +
-            "ORDER BY sp.ngayTao DESC")
-    Page<SanPhamDTOResponse> getHoaDonByFilter(@Param("trangThai") Integer trangThai,
-                                               @Param("idDanhMuc") UUID idDanhMuc,
-                                               @Param("idThuongHieu") UUID idThuongHieu,
-                                               @Param("idKieuDe") UUID idKieuDe,
-                                               @Param("idXuatXu") UUID idXuatXu,
-                                               @Param("maSanPham") String maSanPham,
-                                               @Param("tenSanPham") String tenSanPham,
-                                               Pageable pageable);
+    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
+            "(sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai) " +
+            "FROM SanPham sp " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "JOIN sp.listImage i " +
+            "WHERE i.isDefault = true " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND kd.trangThai = 1 " +
+            "AND dm.trangThai = 1 " +
+            "AND xx.trangThai = 1")
+    Page<ProductResponse> getAllSanPham(Pageable pageable);
+
+    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
+            "(sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai)" +
+            "FROM SanPham sp " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "JOIN sp.listImage i " +
+            "WHERE i.isDefault = true " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND kd.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "AND dm.trangThai = 1 " +
+            "AND th.tenThuongHieu = :value")
+    Page<ProductResponse> findByThuongHieu(Pageable pageable,@Param("value") String value);
+
+    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
+            "(sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai)" +
+            "FROM SanPham sp " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "JOIN sp.listImage i " +
+            "WHERE i.isDefault = true " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND kd.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "AND kd.tenDe = :value")
+    Page<ProductResponse> findByKieuDe(Pageable pageable,@Param("value") String value);
+
+    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
+            "(sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai)" +
+            "FROM SanPham sp " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "JOIN sp.listImage i " +
+            "WHERE i.isDefault = true " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND kd.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "AND dm.trangThai = 1 " +
+            "AND xx.tenXuatXu = :value")
+    Page<ProductResponse> findByXuatXu(Pageable pageable,@Param("value") String value);
+
+    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
+            "(sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai)" +
+            "FROM SanPham sp " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "JOIN sp.listImage i " +
+            "WHERE i.isDefault = true " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND kd.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "AND dm.trangThai = 1 " +
+            "AND dm.tenDanhMuc = :value")
+    Page<ProductResponse> findByDanhMuc(Pageable pageable,@Param("value") String value);
+
+    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
+            "(sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai)" +
+            "FROM SanPham sp " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "JOIN sp.listImage i " +
+            "WHERE i.isDefault = true " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND kd.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "AND dm.trangThai = 1 " +
+            "AND sp.tenSanPham = :value OR sp.maSanPham = : value")
+    Page<ProductResponse> findByNameOrCode(Pageable pageable,@Param("value") String value);
+
+
+    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
+            "(sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai) " +
+            "FROM SanPham sp " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "JOIN sp.listImage i " +
+            "WHERE i.isDefault = true " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND kd.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "AND sp.trangThai = :status")
+    Page<ProductResponse> findByStatus(Pageable pageable, @Param("status") Integer status);
+
     @Query(value = "SELECT TOP 8 sp.id, sp.tensanpham, im.tenimage, sp.giaban " +
             "FROM sanpham sp " +
             "JOIN sanphamchitiet spct ON sp.id = spct.idsanpham " +
@@ -60,6 +161,7 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "GROUP BY sp.id, sp.tensanpham, im.tenimage, sp.giaban " +
             "ORDER BY SUM(hdct.soluong) DESC", nativeQuery = true)
     List<SanPhamResponse> getBestSellingProducts();
+
     @Query(value = "SELECT TOP 8 sp.id, sp.tensanpham, im.tenimage, sp.giaban " +
             "FROM sanpham sp " +
             "LEFT JOIN ThuongHieu th ON sp.idthuonghieu = th.id " +
@@ -72,4 +174,26 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "ORDER BY SUM(hdct.soluong) DESC", nativeQuery = true)
     List<SanPhamResponse> getBestSellingProductsbyId(@Param("id") UUID id);
 
+    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductUpdateResponse" +
+            "(sp.maSanPham, sp.tenSanPham,sp.moTa,sp.baoHanh, sp.giaBan, xx.tenXuatXu, dm.tenDanhMuc, th.tenThuongHieu, kd.tenDe) " +
+            "FROM SanPham sp " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "WHERE sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND kd.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "AND sp.id = :id")
+    ProductUpdateResponse findByProduct(@Param("id") UUID id);
+
+    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductDetailUpdateReponse" +
+            "(spct.id, ms.tenMauSac, cl.tenChatLieu, s.size, spct.soLuong, spct.trangThai) " +
+            "FROM SanPhamChiTiet spct " +
+            "JOIN spct.size s " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.mauSac ms " +
+            "WHERE spct.sanPham.id = :id")
+    List<ProductDetailUpdateReponse> findByProductDetail(@Param("id") UUID id);
 }
