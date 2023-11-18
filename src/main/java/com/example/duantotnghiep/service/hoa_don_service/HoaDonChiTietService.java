@@ -1,11 +1,13 @@
 package com.example.duantotnghiep.service.hoa_don_service;
 
 import com.example.duantotnghiep.entity.HoaDon;
+import com.example.duantotnghiep.entity.HoaDonChiTiet;
+import com.example.duantotnghiep.request.TraHangRequest;
 import com.example.duantotnghiep.request.TransactionRequest;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
 import com.example.duantotnghiep.response.*;
+import org.springframework.data.repository.query.Param;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,5 +32,12 @@ public interface HoaDonChiTietService {
     MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest);
 
     HoaDon findByHoaDon(UUID id);
+
+    ProductDetailDTOResponse getDetailSanPham(UUID idhdct);
+
+    MessageResponse createOrUpdate(UUID idhdct, TraHangRequest traHangResponse);
+
+    void checkWarrantyExpiration();
+
 
 }

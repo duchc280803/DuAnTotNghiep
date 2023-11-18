@@ -1,9 +1,6 @@
 package com.example.duantotnghiep.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -12,6 +9,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class SanPhamHoaDonChiTietResponse {
 
     private UUID idHoaDonChiTiet;
@@ -25,5 +23,7 @@ public class SanPhamHoaDonChiTietResponse {
     private BigDecimal donGiaSauGiam;
 
     private Integer soLuong;
+
+    private Integer trangThai;
 
 }
