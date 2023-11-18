@@ -1,6 +1,8 @@
 package com.example.duantotnghiep.controller.hoa_don_controller;
 
 import com.example.duantotnghiep.entity.HoaDon;
+import com.example.duantotnghiep.entity.HoaDonChiTiet;
+import com.example.duantotnghiep.repository.HoaDonChiTietRepository;
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.request.TransactionRequest;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
@@ -28,9 +30,17 @@ public class HoaDonChiTietController {
     @Autowired
     private TrangThaiHoaDonServiceImpl trangThaiHoaDonService;
 
+    @Autowired
+    private HoaDonChiTietRepository hoaDonChiTietRepository;
+
     @GetMapping("hien-thi-don/{idHoaDon}")
     public ResponseEntity<ThongTinDonHang> viewThongTinDonHang(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(hoaDonChiTietService.getThongTinDonHang(idHoaDon), HttpStatus.OK);
+    }
+
+    @GetMapping("hoadonchitiet/{id}")
+    public ResponseEntity<HoaDonChiTiet> findById(@PathVariable(name = "id") UUID id) {
+        return new ResponseEntity<>(hoaDonChiTietRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @GetMapping("hien-thi-san-pham/{idHoaDon}")

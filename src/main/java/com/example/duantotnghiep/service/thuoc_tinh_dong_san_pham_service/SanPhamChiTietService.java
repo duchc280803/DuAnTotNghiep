@@ -18,4 +18,8 @@ public interface SanPhamChiTietService {
     List<SanPhamChiTietResponse> finBySize(UUID id, Integer size, Integer pageNumber, Integer pageSize);
 
     MessageResponse createProductDetail(UUID idProduct, ProductDetailRequest productDetailRequest);
+
+    MessageResponse updateStatusHuy(UUID id);
+
+    MessageResponse updateStatusKichHoat(UUID id);
 }

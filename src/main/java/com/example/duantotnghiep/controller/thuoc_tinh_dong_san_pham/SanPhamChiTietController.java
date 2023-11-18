@@ -1,14 +1,13 @@
 package com.example.duantotnghiep.controller.thuoc_tinh_dong_san_pham;
 
+import com.example.duantotnghiep.request.ProductDetailRequest;
+import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.SanPhamChiTietResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.SanPhamChiTietServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -65,5 +64,27 @@ public class SanPhamChiTietController {
             pageNumber = 0;
         }
         return new ResponseEntity<>(sanPhamChiTietService.finBySize(id, size, pageNumber, pageSize), HttpStatus.OK);
+    }
+
+    @PostMapping("create/{idProduct}")
+    public ResponseEntity<MessageResponse> createSanPham(
+            @PathVariable(name = "idProduct") UUID idProduct,
+            @RequestBody ProductDetailRequest productDetailRequest
+    ) {
+        return new ResponseEntity<>(sanPhamChiTietService.createProductDetail(idProduct, productDetailRequest), HttpStatus.CREATED);
+    }
+
+    @PutMapping("update-huy")
+    public ResponseEntity<MessageResponse> updateStatusHuy(
+            @RequestParam(name = "id") UUID id
+    ) {
+        return new ResponseEntity<>(sanPhamChiTietService.updateStatusHuy(id), HttpStatus.OK);
+    }
+
+    @PutMapping("update-kich")
+    public ResponseEntity<MessageResponse> updateStatusKichHoat(
+            @RequestParam(name = "id") UUID id
+    ) {
+        return new ResponseEntity<>(sanPhamChiTietService.updateStatusKichHoat(id), HttpStatus.OK);
     }
 }

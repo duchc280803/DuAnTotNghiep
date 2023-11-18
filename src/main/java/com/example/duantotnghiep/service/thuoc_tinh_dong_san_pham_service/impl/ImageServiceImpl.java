@@ -12,7 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,20 +31,27 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     @Transactional
-    public MessageResponse createImage(UUID sanPhamId, MultipartFile file) throws IOException {
+    public MessageResponse createImages(List<MultipartFile> files, UUID sanPhamId) throws IOException {
         Optional<SanPham> sanPham = sanPhamRepository.findById(sanPhamId);
-        Image image = new Image();
-        image.setId(UUID.randomUUID());
-        image.setSanPham(sanPham.get()); // Assuming you have a SanPham entity and its constructor
-        image.setTrangThai(1);
-        image.setIsDefault(false);
 
-        byte[] imageData = file.getBytes();
-        String encodedImageData = Base64.getEncoder().encodeToString(imageData);
-        image.setTenImage(encodedImageData);
+        for (MultipartFile file : files) {
+            Image image = new Image();
+            image.setId(UUID.randomUUID());
+            image.setSanPham(sanPham.get());
+            image.setTrangThai(1);
+            image.setIsDefault(false);
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            Files.copy(file.getInputStream(), Paths.get("C:\\Users\\Asus\\Pictures\\dự án", fileName), StandardCopyOption.REPLACE_EXISTING);
+            image.setTenImage(fileName);
+            imageRepository.save(image);
+        }
 
-        imageRepository.save(image);
         return MessageResponse.builder().message("Thành công").build();
+    }
+
+    @Override
+    public List<Image> findBySanPham_Id(UUID id) {
+        return imageRepository.findBySanPham_Id(id);
     }
 
 }

@@ -69,8 +69,8 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
         Optional<ChatLieu> chatLieu = chatLieuRepository.findById(productDetailRequest.getIdChatLieu());
         Optional<MauSac> mauSac = mauSacRepository.findById(productDetailRequest.getIdMauSac());
         SanPhamChiTiet sanPhamChiTiet = new SanPhamChiTiet();
+        sanPhamChiTiet.setId(UUID.randomUUID());
         sanPhamChiTiet.setSoLuong(productDetailRequest.getSoLuong());
-        sanPhamChiTiet.setQrcode(productDetailRequest.getQrcode());
         sanPhamChiTiet.setTrangThai(1);
         sanPhamChiTiet.setSanPham(sanPham.get());
         sanPhamChiTiet.setMauSac(mauSac.get());
@@ -78,5 +78,21 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
         sanPhamChiTiet.setChatLieu(chatLieu.get());
         chiTietSanPhamRepository.save(sanPhamChiTiet);
         return MessageResponse.builder().message("Tạo thành công").build();
+    }
+
+    @Override
+    public MessageResponse updateStatusHuy(UUID id) {
+        Optional<SanPhamChiTiet> sanPhamChiTiet = chiTietSanPhamRepository.findById(id);
+        sanPhamChiTiet.get().setTrangThai(1);
+        chiTietSanPhamRepository.save(sanPhamChiTiet.get());
+        return MessageResponse.builder().message("Thay đổi thành công").build();
+    }
+
+    @Override
+    public MessageResponse updateStatusKichHoat(UUID id) {
+        Optional<SanPhamChiTiet> sanPhamChiTiet = chiTietSanPhamRepository.findById(id);
+        sanPhamChiTiet.get().setTrangThai(2);
+        chiTietSanPhamRepository.save(sanPhamChiTiet.get());
+        return MessageResponse.builder().message("Thay đổi thành công").build();
     }
 }

@@ -13,8 +13,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ProductDetailRequest {
 
-    private String qrcode;
-
     private Integer soLuong;
 
     private UUID idChatLieu;
