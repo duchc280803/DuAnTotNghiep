@@ -1,8 +1,10 @@
 package com.example.duantotnghiep.service.hoa_don_service.impl;
 
 import com.example.duantotnghiep.entity.HoaDon;
+import com.example.duantotnghiep.entity.HoaDonChiTiet;
 import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.entity.TrangThaiHoaDon;
+import com.example.duantotnghiep.repository.HoaDonChiTietRepository;
 import com.example.duantotnghiep.repository.HoaDonRepository;
 import com.example.duantotnghiep.repository.TaiKhoanRepository;
 import com.example.duantotnghiep.repository.TrangThaiHoaDonRepository;
@@ -15,8 +17,10 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
@@ -30,11 +34,16 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
     @Autowired
     private TaiKhoanRepository taiKhoanRepository;
 
+    @Autowired
+    private HoaDonChiTietRepository hoaDonChiTietRepository;
+
     @Override
     public MessageResponse confirmOrder(UUID hoadonId, TrangThaiHoaDonRequest request, String name) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDon> hoaDonOptional = hoaDonRepository.findById(hoadonId);
         TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(name).get();
+        List<HoaDonChiTiet> hoaDonChiTietList = hoaDonChiTietRepository.findAllByHoaDon(hoaDonOptional.get());
+
         if (hoaDonOptional.isPresent()) {
             HoaDon hoaDon = hoaDonOptional.get();
 
@@ -49,6 +58,11 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             // Cập nhật trạng thái của Hóa Đơn
             hoaDon.setTrangThai(request.getNewTrangThai());
             hoaDon.setTaiKhoanNhanVien(taiKhoan);
+
+            hoaDonChiTietRepository.saveAll(hoaDonChiTietList.stream()
+                    .peek(hoaDonChiTiet -> hoaDonChiTiet.setTrangThai(request.getNewTrangThai()))
+                    .collect(Collectors.toList()));
+
             // Lưu cả hai bảng
             hoaDonRepository.save(hoaDon);
             trangThaiHoaDonRepository.save(trangThaiHoaDon);

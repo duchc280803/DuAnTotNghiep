@@ -280,7 +280,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                 BigDecimal tongTien = BigDecimal.ZERO;
 
                 for (SanPhamHoaDonChiTietResponse sanPham : productInHoaDon) {
-                    if (sanPham.getTrangThai() == 1) {
+                    if (sanPham.getTrangThai() == 5) {
                         count++;
                         if (sanPham.getDonGiaSauGiam() != null && sanPham.getSoLuong() != null) {
                             tongTien = tongTien.add(sanPham.getDonGiaSauGiam().multiply(BigDecimal.valueOf(sanPham.getSoLuong())));
@@ -314,7 +314,23 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     @Override
     @Scheduled(cron = "0 0 0 * * ?") // Chạy vào mỗi ngày lúc 00:00:00
     public void checkWarrantyExpiration() {
-
+//        List<HinhThucThanhToan> paymentList = hinhThucThanhToanRepository.findAllByTrangThai(); // Lấy danh sách thanh toán từ cơ sở dữ liệu
+//
+//        for (HinhThucThanhToan payment : paymentList) {
+//            LocalDate ngayThanhToan = payment.getNgayThanhToan().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); // Ngày thanh toán
+//
+//            List<SanPham> productList = sanPhamRepository.findByBaoHanhGreaterThan(0); // Lấy danh sách sản phẩm có bảo hành
+//
+//            for (SanPham product : productList) {
+//                LocalDate warrantyEndDate = ngayThanhToan.plusDays(product.getBaoHanh()); // Tính ngày kết thúc bảo hành
+//
+//                if (LocalDate.now().isAfter(warrantyEndDate)) {
+//                    // Bảo hành đã hết hạn, thực hiện các hành động cần thiết
+//                    // Ví dụ: product.setBaoHanhHetHan(true);
+//                    // sanPhamRepository.save(product);
+//                }
+//            }
+//        }
     }
 
 }

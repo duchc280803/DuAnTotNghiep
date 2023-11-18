@@ -16,6 +16,8 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
 
     HoaDonChiTiet findByHoaDonAndSanPhamChiTiet_Id(HoaDon hoaDon, UUID idSpCt);
 
+    List<HoaDonChiTiet> findAllByHoaDon(HoaDon hoaDon);
+
     @Query(value = "SELECT TOP 1 hd.ma, hd.trangthai, LD.tenloaidon,\n" +
             "HD.diachi,\n" +
             "HD.tennguoinhan, HD.sdtnguoinhan,  HD.ngayship, HD.sdtnguoiship, TTHD.ghichu, HD.idnhanvien\n" +
