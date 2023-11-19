@@ -17,8 +17,6 @@ public class MoneyResponse {
 
     private BigDecimal tienShip;
 
-    private BigDecimal tienThua;
-
     private BigDecimal tienGiamGia;
 
 }
