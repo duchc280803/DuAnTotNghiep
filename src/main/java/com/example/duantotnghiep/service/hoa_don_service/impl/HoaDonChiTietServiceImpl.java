@@ -304,9 +304,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                                 trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
                                 trangThaiHoaDon.setHoaDon(hoaDon);
                                 hoaDonChiTietRepository.save(hoaDonChiTiet);
-                                System.out.println("Chạy trong if");
                             }else {
-                                System.out.println("Chạy trong else");
                                 HoaDonChiTiet addTraHang = new HoaDonChiTiet();
                                 addTraHang.setId(UUID.randomUUID());
                                 addTraHang.setComment(traHangRequest.getGhiChu());
