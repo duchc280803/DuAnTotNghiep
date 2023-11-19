@@ -20,7 +20,7 @@ import java.util.UUID;
 public interface DonHangKhachHangRepository extends JpaRepository<HoaDon, UUID> {
     @Query(value = "WITH CTE AS (\n" +
             "    SELECT\n" +
-            "        hd.id AS idhoadon," +
+            "        hd.id AS idhoadon,\n" +
             "        hd.ma AS mahoadon,\n" +
             "        sp.id AS idsanpham,\n" +
             "        sp.tensanpham,\n" +
@@ -31,11 +31,12 @@ public interface DonHangKhachHangRepository extends JpaRepository<HoaDon, UUID> 
             "        hdct.soluong,\n" +
             "        hdct.dongia,\n" +
             "        hdct.dongiasaugiam,\n" +
-            "        CASE\n" +
-            "            WHEN hdct.dongiasaugiam IS NOT NULL THEN hdct.dongiasaugiam * hdct.soluong\n" +
-            "            ELSE hdct.dongia * hdct.soluong\n" +
-            "        END AS thanhtien,\n" +
+            "        SUM(CASE\n" +
+            "                WHEN hdct.dongiasaugiam IS NOT NULL THEN hdct.dongiasaugiam * hdct.soluong\n" +
+            "                ELSE hdct.dongia * hdct.soluong\n" +
+            "            END) OVER (PARTITION BY hd.id) AS thanhtien, -- Sửa ở đây để tính tổng thành tiền\n" +
             "        SUM(hdct.soluong) OVER (PARTITION BY hd.id) AS tongsoluong,\n" +
+            "        tthd.trangthai AS trangthaihoadon,\n" +
             "        ROW_NUMBER() OVER (PARTITION BY hd.id ORDER BY hdct.id) AS RowNum\n" +
             "    FROM\n" +
             "        hoadon hd\n" +
@@ -56,8 +57,9 @@ public interface DonHangKhachHangRepository extends JpaRepository<HoaDon, UUID> 
             "        img.isdefault = 'true'\n" +
             "        AND tk.username = ?\n" +
             ")\n" +
+            "\n" +
             "SELECT\n" +
-            "    idhoadon," +
+            "    idhoadon,\n" +
             "    mahoadon,\n" +
             "    idsanpham,\n" +
             "    tensanpham,\n" +
@@ -69,7 +71,8 @@ public interface DonHangKhachHangRepository extends JpaRepository<HoaDon, UUID> 
             "    dongia,\n" +
             "    dongiasaugiam,\n" +
             "    thanhtien,\n" +
-            "    tongsoluong\n" +
+            "    tongsoluong,\n" +
+            "    trangthaihoadon\n" +
             "FROM CTE\n" +
             "WHERE RowNum = 1;\n",nativeQuery = true)
     List<DonHangKhachHangMap> getAllDonHang(String username);
