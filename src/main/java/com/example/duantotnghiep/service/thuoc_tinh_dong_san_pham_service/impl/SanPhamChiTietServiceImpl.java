@@ -81,7 +81,7 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
     }
 
     @Override
-    public MessageResponse updateStatusHuy(UUID id) {
+    public MessageResponse  updateStatusHuy(UUID id) {
         Optional<SanPhamChiTiet> sanPhamChiTiet = chiTietSanPhamRepository.findById(id);
         sanPhamChiTiet.get().setTrangThai(1);
         chiTietSanPhamRepository.save(sanPhamChiTiet.get());
