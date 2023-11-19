@@ -34,20 +34,24 @@ public class ImageServiceImpl implements ImageService {
     public MessageResponse createImages(List<MultipartFile> files, UUID sanPhamId) throws IOException {
         Optional<SanPham> sanPham = sanPhamRepository.findById(sanPhamId);
 
-        for (MultipartFile file : files) {
+        for (int i = 0; i < files.size(); i++) {
+            MultipartFile file = files.get(i);
             Image image = new Image();
             image.setId(UUID.randomUUID());
             image.setSanPham(sanPham.get());
             image.setTrangThai(1);
-            image.setIsDefault(false);
+            if (sanPham.get().getListImage().get(i).getIsDefault() == false) {
+                image.setIsDefault(true);
+            }
             String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-            Files.copy(file.getInputStream(), Paths.get("C:\\Users\\Asus\\Pictures\\dự án", fileName), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(), Paths.get("D:\\FE_DuAnTotNghiep\\assets\\ảnh giày", fileName), StandardCopyOption.REPLACE_EXISTING);
             image.setTenImage(fileName);
             imageRepository.save(image);
         }
 
         return MessageResponse.builder().message("Thành công").build();
     }
+
 
     @Override
     public List<Image> findBySanPham_Id(UUID id) {

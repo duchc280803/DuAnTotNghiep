@@ -5,6 +5,7 @@ import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonDTOResponse;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.response.NhanVienResponse;
 import com.example.duantotnghiep.response.TokenResponse;
 import com.example.duantotnghiep.service.account_service.TaiKhoanService;
 import com.example.duantotnghiep.service.hoa_don_service.impl.HoaDonServiceImpl;
@@ -27,7 +28,6 @@ public class HoaDonController {
 
     @Autowired
     private TaiKhoanService.TaiKhoanServiceImpl taiKhoanService;
-
 
     @GetMapping("hien-thi")
     public ResponseEntity<List<HoaDonDTOResponse>> getAll(
@@ -62,6 +62,13 @@ public class HoaDonController {
     ) {
         String username = principal.getName();
         return new ResponseEntity<>(hoaDonService.updateHoaDon(hoaDonId, username), HttpStatus.OK);
+    }
+
+    @GetMapping("hien-thi-nhan-vien")
+    public ResponseEntity<List<NhanVienResponse>> getAllNhanVien(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        return new ResponseEntity<>(hoaDonService.nhanVienList(pageNumber, pageSize), HttpStatus.OK);
     }
 
 }

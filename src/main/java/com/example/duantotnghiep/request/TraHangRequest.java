@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TraHangRequest {
+
     private Integer soLuong;
 
     private String ghiChu;

@@ -63,6 +63,4 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
             "WHERE hdct.id = :idhdct AND im.isDefault = true")
     ProductDetailDTOResponse getDetailSanPham(@Param("idhdct") UUID idhdct);
 
-
-
 }

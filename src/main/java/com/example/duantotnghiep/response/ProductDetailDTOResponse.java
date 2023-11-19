@@ -13,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class ProductDetailDTOResponse {
+
     private UUID id;
 
     private String tenSanPham;
@@ -30,6 +31,5 @@ public class ProductDetailDTOResponse {
     private String tenMauSac;
 
     private Integer soLuong;
-
 
 }

@@ -39,5 +39,5 @@ public interface HoaDonChiTietService {
 
     void checkWarrantyExpiration();
 
-
+    void deleteOrderDetail(UUID id);
 }

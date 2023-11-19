@@ -8,6 +8,7 @@ import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonDTOResponse;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.response.NhanVienResponse;
 import com.example.duantotnghiep.response.TokenResponse;
 import com.example.duantotnghiep.service.hoa_don_service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,13 @@ public class HoaDonServiceImpl implements HoaDonService {
         trangThaiHoaDon.setHoaDon(hoaDonOptional.get());
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
         return null; // Xử lý khi hóa đơn không tồn tại
+    }
+
+    @Override
+    public List<NhanVienResponse> nhanVienList(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<NhanVienResponse> nhanVienResponses = taiKhoanRepository.getAllPage(pageable);
+        return nhanVienResponses.getContent();
     }
 
 }

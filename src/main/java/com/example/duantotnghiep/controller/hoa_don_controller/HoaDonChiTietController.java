@@ -118,11 +118,17 @@ public class HoaDonChiTietController {
         return new ResponseEntity<>(hoaDonChiTietService.getDetailSanPham(idhdct), HttpStatus.OK);
     }
 
-    @PostMapping("tra-hang/{idhdct}")
-    public ResponseEntity<MessageResponse> createOrUpdate(@PathVariable("idhdct") UUID idhdct,
+    @PostMapping("tra-hang")
+    public ResponseEntity<MessageResponse> createOrUpdate(@RequestParam("idhdct") UUID idhdct,
                                                           @RequestBody TraHangRequest traHangRequest) {
         MessageResponse response = hoaDonChiTietService.createOrUpdate(idhdct, traHangRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("delete")
+    public ResponseEntity<MessageResponse> deleteOrderDetail(@RequestParam(name = "id") UUID id) {
+        hoaDonChiTietService.deleteOrderDetail(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

@@ -4,6 +4,7 @@ import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
 import com.example.duantotnghiep.response.HoaDonDTOResponse;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.response.NhanVienResponse;
 import com.example.duantotnghiep.response.TokenResponse;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public interface HoaDonService {
     List<HoaDonDTOResponse> getAllHoaDonCTTStaff(Integer loaiDon, String ma, String soDienThoai, Integer pageNumber, Integer pageSize);
 
     HoaDon updateHoaDon(UUID hoaDonId,  String username);
+
+    List<NhanVienResponse> nhanVienList(Integer pageNumber, Integer pageSize);
 
 
 }
