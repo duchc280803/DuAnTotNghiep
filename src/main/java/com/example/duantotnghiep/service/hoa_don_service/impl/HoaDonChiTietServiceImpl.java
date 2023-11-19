@@ -254,6 +254,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                     trangThaiHoaDon.setTrangThai(6);
                     trangThaiHoaDon.setThoiGian(timestamp);
                     trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
+                    trangThaiHoaDon.setHoaDon(hoaDon);
                     hoaDonChiTietRepository.save(hoaDonChiTiet);
                 } else {
                     HoaDonChiTiet addTraHang = new HoaDonChiTiet();
@@ -272,6 +273,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                     trangThaiHoaDon.setTrangThai(7);
                     trangThaiHoaDon.setThoiGian(timestamp);
                     trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
+                    trangThaiHoaDon.setHoaDon(hoaDon);
                     hoaDonChiTietRepository.save(hoaDonChiTiet);
                 }
 
