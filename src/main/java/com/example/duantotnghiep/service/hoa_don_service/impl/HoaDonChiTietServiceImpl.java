@@ -294,24 +294,38 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                                 hoaDonChiTietRepository.save(hoaDonChiTiet);
                             }
                         }else {
-                            HoaDonChiTiet addTraHang = new HoaDonChiTiet();
-                            addTraHang.setId(UUID.randomUUID());
-                            addTraHang.setComment(traHangRequest.getGhiChu());
-                            addTraHang.setDonGia(hoaDonChiTiet.getDonGia());
-                            addTraHang.setTrangThai(7);
-                            addTraHang.setHoaDon(hoaDonChiTiet.getHoaDon());
-                            addTraHang.setSanPhamChiTiet(hoaDonChiTiet.getSanPhamChiTiet());
-                            addTraHang.setDonGiaSauGiam(hoaDonChiTiet.getDonGiaSauGiam());
-                            addTraHang.setSoLuong(traHangRequest.getSoLuong());
-                            hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() - traHangRequest.getSoLuong());
-                            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
-                            hoaDonChiTietRepository.save(addTraHang);
-                            trangThaiHoaDon.setId(UUID.randomUUID());
-                            trangThaiHoaDon.setTrangThai(7);
-                            trangThaiHoaDon.setThoiGian(timestamp);
-                            trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
-                            trangThaiHoaDon.setHoaDon(hoaDon);
-                            hoaDonChiTietRepository.save(hoaDonChiTiet);
+                            if(hoaDonChiTiet.getSoLuong() == traHangRequest.getSoLuong()){
+                                hoaDonChiTiet.setTrangThai(7);
+                                hoaDonChiTiet.setComment(traHangRequest.getGhiChu());
+                                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
+                                trangThaiHoaDon.setId(UUID.randomUUID());
+                                trangThaiHoaDon.setTrangThai(7);
+                                trangThaiHoaDon.setThoiGian(timestamp);
+                                trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
+                                trangThaiHoaDon.setHoaDon(hoaDon);
+                                hoaDonChiTietRepository.save(hoaDonChiTiet);
+                                System.out.println("Chạy trong if");
+                            }else {
+                                System.out.println("Chạy trong else");
+                                HoaDonChiTiet addTraHang = new HoaDonChiTiet();
+                                addTraHang.setId(UUID.randomUUID());
+                                addTraHang.setComment(traHangRequest.getGhiChu());
+                                addTraHang.setDonGia(hoaDonChiTiet.getDonGia());
+                                addTraHang.setTrangThai(7);
+                                addTraHang.setHoaDon(hoaDonChiTiet.getHoaDon());
+                                addTraHang.setSanPhamChiTiet(hoaDonChiTiet.getSanPhamChiTiet());
+                                addTraHang.setDonGiaSauGiam(hoaDonChiTiet.getDonGiaSauGiam());
+                                addTraHang.setSoLuong(traHangRequest.getSoLuong());
+                                hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() - traHangRequest.getSoLuong());
+                                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
+                                hoaDonChiTietRepository.save(addTraHang);
+                                trangThaiHoaDon.setId(UUID.randomUUID());
+                                trangThaiHoaDon.setTrangThai(7);
+                                trangThaiHoaDon.setThoiGian(timestamp);
+                                trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
+                                trangThaiHoaDon.setHoaDon(hoaDon);
+                                hoaDonChiTietRepository.save(hoaDonChiTiet);
+                            }
                         }
                     }
                     if (hoaDon.getTienShip() == null) {
