@@ -37,7 +37,6 @@ public interface HoaDonChiTietService {
 
     MessageResponse createOrUpdate(UUID idhdct, TraHangRequest traHangResponse);
 
-    void checkWarrantyExpiration();
 
     void deleteOrderDetail(UUID id);
 }
