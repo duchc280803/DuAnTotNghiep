@@ -15,18 +15,27 @@ import java.util.UUID;
 
 @Repository
 public interface DonHangKhachHangChiTietRepository extends JpaRepository<HoaDonChiTiet, UUID> {
-    @Query(value = "SELECT TOP 1 HD.ma,HD.trangthai,\n" +
-            "            HD.diachi,\n" +
-            "            HD.tennguoinhan, HD.sdtnguoinhan,  HD.ngayship, HD.sdtnguoiship, TTHD.ghichu\n" +
-            "            FROM hoadon HD JOIN loaidon LD ON HD.idloaidon = LD.id\n" +
-            "            JOIN trangthaihoadon TTHD ON TTHD.idhoadon = HD.id\n" +
-            "\t\t\tJOIN hinhthucthanhtoan httt ON httt.idhoadon = HD.id\n" +
-            "           JOIN taikhoan tk on tk.id = hd.idkhachhang  " +
-            "WHERE TTHD.idhoadon = :idHoaDon and tk.username = :username \n" +
-            "ORDER BY TTHD.thoigian DESC\n" +
-            "\t\t\t\t\n" +
-            "\t\t\n" +
-            "\n", nativeQuery = true)
+    @Query(value = "SELECT TOP 1\n" +
+            "    HD.ma,\n" +
+            "    HD.trangthai,\n" +
+            "    HD.diachi,\n" +
+            "    HD.tennguoinhan,\n" +
+            "    HD.sdtnguoinhan,\n" +
+            "    HD.ngayship,\n" +
+            "    HD.sdtnguoiship,\n" +
+            "    TTHD.ghichu,\n" +
+            "    HD.tennguoiship\n" +
+            "FROM\n" +
+            "    hoadon HD\n" +
+            "JOIN loaidon LD ON HD.idloaidon = LD.id\n" +
+            "JOIN trangthaihoadon TTHD ON TTHD.idhoadon = HD.id\n" +
+            "JOIN hinhthucthanhtoan HTTT ON HTTT.idhoadon = HD.id\n" +
+            "JOIN taikhoan TK ON TK.id = HD.idkhachhang\n" +
+            "WHERE\n" +
+            "    TTHD.idhoadon = :idHoaDon\n" +
+            "    AND TK.username = :username\n" +
+            "ORDER BY\n" +
+            "    TTHD.thoigian DESC;\n", nativeQuery = true)
     ThongTinDonHangKhachHangMap getThongTinDonHang(@Param("idHoaDon") UUID idHoaDon, @Param("username") String username);
 
     @Query(value = "SELECT hdct.id AS id,i.tenImage AS tenImage,sp.tenSanPham AS tenSanPham,hdct.donGia AS donGia,hdct.donGiaSauGiam AS donGiaSauGiam,hdct.soLuong AS soLuong,s.size,ms.tenmausac,cl.tenchatlieu\n" +

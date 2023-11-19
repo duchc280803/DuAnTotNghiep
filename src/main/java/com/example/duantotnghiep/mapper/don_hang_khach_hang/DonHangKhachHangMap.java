@@ -16,4 +16,5 @@ public interface DonHangKhachHangMap {
        String getDonGiaSauGiam();
        String getThanhTien();
        Integer getTongSoLuong();
+       String getTrangThaiHoaDon();
 }

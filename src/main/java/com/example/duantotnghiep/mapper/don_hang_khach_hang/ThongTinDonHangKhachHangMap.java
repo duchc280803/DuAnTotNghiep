@@ -19,4 +19,6 @@ public interface ThongTinDonHangKhachHangMap {
 
     String getGhiChu();
 
+    String getTenNguoiShip();
+
 }
