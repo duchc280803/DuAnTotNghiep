@@ -333,4 +333,39 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 //        }
     }
 
+    @Override
+    public void deleteOrderDetail(UUID id) {
+        hoaDonChiTietRepository.deleteById(id);
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Optional<HoaDonChiTiet> hoaDonChiTietOptional = hoaDonChiTietRepository.findById(id);
+
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(hoaDonChiTietOptional.get().getHoaDon().getId());
+        BigDecimal tongTienDonGia = BigDecimal.ZERO;
+        BigDecimal tongTienDonGiaSauGIam = BigDecimal.ZERO;
+        BigDecimal tongTienHang = BigDecimal.ZERO;
+        for (HoaDonChiTiet hdct : hoaDon.get().getHoaDonChiTietList()) {
+            if (hdct.getDonGiaSauGiam().compareTo(BigDecimal.ZERO) == 0) {
+                tongTienDonGia = tongTienDonGia.add(hdct.getDonGia().multiply(new BigDecimal(hdct.getSoLuong())));
+            }
+            if (hdct.getDonGiaSauGiam().compareTo(BigDecimal.ZERO) != 0) {
+                tongTienDonGiaSauGIam = tongTienDonGiaSauGIam.add(hdct.getDonGiaSauGiam().multiply(new BigDecimal(hdct.getSoLuong())));
+            }
+        }
+        if (hoaDon.get().getTienShip() == null) {
+            hoaDon.get().setThanhTien(tongTienHang.add(tongTienDonGia.add(tongTienDonGiaSauGIam).add(hoaDon.get().getTienGiamGia())));
+        }
+        if (hoaDon.get().getTienShip() != null) {
+            hoaDon.get().setThanhTien(tongTienHang.add(tongTienDonGia.add(tongTienDonGiaSauGIam)).add(hoaDon.get().getTienGiamGia()).add(hoaDon.get().getTienShip()));
+        }
+        hoaDonRepository.save(hoaDon.get());
+
+        TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+        trangThaiHoaDon.setId(UUID.randomUUID());
+        trangThaiHoaDon.setHoaDon(hoaDon.get());
+        trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
+        trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
+        trangThaiHoaDonRepository.save(trangThaiHoaDon);
+    }
+
 }

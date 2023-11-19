@@ -41,7 +41,7 @@ public class ImageServiceImpl implements ImageService {
             image.setTrangThai(1);
             image.setIsDefault(false);
             String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-            Files.copy(file.getInputStream(), Paths.get("C:\\Users\\Asus\\Pictures\\dự án", fileName), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(), Paths.get("D:\\FE_DuAnTotNghiep\\assets\\ảnh giày", fileName), StandardCopyOption.REPLACE_EXISTING);
             image.setTenImage(fileName);
             imageRepository.save(image);
         }
