@@ -47,6 +47,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     @Autowired
     private TrangThaiHoaDonRepository trangThaiHoaDonRepository;
 
+    @Autowired
+    private LoaiHinhThucThanhToanRepository loaiHinhThucThanhToanRepository;
+
     @Override
     public ThongTinDonHang getThongTinDonHang(UUID idHoaDon) {
         return hoaDonChiTietRepository.getThongTinDonHang(idHoaDon);
@@ -208,6 +211,12 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
 
+        LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+        loaiHinhThucThanhToan.setId(UUID.randomUUID());
+        loaiHinhThucThanhToan.setNgayTao(new Date(System.currentTimeMillis()));
+        loaiHinhThucThanhToan.setTenLoai(transactionRequest.getTenLoai());
+        loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+
         HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
         hinhThucThanhToan.setId(UUID.randomUUID());
         hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
@@ -218,10 +227,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
         hinhThucThanhToan.setHoaDon(hoaDon.get());
         hinhThucThanhToan.setTrangThai(1);
+        hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
-        hoaDon.get().setTienKhachTra(transactionRequest.getSoTien());
-        hoaDon.get().setTienThua(transactionRequest.getSoTien().subtract(hoaDon.get().getThanhTien()));
-        hoaDonRepository.save(hoaDon.get());
+
         return MessageResponse.builder().message("Thanh toán thành công").build();
     }
 
@@ -379,6 +387,17 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setThoiGian(timestamp);
         trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
+    }
+
+    @Override
+    public boolean traHang(UUID id) {
+        List<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietRepository.findByHoaDon_Id(id);
+        for (HoaDonChiTiet x: hoaDonChiTiet){
+            if (x.getTrangThai() == 7) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

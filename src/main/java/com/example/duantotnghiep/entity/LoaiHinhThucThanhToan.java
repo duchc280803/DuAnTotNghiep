@@ -24,7 +24,7 @@ public class LoaiHinhThucThanhToan {
     private UUID id;
 
     @Column(name = "tenloai")
-    private String tenChatLieu;
+    private String tenLoai;
 
     @Column(name = "trangthai")
     private Integer trangThai;

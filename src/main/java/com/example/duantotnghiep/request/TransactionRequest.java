@@ -19,4 +19,5 @@ public class TransactionRequest {
 
     private Integer trangThai;
 
+    private String tenLoai;
 }

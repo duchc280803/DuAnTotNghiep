@@ -123,4 +123,9 @@ public class HoaDonChiTietController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("tra-hang/{id}")
+    public ResponseEntity<?> traHang(@PathVariable(name = "id") UUID id) {
+        return new ResponseEntity<>(hoaDonChiTietService.traHang(id), HttpStatus.OK);
+    }
+
 }
