@@ -236,104 +236,115 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public MessageResponse createOrUpdate(UUID idhdct, TraHangRequest traHangRequest) {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findById(idhdct).orElse(null);
-
-        if (hoaDonChiTiet != null) {
-            SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(hoaDonChiTiet.getSanPhamChiTiet().getId()).orElse(null);
+        public MessageResponse createOrUpdate(UUID idhdct, TraHangRequest traHangRequest) {
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findById(idhdct).orElse(null);
             TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
-            HoaDon hoaDon = hoaDonRepository.findById(hoaDonChiTiet.getHoaDon().getId()).orElse(null);
+            if (hoaDonChiTiet != null) {
+                SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(hoaDonChiTiet.getSanPhamChiTiet().getId()).orElse(null);
+                HoaDon hoaDon = hoaDonRepository.findById(hoaDonChiTiet.getHoaDon().getId()).orElse(null);
 
-            if (sanPhamChiTiet != null && hoaDon != null) {
-                if (traHangRequest.getSoLuong() == hoaDonChiTiet.getSoLuong()) {
-                    hoaDonChiTiet.setTrangThai(7);
-                    hoaDonChiTiet.setComment(traHangRequest.getGhiChu());
-                    sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
-                    trangThaiHoaDon.setId(UUID.randomUUID());
-                    trangThaiHoaDon.setTrangThai(6);
-                    trangThaiHoaDon.setThoiGian(timestamp);
-                    trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
-                    trangThaiHoaDon.setHoaDon(hoaDon);
-                    hoaDonChiTietRepository.save(hoaDonChiTiet);
-                } else {
-                    HoaDonChiTiet addTraHang = new HoaDonChiTiet();
-                    addTraHang.setId(UUID.randomUUID());
-                    addTraHang.setComment(traHangRequest.getGhiChu());
-                    addTraHang.setDonGia(hoaDonChiTiet.getDonGia());
-                    addTraHang.setTrangThai(7);
-                    addTraHang.setHoaDon(hoaDonChiTiet.getHoaDon());
-                    addTraHang.setSanPhamChiTiet(hoaDonChiTiet.getSanPhamChiTiet());
-                    addTraHang.setDonGiaSauGiam(hoaDonChiTiet.getDonGiaSauGiam());
-                    addTraHang.setSoLuong(traHangRequest.getSoLuong());
-                    hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() - traHangRequest.getSoLuong());
-                    sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
-                    hoaDonChiTietRepository.save(addTraHang);
-                    trangThaiHoaDon.setId(UUID.randomUUID());
-                    trangThaiHoaDon.setTrangThai(7);
-                    trangThaiHoaDon.setThoiGian(timestamp);
-                    trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
-                    trangThaiHoaDon.setHoaDon(hoaDon);
-                    hoaDonChiTietRepository.save(hoaDonChiTiet);
-                }
+                if (sanPhamChiTiet != null && hoaDon != null) {
 
-                List<SanPhamHoaDonChiTietResponse> productInHoaDon = hoaDonChiTietRepository.getSanPhamHDCT(hoaDonChiTiet.getHoaDon().getId());
-                int count = 0;
-                BigDecimal tongTien = BigDecimal.ZERO;
+                    List<SanPhamHoaDonChiTietResponse> productInHoaDon = hoaDonChiTietRepository.getSanPhamHDCT(hoaDonChiTiet.getHoaDon().getId());
+                    int count = 0;
+                    BigDecimal tongTien = BigDecimal.ZERO;
 
-                for (SanPhamHoaDonChiTietResponse sanPham : productInHoaDon) {
-                    if (sanPham.getTrangThai() == 5) {
-                        count++;
-                        if (sanPham.getDonGiaSauGiam() != null && sanPham.getSoLuong() != null) {
-                            tongTien = tongTien.add(sanPham.getDonGiaSauGiam().multiply(BigDecimal.valueOf(sanPham.getSoLuong())));
+                    for (SanPhamHoaDonChiTietResponse sanPham : productInHoaDon) {
+                        if (sanPham.getTrangThai() == 5) {
+                            count++;
+                            if (sanPham.getDonGiaSauGiam() != null && sanPham.getSoLuong() != null) {
+                                tongTien = tongTien.add(sanPham.getDonGiaSauGiam().multiply(BigDecimal.valueOf(sanPham.getSoLuong())));
+                            }
                         }
                     }
-                }
+                    if (count == 0) {
+                        hoaDon.setTrangThai(6);
+                    } else {
+                        if (count == 1){
+                            if (traHangRequest.getSoLuong() == hoaDonChiTiet.getSoLuong()) {
+                                hoaDonChiTiet.setTrangThai(7);
+                                hoaDonChiTiet.setComment(traHangRequest.getGhiChu());
+                                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
+                                trangThaiHoaDon.setId(UUID.randomUUID());
+                                trangThaiHoaDon.setTrangThai(6);
+                                trangThaiHoaDon.setThoiGian(timestamp);
+                                trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
+                                trangThaiHoaDon.setHoaDon(hoaDon);
+                                hoaDon.setTrangThai(6);
+                                hoaDonChiTietRepository.save(hoaDonChiTiet);
+                            }else {
+                                HoaDonChiTiet addTraHang = new HoaDonChiTiet();
+                                addTraHang.setId(UUID.randomUUID());
+                                addTraHang.setComment(traHangRequest.getGhiChu());
+                                addTraHang.setDonGia(hoaDonChiTiet.getDonGia());
+                                addTraHang.setTrangThai(7);
+                                addTraHang.setHoaDon(hoaDonChiTiet.getHoaDon());
+                                addTraHang.setSanPhamChiTiet(hoaDonChiTiet.getSanPhamChiTiet());
+                                addTraHang.setDonGiaSauGiam(hoaDonChiTiet.getDonGiaSauGiam());
+                                addTraHang.setSoLuong(traHangRequest.getSoLuong());
+                                hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() - traHangRequest.getSoLuong());
+                                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
+                                hoaDonChiTietRepository.save(addTraHang);
+                                trangThaiHoaDon.setId(UUID.randomUUID());
+                                trangThaiHoaDon.setTrangThai(7);
+                                trangThaiHoaDon.setThoiGian(timestamp);
+                                trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
+                                trangThaiHoaDon.setHoaDon(hoaDon);
+                                hoaDonChiTietRepository.save(hoaDonChiTiet);
+                            }
+                        }else {
+                            if(hoaDonChiTiet.getSoLuong() == traHangRequest.getSoLuong()){
+                                hoaDonChiTiet.setTrangThai(7);
+                                hoaDonChiTiet.setComment(traHangRequest.getGhiChu());
+                                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
+                                trangThaiHoaDon.setId(UUID.randomUUID());
+                                trangThaiHoaDon.setTrangThai(7);
+                                trangThaiHoaDon.setThoiGian(timestamp);
+                                trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
+                                trangThaiHoaDon.setHoaDon(hoaDon);
+                                hoaDonChiTietRepository.save(hoaDonChiTiet);
+                            }else {
+                                HoaDonChiTiet addTraHang = new HoaDonChiTiet();
+                                addTraHang.setId(UUID.randomUUID());
+                                addTraHang.setComment(traHangRequest.getGhiChu());
+                                addTraHang.setDonGia(hoaDonChiTiet.getDonGia());
+                                addTraHang.setTrangThai(7);
+                                addTraHang.setHoaDon(hoaDonChiTiet.getHoaDon());
+                                addTraHang.setSanPhamChiTiet(hoaDonChiTiet.getSanPhamChiTiet());
+                                addTraHang.setDonGiaSauGiam(hoaDonChiTiet.getDonGiaSauGiam());
+                                addTraHang.setSoLuong(traHangRequest.getSoLuong());
+                                hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() - traHangRequest.getSoLuong());
+                                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
+                                hoaDonChiTietRepository.save(addTraHang);
+                                trangThaiHoaDon.setId(UUID.randomUUID());
+                                trangThaiHoaDon.setTrangThai(7);
+                                trangThaiHoaDon.setThoiGian(timestamp);
+                                trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
+                                trangThaiHoaDon.setHoaDon(hoaDon);
+                                hoaDonChiTietRepository.save(hoaDonChiTiet);
+                            }
+                        }
+                    }
+                    if (hoaDon.getTienShip() == null) {
+                        hoaDon.setTienShip(BigDecimal.ZERO);
+                    }
+                    if (hoaDon.getTienGiamGia() == null) {
+                        hoaDon.setTienGiamGia(BigDecimal.ZERO);
+                    }
 
-                if (count == 0) {
-                    hoaDon.setTrangThai(6);
-                }
+                    hoaDon.setThanhTien(tongTien.add(hoaDon.getTienShip()).add(hoaDon.getTienGiamGia()));
+                    chiTietSanPhamRepository.save(sanPhamChiTiet);
+                    trangThaiHoaDonRepository.save(trangThaiHoaDon);
+                    hoaDonRepository.save(hoaDon);
 
-                if (hoaDon.getTienShip() == null) {
-                    hoaDon.setTienShip(BigDecimal.ZERO);
+                    return MessageResponse.builder().message("Trả hàng thành công").build();
                 }
-                if (hoaDon.getTienGiamGia() == null) {
-                    hoaDon.setTienGiamGia(BigDecimal.ZERO);
-                }
-
-                hoaDon.setThanhTien(tongTien.add(hoaDon.getTienShip()).add(hoaDon.getTienGiamGia()));
-                chiTietSanPhamRepository.save(sanPhamChiTiet);
-                trangThaiHoaDonRepository.save(trangThaiHoaDon);
-                hoaDonRepository.save(hoaDon);
-
-                return MessageResponse.builder().message("Trả hàng thành công").build();
             }
+
+            return MessageResponse.builder().message("Trả hàng thất bại").build();
         }
 
-        return MessageResponse.builder().message("Trả hàng thất bại").build();
-    }
-
-    @Override
-    @Scheduled(cron = "0 0 0 * * ?") // Chạy vào mỗi ngày lúc 00:00:00
-    public void checkWarrantyExpiration() {
-//        List<HinhThucThanhToan> paymentList = hinhThucThanhToanRepository.findAllByTrangThai(); // Lấy danh sách thanh toán từ cơ sở dữ liệu
-//
-//        for (HinhThucThanhToan payment : paymentList) {
-//            LocalDate ngayThanhToan = payment.getNgayThanhToan().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); // Ngày thanh toán
-//
-//            List<SanPham> productList = sanPhamRepository.findByBaoHanhGreaterThan(0); // Lấy danh sách sản phẩm có bảo hành
-//
-//            for (SanPham product : productList) {
-//                LocalDate warrantyEndDate = ngayThanhToan.plusDays(product.getBaoHanh()); // Tính ngày kết thúc bảo hành
-//
-//                if (LocalDate.now().isAfter(warrantyEndDate)) {
-//                    // Bảo hành đã hết hạn, thực hiện các hành động cần thiết
-//                    // Ví dụ: product.setBaoHanhHetHan(true);
-//                    // sanPhamRepository.save(product);
-//                }
-//            }
-//        }
-    }
 
     @Override
     public void deleteOrderDetail(UUID id) {
