@@ -70,6 +70,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/images/**").permitAll()
                         .requestMatchers("/api/v1/don-hang-khach-hang/**").permitAll()
                         .requestMatchers("/api/v1/don-hang-khach-hang-chi-tiet/**").permitAll()
+                        .requestMatchers("/api/v1/voucher-login/**").permitAll()
 
                         .anyRequest()
                         .authenticated())
