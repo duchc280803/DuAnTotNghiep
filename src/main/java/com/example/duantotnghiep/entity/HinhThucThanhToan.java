@@ -58,4 +58,5 @@ public class HinhThucThanhToan {
     @JoinColumn(name = "idloai")
     @JsonBackReference
     private LoaiHinhThucThanhToan loaiHinhThucThanhToan;
+
 }

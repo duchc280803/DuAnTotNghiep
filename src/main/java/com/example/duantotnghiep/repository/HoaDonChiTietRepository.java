@@ -14,6 +14,8 @@ import java.util.UUID;
 @Repository
 public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UUID> {
 
+    List<HoaDonChiTiet> findByHoaDon_Id(UUID id);
+
     HoaDonChiTiet findByHoaDonAndSanPhamChiTiet_Id(HoaDon hoaDon, UUID idSpCt);
 
     List<HoaDonChiTiet> findAllByHoaDon(HoaDon hoaDon);
@@ -38,9 +40,10 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
             "WHERE i.isDefault = true AND hd.id = :idHoaDon")
     List<SanPhamHoaDonChiTietResponse> getSanPhamHDCT(@Param("idHoaDon") UUID idHoaDon);
 
-    @Query(value = "SELECT HD.ma, HTTT.sotientra, HTTT.ngaytao, HTTT.phuongthucthanhtoan, HTTT.ghichu, HTTT.trangthai, TKNV.fullname FROM hoadon HD\n" +
-            "            JOIN hinhthucthanhtoan HTTT ON HD.id = HTTT.idhoadon\n" +
-            "            JOIN taikhoan TKNV ON HD.idnhanvien = TKNV.id WHERE HD.id = ?1\n", nativeQuery = true)
+    @Query("SELECT new com.example.duantotnghiep.response.HinhThucThanhToanResponse(lhttt.tenLoai, httt.codeTransaction, httt.tongSoTien, httt.ngayThanhToan, httt.phuongThucThanhToan,httt.ghiChu, nv.name) FROM HoaDon hd " +
+            "JOIN hd.hinhThucThanhToanList httt " +
+            "JOIN httt.loaiHinhThucThanhToan lhttt " +
+            "JOIN hd.taiKhoanNhanVien nv")
     List<HinhThucThanhToanResponse> getLichSuThanhToan(UUID idHoaDon);
 
     @Query("SELECT new com.example.duantotnghiep.response.TrangThaiHoaDonResponse(tthd.trangThai, tthd.thoiGian, tknv.name, tthd.ghiChu) " +
@@ -49,7 +52,7 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
             "LEFT JOIN hd.taiKhoanNhanVien tknv WHERE hd.id = :id ORDER BY tthd.thoiGian DESC ")
     List<TrangThaiHoaDonResponse> getAllTrangThaiHoaDon(@Param("id") UUID id);
 
-    @Query("SELECT new com.example.duantotnghiep.response.MoneyResponse(hd.thanhTien, hd.tienShip, hd.tienThua, hd.tienGiamGia)" +
+    @Query("SELECT new com.example.duantotnghiep.response.MoneyResponse(hd.thanhTien, hd.tienShip, hd.tienGiamGia)" +
             "FROM HoaDon hd WHERE hd.id = :idHoaDon")
     MoneyResponse getAllMoneyByHoaDon(UUID idHoaDon);
 

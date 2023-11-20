@@ -1,18 +1,30 @@
 package com.example.duantotnghiep.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public interface HinhThucThanhToanResponse {
-    String getMa();
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class HinhThucThanhToanResponse {
 
-    BigDecimal getSoTienTra();
+    String tenLoai;
 
-    Date getNgayTao();
+    String ma;
 
-    Integer getPhuongThucThanhToan();
+    BigDecimal soTienTra;
 
-    String getGhiChu();
+    Date ngayTao;
 
-    String getFullName();
+    Integer phuongThucThanhToan;
+
+    String ghiChu;
+
+    String name;
 }

@@ -8,6 +8,7 @@ import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
 import com.example.duantotnghiep.response.*;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,4 +40,7 @@ public interface HoaDonChiTietService {
 
 
     void deleteOrderDetail(UUID id);
+
+    boolean traHang(UUID id);
+
 }

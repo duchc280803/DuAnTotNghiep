@@ -22,5 +22,4 @@ public interface HoaDonService {
 
     List<NhanVienResponse> nhanVienList(Integer pageNumber, Integer pageSize);
 
-
 }

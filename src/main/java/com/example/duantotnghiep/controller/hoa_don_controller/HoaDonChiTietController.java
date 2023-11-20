@@ -31,17 +31,9 @@ public class HoaDonChiTietController {
     @Autowired
     private TrangThaiHoaDonServiceImpl trangThaiHoaDonService;
 
-    @Autowired
-    private HoaDonChiTietRepository hoaDonChiTietRepository;
-
     @GetMapping("hien-thi-don/{idHoaDon}")
     public ResponseEntity<ThongTinDonHang> viewThongTinDonHang(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(hoaDonChiTietService.getThongTinDonHang(idHoaDon), HttpStatus.OK);
-    }
-
-    @GetMapping("hoadonchitiet/{id}")
-    public ResponseEntity<HoaDonChiTiet> findById(@PathVariable(name = "id") UUID id) {
-        return new ResponseEntity<>(hoaDonChiTietRepository.findById(id).get(), HttpStatus.OK);
     }
 
     @GetMapping("hien-thi-san-pham/{idHoaDon}")
@@ -129,6 +121,11 @@ public class HoaDonChiTietController {
     public ResponseEntity<MessageResponse> deleteOrderDetail(@RequestParam(name = "id") UUID id) {
         hoaDonChiTietService.deleteOrderDetail(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("tra-hang/{id}")
+    public ResponseEntity<?> traHang(@PathVariable(name = "id") UUID id) {
+        return new ResponseEntity<>(hoaDonChiTietService.traHang(id), HttpStatus.OK);
     }
 
 }
