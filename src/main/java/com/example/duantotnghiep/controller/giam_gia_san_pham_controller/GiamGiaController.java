@@ -4,6 +4,7 @@ import com.example.duantotnghiep.request.GiamGiaRequest;
 import com.example.duantotnghiep.request.UpdateGiamGiaResquest;
 import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.giam_gia_service.impl.GiamGiaServiceimpl;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +25,7 @@ public class GiamGiaController {
     private GiamGiaServiceimpl Service;
 
     @GetMapping("show")
-    public ResponseEntity<List<GiamGiaResponse>> getAllGiamGia() {
+    public ResponseEntity<List<GiamGiaResponse>> getAllGiamGia() throws IOException, CsvValidationException {
         return new ResponseEntity<>(Service.getAll(), HttpStatus.OK);
     }
 

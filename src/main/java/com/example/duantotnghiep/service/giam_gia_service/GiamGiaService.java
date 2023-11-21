@@ -3,16 +3,18 @@ package com.example.duantotnghiep.service.giam_gia_service;
 import com.example.duantotnghiep.request.GiamGiaRequest;
 import com.example.duantotnghiep.request.UpdateGiamGiaResquest;
 import com.example.duantotnghiep.response.*;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 public interface GiamGiaService {
 
-    List<GiamGiaResponse> getAll();
+    List<GiamGiaResponse> getAll() throws IOException, CsvValidationException;
 
     Page<GiamGiaResponse> getAll(Pageable pageable);
 

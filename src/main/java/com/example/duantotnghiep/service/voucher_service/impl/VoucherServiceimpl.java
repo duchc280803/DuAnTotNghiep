@@ -67,6 +67,11 @@ public class VoucherServiceimpl implements VoucherService {
     }
 
     @Override
+    public List<Voucher> searchByTrangThai(Integer trangThai) {
+        return  Repository.findByTrangThai(trangThai);
+    }
+
+    @Override
     public List<Voucher> searchByTenOrMaVoucher(String keyword) {
         return Repository.findByTenVoucherContainingIgnoreCaseOrMaVoucherContainingIgnoreCase(keyword, keyword);
     }

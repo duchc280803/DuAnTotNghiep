@@ -51,4 +51,10 @@ public class VoucherController {
         return ResponseEntity.ok(voucher);
     }
 
+
+    @GetMapping("searchByTrangThai")
+    public ResponseEntity<List<Voucher>> searchByTrangThai(@RequestParam Integer trangThai) {
+        return new ResponseEntity<>(Service.searchByTrangThai(trangThai), HttpStatus.OK);
+    }
+
 }
