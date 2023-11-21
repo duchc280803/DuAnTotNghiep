@@ -8,7 +8,9 @@ import com.example.duantotnghiep.response.GiamGiaDetailResponse;
 import com.example.duantotnghiep.response.GiamGiaResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.ProductDetailResponse;
+import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.giam_gia_service.GiamGiaService;
+import com.opencsv.exceptions.CsvValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -35,9 +38,12 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     private SanPhamRepository spRepository;
 
     @Override
-    public List<GiamGiaResponse> getAll() {
+    public List<GiamGiaResponse> getAll() throws IOException, CsvValidationException {
+        auditLogService.writeAuditLogChatlieu("update", "abc", "xyz");
         return Repository.listGiamGia();
     }
+    @Autowired
+    private AuditLogService auditLogService;
 
     @Override
     public Page<GiamGiaResponse> getAll(Pageable pageable) {
