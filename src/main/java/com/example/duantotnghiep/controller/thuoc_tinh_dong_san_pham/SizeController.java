@@ -53,6 +53,7 @@ public class SizeController {
             return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PutMapping("delete")
     public ResponseEntity<MessageResponse> deleteSize(@RequestParam UUID id) {
         return new ResponseEntity<>(sizeService.delete(id), HttpStatus.OK);

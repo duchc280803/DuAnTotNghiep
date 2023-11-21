@@ -16,6 +16,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/ql-khach-hang")
 public class KhachHangController {
+
     @Autowired
     QLKhachHangImpl service;
 
@@ -53,7 +54,5 @@ public class KhachHangController {
             return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 
 }

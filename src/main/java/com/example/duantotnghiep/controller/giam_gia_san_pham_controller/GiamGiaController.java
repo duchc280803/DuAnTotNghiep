@@ -21,6 +21,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/giam-gia/")
 public class GiamGiaController {
+
     @Autowired
     private GiamGiaServiceimpl Service;
 
@@ -31,14 +32,14 @@ public class GiamGiaController {
 
     @GetMapping("showhh")
     public ResponseEntity<Page<GiamGiaResponse>> getAllGiamGia(@RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+                                                               @RequestParam(defaultValue = "10") int size) {
         Page<GiamGiaResponse> resultPage = Service.getAll(PageRequest.of(page, size));
         return new ResponseEntity<>(resultPage, HttpStatus.OK);
     }
 
     @PutMapping("update/{id}")
     public ResponseEntity<MessageResponse> updateGiamGia(@PathVariable UUID id,
-            @RequestBody UpdateGiamGiaResquest updateGiamGiaRequest) {
+                                                         @RequestBody UpdateGiamGiaResquest updateGiamGiaRequest) {
         Service.updateGiamGia(id, updateGiamGiaRequest);
         return new ResponseEntity<>(
                 MessageResponse.builder().message("Cập nhật thông tin giảm giá thành công.").build(), HttpStatus.OK);
