@@ -261,9 +261,6 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                     for (SanPhamHoaDonChiTietResponse sanPham : productInHoaDon) {
                         if (sanPham.getTrangThai() == 5) {
                             count++;
-                            if (sanPham.getDonGiaSauGiam() != null && sanPham.getSoLuong() != null) {
-                                tongTien = tongTien.add(sanPham.getDonGiaSauGiam().multiply(BigDecimal.valueOf(sanPham.getSoLuong())));
-                            }
                         }
                     }
                     if (count == 0) {
@@ -322,15 +319,17 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                                 addTraHang.setSanPhamChiTiet(hoaDonChiTiet.getSanPhamChiTiet());
                                 addTraHang.setDonGiaSauGiam(hoaDonChiTiet.getDonGiaSauGiam());
                                 addTraHang.setSoLuong(traHangRequest.getSoLuong());
+                                hoaDonChiTietRepository.save(addTraHang);
+
                                 hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() - traHangRequest.getSoLuong());
                                 sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
-                                hoaDonChiTietRepository.save(addTraHang);
                                 trangThaiHoaDon.setId(UUID.randomUUID());
                                 trangThaiHoaDon.setTrangThai(7);
                                 trangThaiHoaDon.setThoiGian(timestamp);
                                 trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
                                 trangThaiHoaDon.setHoaDon(hoaDon);
                                 hoaDonChiTietRepository.save(hoaDonChiTiet);
+
                             }
                         }
                     }
@@ -339,6 +338,13 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                     }
                     if (hoaDon.getTienGiamGia() == null) {
                         hoaDon.setTienGiamGia(BigDecimal.ZERO);
+                    }
+                    List<SanPhamHoaDonChiTietResponse> checkGia = hoaDonChiTietRepository.getSanPhamHDCT(hoaDonChiTiet.getHoaDon().getId());
+                    for (SanPhamHoaDonChiTietResponse sanPham : checkGia) {
+                        if (sanPham.getTrangThai() == 5) {
+                            tongTien = tongTien.add(sanPham.getDonGiaSauGiam().multiply(BigDecimal.valueOf(sanPham.getSoLuong())));
+                            System.out.println("Tên sản phẩm: " + sanPham.getTenSanPham() +" - Số lương: "+sanPham.getSoLuong() +" - Đơn giá: " + sanPham.getDonGiaSauGiam() +" - Tổng tiền: "+tongTien);
+                        }
                     }
 
                     hoaDon.setThanhTien(tongTien.add(hoaDon.getTienShip()).add(hoaDon.getTienGiamGia()));
