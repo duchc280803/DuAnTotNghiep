@@ -16,6 +16,6 @@ public interface VoucherService {
     MessageResponse updateVoucher(UUID id, VoucherRequest createVoucherRequest);
 
     public Voucher findById(UUID id);
-
+    List<Voucher> searchByTrangThai(Integer trangThai);
     public List<Voucher> searchByTenOrMaVoucher(String keyword);
 }

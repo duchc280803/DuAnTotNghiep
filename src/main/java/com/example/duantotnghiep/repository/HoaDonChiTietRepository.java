@@ -20,15 +20,12 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
 
     List<HoaDonChiTiet> findAllByHoaDon(HoaDon hoaDon);
 
-    @Query(value = "SELECT TOP 1 hd.ma, hd.trangthai, LD.tenloaidon,\n" +
-            "HD.diachi,\n" +
-            "HD.tennguoinhan, HD.sdtnguoinhan,  HD.ngayship, HD.sdtnguoiship, TTHD.ghichu, HD.idnhanvien\n" +
-            "FROM\n" +
-            "hoadon HD JOIN loaidon LD ON HD.idloaidon = LD.id\n" +
-            "JOIN trangthaihoadon TTHD ON TTHD.idhoadon = HD.id\n" +
-            "WHERE TTHD.idhoadon = ?1\n" +
-            "ORDER BY TTHD.thoigian DESC", nativeQuery = true)
-    ThongTinDonHang getThongTinDonHang(UUID idHoaDon);
+    @Query("SELECT new com.example.duantotnghiep.response.ThongTinDonHang" +
+            "(hd.ma, hd.trangThai,ld.tenLoaiDon, hd.diaChi, hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.tenNguoiShip, hd.sdtNguoiShip, nv.id) " +
+            "FROM HoaDon hd JOIN " +
+            "hd.loaiDon ld JOIN hd.taiKhoanNhanVien nv " +
+            "WHERE hd.id = :idHoaDon")
+    ThongTinDonHang getThongTinDonHang(@Param("idHoaDon") UUID idHoaDon);
 
     @Query("SELECT new com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse" +
             "(hdct.id, i.tenImage, sp.tenSanPham, hdct.donGia, hdct.donGiaSauGiam, hdct.soLuong, hdct.trangThai) " +

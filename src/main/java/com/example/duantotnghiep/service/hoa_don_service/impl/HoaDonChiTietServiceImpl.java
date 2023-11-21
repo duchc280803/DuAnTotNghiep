@@ -260,8 +260,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
                     for (SanPhamHoaDonChiTietResponse sanPham : productInHoaDon) {
                         if (sanPham.getTrangThai() == 5) {
-                            count++;
-                        }
+                            count++;                        }
                     }
                     if (count == 0) {
                         hoaDon.setTrangThai(6);
@@ -343,7 +342,6 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                     for (SanPhamHoaDonChiTietResponse sanPham : checkGia) {
                         if (sanPham.getTrangThai() == 5) {
                             tongTien = tongTien.add(sanPham.getDonGiaSauGiam().multiply(BigDecimal.valueOf(sanPham.getSoLuong())));
-                            System.out.println("Tên sản phẩm: " + sanPham.getTenSanPham() +" - Số lương: "+sanPham.getSoLuong() +" - Đơn giá: " + sanPham.getDonGiaSauGiam() +" - Tổng tiền: "+tongTien);
                         }
                     }
 
