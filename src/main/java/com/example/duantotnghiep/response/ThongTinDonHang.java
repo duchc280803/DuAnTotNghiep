@@ -1,27 +1,33 @@
 package com.example.duantotnghiep.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.UUID;
 
-public interface ThongTinDonHang {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ThongTinDonHang {
 
-    String getMa();
+    String ma;
 
-    Integer getTrangThai();
+    Integer trangThai;
 
-    String getTenLoaiDon();
+    String tenLoaiDon;
 
-    String getDiaChi();
+    String diaChi;
 
-    String getTenNguoiNhan();
+    String tenNguoiNhan;
 
-    String getSdtNguoiNhan();
+    String sdtNguoiNhan;
 
-    String getTenNguoiShp();
+    String tenNguoiShip;
 
-    String getSdtNguoiShip();
+    String sdtNguoiShip;
 
-    String getGhiChu();
-
-    UUID getIdNhanVien();
-
+    UUID idNhanVien;
 }

@@ -1,12 +1,7 @@
 package com.example.duantotnghiep.controller.hoa_don_controller;
 
 import com.example.duantotnghiep.entity.HoaDon;
-import com.example.duantotnghiep.entity.HoaDonChiTiet;
-import com.example.duantotnghiep.request.TraHangRequest;
-import com.example.duantotnghiep.repository.HoaDonChiTietRepository;
-import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
-import com.example.duantotnghiep.request.TransactionRequest;
-import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
+import com.example.duantotnghiep.request.*;
 import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.hoa_don_service.impl.HoaDonChiTietServiceImpl;
 import com.example.duantotnghiep.service.hoa_don_service.impl.TrangThaiHoaDonServiceImpl;
@@ -16,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
@@ -56,6 +50,13 @@ public class HoaDonChiTietController {
             @PathVariable UUID hoadonId,
             @RequestBody TrangThaiHoaDonRequest request, Principal principal) {
         return new ResponseEntity<>(trangThaiHoaDonService.confirmOrder(hoadonId, request, principal.getName()), HttpStatus.CREATED);
+    }
+
+    @PutMapping("confirm-order-client/{hoadonId}")
+    public ResponseEntity<MessageResponse> confirmOrderClient(
+            @PathVariable UUID hoadonId,
+            @RequestBody ConfirmOrderClientRequest request) {
+        return new ResponseEntity<>(trangThaiHoaDonService.confirmOrderClient(hoadonId, request), HttpStatus.CREATED);
     }
 
     @PostMapping("confirm-thanh-toan/{hoadonId}")
