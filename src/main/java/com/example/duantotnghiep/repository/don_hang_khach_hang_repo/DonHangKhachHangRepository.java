@@ -74,62 +74,59 @@ public interface DonHangKhachHangRepository extends JpaRepository<HoaDon, UUID> 
     List<DonHangKhachHangMap> filterStatus(String username,Integer trangthai);
 
     @Query(value = "WITH CTE AS (\n" +
-            "    SELECT\n" +
-            "        hd.id AS idhoadon,\n" +
-            "\t\thd.ma AS mahoadon,\n" +
-            "        sp.id AS idsanpham,\n" +
-            "        sp.tensanpham,\n" +
-            "        img.tenimage,\n" +
-            "        s.size,\n" +
-            "        cl.tenchatlieu,\n" +
-            "        ms.tenmausac,\n" +
-            "        hdct.soluong,\n" +
-            "        hdct.dongia,\n" +
-            "        hdct.dongiasaugiam,\n" +
-            "        CASE\n" +
-            "            WHEN hdct.dongiasaugiam IS NOT NULL THEN hdct.dongiasaugiam * hdct.soluong\n" +
-            "            ELSE hdct.dongia * hdct.soluong\n" +
-            "        END AS thanhtien,\n" +
-            "        SUM(hdct.soluong) OVER (PARTITION BY hd.id) AS tongsoluong,\n" +
-            "        ROW_NUMBER() OVER (PARTITION BY hd.id ORDER BY hdct.id) AS RowNum\n" +
-            "    FROM\n" +
-            "        hoadon hd\n" +
-            "    JOIN hoadonchitiet hdct ON hd.id = hdct.idhoadon\n" +
-            "    JOIN sanphamchitiet spct ON hdct.idsanphamchitiet = spct.id\n" +
-            "    JOIN sanpham sp ON spct.idsanpham = sp.id\n" +
-            "    JOIN danhmuc dm ON sp.iddanhmuc = dm.id\n" +
-            "    JOIN thuonghieu th ON sp.idthuonghieu = th.id\n" +
-            "    JOIN xuatxu xx ON sp.idxuatxu = xx.id\n" +
-            "    JOIN image img ON sp.id = img.idsanpham\n" +
-            "    JOIN kieude kd ON sp.idkieude = kd.id\n" +
-            "    JOIN size s ON spct.idsize = s.id\n" +
-            "    JOIN mausac ms ON spct.idmausac = ms.id\n" +
-            "    JOIN chatlieu cl ON spct.idchatlieu = cl.id\n" +
-            "    JOIN trangthaihoadon tthd ON tthd.idhoadon = hd.id\n" +
-            "    JOIN taikhoan tk ON tk.id = hd.idkhachhang\n" +
-            "    WHERE\n" +
-            "        img.isdefault = 'true'\n" +
-            "        AND tk.username = :username\n" +
-            "        AND tthd.trangthai = 1\n" +
-            ")\n" +
-            "SELECT\n" +
-            "    idhoadon,\n" +
-            "\tmahoadon,\n" +
-            "    idsanpham,\n" +
-            "    tensanpham,\n" +
-            "    tenimage,\n" +
-            "    size,\n" +
-            "    tenchatlieu,\n" +
-            "    tenmausac,\n" +
-            "    soluong,\n" +
-            "    dongia,\n" +
-            "    dongiasaugiam,\n" +
-            "    thanhtien,\n" +
-            "    tongsoluong\n" +
-            "FROM CTE\n" +
-            "WHERE RowNum = 1\n" +
-            "    AND (tensanpham LIKE %:tensanpham% OR mahoadon LIKE %:mahoadon%)\n",nativeQuery = true)
-    List<DonHangKhachHangMap> searchByMaOrName(@Param("username") String username, @Param("tensanpham") String tensanpham, @Param("mahoadon") String mahoadon);
+            "                SELECT\n" +
+            "                    hd.id AS idhoadon,\n" +
+            "                    hd.ma AS mahoadon,\n" +
+            "                    sp.id AS idsanpham,\n" +
+            "                    sp.tensanpham,\n" +
+            "                   img.tenimage,\n" +
+            "                    s.size,\n" +
+            "                    cl.tenchatlieu,\n" +
+            "                    ms.tenmausac,\n" +
+            "                    hdct.soluong,\n" +
+            "                    hdct.dongia,\n" +
+            "                    hdct.dongiasaugiam,\n" +
+            "\t\t\t\t\thd.thanhtien as thanhtien,\n" +
+            "                    SUM(hdct.soluong) OVER (PARTITION BY hd.id) AS tongsoluong,\n" +
+            "                    ROW_NUMBER() OVER (PARTITION BY hd.id ORDER BY hdct.id) AS RowNum\n" +
+            "                FROM\n" +
+            "                    hoadon hd\n" +
+            "                JOIN hoadonchitiet hdct ON hd.id = hdct.idhoadon\n" +
+            "                JOIN sanphamchitiet spct ON hdct.idsanphamchitiet = spct.id\n" +
+            "                JOIN sanpham sp ON spct.idsanpham = sp.id\n" +
+            "                JOIN danhmuc dm ON sp.iddanhmuc = dm.id\n" +
+            "                JOIN thuonghieu th ON sp.idthuonghieu = th.id\n" +
+            "                JOIN xuatxu xx ON sp.idxuatxu = xx.id\n" +
+            "                JOIN image img ON sp.id = img.idsanpham\n" +
+            "                JOIN kieude kd ON sp.idkieude = kd.id\n" +
+            "                JOIN size s ON spct.idsize = s.id\n" +
+            "                JOIN mausac ms ON spct.idmausac = ms.id\n" +
+            "                JOIN chatlieu cl ON spct.idchatlieu = cl.id\n" +
+            "                JOIN trangthaihoadon tthd ON tthd.idhoadon = hd.id\n" +
+            "                JOIN taikhoan tk ON tk.id = hd.idkhachhang\n" +
+            "                WHERE\n" +
+            "                    img.isdefault = 'true'\n" +
+            "                    AND tk.username = :username\n" +
+            "                    AND tthd.trangthai = :trangthai\n" +
+            "\t\t\t\t\tAND hd.trangthai = :trangthai\n" +
+            "            )\n" +
+            "            SELECT\n" +
+            "                idhoadon,\n" +
+            "                mahoadon,\n" +
+            "                idsanpham,\n" +
+            "                tensanpham,\n" +
+            "                tenimage,\n" +
+            "                size,\n" +
+            "                tenchatlieu,\n" +
+            "                tenmausac,\n" +
+            "                soluong,\n" +
+            "                dongia,\n" +
+            "                dongiasaugiam,\n" +
+            "\t\t\t\tthanhtien,\n" +
+            "                tongsoluong\n" +
+            "            FROM CTE\n" +
+            "            WHERE RowNum = 1 AND (tensanpham LIKE %:tensanpham% OR mahoadon LIKE %:mahoadon%)\n",nativeQuery = true)
+    List<DonHangKhachHangMap> searchByMaOrName(@Param("username") String username,@Param("trangthai") String trangthai, @Param("tensanpham") String tensanpham, @Param("mahoadon") String mahoadon);
 
 
 }

@@ -31,8 +31,8 @@ public class DonHangKhachHangController {
     }
 
     @GetMapping("search")
-    public ResponseEntity<List<DonHangKhachHangMap>> search(Principal principal, @RequestParam String tensanpham, @RequestParam String mahoadon) {
+    public ResponseEntity<List<DonHangKhachHangMap>> search(Principal principal, @RequestParam String tensanpham, @RequestParam String mahoadon, @RequestParam String trangthai) {
         String username = principal.getName();
-        return ResponseEntity.ok(donHangKhachHangRepository.searchByMaOrName(username,tensanpham,mahoadon));
+        return ResponseEntity.ok(donHangKhachHangRepository.searchByMaOrName(username,trangthai,tensanpham,mahoadon));
     }
 }
