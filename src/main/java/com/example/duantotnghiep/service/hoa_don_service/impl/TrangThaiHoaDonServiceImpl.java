@@ -8,6 +8,7 @@ import com.example.duantotnghiep.repository.HoaDonChiTietRepository;
 import com.example.duantotnghiep.repository.HoaDonRepository;
 import com.example.duantotnghiep.repository.TaiKhoanRepository;
 import com.example.duantotnghiep.repository.TrangThaiHoaDonRepository;
+import com.example.duantotnghiep.request.ConfirmOrderClientRequest;
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.hoa_don_service.TrangThaiHoaDonService;
@@ -60,7 +61,6 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             hoaDon.setTaiKhoanNhanVien(taiKhoan);
 
 
-
             hoaDonChiTietList.stream()
                     .filter(hoaDonChiTiet -> hoaDonChiTiet.getTrangThai() != 7)
                     .forEach(hoaDonChiTiet -> {
@@ -73,6 +73,20 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             trangThaiHoaDonRepository.save(trangThaiHoaDon);
         }
         return MessageResponse.builder().message("Thêm thành công").build();
+    }
+
+    @Override
+    public MessageResponse confirmOrderClient(UUID hoadonId, ConfirmOrderClientRequest request) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(hoadonId);
+        hoaDon.get().setTenNguoiShip(request.getHoVaTenNguoiShip());
+        hoaDon.get().setTienShip(request.getTienShip());
+        hoaDon.get().setSdtNguoiShip(request.getSoDienThoai());
+        hoaDon.get().setDiaChi(request.getDiaChi());
+        hoaDon.get().setNgayCapNhap(timestamp);
+        hoaDon.get().setThanhTien(hoaDon.get().getThanhTien().add(request.getTienShip()));
+        hoaDonRepository.save(hoaDon.get());
+        return MessageResponse.builder().message("Cập nhập thành công").build();
     }
 
 }
