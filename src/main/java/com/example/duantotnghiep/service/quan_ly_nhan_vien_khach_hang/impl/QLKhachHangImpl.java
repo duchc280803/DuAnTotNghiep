@@ -15,14 +15,21 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class QLKhachHangImpl implements QLKhachHangService {
+
     @Autowired
     private KhachHangRepository khachHangRepository;
 
@@ -31,6 +38,10 @@ public class QLKhachHangImpl implements QLKhachHangService {
 
     @Autowired
     private JavaMailSender javaMailSender;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public List<QLKhachHangResponse> getQLKhachHang(Integer trangThai, String name, String soDienThoai, String maTaiKhoan, Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
@@ -39,17 +50,25 @@ public class QLKhachHangImpl implements QLKhachHangService {
     }
 
     @Override
-    public MessageResponse createKhachHang(CreateQLKhachHangRequest createQLKhachHangRequest, boolean sendEmail) {
+    public MessageResponse createKhachHang(MultipartFile file, CreateQLKhachHangRequest createQLKhachHangRequest, boolean sendEmail) {
+        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+
+        try {
+            Files.copy(file.getInputStream(), Paths.get("D:\\FE_DuAnTotNghiep\\assets\\ảnh giày", fileName), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         LoaiTaiKhoan loaiTaiKhoan = loaiTaiKhoanRepository.findByName(TypeAccountEnum.USER).get();
         TaiKhoan taiKhoan = new TaiKhoan();
         taiKhoan.setId(UUID.randomUUID());
         taiKhoan.setName(createQLKhachHangRequest.getTen());
         taiKhoan.setEmail(createQLKhachHangRequest.getEmail());
         taiKhoan.setSoDienThoai(createQLKhachHangRequest.getSoDienThoai());
-        taiKhoan.setImage(createQLKhachHangRequest.getImage());
+        taiKhoan.setImage(fileName);
         taiKhoan.setGioiTinh(createQLKhachHangRequest.getGioiTinh());
         taiKhoan.setUsername(createQLKhachHangRequest.getUserName());
-        taiKhoan.setMatKhau(createQLKhachHangRequest.getMatKhau());
+        taiKhoan.setMatKhau(passwordEncoder.encode(createQLKhachHangRequest.getMatKhau()));
         taiKhoan.setNgaySinh(createQLKhachHangRequest.getNgaySinh());
         taiKhoan.setTrangThai(createQLKhachHangRequest.getTrangThai());
         taiKhoan.setMaTaiKhoan(createQLKhachHangRequest.getMaTaiKhoan());
@@ -61,6 +80,7 @@ public class QLKhachHangImpl implements QLKhachHangService {
         }
         return MessageResponse.builder().message("Thêm Thành Công").build();
     }
+
     private void sendConfirmationEmail(String email, String username, String password) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(email);
@@ -71,6 +91,7 @@ public class QLKhachHangImpl implements QLKhachHangService {
                 "Password: " + password);
         javaMailSender.send(simpleMailMessage);
     }
+
     @Override
     public QLKhachHangResponse detailKhachHang(UUID id) {
         return khachHangRepository.detailQLKhachHang(id);
@@ -86,7 +107,6 @@ public class QLKhachHangImpl implements QLKhachHangService {
             taiKhoan.setName(createQLKhachHangRequest.getTen());
             taiKhoan.setEmail(createQLKhachHangRequest.getEmail());
             taiKhoan.setSoDienThoai(createQLKhachHangRequest.getSoDienThoai());
-            taiKhoan.setImage(createQLKhachHangRequest.getImage());
             taiKhoan.setGioiTinh(createQLKhachHangRequest.getGioiTinh());
             taiKhoan.setUsername(createQLKhachHangRequest.getUserName());
             taiKhoan.setNgaySinh(createQLKhachHangRequest.getNgaySinh());
@@ -99,8 +119,5 @@ public class QLKhachHangImpl implements QLKhachHangService {
             return MessageResponse.builder().message("Không Tìm Thấy Khách Hàng").build();
         }
     }
-
-
-
 
 }

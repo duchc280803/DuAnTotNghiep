@@ -36,19 +36,28 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
 
     @Override
     public MessageResponse addVoucherOrder(UUID idHoaDon, UUID idVoucher, BigDecimal thanhTien) {
-        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
-        Optional<Voucher> voucher = voucherRepository.findById(idVoucher);
-        if (hoaDon.isPresent()) {
-            hoaDon.get().setVoucher(voucher.get());
-            if (voucher.get().getHinhThucGiam() == 1) {
-                Long phanTramGiam = voucher.get().getGiaTriGiam() / 100;
-                hoaDon.get().setTienGiamGia(thanhTien.multiply(new BigDecimal(phanTramGiam)));
+        Optional<HoaDon> optionalHoaDon = hoaDonRepository.findById(idHoaDon);
+        Optional<Voucher> optionalVoucher = voucherRepository.findById(idVoucher);
+
+        if (optionalHoaDon.isPresent() && optionalVoucher.isPresent()) {
+            HoaDon hoaDon = optionalHoaDon.get();
+            Voucher voucher = optionalVoucher.get();
+
+            hoaDon.setVoucher(voucher);
+
+            if (voucher.getHinhThucGiam() == 1) {
+                BigDecimal phanTramGiam = new BigDecimal(voucher.getGiaTriGiam()).divide(new BigDecimal(100));
+                BigDecimal tienGiam = thanhTien.multiply(phanTramGiam);
+                hoaDon.setTienGiamGia(tienGiam);
+            } else if (voucher.getHinhThucGiam() == 2) {
+                hoaDon.setTienGiamGia(new BigDecimal(voucher.getGiaTriGiam()));
             }
-            if (voucher.get().getHinhThucGiam() == 2) {
-                hoaDon.get().setTienGiamGia(thanhTien.subtract(new BigDecimal(voucher.get().getGiaTriGiam())));
-            }
+
+            hoaDonRepository.save(hoaDon);
+            return MessageResponse.builder().message("Cập nhật thành công").build();
         }
-        hoaDonRepository.save(hoaDon.get());
-        return MessageResponse.builder().message("Update thành công").build();
+
+        return MessageResponse.builder().message("Không tìm thấy HoaDon hoặc Voucher").build();
     }
+
 }

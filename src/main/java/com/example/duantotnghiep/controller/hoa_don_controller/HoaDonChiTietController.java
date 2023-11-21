@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.controller.hoa_don_controller;
 
 import com.example.duantotnghiep.entity.HoaDon;
+import com.example.duantotnghiep.repository.LoaiHinhThucThanhToanRepository;
 import com.example.duantotnghiep.request.*;
 import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.hoa_don_service.impl.HoaDonChiTietServiceImpl;

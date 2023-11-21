@@ -21,6 +21,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/giam-gia/")
 public class GiamGiaController {
+
     @Autowired
     private GiamGiaServiceimpl Service;
 

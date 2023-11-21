@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @Service
 public class VoucherServiceimpl implements VoucherService {
+
     @Autowired
     private VoucherRepository Repository;
 

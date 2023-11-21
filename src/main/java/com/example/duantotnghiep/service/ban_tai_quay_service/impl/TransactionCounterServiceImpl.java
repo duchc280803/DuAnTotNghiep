@@ -3,10 +3,12 @@ package com.example.duantotnghiep.service.ban_tai_quay_service.impl;
 import com.example.duantotnghiep.config.VnPayConfig;
 import com.example.duantotnghiep.entity.HinhThucThanhToan;
 import com.example.duantotnghiep.entity.HoaDon;
+import com.example.duantotnghiep.entity.LoaiHinhThucThanhToan;
 import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.repository.HinhThucThanhToanRepository;
 import com.example.duantotnghiep.repository.HoaDonRepository;
 import com.example.duantotnghiep.repository.KhachHangRepository;
+import com.example.duantotnghiep.repository.LoaiHinhThucThanhToanRepository;
 import com.example.duantotnghiep.request.TransactionRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.TransactionResponse;
@@ -30,10 +32,19 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
     @Autowired
     private HoaDonRepository hoaDonRepository;
 
+    @Autowired
+    private LoaiHinhThucThanhToanRepository loaiHinhThucThanhToanRepository;
+
     @Override
     public MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest) {
         Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+
+        LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+        loaiHinhThucThanhToan.setId(UUID.randomUUID());
+        loaiHinhThucThanhToan.setNgayTao(new Date(System.currentTimeMillis()));
+        loaiHinhThucThanhToan.setTenLoai("Khách thanh toán");
+        loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
 
         HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
         hinhThucThanhToan.setId(UUID.randomUUID());
@@ -44,6 +55,7 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
         hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
         hinhThucThanhToan.setHoaDon(hoaDon.get());
         hinhThucThanhToan.setTrangThai(1);
+        hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
         return MessageResponse.builder().message("Thanh toán thành công").build();
     }
