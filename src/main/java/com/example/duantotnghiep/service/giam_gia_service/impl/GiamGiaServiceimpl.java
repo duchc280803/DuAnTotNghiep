@@ -39,7 +39,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
     @Override
     public List<GiamGiaResponse> getAll() throws IOException, CsvValidationException {
-        auditLogService.writeAuditLogChatlieu("update", "abc", "xyz");
+        auditLogService.writeAuditLogChatlieu("update", "abc", "xyz","ID1","ID2","ID3");
         return Repository.listGiamGia();
     }
     @Autowired
@@ -57,7 +57,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
     @Override
     @Transactional
-    public MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest) {
+    public MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest) throws IOException, CsvValidationException {
         // Kiểm tra xem đối tượng GiamGia có tồn tại không
         GiamGia existingGiamGia = Repository.findById(id).orElse(null);
 
@@ -111,6 +111,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
             }
 
             // Trả về thông báo thành công
+            auditLogService.writeAuditLogChatlieu("update", "abc", "xyz",null,null,null);
             return MessageResponse.builder().message("Cập nhật Thành Công").build();
         } else {
             // Handle the case where the discount is not found
@@ -225,7 +226,6 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                     // sanpham.giaban =
                     spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
                 }
-
                 spggRepository.save(spGiamGia);
                 spRepository.save(sanPham);
             } else {
