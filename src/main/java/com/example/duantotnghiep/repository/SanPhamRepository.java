@@ -35,14 +35,18 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "ORDER BY sp.ngaytao DESC", nativeQuery = true)
     List<SanPhamResponse> getNewProductbyId(@Param("id") UUID id);
 
-    @Query(value = "SELECT TOP 8 sp.id, sp.tensanpham, im.tenimage, sp.giaban " +
+    @Query(value = "SELECT TOP 8 sp.id, sp.tensanpham, im.tenimage, sp.giaban, spgg.donGiaKhiGiam " +
             "FROM sanpham sp " +
             "JOIN sanphamchitiet spct ON sp.id = spct.idsanpham " +
             "JOIN image im ON sp.id = im.idsanpham " +
-            "LEFT JOIN ThuongHieu th ON sp.idthuonghieu = th.id " + // Assuming the correct join condition
-            "WHERE im.isdefault = 1 AND sp.trangthai = 1 AND sp.giaban >= :key1 AND sp.giaban <= :key2 " + // Added space before ORDER BY
+            "LEFT JOIN thuonghieu th ON sp.idthuonghieu = th.id " +
+            "LEFT JOIN spgiamgia spgg ON sp.id = spgg.idsanpham " +
+            "WHERE im.isdefault = 1 AND sp.trangthai = 1 " +
+            "AND (sp.giaban BETWEEN :key1 AND :key2 OR spgg.donGiaKhiGiam BETWEEN :key1 AND :key2) " +
             "ORDER BY sp.ngaytao DESC", nativeQuery = true)
     List<SanPhamResponse> getNewProductbyMoney(@Param("key1") BigDecimal key1, @Param("key2") BigDecimal key2);
+
+
 
 
     @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
