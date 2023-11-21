@@ -1,8 +1,10 @@
 package com.example.duantotnghiep.controller.giam_gia_san_pham_controller;
 
+import com.example.duantotnghiep.response.GiamGiaResponse;
 import com.example.duantotnghiep.response.SanPhamResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.SanPhamServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,4 +39,13 @@ public class HomeController {
     public ResponseEntity<List<SanPhamResponse>> ListDetailSelt(@RequestParam(name = "id") UUID id) {
         return new ResponseEntity<>(sanPhamService.getBestSellingProductsbyId(id), HttpStatus.OK);
     }
+    @GetMapping("searchMoneybykey")
+    public ResponseEntity<List<SanPhamResponse>> findByKhachHangB(
+            @RequestParam(name = "key1") BigDecimal key1,
+            @RequestParam(name = "key2")  BigDecimal key2) {
+
+        List<SanPhamResponse> result = sanPhamService.getNewProductbyMoney(key1, key2);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 }

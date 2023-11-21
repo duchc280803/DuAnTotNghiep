@@ -14,6 +14,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,6 +34,15 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "WHERE im.isdefault = 1 AND sp.trangthai = 1 AND th.id = :id " +
             "ORDER BY sp.ngaytao DESC", nativeQuery = true)
     List<SanPhamResponse> getNewProductbyId(@Param("id") UUID id);
+
+    @Query(value = "SELECT TOP 8 sp.id, sp.tensanpham, im.tenimage, sp.giaban " +
+            "FROM sanpham sp " +
+            "JOIN sanphamchitiet spct ON sp.id = spct.idsanpham " +
+            "JOIN image im ON sp.id = im.idsanpham " +
+            "LEFT JOIN ThuongHieu th ON sp.idthuonghieu = th.id " + // Assuming the correct join condition
+            "WHERE im.isdefault = 1 AND sp.trangthai = 1 AND sp.giaban >= :key1 AND sp.giaban <= :key2 " + // Added space before ORDER BY
+            "ORDER BY sp.ngaytao DESC", nativeQuery = true)
+    List<SanPhamResponse> getNewProductbyMoney(@Param("key1") BigDecimal key1, @Param("key2") BigDecimal key2);
 
 
     @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +

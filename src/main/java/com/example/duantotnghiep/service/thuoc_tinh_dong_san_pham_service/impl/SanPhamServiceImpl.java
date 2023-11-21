@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -134,6 +135,11 @@ public class SanPhamServiceImpl implements SanPhamService {
     @Override
     public List<ProductDetailUpdateReponse> findByProductDetail(UUID id) {
         return sanPhamRepository.findByProductDetail(id);
+    }
+
+    @Override
+    public List<SanPhamResponse> getNewProductbyMoney(BigDecimal key1, BigDecimal key2) {
+        return sanPhamRepository.getNewProductbyMoney(key1,key2);
     }
 
 }
