@@ -5,13 +5,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-public class TrangThaiHoaDonRequest {
+public class ConfirmOrderClientRequest {
 
-    private Integer newTrangThai;
+    private String hoVaTenNguoiShip;
 
-    private String ghiChu;
+    private String soDienThoai;
+
+    private BigDecimal tienShip;
+
+    private String diaChi;
 }

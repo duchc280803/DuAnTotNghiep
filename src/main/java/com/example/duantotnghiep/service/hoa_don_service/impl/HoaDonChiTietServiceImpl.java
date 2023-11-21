@@ -260,10 +260,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
                     for (SanPhamHoaDonChiTietResponse sanPham : productInHoaDon) {
                         if (sanPham.getTrangThai() == 5) {
-                            count++;
-                            if (sanPham.getDonGiaSauGiam() != null && sanPham.getSoLuong() != null) {
                                 tongTien = tongTien.add(sanPham.getDonGiaSauGiam().multiply(BigDecimal.valueOf(sanPham.getSoLuong())));
-                            }
                         }
                     }
                     if (count == 0) {
