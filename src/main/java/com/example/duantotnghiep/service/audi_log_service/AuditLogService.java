@@ -2,6 +2,7 @@ package com.example.duantotnghiep.service.audi_log_service;
 import com.example.duantotnghiep.entity.AuditLog;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvException;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class AuditLogService {
@@ -36,18 +38,18 @@ public class AuditLogService {
     private static final String VOUCHER_DIRECTORY = ADMIN_DIRECTORY + "\\voucher";
     private static final String HOADON_DIRECTORY = ADMIN_DIRECTORY + "\\hoadon";
     private static final String KHUYENMAI_DIRECTORY = ADMIN_DIRECTORY  + "\\khuyenmai";
-    private static final String AUDIT_LOG_HOADON_FILE_PATH = HOADON_DIRECTORY + "\\audilog_hoadon_%s.csv";
-    private static final String AUDIT_LOG_KHUYENMAI_FILE_PATH = KHUYENMAI_DIRECTORY + "\\audilog_khuyenmai_%s.csv";
-    private static final String AUDIT_LOG_SIZE_FILE_PATH = SIZE_DIRECTORY + "\\audilog_size_%s.csv";
-    private static final String AUDIT_LOG_CHATLIEU_FILE_PATH = CHATLIEU_DIRECTORY + "\\audilog_chatlieu_%s.csv";
-    private static final String AUDIT_LOG_MAUSAC_FILE_PATH = MAUSAC_DIRECTORY + "\\audilog_mausac_%s.csv";
-    private static final String AUDIT_LOG_DANHMUC_FILE_PATH = DANHMUC_DIRECTORY + "\\audilog_danhmuc_%s.csv";
-    private static final String AUDIT_LOG_THUONGHIEU_FILE_PATH = THUONGHIEU_DIRECTORY + "\\audilog_thuonghieu_%s.csv";
-    private static final String AUDIT_LOG_XUATXU_FILE_PATH = XUATXU_DIRECTORY + "\\audilog_xuatxu_%s.csv";
-    private static final String AUDIT_LOG_KIEUDE_FILE_PATH = KIEUDE_DIRECTORY + "\\audilog_kieude_%s.csv";
-    private static final String AUDIT_LOG_NHANVIEN_FILE_PATH = NHANVIEN_DIRECTORY + "\\audilog_nhanvien_%s.csv";
-    private static final String AUDIT_LOG_KHACHHANG_FILE_PATH = KHACHHANG_DIRECTORY + "\\audilog_khachhang_%s.csv";
-    private static final String AUDIT_LOG_VOUCHER_FILE_PATH = VOUCHER_DIRECTORY + "\\audilog_voucher_%s.csv";
+    private static final String AUDIT_LOG_HOADON_FILE_PATH = HOADON_DIRECTORY + "\\audilog_hoadon.csv";
+    private static final String AUDIT_LOG_KHUYENMAI_FILE_PATH = KHUYENMAI_DIRECTORY + "\\audilog_khuyenmai.csv";
+    private static final String AUDIT_LOG_SIZE_FILE_PATH = SIZE_DIRECTORY + "\\audilog_size.csv";
+    private static final String AUDIT_LOG_CHATLIEU_FILE_PATH = CHATLIEU_DIRECTORY + "\\audilog_chatlieu.csv";
+    private static final String AUDIT_LOG_MAUSAC_FILE_PATH = MAUSAC_DIRECTORY + "\\audilog_mausac.csv";
+    private static final String AUDIT_LOG_DANHMUC_FILE_PATH = DANHMUC_DIRECTORY + "\\audilog_danhmuc.csv";
+    private static final String AUDIT_LOG_THUONGHIEU_FILE_PATH = THUONGHIEU_DIRECTORY + "\\audilog_thuonghieu.csv";
+    private static final String AUDIT_LOG_XUATXU_FILE_PATH = XUATXU_DIRECTORY + "\\audilog_xuatxu.csv";
+    private static final String AUDIT_LOG_KIEUDE_FILE_PATH = KIEUDE_DIRECTORY + "\\audilog_kieude.csv";
+    private static final String AUDIT_LOG_NHANVIEN_FILE_PATH = NHANVIEN_DIRECTORY + "\\audilog_nhanvien.csv";
+    private static final String AUDIT_LOG_KHACHHANG_FILE_PATH = KHACHHANG_DIRECTORY + "\\audilog_khachhang.csv";
+    private static final String AUDIT_LOG_VOUCHER_FILE_PATH = VOUCHER_DIRECTORY + "\\audilog_voucher.csv";
     public AuditLogService() {
         createDirectories();
         createAuditLogFileIfNotExists(AUDIT_LOG_HOADON_FILE_PATH);
@@ -95,15 +97,26 @@ public class AuditLogService {
 
     private void createAuditLogFileIfNotExists(String filePath) {
         try {
-            File auditLogFile = new File(String.format(filePath, getCurrentDate()));
+            File auditLogFile = new File(filePath);
             if (!auditLogFile.exists()) {
-                Files.createFile(Paths.get(String.format(filePath, getCurrentDate())));
+                Files.createFile(Paths.get(filePath));
                 writeAuditLogHeader(filePath);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    // New method to filter audit logs based on a time range
+    public List<AuditLog> readAuditLogByTimeRange(String filePath, LocalDateTime startTime, LocalDateTime endTime)
+            throws IOException, CsvValidationException {
+        List<AuditLog> auditLogList = readAuditLog(filePath);
+
+        return auditLogList.stream()
+                .filter(log -> log.getTimestamp().isAfter(startTime) && log.getTimestamp().isBefore(endTime))
+                .collect(Collectors.toList());
+    }
+
 
     private void writeAuditLogHeader(String filePath) throws IOException {
         try (CSVWriter writer = new CSVWriter(new FileWriter(filePath))) {
@@ -112,26 +125,41 @@ public class AuditLogService {
         }
     }
 
-    public List<AuditLog> readAuditLog(String filePath) throws IOException, CsvValidationException {
-        List<AuditLog> auditLogList = new ArrayList<>();
-        try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
-            reader.skip(1);
+public List<AuditLog> readAuditLog(String filePath) throws IOException, CsvValidationException {
+    List<AuditLog> auditLogList = new ArrayList<>();
+    try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
+        reader.skip(1);
 
-            String[] nextLine;
-            while ((nextLine = reader.readNext()) != null) {
-                String action = nextLine[0];
-                String username = nextLine[1];
-                String email = nextLine[2];
-             String id = nextLine[3];
-                String ma = nextLine[4];
-                String ten = nextLine[5];
-                LocalDateTime timestamp = LocalDateTime.parse(nextLine[6]);
-                auditLogList.add(new AuditLog(action, username, email,id,ma,ten,timestamp));
-            }
+        List<String[]> lines = reader.readAll();
+        lines.sort((line1, line2) -> {
+            LocalDateTime timestamp1 = LocalDateTime.parse(line1[3]);
+            LocalDateTime timestamp2 = LocalDateTime.parse(line2[3]);
+            return timestamp2.compareTo(timestamp1);
+        });
+
+        for (String[] nextLine : lines) {
+            String action = nextLine[0];
+            String username = nextLine[1];
+            String email = nextLine[2];
+            String id = nextLine[3];
+            String ma = nextLine[4];
+            String ten = nextLine[5];
+            LocalDateTime timestamp = LocalDateTime.parse(nextLine[6]);
+            auditLogList.add(new AuditLog(action, username, email,id,ma,ten,timestamp));
         }
-        return auditLogList;
+    } catch (CsvException e) {
+        e.printStackTrace();
+    }
+    return auditLogList;
+}
+
+    public List<AuditLog> readAuditLogKhuyenmai() throws IOException, CsvValidationException {
+        return readAuditLog(AUDIT_LOG_KHUYENMAI_FILE_PATH);
     }
 
+    public List<AuditLog> readAuditLogHoadon() throws IOException, CsvValidationException {
+        return readAuditLog(AUDIT_LOG_HOADON_FILE_PATH);
+    }
     public void writeAuditLogHoadon(String action, String username, String email,String Id ,String Ma,String Ten) throws IOException, CsvValidationException {
         writeAuditLog(action, username,  email,Id,Ma,Ten, AUDIT_LOG_HOADON_FILE_PATH);
     }
@@ -192,10 +220,10 @@ public class AuditLogService {
     }
 
     private void writeAuditLogToFile(List<AuditLog> auditLogList, String filePath) throws IOException {
-        try (CSVWriter writer = new CSVWriter(new FileWriter(String.format(filePath, getCurrentDate()), true))) {
+        try (CSVWriter writer = new CSVWriter(new FileWriter(filePath, true))) {
             // Ghi header nếu file chưa có dữ liệu
-            if (new File(String.format(filePath, getCurrentDate())).length() == 0) {
-                String[] header = {"Action", "Username", "Email","Id","Ma","Ten", "Timestamp"};
+            if (new File(filePath).length() == 0) {
+                String[] header = {"Action", "Username", "Email", "Timestamp"};
                 writer.writeNext(header);
             }
 
@@ -205,11 +233,6 @@ public class AuditLogService {
                 writer.writeNext(data);
             }
         }
-    }
-
-    private String getCurrentDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        return LocalDateTime.now().format(formatter);
     }
 
 }
