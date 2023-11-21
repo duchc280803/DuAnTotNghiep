@@ -203,7 +203,6 @@ public class AuditLogService {
         }
     }
 
-
     private String getCurrentDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         return LocalDateTime.now().format(formatter);

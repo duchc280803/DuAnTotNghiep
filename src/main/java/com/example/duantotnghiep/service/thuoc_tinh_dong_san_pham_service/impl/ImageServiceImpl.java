@@ -32,24 +32,36 @@ public class ImageServiceImpl implements ImageService {
     @Override
     @Transactional
     public MessageResponse createImages(List<MultipartFile> files, UUID sanPhamId) throws IOException {
-        Optional<SanPham> sanPham = sanPhamRepository.findById(sanPhamId);
+        Optional<SanPham> sanPhamOptional = sanPhamRepository.findById(sanPhamId);
 
-        for (int i = 0; i < files.size(); i++) {
-            MultipartFile file = files.get(i);
-            Image image = new Image();
-            image.setId(UUID.randomUUID());
-            image.setSanPham(sanPham.get());
-            image.setTrangThai(1);
-            if (sanPham.get().getListImage().get(i).getIsDefault() == false) {
-                image.setIsDefault(true);
+        if (sanPhamOptional.isPresent()) {
+            SanPham sanPham = sanPhamOptional.get();
+            List<Image> findBySanPham = imageRepository.findBySanPham_Id(sanPhamId);
+
+            boolean hasDefaultImage = findBySanPham.stream().anyMatch(Image::getIsDefault);
+
+            for (int i = 0; i < files.size(); i++) {
+                MultipartFile file = files.get(i);
+                Image image = new Image();
+                image.setId(UUID.randomUUID());
+                image.setSanPham(sanPham);
+                image.setTrangThai(1);
+
+                if (!hasDefaultImage && i == 0) {
+                    image.setIsDefault(true);
+                } else {
+                    image.setIsDefault(false);
+                }
+                String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+                Files.copy(file.getInputStream(), Paths.get("D:\\FE_DuAnTotNghiep\\assets\\ảnh giày", fileName), StandardCopyOption.REPLACE_EXISTING);
+                image.setTenImage(fileName);
+                imageRepository.save(image);
             }
-            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-            Files.copy(file.getInputStream(), Paths.get("D:\\FE_DuAnTotNghiep\\assets\\ảnh giày", fileName), StandardCopyOption.REPLACE_EXISTING);
-            image.setTenImage(fileName);
-            imageRepository.save(image);
-        }
 
-        return MessageResponse.builder().message("Thành công").build();
+            return MessageResponse.builder().message("Thành công").build();
+        } else {
+            return MessageResponse.builder().message("Không tìm thấy sản phẩm").build();
+        }
     }
 
 

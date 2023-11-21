@@ -13,8 +13,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class SanPhamChiTietResponse {
 
-    private String image;
-
     private String tenSanPham;
 
     private Integer soLuong;

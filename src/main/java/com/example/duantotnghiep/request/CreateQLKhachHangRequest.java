@@ -12,13 +12,12 @@ import java.util.Date;
 @Getter
 @Setter
 public class CreateQLKhachHangRequest {
+
     private String ten;
 
     private String email;
 
     private String soDienThoai;
-
-    private String image;
 
     private Boolean gioiTinh;
 
