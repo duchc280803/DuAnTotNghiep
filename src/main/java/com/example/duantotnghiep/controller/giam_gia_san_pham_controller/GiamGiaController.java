@@ -38,7 +38,7 @@ public class GiamGiaController {
 
     @PutMapping("update/{id}")
     public ResponseEntity<MessageResponse> updateGiamGia(@PathVariable UUID id,
-            @RequestBody UpdateGiamGiaResquest updateGiamGiaRequest) {
+            @RequestBody UpdateGiamGiaResquest updateGiamGiaRequest) throws IOException, CsvValidationException {
         Service.updateGiamGia(id, updateGiamGiaRequest);
         return new ResponseEntity<>(
                 MessageResponse.builder().message("Cập nhật thông tin giảm giá thành công.").build(), HttpStatus.OK);

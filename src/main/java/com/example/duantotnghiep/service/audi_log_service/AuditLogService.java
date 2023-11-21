@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AuditLogService {
@@ -106,7 +107,7 @@ public class AuditLogService {
 
     private void writeAuditLogHeader(String filePath) throws IOException {
         try (CSVWriter writer = new CSVWriter(new FileWriter(filePath))) {
-            String[] header = {"Action", "Username", "Email", "Timestamp"};
+            String[] header = {"Action", "Username", "Email","Id","Ma","Ten", "Timestamp"};
             writer.writeNext(header);
         }
     }
@@ -121,69 +122,72 @@ public class AuditLogService {
                 String action = nextLine[0];
                 String username = nextLine[1];
                 String email = nextLine[2];
-                LocalDateTime timestamp = LocalDateTime.parse(nextLine[3]);
-                auditLogList.add(new AuditLog(action, username, email, timestamp));
+             String id = nextLine[3];
+                String ma = nextLine[4];
+                String ten = nextLine[5];
+                LocalDateTime timestamp = LocalDateTime.parse(nextLine[6]);
+                auditLogList.add(new AuditLog(action, username, email,id,ma,ten,timestamp));
             }
         }
         return auditLogList;
     }
 
-    public void writeAuditLogHoadon(String action, String username, String email) throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, AUDIT_LOG_HOADON_FILE_PATH);
+    public void writeAuditLogHoadon(String action, String username, String email,String Id ,String Ma,String Ten) throws IOException, CsvValidationException {
+        writeAuditLog(action, username,  email,Id,Ma,Ten, AUDIT_LOG_HOADON_FILE_PATH);
     }
 
-    public void writeAuditLogSanPham(String action, String username, String email) throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, AUDIT_LOG_SANPHAM_FILE_PATH);
+    public void writeAuditLogSanPham(String action, String username, String email,String Id ,String Ma,String Ten) throws IOException, CsvValidationException {
+        writeAuditLog(action, username,  email,Id,Ma,Ten, AUDIT_LOG_SANPHAM_FILE_PATH);
     }
 
-    public void writeAuditLogSize(String action, String username, String email) throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, AUDIT_LOG_SIZE_FILE_PATH);
+    public void writeAuditLogSize(String action, String username, String email,String Id ,String Ma,String Ten) throws IOException, CsvValidationException {
+        writeAuditLog(action, username, email,Id,Ma,Ten, AUDIT_LOG_SIZE_FILE_PATH);
     }
 
-    public void writeAuditLogChatlieu(String action, String username, String email) throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, AUDIT_LOG_CHATLIEU_FILE_PATH);
+    public void writeAuditLogChatlieu(String action, String username, String email,String Id ,String Ma,String Ten) throws IOException, CsvValidationException {
+        writeAuditLog(action, username, email,Id,Ma,Ten, AUDIT_LOG_CHATLIEU_FILE_PATH);
     }
 
-    public void writeAuditLogMausac(String action, String username, String email) throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, AUDIT_LOG_MAUSAC_FILE_PATH);
+    public void writeAuditLogMausac(String action, String username, String email,String Id ,String Ma,String Ten) throws IOException, CsvValidationException {
+        writeAuditLog(action, username, email,Id,Ma,Ten, AUDIT_LOG_MAUSAC_FILE_PATH);
     }
 
-    public void writeAuditLogDanhmuc(String action, String username, String email) throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, AUDIT_LOG_DANHMUC_FILE_PATH);
+    public void writeAuditLogDanhmuc(String action, String username, String email,String Id ,String Ma,String Ten) throws IOException, CsvValidationException {
+        writeAuditLog(action, username,  email,Id,Ma,Ten, AUDIT_LOG_DANHMUC_FILE_PATH);
     }
 
-    public void writeAuditLogThuonghieu(String action, String username, String email) throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, AUDIT_LOG_THUONGHIEU_FILE_PATH);
+    public void writeAuditLogThuonghieu(String action, String username, String email,String Id ,String Ma,String Ten) throws IOException, CsvValidationException {
+        writeAuditLog(action, username,  email,Id,Ma,Ten, AUDIT_LOG_THUONGHIEU_FILE_PATH);
     }
 
-    public void writeAuditLogXuatxu(String action, String username, String email) throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, AUDIT_LOG_XUATXU_FILE_PATH);
+    public void writeAuditLogXuatxu(String action, String username, String email,String Id ,String Ma,String Ten) throws IOException, CsvValidationException {
+        writeAuditLog(action, username,  email,Id,Ma,Ten, AUDIT_LOG_XUATXU_FILE_PATH);
     }
 
-    public void writeAuditLogKieude(String action, String username, String email) throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, AUDIT_LOG_KIEUDE_FILE_PATH);
+    public void writeAuditLogKieude(String action, String username, String email,String Id ,String Ma,String Ten) throws IOException, CsvValidationException {
+        writeAuditLog(action, username,  email,Id,Ma,Ten, AUDIT_LOG_KIEUDE_FILE_PATH);
     }
 
-    public void writeAuditLogNhanvien(String action, String username, String email) throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, AUDIT_LOG_NHANVIEN_FILE_PATH);
+    public void writeAuditLogNhanvien(String action, String username, String email,String Id ,String Ma,String Ten) throws IOException, CsvValidationException {
+        writeAuditLog(action, username, email,Id,Ma,Ten, AUDIT_LOG_NHANVIEN_FILE_PATH);
     }
 
-    public void writeAuditLogKhachhang(String action, String username, String email) throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, AUDIT_LOG_KHACHHANG_FILE_PATH);
+    public void writeAuditLogKhachhang(String action, String username, String email,String Id ,String Ma,String Ten) throws IOException, CsvValidationException {
+        writeAuditLog(action, username,  email,Id,Ma,Ten, AUDIT_LOG_KHACHHANG_FILE_PATH);
     }
 
-    public void writeAuditLogVoucher(String action, String username, String email) throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, AUDIT_LOG_VOUCHER_FILE_PATH);
+    public void writeAuditLogVoucher(String action, String username, String email,String Id ,String Ma,String Ten) throws IOException, CsvValidationException {
+        writeAuditLog(action, username,  email,Id,Ma,Ten, AUDIT_LOG_VOUCHER_FILE_PATH);
     }
 
 
-    public void writeAuditLogKhuyenmai(String action, String username, String email) throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, AUDIT_LOG_KHUYENMAI_FILE_PATH);
+    public void writeAuditLogKhuyenmai(String action, String username, String email,String Id ,String Ma,String Ten ) throws IOException, CsvValidationException {
+        writeAuditLog(action, username, email,Id,Ma,Ten, AUDIT_LOG_KHUYENMAI_FILE_PATH);
     }
 
-    private void writeAuditLog(String action, String username, String email, String filePath) throws IOException, CsvValidationException {
+    private void writeAuditLog(String action, String username, String email,String Id ,String Ma,String Ten , String filePath) throws IOException, CsvValidationException {
         List<AuditLog> auditLogList = readAuditLog(filePath);
-        auditLogList.add(new AuditLog(action, username, email, LocalDateTime.now()));
+        auditLogList.add(new AuditLog(action, username, email, Id,Ma,Ten,LocalDateTime.now()));
         writeAuditLogToFile(auditLogList, filePath);
     }
 
@@ -191,13 +195,13 @@ public class AuditLogService {
         try (CSVWriter writer = new CSVWriter(new FileWriter(String.format(filePath, getCurrentDate()), true))) {
             // Ghi header nếu file chưa có dữ liệu
             if (new File(String.format(filePath, getCurrentDate())).length() == 0) {
-                String[] header = {"Action", "Username", "Email", "Timestamp"};
+                String[] header = {"Action", "Username", "Email","Id","Ma","Ten", "Timestamp"};
                 writer.writeNext(header);
             }
 
             // Ghi dữ liệu mới vào cuối file
             for (AuditLog auditLog : auditLogList) {
-                String[] data = {auditLog.getAction(), auditLog.getUsername(), auditLog.getPassword(), auditLog.getTimestamp().toString()};
+                String[] data = {auditLog.getAction(), auditLog.getUsername(), auditLog.getPassword(),auditLog.getId(),auditLog.getMa(),auditLog.getTen() ,auditLog.getTimestamp().toString()};
                 writer.writeNext(data);
             }
         }
