@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,8 +35,10 @@ public class KhachHangController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<MessageResponse> createKhachHang(@RequestBody CreateQLKhachHangRequest CreateQLKhachHangRequest) {
-        return new ResponseEntity<>(service.createKhachHang(CreateQLKhachHangRequest, true), HttpStatus.CREATED);
+    public ResponseEntity<MessageResponse> createKhachHang(
+            @RequestParam("file") MultipartFile file,
+            @RequestBody CreateQLKhachHangRequest CreateQLKhachHangRequest) {
+        return new ResponseEntity<>(service.createKhachHang(file, CreateQLKhachHangRequest, true), HttpStatus.CREATED);
     }
 
     @GetMapping("/detail")

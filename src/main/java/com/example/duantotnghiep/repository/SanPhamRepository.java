@@ -47,7 +47,7 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "AND th.trangThai = 1 " +
             "AND kd.trangThai = 1 " +
             "AND dm.trangThai = 1 " +
-            "AND xx.trangThai = 1")
+            "AND xx.trangThai = 1 ORDER BY sp.ngayTao DESC")
     Page<ProductResponse> getAllSanPham(Pageable pageable);
 
     @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
