@@ -1,20 +1,53 @@
 package com.example.duantotnghiep.entity;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class AuditLog {
     private String action;
     private String username;
-    private String password; // Hoặc bạn có thể sử dụng một phương thức bảo mật khác để ẩn mật khẩu
+    private String password;
+    private String Id;
+    private String Ma;
+    private String Ten;
+    // Hoặc bạn có thể sử dụng một phương thức bảo mật khác để ẩn mật khẩu
     private LocalDateTime timestamp;
 
     public AuditLog() {
     }
 
-    public AuditLog(String action, String username, String password, LocalDateTime timestamp) {
+
+    public AuditLog(String action, String username, String password, String id, String ma, String ten, LocalDateTime timestamp) {
         this.action = action;
         this.username = username;
         this.password = password;
+        Id = id;
+        Ma = ma;
+        Ten = ten;
         this.timestamp = timestamp;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
+    public String getMa() {
+        return Ma;
+    }
+
+    public void setMa(String ma) {
+        Ma = ma;
+    }
+
+    public String getTen() {
+        return Ten;
+    }
+
+    public void setTen(String ten) {
+        Ten = ten;
     }
 
     public String getAction() {

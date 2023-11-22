@@ -26,20 +26,20 @@ public class GiamGiaController {
     private GiamGiaServiceimpl Service;
 
     @GetMapping("show")
-    public ResponseEntity<List<GiamGiaResponse>> getAllGiamGia() throws IOException, CsvValidationException {
+    public ResponseEntity<List<GiamGiaResponse>> getAllGiamGia()  {
         return new ResponseEntity<>(Service.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("showhh")
     public ResponseEntity<Page<GiamGiaResponse>> getAllGiamGia(@RequestParam(defaultValue = "0") int page,
-                                                               @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size) {
         Page<GiamGiaResponse> resultPage = Service.getAll(PageRequest.of(page, size));
         return new ResponseEntity<>(resultPage, HttpStatus.OK);
     }
 
     @PutMapping("update/{id}")
     public ResponseEntity<MessageResponse> updateGiamGia(@PathVariable UUID id,
-                                                         @RequestBody UpdateGiamGiaResquest updateGiamGiaRequest) {
+            @RequestBody UpdateGiamGiaResquest updateGiamGiaRequest) throws IOException, CsvValidationException {
         Service.updateGiamGia(id, updateGiamGiaRequest);
         return new ResponseEntity<>(
                 MessageResponse.builder().message("Cập nhật thông tin giảm giá thành công.").build(), HttpStatus.OK);

@@ -40,7 +40,7 @@ public interface GiamGiaService {
 
     boolean checkProductRecordCount(UUID productId);
 
-    MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest);
+    MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest) throws IOException, CsvValidationException;
 
     MessageResponse updateGiamGiaStaus(UUID id);
 }

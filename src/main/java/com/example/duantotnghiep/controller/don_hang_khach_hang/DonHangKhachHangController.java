@@ -23,21 +23,28 @@ public class DonHangKhachHangController {
     @Autowired
     private DonHangKhachHangRepository donHangKhachHangRepository;
 
-    @GetMapping("hien-thi")
-    public ResponseEntity<List<DonHangKhachHangMap>> getAllDonHang(Principal principal) {
-     String username = principal.getName();
-     return ResponseEntity.ok(donHangKhachHangRepository.getAllDonHang(username));
-    }
 
     @GetMapping("filter")
     public ResponseEntity<List<DonHangKhachHangMap>> filter(Principal principal,@RequestParam Integer trangthai) {
         String username = principal.getName();
-            return ResponseEntity.ok(donHangKhachHangRepository.filterStatus(username,trangthai));
+        return ResponseEntity.ok(donHangKhachHangRepository.filterStatus(username,trangthai));
     }
 
     @GetMapping("search")
+    public ResponseEntity<List<DonHangKhachHangMap>> search(Principal principal, @RequestParam String tensanpham, @RequestParam String mahoadon, @RequestParam String trangthai) {
+        String username = principal.getName();
+        return ResponseEntity.ok(donHangKhachHangRepository.searchByMaOrName(username,trangthai,tensanpham,mahoadon));
+    }
+
+    @GetMapping("load-tra-hang")
+    public ResponseEntity<List<DonHangKhachHangMap>> loadTraHang(Principal principal) {
+        String username = principal.getName();
+        return ResponseEntity.ok(donHangKhachHangRepository.loadTraHang(username));
+    }
+
+    @GetMapping("search-tra-hang")
     public ResponseEntity<List<DonHangKhachHangMap>> search(Principal principal, @RequestParam String tensanpham, @RequestParam String mahoadon) {
         String username = principal.getName();
-        return ResponseEntity.ok(donHangKhachHangRepository.searchByMaOrName(username,tensanpham,mahoadon));
+        return ResponseEntity.ok(donHangKhachHangRepository.searchByMaOrNameTraHang(username,tensanpham,mahoadon));
     }
 }

@@ -6,6 +6,7 @@ import com.example.duantotnghiep.response.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,4 +39,5 @@ public interface SanPhamService {
     ProductUpdateResponse findByProduct(UUID id);
 
     List<ProductDetailUpdateReponse> findByProductDetail(UUID id);
+    List<SanPhamResponse> getNewProductbyMoney(@Param("key1") BigDecimal key1, @Param("key2") BigDecimal key2);
 }
