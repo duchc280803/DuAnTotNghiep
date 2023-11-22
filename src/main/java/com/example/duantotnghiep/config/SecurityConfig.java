@@ -71,6 +71,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/don-hang-khach-hang/**").permitAll()
                         .requestMatchers("/api/v1/don-hang-khach-hang-chi-tiet/**").permitAll()
                         .requestMatchers("/api/v1/voucher-login/**").permitAll()
+                        .requestMatchers("/api/v1/audilog/**").permitAll()
 
                         .anyRequest()
                         .authenticated())
