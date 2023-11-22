@@ -12,10 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +22,7 @@ public class AuditLogService {
     private static final String CUSTOMER_DIRECTORY = BASE_DIRECTORY + "\\customer";
     private static final String QUAN_LY_SAN_PHAM_DIRECTORY = ADMIN_DIRECTORY + "\\quanlysanpham";
     private static final String SANPHAM_DIRECTORY = QUAN_LY_SAN_PHAM_DIRECTORY + "\\sanpham";
-    private static final String AUDIT_LOG_SANPHAM_FILE_PATH = SANPHAM_DIRECTORY + "\\audilog_sanpham_%s.csv";
+    private static final String AUDIT_LOG_SANPHAM_FILE_PATH = SANPHAM_DIRECTORY + "\\audilog_sanpham.csv";
     private static final String SIZE_DIRECTORY = QUAN_LY_SAN_PHAM_DIRECTORY + "\\size";
     private static final String CHATLIEU_DIRECTORY = QUAN_LY_SAN_PHAM_DIRECTORY + "\\chatlieu";
     private static final String MAUSAC_DIRECTORY = QUAN_LY_SAN_PHAM_DIRECTORY + "\\mausac";
@@ -131,8 +128,8 @@ public class AuditLogService {
 
             List<String[]> lines = reader.readAll();
             lines.sort((line1, line2) -> {
-                LocalDateTime timestamp1 = LocalDateTime.parse(line1[3]);
-                LocalDateTime timestamp2 = LocalDateTime.parse(line2[3]);
+                LocalDateTime timestamp1 = LocalDateTime.parse(line1[6]);
+                LocalDateTime timestamp2 = LocalDateTime.parse(line2[6]);
                 return timestamp2.compareTo(timestamp1);
             });
 
@@ -158,6 +155,39 @@ public class AuditLogService {
 
     public List<AuditLog> readAuditLogHoadon() throws IOException, CsvValidationException {
         return readAuditLog(AUDIT_LOG_HOADON_FILE_PATH);
+    }
+    public List<AuditLog> readAuditLogChatLieu() throws IOException, CsvValidationException {
+        return readAuditLog(AUDIT_LOG_CHATLIEU_FILE_PATH);
+    }
+    public List<AuditLog> readAuditLogSanPham() throws IOException, CsvValidationException {
+        return readAuditLog(AUDIT_LOG_SANPHAM_FILE_PATH);
+    }
+    public List<AuditLog> readAuditLogSize() throws IOException, CsvValidationException {
+        return readAuditLog(AUDIT_LOG_SIZE_FILE_PATH);
+    }
+    public List<AuditLog> readAuditLogMauSac() throws IOException, CsvValidationException {
+        return readAuditLog(AUDIT_LOG_MAUSAC_FILE_PATH);
+    }
+    public List<AuditLog> readAuditLogDanhMuc() throws IOException, CsvValidationException {
+        return readAuditLog(AUDIT_LOG_DANHMUC_FILE_PATH);
+    }
+    public List<AuditLog> readAuditLogThuongHieu() throws IOException, CsvValidationException {
+        return readAuditLog(AUDIT_LOG_THUONGHIEU_FILE_PATH);
+    }
+    public List<AuditLog> readAuditLogXuatXu() throws IOException, CsvValidationException {
+        return readAuditLog(AUDIT_LOG_XUATXU_FILE_PATH);
+    }
+    public List<AuditLog> readAuditLogKieuDe() throws IOException, CsvValidationException {
+        return readAuditLog(AUDIT_LOG_KIEUDE_FILE_PATH);
+    }
+    public List<AuditLog> readAuditLogNhanVien() throws IOException, CsvValidationException {
+        return readAuditLog(AUDIT_LOG_NHANVIEN_FILE_PATH);
+    }
+    public List<AuditLog> readAuditLogKhachHang() throws IOException, CsvValidationException {
+        return readAuditLog(AUDIT_LOG_KHACHHANG_FILE_PATH);
+    }
+    public List<AuditLog> readAuditLogVoucher() throws IOException, CsvValidationException {
+        return readAuditLog(AUDIT_LOG_VOUCHER_FILE_PATH);
     }
 
     public void writeAuditLogHoadon(String action, String username, String email, String Id, String Ma, String Ten)
@@ -226,11 +256,30 @@ public class AuditLogService {
     }
 
     private void writeAuditLog(String action, String username, String email, String Id, String Ma, String Ten,
-            String filePath) throws IOException, CsvValidationException {
+                               String filePath) throws IOException, CsvValidationException {
         List<AuditLog> auditLogList = readAuditLog(filePath);
-        auditLogList.add(new AuditLog(action, username, email, Id, Ma, Ten, LocalDateTime.now()));
+
+        // Check if an entry with the same parameters already exists
+        Optional<AuditLog> existingEntry = auditLogList.stream()
+                .filter(log -> log.getAction().equals(action)
+                        && log.getUsername().equals(username)
+                        && log.getPassword().equals(email)
+                        && log.getId().equals(Id)
+                        && log.getMa().equals(Ma)
+                        && log.getTen().equals(Ten))
+                .findFirst();
+
+        // If the entry doesn't exist, add a new one
+        if (!existingEntry.isPresent()) {
+            auditLogList.add(new AuditLog(action, username, email, Id, Ma, Ten, LocalDateTime.now()));
+        } else {
+            // If the entry exists, update its timestamp
+            existingEntry.get().setTimestamp(LocalDateTime.now());
+        }
+
         writeAuditLogToFile(auditLogList, filePath);
     }
+
 
     private void writeAuditLogToFile(List<AuditLog> auditLogList, String filePath) throws IOException {
         try (CSVWriter writer = new CSVWriter(new FileWriter(filePath, true))) {
