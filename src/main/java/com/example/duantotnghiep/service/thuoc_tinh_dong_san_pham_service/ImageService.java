@@ -13,4 +13,6 @@ public interface ImageService {
     MessageResponse createImages(List<MultipartFile> files, UUID sanPhamId) throws IOException;
 
     List<Image> findBySanPham_Id(UUID id);
+
+    void removeImage(UUID id);
 }

@@ -22,4 +22,6 @@ public interface SanPhamChiTietService {
     MessageResponse updateStatusHuy(UUID id);
 
     MessageResponse updateStatusKichHoat(UUID id);
+
+    MessageResponse updateQuantity(UUID id, Integer soLuong);
 }

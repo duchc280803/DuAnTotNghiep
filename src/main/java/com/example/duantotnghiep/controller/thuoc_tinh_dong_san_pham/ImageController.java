@@ -37,4 +37,10 @@ public class ImageController {
     public ResponseEntity<List<Image>> getImage(@PathVariable(name = "id") UUID id) {
         return new ResponseEntity<>(imageService.findBySanPham_Id(id), HttpStatus.OK);
     }
+
+    @DeleteMapping("remove")
+    public ResponseEntity<Void> removeImage(@RequestParam(name = "id") UUID id) {
+        imageService.removeImage(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

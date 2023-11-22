@@ -64,10 +64,14 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-
     @Override
     public List<Image> findBySanPham_Id(UUID id) {
         return imageRepository.findBySanPham_Id(id);
+    }
+
+    @Override
+    public void removeImage(UUID id) {
+        imageRepository.deleteById(id);
     }
 
 }
