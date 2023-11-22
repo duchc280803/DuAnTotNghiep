@@ -43,4 +43,11 @@ public class ImageController {
         imageService.removeImage(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PutMapping("update")
+    public ResponseEntity<MessageResponse> removeImage(
+            @RequestParam(name = "idImage") UUID idImage,
+            @RequestParam(name = "idProduct") UUID idProduct) {
+        return new ResponseEntity<>(imageService.updateImage(idImage, idProduct), HttpStatus.OK);
+    }
 }

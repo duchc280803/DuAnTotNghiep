@@ -15,4 +15,6 @@ public interface ImageService {
     List<Image> findBySanPham_Id(UUID id);
 
     void removeImage(UUID id);
+
+    MessageResponse updateImage(UUID idImage, UUID idProduct);
 }

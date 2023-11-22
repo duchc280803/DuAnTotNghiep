@@ -14,25 +14,21 @@ import java.util.UUID;
 
 public interface KhachHangRepository extends JpaRepository<TaiKhoan, UUID> {
 
-    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.name, tk.email, tk.soDienThoai, dc.diaChi) " +
+    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.name, tk.email, tk.soDienThoai, dc.diaChi, dc.xa, dc.huyen, dc.tinh) " +
             "FROM TaiKhoan tk JOIN tk.diaChiList dc WHERE tk.loaiTaiKhoan.name = 'USER' AND dc.trangThai = 1")
     List<KhachHangResponse> findlistKhachHang();
 
-    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.name, tk.email, tk.soDienThoai, dc.diaChi) " +
+    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.name, tk.email, tk.soDienThoai, dc.diaChi, dc.xa, dc.huyen, dc.tinh) " +
             "FROM TaiKhoan tk JOIN tk.diaChiList dc WHERE tk.name = :key OR tk.soDienThoai = :key OR tk.email = :key AND dc.trangThai = 1")
     List<KhachHangResponse> findByKeyToKhachHang(@Param("key") String key);
 
-    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.name, tk.email, tk.soDienThoai, dc.diaChi) " +
+    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.name, tk.email, tk.soDienThoai, dc.diaChi, dc.xa, dc.huyen, dc.tinh) " +
             "FROM TaiKhoan tk JOIN tk.diaChiList dc JOIN tk.hoaDonKhachHangList hd WHERE hd.id = :id")
     KhachHangResponse findByKhachHangByIdHoaDon(@Param("id") UUID id);
 
-    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.name, tk.email, tk.soDienThoai, dc.diaChi) " +
+    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.name, tk.email, tk.soDienThoai, dc.diaChi, dc.xa, dc.huyen, dc.tinh) " +
             "FROM TaiKhoan tk JOIN tk.diaChiList dc WHERE tk.id = :id AND dc.trangThai = 1")
     KhachHangResponse detailKhachHang(@Param("id") UUID id);
-
-    // quản lý KH
-
-
 
     @Query("SELECT new com.example.duantotnghiep.response.QLKhachHangResponse(tk.id, tk.name, tk.email, tk.soDienThoai, tk.image, tk.gioiTinh, tk.maTaiKhoan, tk.username, tk.matKhau, tk.ngaySinh, tk.trangThai) " +
             "FROM TaiKhoan tk WHERE tk.loaiTaiKhoan.name = ('USER') AND (:trangThai is null or tk.trangThai = :trangThai) AND (:name is null or tk.name like %:name%) AND (:soDienThoai is null or tk.soDienThoai like %:soDienThoai%) AND (:maTaiKhoan is null or tk.maTaiKhoan like %:maTaiKhoan%)")

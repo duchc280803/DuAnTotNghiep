@@ -21,5 +21,11 @@ public class CreateKhachRequest {
 
     private String diaChi;
 
+    private String tinh;
+
+    private String huyen;
+
+    private String phuong;
+
     private Date ngaySinh;
 }

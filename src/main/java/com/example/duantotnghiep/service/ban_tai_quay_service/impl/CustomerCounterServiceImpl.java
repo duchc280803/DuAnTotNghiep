@@ -56,6 +56,9 @@ public class CustomerCounterServiceImpl implements CustomerCounterService {
         DiaChi diaChi = new DiaChi();
         diaChi.setId(UUID.randomUUID());
         diaChi.setDiaChi(createKhachRequest.getDiaChi());
+        diaChi.setHuyen(createKhachRequest.getHuyen());
+        diaChi.setTinh(createKhachRequest.getTinh());
+        diaChi.setXa(createKhachRequest.getPhuong());
         diaChi.setTaiKhoan(taiKhoan);
         diaChi.setTrangThai(1);
         diaChiRepository.save(diaChi);
