@@ -4,10 +4,13 @@ import com.example.duantotnghiep.entity.Voucher;
 import com.example.duantotnghiep.repository.VoucherRepository;
 import com.example.duantotnghiep.request.VoucherRequest;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.voucher_service.VoucherService;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +24,8 @@ public class VoucherServiceimpl implements VoucherService {
     public List<Voucher> getAll() {
         return Repository.findAll();
     }
-
+    @Autowired
+    private AuditLogService auditLogService;
     @Override
     public MessageResponse createVoucher(VoucherRequest createVoucherRequest) {
         Voucher voucher = new Voucher();
@@ -41,7 +45,7 @@ public class VoucherServiceimpl implements VoucherService {
     }
 
     @Override
-    public MessageResponse updateVoucher(UUID id, VoucherRequest createVoucherRequest) {
+    public MessageResponse updateVoucher(UUID id, VoucherRequest createVoucherRequest) throws IOException, CsvValidationException {
         Voucher voucher = Repository.findById(id).orElse(null);
         if (voucher != null) {
             voucher.setMaVoucher(createVoucherRequest.getMaVoucher());
@@ -54,7 +58,7 @@ public class VoucherServiceimpl implements VoucherService {
             voucher.setHinhThucGiam(createVoucherRequest.getHinhThucGiam());
             voucher.setTrangThai(createVoucherRequest.getTrangThai());
             Repository.save(voucher);
-
+            auditLogService.writeAuditLogVoucher("update", "abc", "xyz",null,null,null);
             return MessageResponse.builder().message("Cập nhật Thành Công").build();
         } else {
             // Handle the case where the discount is not found

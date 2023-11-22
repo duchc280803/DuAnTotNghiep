@@ -7,11 +7,13 @@ import com.example.duantotnghiep.response.GiamGiaResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.giam_gia_service.impl.GiamGiaServiceimpl;
 import com.example.duantotnghiep.service.voucher_service.impl.VoucherServiceimpl;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +41,7 @@ public class VoucherController {
 
     @PutMapping("update/{id}")
     public ResponseEntity<MessageResponse> updateVoucher(@PathVariable UUID id,
-            @RequestBody VoucherRequest createKhachRequest) {
+            @RequestBody VoucherRequest createKhachRequest) throws IOException, CsvValidationException {
         Service.updateVoucher(id, createKhachRequest);
         return new ResponseEntity<>(
                 MessageResponse.builder().message("Cập nhật thông tin giảm giá thành công.").build(), HttpStatus.OK);

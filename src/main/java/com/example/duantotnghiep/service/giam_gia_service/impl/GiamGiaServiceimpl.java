@@ -38,8 +38,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     private SanPhamRepository spRepository;
 
     @Override
-    public List<GiamGiaResponse> getAll() throws IOException, CsvValidationException {
-        auditLogService.writeAuditLogChatlieu("update", "abc", "xyz","ID1","ID2","ID3");
+    public List<GiamGiaResponse> getAll()  {
         return Repository.listGiamGia();
     }
     @Autowired
