@@ -26,7 +26,7 @@ public class GiamGiaController {
     private GiamGiaServiceimpl Service;
 
     @GetMapping("show")
-    public ResponseEntity<List<GiamGiaResponse>> getAllGiamGia() throws IOException, CsvValidationException {
+    public ResponseEntity<List<GiamGiaResponse>> getAllGiamGia()  {
         return new ResponseEntity<>(Service.getAll(), HttpStatus.OK);
     }
 
