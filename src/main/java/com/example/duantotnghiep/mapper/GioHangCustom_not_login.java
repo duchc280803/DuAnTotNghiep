@@ -8,4 +8,5 @@ public interface GioHangCustom_not_login {
     String gettensanpham();
     String getgiaban();
     String getsoluong();
+    String getDongiakhigiam();
 }
