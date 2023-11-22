@@ -64,10 +64,29 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-
     @Override
     public List<Image> findBySanPham_Id(UUID id) {
         return imageRepository.findBySanPham_Id(id);
+    }
+
+    @Override
+    public void removeImage(UUID id) {
+        imageRepository.deleteById(id);
+    }
+
+    @Override
+    public MessageResponse updateImage(UUID idImage, UUID idProduct) {
+        List<Image> imageList = imageRepository.findBySanPham_Id(idProduct);
+        for (Image i : imageList) {
+            if (i.getIsDefault() == true) {
+                i.setIsDefault(false);
+            }
+            imageRepository.save(i);
+        }
+        Optional<Image> image = imageRepository.findById(idImage);
+        image.get().setIsDefault(true);
+        imageRepository.save(image.get());
+        return MessageResponse.builder().message("Update thành công").build();
     }
 
 }

@@ -95,4 +95,12 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
         chiTietSanPhamRepository.save(sanPhamChiTiet.get());
         return MessageResponse.builder().message("Thay đổi thành công").build();
     }
+
+    @Override
+    public MessageResponse updateQuantity(UUID id, Integer soLuong) {
+        Optional<SanPhamChiTiet> sanPhamChiTiet = chiTietSanPhamRepository.findById(id);
+        sanPhamChiTiet.get().setSoLuong(soLuong);
+        chiTietSanPhamRepository.save(sanPhamChiTiet.get());
+        return MessageResponse.builder().message("Thay đổi thành công").build();
+    }
 }

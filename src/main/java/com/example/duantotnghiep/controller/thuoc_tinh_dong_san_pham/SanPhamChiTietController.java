@@ -87,4 +87,12 @@ public class SanPhamChiTietController {
     ) {
         return new ResponseEntity<>(sanPhamChiTietService.updateStatusKichHoat(id), HttpStatus.OK);
     }
+
+    @PutMapping("update-quantity")
+    public ResponseEntity<MessageResponse> updateQuantity(
+            @RequestParam(name = "id") UUID id,
+            @RequestParam(name = "soLuong") Integer soLuong
+    ) {
+        return new ResponseEntity<>(sanPhamChiTietService.updateQuantity(id, soLuong), HttpStatus.OK);
+    }
 }

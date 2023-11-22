@@ -16,6 +16,8 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
 
     List<HoaDonChiTiet> findByHoaDon_Id(UUID id);
 
+    List<HoaDonChiTiet> findByHoaDon(HoaDon hoaDon);
+
     HoaDonChiTiet findByHoaDonAndSanPhamChiTiet_Id(HoaDon hoaDon, UUID idSpCt);
 
     List<HoaDonChiTiet> findAllByHoaDon(HoaDon hoaDon);

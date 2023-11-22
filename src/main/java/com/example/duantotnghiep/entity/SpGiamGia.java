@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -46,6 +44,7 @@ public class SpGiamGia {
     @Column(name = "mucgiam")
     private Long mucGiam;
 
-
+    @Column(name = "giaGiam")
+    private Long giaGiam;
 
 }
