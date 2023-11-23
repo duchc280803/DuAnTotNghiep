@@ -366,8 +366,8 @@ public class AuditLogController {
 
     @GetMapping("/vouchersearch")
     public List<AuditLog> getAuditLogVouchers(
-            @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate startDate,
-            @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate endDate) {
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         try {
             LocalDateTime startTime = startDate.atStartOfDay();
             LocalDateTime endTime = endDate.atTime(LocalTime.MAX);
@@ -379,6 +379,16 @@ public class AuditLogController {
         }
     }
 
-
+    @GetMapping("/auditlogbydate")
+    public List<AuditLog> getAuditLogByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        try {
+            return auditLogService.readAuditLogByDate(AUDIT_LOG_VOUCHER_FILE_PATH, searchDate);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
 }
 

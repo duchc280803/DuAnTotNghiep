@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.repository;
 
 import com.example.duantotnghiep.entity.GiamGia;
+import com.example.duantotnghiep.entity.SanPham;
 import com.example.duantotnghiep.entity.SpGiamGia;
 import com.example.duantotnghiep.mapper.not_login.*;
 import com.example.duantotnghiep.request.GiamGiaRequest;
@@ -271,5 +272,5 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
                 "    ) " +
                 ")", nativeQuery = true)
         List<loadsanpham_not_login> getAllSpGiamGiabyKey(@Param("key") String key);
-
+        SpGiamGia findByGiamGiaAndSanPham(GiamGia giamGia, SanPham sanPham);
 }

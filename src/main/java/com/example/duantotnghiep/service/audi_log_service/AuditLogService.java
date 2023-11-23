@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -113,7 +115,17 @@ public class AuditLogService {
                 .filter(log -> log.getTimestamp().isAfter(startTime) && log.getTimestamp().isBefore(endTime))
                 .collect(Collectors.toList());
     }
+    public List<AuditLog> readAuditLogByDate(String filePath, LocalDate ngayTimKiem) throws IOException, CsvValidationException {
+        List<AuditLog> danhSachAuditLog = readAuditLog(filePath);
 
+        // Xác định thời gian bắt đầu và kết thúc của ngàyTimKiem
+        LocalDateTime gioBatDau = ngayTimKiem.atStartOfDay();
+        LocalDateTime gioKetThuc = LocalDateTime.of(ngayTimKiem, LocalTime.MAX);
+
+        return danhSachAuditLog.stream()
+                .filter(log -> log.getTimestamp().isAfter(gioBatDau) && log.getTimestamp().isBefore(gioKetThuc))
+                .collect(Collectors.toList());
+    }
     private void writeAuditLogHeader(String filePath) throws IOException {
         try (CSVWriter writer = new CSVWriter(new FileWriter(filePath))) {
             String[] header = { "Action", "Username", "Email", "Id", "Ma", "Ten", "Timestamp" };
