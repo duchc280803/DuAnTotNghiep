@@ -56,7 +56,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
     @Override
     @Transactional
-    public MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest) throws IOException, CsvValidationException {
+    public MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest)  {
         // Kiểm tra xem đối tượng GiamGia có tồn tại không
         GiamGia existingGiamGia = Repository.findById(id).orElse(null);
 
@@ -111,8 +111,6 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                 }
             }
 
-            // Trả về thông báo thành công
-            auditLogService.writeAuditLogChatlieu("update", "abc", "xyz",null,null,null);
             return MessageResponse.builder().message("Cập nhật Thành Công").build();
         } else {
             // Handle the case where the discount is not found

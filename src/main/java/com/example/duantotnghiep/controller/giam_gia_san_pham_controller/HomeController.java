@@ -39,13 +39,5 @@ public class HomeController {
     public ResponseEntity<List<SanPhamResponse>> ListDetailSelt(@RequestParam(name = "id") UUID id) {
         return new ResponseEntity<>(sanPhamService.getBestSellingProductsbyId(id), HttpStatus.OK);
     }
-    @GetMapping("searchMoneybykey")
-    public ResponseEntity<List<SanPhamResponse>> findByKhachHangB(
-            @RequestParam(name = "key1") BigDecimal key1,
-            @RequestParam(name = "key2")  BigDecimal key2) {
-
-        List<SanPhamResponse> result = sanPhamService.getNewProductbyMoney(key1, key2);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
 
 }

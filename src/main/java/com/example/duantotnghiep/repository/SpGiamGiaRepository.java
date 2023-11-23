@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -219,6 +220,33 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
                         "    ) " +
                         ")", nativeQuery = true)
         List<loadsanpham_not_login> getAllSpGiamGiabyDanhMuc(@Param("id") UUID id);
+
+
+        @Query(value = "SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam, sp.idThuongHieu "
+                +
+                "FROM SanPham sp " +
+                "LEFT JOIN spgiamgia spgg ON sp.id = spgg.idsanpham " +
+                "LEFT JOIN GiamGia gg ON spgg.idgiamgia = gg.id " +
+                "JOIN Image i ON sp.id = i.idsanpham " +
+                "JOIN ThuongHieu th ON sp.idthuonghieu = th.id " +
+                "JOIN DanhMuc dm ON sp.iddanhmuc = dm.id " +
+                "JOIN XuatXu xx ON sp.idxuatxu = xx.id " +
+                "JOIN kieude kd ON kd.id = sp.idkieude " +
+                "WHERE (  sp.giaBan BETWEEN :key1 AND :key2 OR spgg.donGiaKhiGiam BETWEEN :key1 AND :key2) " +
+                "AND ( " +
+                "    spgg.id IS NULL " +
+                "    OR ( " +
+                "        spgg.id IS NOT NULL " +
+                "        AND spgg.id = ( " +
+                "            SELECT MIN(spgg_inner.id) " +
+                "            FROM spgiamgia spgg_inner " +
+                "            WHERE spgg_inner.idsanpham = sp.id " +
+                "        ) " +
+                "    ) " +
+                ")", nativeQuery = true)
+        List<loadsanpham_not_login> getAllSpGiamGiabyTien(@Param("key1") BigDecimal key1, @Param("key2") BigDecimal key2);
+
+
         // load sanpham on shop by ten
         @Query(value = "SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam, sp.idThuongHieu "
                 +
