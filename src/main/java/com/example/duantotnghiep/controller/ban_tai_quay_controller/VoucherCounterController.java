@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -36,5 +38,13 @@ public class VoucherCounterController {
             @RequestParam(name = "thanhTien") BigDecimal thanhTien) {
         return new ResponseEntity<>(voucherCounterService.addVoucherOrder(idHoaDon, idVoucher, thanhTien), HttpStatus.OK);
     }
+
+    @GetMapping("name")
+    public ResponseEntity<Map<String, String>> findByName(@RequestParam(name = "id") UUID id) {
+        Map<String, String> responseData = new HashMap<>();
+        responseData.put("voucherName", voucherCounterService.findByName(id));
+        return ResponseEntity.ok(responseData);
+    }
+
 
 }

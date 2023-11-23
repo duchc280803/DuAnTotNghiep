@@ -60,4 +60,17 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
         return MessageResponse.builder().message("Không tìm thấy HoaDon hoặc Voucher").build();
     }
 
+    @Override
+    public String findByName(UUID id) {
+        HoaDon hoaDon = hoaDonRepository.findById(id).orElse(null);
+        if (hoaDon == null || hoaDon.getVoucher() == null) {
+            return "Voucher null";
+        }
+        String name = hoaDon.getVoucher().getMaVoucher();
+        if (name.isEmpty()) {
+            return "Voucher null";
+        }
+        return name;
+    }
+
 }
