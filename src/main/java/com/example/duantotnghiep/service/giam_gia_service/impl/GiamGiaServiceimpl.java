@@ -86,7 +86,8 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                         // HinhThucGiam = 1
                         // dongia = muc giam
                         BigDecimal dongia = BigDecimal.valueOf(updateGiamGiaRequest.getMucGiam());
-                        spGiamGia.setDonGia(dongia);
+                        spGiamGia.setDonGia(sanPham.getGiaBan());
+                        spGiamGia.setGiaGiam(dongia);
                         // donGiaKhiGiam = gia ban - dongia
                         BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
                         spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
@@ -96,7 +97,8 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                         BigDecimal dongia = sanPham.getGiaBan().multiply(
                                 BigDecimal.valueOf(updateGiamGiaRequest.getMucGiam()).divide(BigDecimal.valueOf(100)));
                         // donGiaKhiGiam = gia ban -
-                        spGiamGia.setDonGia(dongia);
+                        spGiamGia.setDonGia(sanPham.getGiaBan());
+                        spGiamGia.setGiaGiam(dongia);
                         BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
                         // sanpham.giaban =
                         spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
@@ -210,7 +212,8 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                     // HinhThucGiam = 1
                     // dongia = muc giam
                     BigDecimal dongia = BigDecimal.valueOf(createKhachRequest.getMucGiam());
-                    spGiamGia.setDonGia(dongia);
+                    spGiamGia.setDonGia(sanPham.getGiaBan());
+                    spGiamGia.setGiaGiam(dongia);
                     // donGiaKhiGiam = gia ban - dongia
                     BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
                     spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
@@ -220,7 +223,9 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                     BigDecimal dongia = sanPham.getGiaBan().multiply(
                             BigDecimal.valueOf(createKhachRequest.getMucGiam()).divide(BigDecimal.valueOf(100)));
                     // donGiaKhiGiam = gia ban -
-                    spGiamGia.setDonGia(dongia);
+                    spGiamGia.setDonGia(sanPham.getGiaBan());
+                    spGiamGia.setDonGia(sanPham.getGiaBan());
+                    spGiamGia.setGiaGiam(dongia);
                     BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
                     // sanpham.giaban =
                     spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
@@ -249,7 +254,8 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                     // HinhThucGiam = 1
                     // dongia = muc giam
                     BigDecimal dongia = BigDecimal.valueOf(createKhachRequest.getMucGiam());
-                    spGiamGia.setDonGia(dongia);
+                    spGiamGia.setDonGia(sanPham.getGiaBan());
+                    spGiamGia.setGiaGiam(dongia);
                     // donGiaKhiGiam = gia ban - dongia
                     BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
                     spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
@@ -260,7 +266,8 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                     BigDecimal dongia = sanPham.getGiaBan().multiply(
                             BigDecimal.valueOf(createKhachRequest.getMucGiam()).divide(BigDecimal.valueOf(100)));
                     // donGiaKhiGiam = gia ban -
-                    spGiamGia.setDonGia(dongia);
+                    spGiamGia.setDonGia(sanPham.getGiaBan());
+                    spGiamGia.setGiaGiam(dongia);
                     BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
                     // sanpham.giaban =
                     spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
