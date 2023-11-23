@@ -75,7 +75,7 @@ public interface GioHangChiTietRepository_not_login extends JpaRepository<GioHan
             "    LEFT JOIN spgiamgia spgg ON sp.id = spgg.idsanpham\n" +
             "    LEFT JOIN GiamGia gg ON spgg.idgiamgia = gg.id\n" +
             "WHERE\n" +
-            "    gh.id = 'B64FDFDE-E3D0-496A-A6B5-327951305A7A' AND gh.trangthai = 1\n" +
+            "    gh.id = :idgh AND gh.trangthai = 1\n" +
             "    AND (spgg.id IS NULL OR (spgg.id IS NOT NULL AND spgg.id = (SELECT MIN(spgg_inner.id) FROM spgiamgia spgg_inner WHERE spgg_inner.idsanpham = sp.id)))\n" +
             "GROUP BY\n" +
             "    sp.tensanpham;\n", nativeQuery = true)
