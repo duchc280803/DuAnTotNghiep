@@ -58,7 +58,7 @@ public class VoucherServiceimpl implements VoucherService {
             voucher.setHinhThucGiam(createVoucherRequest.getHinhThucGiam());
             voucher.setTrangThai(createVoucherRequest.getTrangThai());
             Repository.save(voucher);
-            auditLogService.writeAuditLogVoucher("update", "abc", "xyz",null,null,null);
+            auditLogService.writeAuditLogVoucher("update", "abc", "xyz",null,createVoucherRequest.getMaVoucher(),null);
             return MessageResponse.builder().message("Cập nhật Thành Công").build();
         } else {
             // Handle the case where the discount is not found
