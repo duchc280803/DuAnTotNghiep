@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.controller.ban_tai_quay_controller;
 
+import com.example.duantotnghiep.entity.GioHangChiTiet;
 import com.example.duantotnghiep.mapper.GioHangCustom;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.impl.CartDetailCounterServiceImpl;
@@ -62,6 +63,12 @@ public class CartDetailCounterController {
     public ResponseEntity<Void> deleteProductInCart(@RequestParam("id") UUID id) {
         gioHangChiTietService.deleteProductInCart(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("fill-id")
+    public ResponseEntity<List<GioHangChiTiet>> show(
+            @RequestParam(name = "id") UUID id) {
+        return new ResponseEntity<>(gioHangChiTietService.getIdCartDetail(id), HttpStatus.OK);
     }
 
 }

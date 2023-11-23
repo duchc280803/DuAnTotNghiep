@@ -45,6 +45,10 @@ public class SpGiamGia {
     private Long mucGiam;
 
     @Column(name = "giagiam")
+<<<<<<< HEAD
+    private Long giaGiam;
+=======
     private BigDecimal giaGiam;
+>>>>>>> 144a8774fdccb1774b42b48aaa5bc7ef3e2f18f7
 
 }

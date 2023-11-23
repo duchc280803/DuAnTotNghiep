@@ -143,6 +143,11 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         chiTietSanPhamRepository.save(sanPhamChiTiet);
     }
 
+    @Override
+    public List<GioHangChiTiet> getIdCartDetail(UUID idCart) {
+        return gioHangChiTietRepository.findByGioHang_Id(idCart);
+    }
+
     public void capNhatSoLuong(UUID idgiohangchitiet, int soLuongMoi) {
         Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findById(idgiohangchitiet);
         if (optionalGioHangChiTiet.isPresent()) {
