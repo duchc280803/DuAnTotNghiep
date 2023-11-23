@@ -12,7 +12,7 @@ public interface SanPhamResponse {
 
     String getTenSanPham();
 
-    BigDecimal getGiaban();
+    BigDecimal getGiaBan();
 
     BigDecimal getDonGiaKhiGiam();
 

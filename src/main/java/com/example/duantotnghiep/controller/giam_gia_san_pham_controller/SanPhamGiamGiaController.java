@@ -4,11 +4,13 @@ import com.example.duantotnghiep.mapper.not_login.*;
 import com.example.duantotnghiep.repository.SpGiamGiaRepository;
 import com.example.duantotnghiep.response.GiamGiaResponse;
 
+import com.example.duantotnghiep.response.SanPhamResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -85,5 +87,12 @@ public class SanPhamGiamGiaController {
         return new ResponseEntity<>(spGiamGiaRepository.findIdspctAndSoluong(idmausac, idsize, idchatlieu, name),
                 HttpStatus.OK);
     }
+    @GetMapping("searchMoneybykey")
+    public ResponseEntity<List<loadsanpham_not_login> > findByKhachHangB(
+            @RequestParam(name = "key1") BigDecimal key1,
+            @RequestParam(name = "key2")  BigDecimal key2) {
 
+        List<loadsanpham_not_login> result = spGiamGiaRepository.getAllSpGiamGiabyTien(key1, key2);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

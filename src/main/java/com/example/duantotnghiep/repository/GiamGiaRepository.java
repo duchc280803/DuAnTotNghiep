@@ -90,7 +90,7 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
                         "JOIN sp.listImage i WHERE sp.tenSanPham  LIKE :key   ")
         List<ProductDetailResponse> ProductDetailResponse(@Param("key") String key);
 
-        @Query("SELECT new com.example.duantotnghiep.response.ProductDetailResponse(sp.id, i.tenImage, sp.tenSanPham, s.size, kd.tenDe, ms.tenMauSac, ct.tenChatLieu, sp.trangThai, i.id, s.id, ms.id, ct.id, kd.id, sp.giaBan, COUNT(spgg.id), sp.giaBan - COALESCE(SUM(spgg.giaGiam), 0)) "
+        @Query("SELECT new com.example.duantotnghiep.response.ProductDetailResponse(sp.id, i.tenImage, sp.tenSanPham, s.size, kd.tenDe, ms.tenMauSac, ct.tenChatLieu, sp.trangThai, i.id, s.id, ms.id, ct.id, kd.id, spgg.donGia, COUNT(spgg.id), spgg.donGia - COALESCE(SUM(spgg.giaGiam), 0)) "
                         +
                         "FROM SanPhamChiTiet spct " +
                         "JOIN spct.size s " +
@@ -103,7 +103,7 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
                         "JOIN sp.xuatXu xx " +
                         "JOIN spct.chatLieu ct " +
                         "JOIN sp.listImage i  " +
-                        "GROUP BY sp.id, i.tenImage, sp.tenSanPham, s.size, kd.tenDe, ms.tenMauSac, ct.tenChatLieu, sp.trangThai, i.id, s.id, ms.id, ct.id, kd.id, sp.giaBan ")
+                        "GROUP BY sp.id, i.tenImage, sp.tenSanPham, s.size, kd.tenDe, ms.tenMauSac, ct.tenChatLieu, sp.trangThai, i.id, s.id, ms.id, ct.id, kd.id, spgg.donGia ")
         List<ProductDetailResponse> listProductResponse();
 
         @Query("SELECT new com.example.duantotnghiep.response.ProductDetailResponse(sp.id, i.tenImage, sp.tenSanPham,s.size,kd.tenDe,ms.tenMauSac,ct.tenChatLieu,sp.trangThai ) "
