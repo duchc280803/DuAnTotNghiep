@@ -27,12 +27,16 @@ public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, 
             "JOIN spct.gioHangChiTietList ghct " +
             "JOIN ghct.gioHang gh " +
             "JOIN gh.taiKhoan tk " +
-            "WHERE i.isDefault = true AND tk.id = :id")
+            "WHERE i.isDefault = true AND gh.trangThai = 1 AND tk.id = :id")
     Page<GioHangCustom> loadOnGioHang(@Param("id") UUID id, Pageable pageable);
 
     // Tìm mục trong giỏ hàng chi tiết dựa trên idGioHang và idSanPhamChiTiet
     GioHangChiTiet findByGioHangAndSanPhamChiTiet_Id(GioHang gioHang, UUID idSanPhamChiTiet);
 
     GioHangChiTiet findByGioHang(GioHang gioHang);
+
+    List<GioHangChiTiet> findByGioHang_Id(UUID id);
+
+
 
 }

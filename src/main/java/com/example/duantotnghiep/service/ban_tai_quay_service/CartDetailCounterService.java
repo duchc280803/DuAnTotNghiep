@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.service.ban_tai_quay_service;
 
+import com.example.duantotnghiep.entity.GioHangChiTiet;
 import com.example.duantotnghiep.mapper.GioHangCustom;
 import com.example.duantotnghiep.response.MessageResponse;
 
@@ -15,4 +16,6 @@ public interface CartDetailCounterService {
     List<GioHangCustom> loadGH(UUID id, Integer pageNumber, Integer pageSize);
 
     void deleteProductInCart(UUID id);
+
+    List<GioHangChiTiet>  getIdCartDetail(UUID idCart);
 }

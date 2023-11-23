@@ -44,7 +44,7 @@ public class SpGiamGia {
     @Column(name = "mucgiam")
     private Long mucGiam;
 
-    @Column(name = "giaGiam")
+    @Column(name = "giagiam")
     private Long giaGiam;
 
 }
