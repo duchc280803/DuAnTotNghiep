@@ -37,8 +37,10 @@ public class AuditLogController {
     private static final String KHACHHANG_DIRECTORY = QUAN_LY_TAI_KHOAN_DIRECTORY + "\\khachhang";
     private static final String VOUCHER_DIRECTORY = ADMIN_DIRECTORY + "\\voucher";
     private static final String HOADON_DIRECTORY = ADMIN_DIRECTORY + "\\hoadon";
+    private static final String HOADON_CHI_TIET_DIRECTORY = ADMIN_DIRECTORY + "\\hoadonchitiet";
     private static final String KHUYENMAI_DIRECTORY = ADMIN_DIRECTORY + "\\khuyenmai";
     private static final String AUDIT_LOG_HOADON_FILE_PATH = HOADON_DIRECTORY + "\\audilog_hoadon.csv";
+    private static final String AUDIT_LOG_HOADON_CHI_TIET_FILE_PATH = HOADON_CHI_TIET_DIRECTORY + "\\audilog_hoadonchitiet.csv";
     private static final String AUDIT_LOG_KHUYENMAI_FILE_PATH = KHUYENMAI_DIRECTORY + "\\audilog_khuyenmai.csv";
     private static final String AUDIT_LOG_SIZE_FILE_PATH = SIZE_DIRECTORY + "\\audilog_size.csv";
     private static final String AUDIT_LOG_CHATLIEU_FILE_PATH = CHATLIEU_DIRECTORY + "\\audilog_chatlieu.csv";
@@ -57,6 +59,16 @@ public class AuditLogController {
     public List<AuditLog> getAuditLogHoadon() {
         try {
             return auditLogService.readAuditLogHoadon();
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Xử lý lỗi, có thể trả về một đối tượng ResponseEntity để thông báo lỗi cho client
+            return null;
+        }
+    }
+    @GetMapping("/hoadonchitiet")
+    public List<AuditLog> getAuditLogHoadonChiTiet() {
+        try {
+            return auditLogService.readAuditLogHoadonChiTiet();
         } catch (IOException | CsvValidationException e) {
             e.printStackTrace();
             // Xử lý lỗi, có thể trả về một đối tượng ResponseEntity để thông báo lỗi cho client
@@ -366,8 +378,8 @@ public class AuditLogController {
 
     @GetMapping("/vouchersearch")
     public List<AuditLog> getAuditLogVouchers(
-            @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate startDate,
-            @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate endDate) {
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         try {
             LocalDateTime startTime = startDate.atStartOfDay();
             LocalDateTime endTime = endDate.atTime(LocalTime.MAX);
@@ -379,6 +391,45 @@ public class AuditLogController {
         }
     }
 
+    @GetMapping("/auditlogbydate")
+    public List<AuditLog> getAuditLogByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        try {
+            return auditLogService.readAuditLogByDate(AUDIT_LOG_VOUCHER_FILE_PATH, searchDate);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
 
+
+
+    @GetMapping("/hoadonchitietsearch")
+    public List<AuditLog> getAuditLogHoaDonChiTiet(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
+        try {
+            LocalDateTime startTime = startDate.atStartOfDay();
+            LocalDateTime endTime = endDate.atTime(LocalTime.MAX);
+            return auditLogService.readAuditLogByTimeRange(AUDIT_LOG_HOADON_CHI_TIET_FILE_PATH, startTime, endTime);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
+
+    @GetMapping("/auditlogbydatehoadonchitiet")
+    public List<AuditLog> getAuditLogByDateHoaDonChiTiet(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        try {
+            return auditLogService.readAuditLogByDate(AUDIT_LOG_HOADON_CHI_TIET_FILE_PATH, searchDate);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
 }
 
