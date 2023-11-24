@@ -404,4 +404,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         return false;
     }
 
+    @Override
+    public OrderDetailUpdate orderDetailUpdate(UUID id) {
+        return hoaDonRepository.orderDetailUpdate(id);
+    }
+
 }

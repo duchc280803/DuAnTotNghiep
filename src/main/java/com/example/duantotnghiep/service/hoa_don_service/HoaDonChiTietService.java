@@ -43,4 +43,6 @@ public interface HoaDonChiTietService {
 
     boolean traHang(UUID id);
 
+    OrderDetailUpdate orderDetailUpdate(UUID id);
+
 }

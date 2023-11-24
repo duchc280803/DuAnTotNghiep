@@ -15,9 +15,15 @@ public class ConfirmOrderClientRequest {
 
     private String hoVaTenNguoiShip;
 
-    private String soDienThoai;
+    private String soDienThoaiShip;
 
     private BigDecimal tienShip;
 
     private String diaChi;
+
+    private String hoVatenClient;
+
+    private String email;
+
+    private String sdtClient;
 }

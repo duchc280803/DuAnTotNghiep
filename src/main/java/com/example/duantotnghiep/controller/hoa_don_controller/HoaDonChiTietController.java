@@ -130,4 +130,9 @@ public class HoaDonChiTietController {
         return new ResponseEntity<>(hoaDonChiTietService.traHang(id), HttpStatus.OK);
     }
 
+    @GetMapping("order-detail-update/{idHoaDon}")
+    public ResponseEntity<OrderDetailUpdate> orderDetailUpdate(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
+        return new ResponseEntity<>(hoaDonChiTietService.orderDetailUpdate(idHoaDon), HttpStatus.OK);
+    }
+
 }

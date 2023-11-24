@@ -81,4 +81,8 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
             "ORDER BY hd.ngayTao DESC")
     Page<HoaDonDTOResponse> getAllHoaDonCTTStaff(@Param("loaiDon") Integer loaiDon, @Param("ma") String ma, @Param("soDienThoai") String soDienThoai, Pageable pageable);
 
+    @Query("SELECT new com.example.duantotnghiep.response.OrderDetailUpdate" +
+            "(hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.email, hd.tenNguoiShip, hd.sdtNguoiShip, hd.tienShip, hd.diaChi) " +
+            "FROM HoaDon hd where hd.id = :id")
+    OrderDetailUpdate orderDetailUpdate(@Param("id") UUID id);
 }

@@ -21,10 +21,6 @@ public class CreateQLKhachHangRequest {
 
     private Boolean gioiTinh;
 
-    private String userName;
-
-    private String matKhau;
-
     private Date ngaySinh;
 
     private Integer trangThai;
