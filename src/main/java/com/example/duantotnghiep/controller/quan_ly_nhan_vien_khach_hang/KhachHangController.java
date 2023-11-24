@@ -37,8 +37,8 @@ public class KhachHangController {
     @PostMapping("/create")
     public ResponseEntity<MessageResponse> createKhachHang(
             @RequestParam("file") MultipartFile file,
-            @RequestBody CreateQLKhachHangRequest CreateQLKhachHangRequest) {
-        return new ResponseEntity<>(service.createKhachHang(file, CreateQLKhachHangRequest, true), HttpStatus.CREATED);
+            @ModelAttribute CreateQLKhachHangRequest createQLKhachHangRequest) {
+        return new ResponseEntity<>(service.createKhachHang(file, createQLKhachHangRequest, true), HttpStatus.CREATED);
     }
 
     @GetMapping("/detail")

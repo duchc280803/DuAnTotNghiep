@@ -5,6 +5,7 @@ import com.example.duantotnghiep.enums.StatusOrderEnums;
 import com.example.duantotnghiep.enums.TypeOrderEnums;
 import com.example.duantotnghiep.repository.SpGiamGiaRepository;
 import com.example.duantotnghiep.repository.TrangThaiHoaDonRepository;
+import com.example.duantotnghiep.repository.VoucherRepository;
 import com.example.duantotnghiep.repository.mua_hang_not_login_repo.*;
 import com.example.duantotnghiep.request.not_login.CreateKhachRequest_not_login;
 import com.example.duantotnghiep.response.MessageResponse;
@@ -23,9 +24,6 @@ import java.util.UUID;
 
 @Service
 public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
-
-    @Autowired
-    private ChiTietSanPhamRepository_not_login chiTietSanPhamRepository;
 
     @Autowired
     private HoaDonRepository_not_login hoaDonRepository;
@@ -54,11 +52,14 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
     @Autowired
     private SpGiamGiaRepository spGiamGiaRepository;
 
+    @Autowired
+    private VoucherRepository voucherRepository;
+
     @Override
     public MessageResponse thanhToanKhongDangNhap(CreateKhachRequest_not_login createKhachRequest_not_login) {
         List<TaiKhoan> khachHangList = khachHangRepository_not_login.getKhachHangByEmailOrSdt(createKhachRequest_not_login.getEmail(), createKhachRequest_not_login.getSoDienThoai());
         TaiKhoan khachHang;
-
+        Optional<Voucher> voucher = voucherRepository.findById(createKhachRequest_not_login.getIdGiamGia());
         //Step1 : Xử lí khách hàng và địa chỉ
         if (!khachHangList.isEmpty()) {
             // Nếu tài khoản khách hàng đã tồn tại, sử dụng tài khoản đó.
@@ -128,6 +129,10 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
         hoaDon.setTienKhachTra(createKhachRequest_not_login.getTienKhachTra());
 
         hoaDon.setTienGiamGia(BigDecimal.ZERO);
+
+        hoaDon.setTienGiamGia(createKhachRequest_not_login.getTienGiamGia());
+
+        hoaDon.setVoucher(voucher.get());
 
         hoaDonRepository.save(hoaDon);
         //End step 2
