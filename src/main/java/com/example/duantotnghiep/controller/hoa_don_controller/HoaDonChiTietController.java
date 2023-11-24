@@ -6,12 +6,14 @@ import com.example.duantotnghiep.request.*;
 import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.hoa_don_service.impl.HoaDonChiTietServiceImpl;
 import com.example.duantotnghiep.service.hoa_don_service.impl.TrangThaiHoaDonServiceImpl;
+import com.opencsv.exceptions.CsvValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
@@ -97,9 +99,10 @@ public class HoaDonChiTietController {
     public ResponseEntity<MessageResponse> createTransaction(
             @RequestParam(name = "idHoaDon") UUID idHoaDon,
             @RequestParam(name = "id") UUID id,
-            @RequestBody TransactionRequest transactionRequest
-    ) {
-        return new ResponseEntity<>(hoaDonChiTietService.createTransaction(idHoaDon, id, transactionRequest), HttpStatus.CREATED);
+            @RequestBody TransactionRequest transactionRequest,
+            Principal principal
+    ) throws IOException, CsvValidationException {
+        return new ResponseEntity<>(hoaDonChiTietService.createTransaction(idHoaDon, id, transactionRequest, principal.getName()), HttpStatus.CREATED);
     }
 
     @GetMapping("status-order/{id}")
@@ -114,8 +117,9 @@ public class HoaDonChiTietController {
 
     @PostMapping("tra-hang")
     public ResponseEntity<MessageResponse> createOrUpdate(@RequestParam("idhdct") UUID idhdct,
-                                                          @RequestBody TraHangRequest traHangRequest) {
-        MessageResponse response = hoaDonChiTietService.createOrUpdate(idhdct, traHangRequest);
+                                                          @RequestBody TraHangRequest traHangRequest,
+                                                          Principal principal) throws IOException, CsvValidationException {
+        MessageResponse response = hoaDonChiTietService.createOrUpdate(idhdct, traHangRequest, principal.getName());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
