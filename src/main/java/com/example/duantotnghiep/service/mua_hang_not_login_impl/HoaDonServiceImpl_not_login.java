@@ -128,7 +128,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
         hoaDon.setTienKhachTra(createKhachRequest_not_login.getTienKhachTra());
 
-        hoaDon.setTienGiamGia(BigDecimal.ZERO);
+//        hoaDon.setTienGiamGia(BigDecimal.ZERO);
 
         hoaDon.setTienGiamGia(createKhachRequest_not_login.getTienGiamGia());
 
@@ -220,6 +220,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
     public MessageResponse thanhToanLogin(CreateKhachRequest_not_login createKhachRequest_not_login, Principal principal) {
 
+        Optional<Voucher> voucher = voucherRepository.findById(createKhachRequest_not_login.getIdGiamGia());
 
         //Step1 : Xử lí khách hàng và địa chỉ
         TaiKhoan khachHang = khachHangRepository_not_login.findByUsername(principal.getName());
@@ -253,7 +254,10 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
         hoaDon.setTienKhachTra(createKhachRequest_not_login.getTienKhachTra());
 
-        hoaDon.setTienGiamGia(BigDecimal.ZERO);
+        hoaDon.setTienGiamGia(createKhachRequest_not_login.getTienGiamGia());
+
+        hoaDon.setVoucher(voucher.get());
+
 
         hoaDonRepository.save(hoaDon);
         //End step 2
