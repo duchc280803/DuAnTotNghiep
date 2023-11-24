@@ -8,12 +8,15 @@ import com.example.duantotnghiep.request.TraHangRequest;
 import com.example.duantotnghiep.request.TransactionRequest;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
 import com.example.duantotnghiep.response.*;
+import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.hoa_don_service.HoaDonChiTietService;
+import com.opencsv.exceptions.CsvValidationException;
 import org.bouncycastle.tsp.TSPUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -33,7 +36,16 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     private HoaDonRepository hoaDonRepository;
 
     @Autowired
+    private TaiKhoanRepository taiKhoanRepository;
+
+    @Autowired
+    private AuditLogService auditLogService;
+
+    @Autowired
     private HinhThucThanhToanRepository hinhThucThanhToanRepository;
+
+    @Autowired
+    private SanPhamRepository sanPhamRepository;
 
     @Autowired
     private ChiTietSanPhamRepository chiTietSanPhamRepository;
@@ -207,9 +219,10 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest) {
+    public MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest, String username) throws IOException, CsvValidationException {
         Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
 
         LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
         loaiHinhThucThanhToan.setId(UUID.randomUUID());
@@ -230,6 +243,8 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
 
+        auditLogService.writeAuditLogHoadonChiTiet("CREATE", username, taiKhoanUser.getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(), "Loại thanh toán: " + transactionRequest.getTenLoai(), "Số tiền: " + transactionRequest.getSoTien(), "Thanh toán: " + (transactionRequest.getTrangThai() == 1 ? "Tiền mặt" : "Chuyển khoản"));
+
         return MessageResponse.builder().message("Thanh toán thành công").build();
     }
 
@@ -244,13 +259,16 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-        public MessageResponse createOrUpdate(UUID idhdct, TraHangRequest traHangRequest) {
+        public MessageResponse createOrUpdate(UUID idhdct, TraHangRequest traHangRequest, String username)  throws IOException, CsvValidationException {
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
             HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findById(idhdct).orElse(null);
             TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
-            if (hoaDonChiTiet != null) {
+            TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).get();
+
+        if (hoaDonChiTiet != null) {
                 SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(hoaDonChiTiet.getSanPhamChiTiet().getId()).orElse(null);
                 HoaDon hoaDon = hoaDonRepository.findById(hoaDonChiTiet.getHoaDon().getId()).orElse(null);
+                SanPham sanPhamHoaDon = sanPhamRepository.findById(sanPhamChiTiet.getSanPham().getId()).orElse(null);
 
                 if (sanPhamChiTiet != null && hoaDon != null) {
 
@@ -345,10 +363,11 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                         }
                     }
 
-                    hoaDon.setThanhTien(tongTien.add(hoaDon.getTienShip()).add(hoaDon.getTienGiamGia()));
+                    hoaDon.setThanhTien(tongTien.add(hoaDon.getTienShip()).subtract(hoaDon.getTienGiamGia()));
                     chiTietSanPhamRepository.save(sanPhamChiTiet);
                     trangThaiHoaDonRepository.save(trangThaiHoaDon);
                     hoaDonRepository.save(hoaDon);
+                    auditLogService.writeAuditLogHoadonChiTiet("UPDATE", username, taiKhoan.getEmail(),"Trả hàng", hoaDon.getMa(), "Mã sản phẩm: "+ sanPhamHoaDon.getMaSanPham(), "Số lượng trả: " + traHangRequest.getSoLuong().toString(), "");
 
                     return MessageResponse.builder().message("Trả hàng thành công").build();
                 }
