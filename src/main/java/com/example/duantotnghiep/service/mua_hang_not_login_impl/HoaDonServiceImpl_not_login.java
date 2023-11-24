@@ -134,7 +134,10 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
         hoaDon.setTienGiamGia(createKhachRequest_not_login.getTienGiamGia());
 
-        hoaDon.setVoucher(voucher.get());
+        //Nếu null sẽ không lưu
+        if(voucher.isPresent()){
+            hoaDon.setVoucher(voucher.get());
+        }
 
         hoaDonRepository.save(hoaDon);
         //End step 2
@@ -215,7 +218,6 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
             }
 
         }//End step 6
-
         return MessageResponse.builder().message("Thanh Toán Thành Công").build();
 
     }
@@ -259,8 +261,10 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
         hoaDon.setTienGiamGia(createKhachRequest_not_login.getTienGiamGia());
 
-        hoaDon.setVoucher(voucher.get());
-
+        //Nếu null sẽ không lưu
+        if(voucher.isPresent()){
+            hoaDon.setVoucher(voucher.get());
+        }
 
         hoaDonRepository.save(hoaDon);
         //End step 2
