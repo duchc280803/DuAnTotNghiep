@@ -33,8 +33,10 @@ public class CreateKhachRequest_not_login {
 
     private BigDecimal tienKhachTra;
 
-//    private Integer phuongThuongThanhToan;
-
     private List<UUID> gioHangChiTietList;
+
+    private UUID idGiamGia;
+
+    private BigDecimal tienGiamGia;
 
 }
