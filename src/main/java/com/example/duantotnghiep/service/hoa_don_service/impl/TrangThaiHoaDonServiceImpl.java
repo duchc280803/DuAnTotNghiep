@@ -16,6 +16,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -78,15 +79,29 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
     @Override
     public MessageResponse confirmOrderClient(UUID hoadonId, ConfirmOrderClientRequest request) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        Optional<HoaDon> hoaDon = hoaDonRepository.findById(hoadonId);
-        hoaDon.get().setTenNguoiShip(request.getHoVaTenNguoiShip());
-        hoaDon.get().setTienShip(request.getTienShip());
-        hoaDon.get().setSdtNguoiShip(request.getSoDienThoai());
-        hoaDon.get().setDiaChi(request.getDiaChi());
-        hoaDon.get().setNgayCapNhap(timestamp);
-        hoaDon.get().setThanhTien(hoaDon.get().getThanhTien().add(request.getTienShip()));
-        hoaDonRepository.save(hoaDon.get());
-        return MessageResponse.builder().message("Cập nhập thành công").build();
+        Optional<HoaDon> hoaDonOptional = hoaDonRepository.findById(hoadonId);
+
+        if (hoaDonOptional.isPresent()) {
+            HoaDon hoaDon = hoaDonOptional.get();
+
+            hoaDon.setTenNguoiShip(request.getHoVaTenNguoiShip());
+            hoaDon.setTienShip(request.getTienShip());
+            hoaDon.setSdtNguoiShip(request.getHoVaTenNguoiShip());
+            hoaDon.setDiaChi(request.getDiaChi());
+            hoaDon.setSdtNguoiNhan(request.getSdtClient());
+            hoaDon.setTenNguoiNhan(request.getHoVatenClient());
+            hoaDon.setEmail(request.getEmail());
+            hoaDon.setNgayCapNhap(timestamp);
+
+            BigDecimal thanhTien = hoaDon.getThanhTien() != null ? hoaDon.getThanhTien() : BigDecimal.ZERO;
+            hoaDon.setThanhTien(thanhTien.add(request.getTienShip()));
+
+            hoaDonRepository.save(hoaDon);
+            return MessageResponse.builder().message("Cập nhập thành công").build();
+        } else {
+            return MessageResponse.builder().message("Không tìm thấy hóa đơn").build();
+        }
     }
+
 
 }

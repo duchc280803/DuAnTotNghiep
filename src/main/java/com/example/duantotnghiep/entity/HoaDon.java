@@ -80,6 +80,9 @@ public class HoaDon {
     @Column(name = "tiengiamgia")
     private BigDecimal tienGiamGia;
 
+    @Column(name = "email")
+    private String email;
+
     @OneToMany(mappedBy = "hoaDon", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<HoaDonChiTiet> hoaDonChiTietList;

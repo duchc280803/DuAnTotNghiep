@@ -23,9 +23,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.Normalizer;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Service
 public class QLKhachHangImpl implements QLKhachHangService {
@@ -52,12 +54,17 @@ public class QLKhachHangImpl implements QLKhachHangService {
     @Override
     public MessageResponse createKhachHang(MultipartFile file, CreateQLKhachHangRequest createQLKhachHangRequest, boolean sendEmail) {
         String fileName = file.getOriginalFilename();
-
+        List<TaiKhoan> taiKhoans = khachHangRepository.listNhanVien();
         try {
             Files.copy(file.getInputStream(), Paths.get("D:\\FE_DuAnTotNghiep\\assets\\ảnh giày", fileName), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        String normalized = removeDiacritics(createQLKhachHangRequest.getTen());
+
+        // Chuyển đổi chuỗi thành chữ thường và loại bỏ khoảng trắng
+        String converted = normalized.toLowerCase().replaceAll("\\s", "");
 
         LoaiTaiKhoan loaiTaiKhoan = loaiTaiKhoanRepository.findByName(TypeAccountEnum.USER).get();
         TaiKhoan taiKhoan = new TaiKhoan();
@@ -67,15 +74,15 @@ public class QLKhachHangImpl implements QLKhachHangService {
         taiKhoan.setSoDienThoai(createQLKhachHangRequest.getSoDienThoai());
         taiKhoan.setImage(fileName);
         taiKhoan.setGioiTinh(createQLKhachHangRequest.getGioiTinh());
-        taiKhoan.setUsername(createQLKhachHangRequest.getUserName());
-        taiKhoan.setMatKhau(passwordEncoder.encode(createQLKhachHangRequest.getMatKhau()));
         taiKhoan.setNgaySinh(createQLKhachHangRequest.getNgaySinh());
         taiKhoan.setTrangThai(createQLKhachHangRequest.getTrangThai());
-        taiKhoan.setMaTaiKhoan(createQLKhachHangRequest.getMaTaiKhoan());
+        taiKhoan.setMaTaiKhoan(converted + taiKhoans.size() + 1);
+        taiKhoan.setUsername(converted + taiKhoans.size() + 1);
+        taiKhoan.setMatKhau(passwordEncoder.encode(converted));
         taiKhoan.setLoaiTaiKhoan(loaiTaiKhoan);
         khachHangRepository.save(taiKhoan);
         if (sendEmail) {
-            sendConfirmationEmail(taiKhoan.getEmail(), taiKhoan.getUsername(), createQLKhachHangRequest.getMatKhau());
+            sendConfirmationEmail(taiKhoan.getEmail(), taiKhoan.getUsername(), converted);
             System.out.println("gửi mail");
         }
         return MessageResponse.builder().message("Thêm Thành Công").build();
@@ -108,7 +115,6 @@ public class QLKhachHangImpl implements QLKhachHangService {
             taiKhoan.setEmail(createQLKhachHangRequest.getEmail());
             taiKhoan.setSoDienThoai(createQLKhachHangRequest.getSoDienThoai());
             taiKhoan.setGioiTinh(createQLKhachHangRequest.getGioiTinh());
-            taiKhoan.setUsername(createQLKhachHangRequest.getUserName());
             taiKhoan.setNgaySinh(createQLKhachHangRequest.getNgaySinh());
             taiKhoan.setTrangThai(createQLKhachHangRequest.getTrangThai());
             taiKhoan.setMaTaiKhoan(createQLKhachHangRequest.getMaTaiKhoan());
@@ -120,4 +126,9 @@ public class QLKhachHangImpl implements QLKhachHangService {
         }
     }
 
+    public static String removeDiacritics(String input) {
+        input = Normalizer.normalize(input, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(input).replaceAll("");
+    }
 }
