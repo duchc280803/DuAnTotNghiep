@@ -131,15 +131,16 @@ public class AuditLogService {
                 .collect(Collectors.toList());
     }
     private void writeAuditLogHeader(String filePath) throws IOException {
-        try (CSVWriter writer = new CSVWriter(new FileWriter(filePath))) {
-            String[] header = { "Action", "Username", "Email", "Id", "Ma", "Ten","TenKhach","Loai Thanh Toan", "Timestamp" };
+        try (CSVWriter writer = new CSVWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath, true), "UTF-8")))) {
+            String[] header = { "Action", "Username", "Email", "Id", "Ma", "Ten", "TenKhach", "Loai Thanh Toan", "Timestamp" };
             writer.writeNext(header);
         }
     }
 
+
     public List<AuditLog> readAuditLog(String filePath) throws IOException, CsvValidationException {
         List<AuditLog> auditLogList = new ArrayList<>();
-        try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
+        try (CSVReader reader = new CSVReader(new BufferedReader(new InputStreamReader(new FileInputStream(filePath), "UTF-8")))) {
             reader.skip(1);
 
             List<String[]> lines = reader.readAll();
@@ -309,7 +310,7 @@ public class AuditLogService {
 
 
     private void writeAuditLogToFile(List<AuditLog> auditLogList, String filePath) throws IOException {
-        try (CSVWriter writer = new CSVWriter(new FileWriter(filePath, true))) {
+        try (CSVWriter writer = new CSVWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath, true), "UTF-8")))) {
             // Ghi header nếu file chưa có dữ liệu
             if (new File(filePath).length() == 0) {
                 String[] header = { "Action", "Username", "Email", "Id", "Ma", "Ten","TenKhach","Loai Thanh Toan", "Timestamp" };
