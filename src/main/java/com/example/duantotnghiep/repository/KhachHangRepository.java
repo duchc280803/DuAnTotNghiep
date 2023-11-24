@@ -43,6 +43,9 @@ public interface KhachHangRepository extends JpaRepository<TaiKhoan, UUID> {
             "FROM TaiKhoan tk JOIN tk.diaChiList dc WHERE tk.maTaiKhoan = :key OR tk.soDienThoai = :key OR tk.name = :key OR tk.email = :key ")
     List<QLKhachHangResponse> findByKeyQLToKhachHang(@Param("key") String key);
 
+    @Query("SELECT tk FROM TaiKhoan tk WHERE tk.loaiTaiKhoan.name = ('USER') ")
+    List<TaiKhoan> listKhachHang();
+
     @Query("SELECT tk FROM TaiKhoan tk WHERE tk.loaiTaiKhoan.name = ('STAFF') ")
     List<TaiKhoan> listNhanVien();
 }

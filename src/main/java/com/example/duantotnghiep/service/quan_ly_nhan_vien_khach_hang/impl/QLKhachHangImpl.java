@@ -63,7 +63,6 @@ public class QLKhachHangImpl implements QLKhachHangService {
 
         String normalized = removeDiacritics(createQLKhachHangRequest.getTen());
 
-        // Chuyển đổi chuỗi thành chữ thường và loại bỏ khoảng trắng
         String converted = normalized.toLowerCase().replaceAll("\\s", "");
 
         LoaiTaiKhoan loaiTaiKhoan = loaiTaiKhoanRepository.findByName(TypeAccountEnum.USER).get();
@@ -117,7 +116,6 @@ public class QLKhachHangImpl implements QLKhachHangService {
             taiKhoan.setGioiTinh(createQLKhachHangRequest.getGioiTinh());
             taiKhoan.setNgaySinh(createQLKhachHangRequest.getNgaySinh());
             taiKhoan.setTrangThai(createQLKhachHangRequest.getTrangThai());
-            taiKhoan.setMaTaiKhoan(createQLKhachHangRequest.getMaTaiKhoan());
 
             khachHangRepository.save(taiKhoan);
             return MessageResponse.builder().message("Cập Nhật Thành Công").build();
