@@ -121,6 +121,8 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
         hoaDon.setSdtNguoiNhan(createKhachRequest_not_login.getSoDienThoai());
         hoaDon.setTenNguoiNhan(createKhachRequest_not_login.getHoTen());
         hoaDon.setTaiKhoanKhachHang(khachHang);
+        hoaDon.setEmail(createKhachRequest_not_login.getEmail());
+
 
         hoaDon.setLoaiDon(loaiDonRepository.findByTrangThai(TypeOrderEnums.ONLINE.getValue()).get());
 
@@ -247,6 +249,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
         hoaDon.setSdtNguoiNhan(createKhachRequest_not_login.getSoDienThoai());
         hoaDon.setTenNguoiNhan(createKhachRequest_not_login.getHoTen());
         hoaDon.setTaiKhoanKhachHang(khachHang);
+        hoaDon.setEmail(createKhachRequest_not_login.getEmail());
 
         hoaDon.setLoaiDon(loaiDonRepository.findByTrangThai(TypeOrderEnums.ONLINE.getValue()).get());
 
