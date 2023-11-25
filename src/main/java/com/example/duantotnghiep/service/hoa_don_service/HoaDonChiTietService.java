@@ -50,4 +50,6 @@ public interface HoaDonChiTietService {
     List<NhanVienOrderResponse> taiKhoanList();
 
     MessageResponse updateNhanVien(UUID idHoaDon, UUID idNhanVien);
+
+    BigDecimal tongTienHang(UUID id);
 }

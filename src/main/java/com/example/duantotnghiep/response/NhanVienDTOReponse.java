@@ -1,6 +1,5 @@
 package com.example.duantotnghiep.response;
 
-import com.example.duantotnghiep.enums.TypeAccountEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,11 +13,12 @@ import java.util.UUID;
 @Getter
 @Setter
 public class NhanVienDTOReponse {
+
     private UUID id;
 
-    private String fullName;
+    private String maNhanVien;
 
-    private String maTaiKhoan;
+    private String fullName;
 
     private String soDienThoai;
 
@@ -26,14 +26,18 @@ public class NhanVienDTOReponse {
 
     private Date ngaySinh;
 
-    private TypeAccountEnum loaiTaiKhoan;
-
     private Integer trangThai;
 
     private String email;
 
     private String image;
 
-    private UUID idLoaiTaiKhoan;
+    private String tinh;
+
+    private String huyen;
+
+    private String phuong;
+
+    private String diaChi;
 
 }

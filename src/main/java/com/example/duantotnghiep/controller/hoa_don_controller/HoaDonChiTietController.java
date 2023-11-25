@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
@@ -150,6 +151,11 @@ public class HoaDonChiTietController {
             @RequestParam(name = "idHoaDon") UUID idHoaDon,
             @RequestParam(name = "idNhanVien") UUID idNhanVien) {
         return new ResponseEntity<>(hoaDonChiTietService.updateNhanVien(idHoaDon, idNhanVien), HttpStatus.OK);
+    }
+
+    @GetMapping("tong-tien-don-hang/{id}")
+    public ResponseEntity<BigDecimal> tongTienSanPham(@PathVariable("id") UUID id) {
+        return new ResponseEntity<>(hoaDonChiTietService.tongTienHang(id), HttpStatus.OK);
     }
 
 }

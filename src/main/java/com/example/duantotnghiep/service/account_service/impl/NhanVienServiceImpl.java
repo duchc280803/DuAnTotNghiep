@@ -113,6 +113,7 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
         diaChi.setHuyen(request.getHuyen());
         diaChi.setTinh(request.getTinh());
         diaChi.setTaiKhoan(taiKhoan);
+        diaChi.setTrangThai(1);
         diaChiRepository.save(diaChi);
         if (sendEmail) {
             sendConfirmationEmail(taiKhoan.getEmail(), taiKhoan.getUsername(), converted);
