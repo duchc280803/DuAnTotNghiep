@@ -260,7 +260,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
             paragraph18.setAlignment(Element.ALIGN_LEFT);
             document.add(paragraph18);
 
-            if (tongTienKhachTra != null) {
+            if (tongTienKhachTra != BigDecimal.ZERO) {
                 Paragraph paragraph13 = new Paragraph("Tổng số tiền khách trả: " + decimalFormat.format(tongTienKhachTra) + " VND", fontParagraph);
                 paragraph13.setAlignment(Element.ALIGN_LEFT);
                 document.add(paragraph13);
@@ -276,9 +276,11 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
                     paragraph15.setAlignment(Element.ALIGN_LEFT);
                     document.add(paragraph15);
                 }
-                Paragraph paragraph16 = new Paragraph("      +)Tiền thừa: " + (decimalFormat.format(hoaDon.get().getTienThua()) == null ? 0 + " VND" : decimalFormat.format(hoaDon.get().getTienThua()) + " VND"), fontParagraph);
-                paragraph16.setAlignment(Element.ALIGN_LEFT);
-                document.add(paragraph16);
+                if (hoaDon.get().getTienThua() != null) {
+                    Paragraph paragraph16 = new Paragraph("      +)Tiền thừa: " + decimalFormat.format(hoaDon.get().getTienThua() + " VND"), fontParagraph);
+                    paragraph16.setAlignment(Element.ALIGN_LEFT);
+                    document.add(paragraph16);
+                }
             }
 
             document.add(new Paragraph("\n")); // Thêm một dòng trống
