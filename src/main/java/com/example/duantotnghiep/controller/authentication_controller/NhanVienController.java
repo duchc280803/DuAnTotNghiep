@@ -1,9 +1,5 @@
 package com.example.duantotnghiep.controller.authentication_controller;
 
-import com.example.duantotnghiep.entity.LoaiTaiKhoan;
-import com.example.duantotnghiep.entity.TaiKhoan;
-import com.example.duantotnghiep.entity.XuatXu;
-import com.example.duantotnghiep.request.CreateQLKhachHangRequest;
 import com.example.duantotnghiep.request.NhanVienDTORequest;
 import com.example.duantotnghiep.response.LoaiTaiKhoanResponse;
 import com.example.duantotnghiep.response.MessageResponse;
@@ -67,6 +63,7 @@ public class NhanVienController {
             return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PutMapping("delete")
     public ResponseEntity<MessageResponse> deleteThuongHieu(@RequestParam("idNhanVien")  UUID id) {
         return new ResponseEntity<>(nhanVienService.delete(id), HttpStatus.OK);

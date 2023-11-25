@@ -442,4 +442,24 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         return MessageResponse.builder().message("Update thành công").build();
     }
 
+    @Override
+    public BigDecimal tongTienHang(UUID id) {
+        Optional<HoaDon> hoaDonOptional = hoaDonRepository.findById(id);
+        if (hoaDonOptional.isEmpty()) {
+            // Xử lý trường hợp không tìm thấy hoá đơn với ID cụ thể
+            return BigDecimal.ZERO;
+        }
+
+        HoaDon hoaDon = hoaDonOptional.get();
+        List<HoaDonChiTiet> hoaDonChiTiets = hoaDon.getHoaDonChiTietList();
+
+        BigDecimal tongTien = BigDecimal.ZERO;
+        for (HoaDonChiTiet hdct: hoaDonChiTiets) {
+            BigDecimal donGiaSauGiam = hdct.getDonGiaSauGiam() != null ? hdct.getDonGiaSauGiam() : BigDecimal.ZERO;
+            Integer soLuong = hdct.getSoLuong() != null ? hdct.getSoLuong() : 0;
+            tongTien = tongTien.add(donGiaSauGiam.multiply(new BigDecimal(soLuong)));
+        }
+        return tongTien;
+    }
+
 }
