@@ -8,5 +8,8 @@ public interface loadDiaChi_not_login {
  String getSoDienThoai();
  UUID getId();
  String getDiaChi();
+ String getTinh();
+ String getHuyen();
+ String getXa();
  String getTrangThai();
 }
