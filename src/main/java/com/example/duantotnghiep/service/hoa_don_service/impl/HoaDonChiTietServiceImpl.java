@@ -3,6 +3,7 @@ package com.example.duantotnghiep.service.hoa_don_service.impl;
 import com.example.duantotnghiep.config.VnPayConfig;
 import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.enums.StatusOrderEnums;
+import com.example.duantotnghiep.enums.TypeAccountEnum;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.TraHangRequest;
 import com.example.duantotnghiep.request.TransactionRequest;
@@ -425,6 +426,20 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     @Override
     public OrderDetailUpdate orderDetailUpdate(UUID id) {
         return hoaDonRepository.orderDetailUpdate(id);
+    }
+
+    @Override
+    public List<NhanVienOrderResponse> taiKhoanList() {
+        return khachHangRepository.listNv();
+    }
+
+    @Override
+    public MessageResponse updateNhanVien(UUID idHoaDon, UUID idNhanVien) {
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+        Optional<TaiKhoan> nhanVien = khachHangRepository.findById(idNhanVien);
+        hoaDon.get().setTaiKhoanNhanVien(nhanVien.get());
+        hoaDonRepository.save(hoaDon.get());
+        return MessageResponse.builder().message("Update thành công").build();
     }
 
 }

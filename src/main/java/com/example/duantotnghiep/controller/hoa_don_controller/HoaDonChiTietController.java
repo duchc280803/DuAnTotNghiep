@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.controller.hoa_don_controller;
 
 import com.example.duantotnghiep.entity.HoaDon;
+import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.repository.LoaiHinhThucThanhToanRepository;
 import com.example.duantotnghiep.request.*;
 import com.example.duantotnghiep.response.*;
@@ -137,6 +138,18 @@ public class HoaDonChiTietController {
     @GetMapping("order-detail-update/{idHoaDon}")
     public ResponseEntity<OrderDetailUpdate> orderDetailUpdate(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(hoaDonChiTietService.orderDetailUpdate(idHoaDon), HttpStatus.OK);
+    }
+
+    @GetMapping("list-nhan-vien")
+    public ResponseEntity<List<NhanVienOrderResponse>> nhanVienList() {
+        return new ResponseEntity<>(hoaDonChiTietService.taiKhoanList(), HttpStatus.OK);
+    }
+
+    @PutMapping("update-nhan-vien")
+    public ResponseEntity<MessageResponse> updateNhanVien(
+            @RequestParam(name = "idHoaDon") UUID idHoaDon,
+            @RequestParam(name = "idNhanVien") UUID idNhanVien) {
+        return new ResponseEntity<>(hoaDonChiTietService.updateNhanVien(idHoaDon, idNhanVien), HttpStatus.OK);
     }
 
 }

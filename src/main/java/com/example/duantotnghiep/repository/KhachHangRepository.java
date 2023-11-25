@@ -1,7 +1,9 @@
 package com.example.duantotnghiep.repository;
 
 import com.example.duantotnghiep.entity.TaiKhoan;
+import com.example.duantotnghiep.enums.TypeAccountEnum;
 import com.example.duantotnghiep.response.KhachHangResponse;
+import com.example.duantotnghiep.response.NhanVienOrderResponse;
 import com.example.duantotnghiep.response.QLKhachHangResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +48,6 @@ public interface KhachHangRepository extends JpaRepository<TaiKhoan, UUID> {
     @Query("SELECT tk FROM TaiKhoan tk WHERE tk.loaiTaiKhoan.name = ('USER') ")
     List<TaiKhoan> listKhachHang();
 
-    @Query("SELECT tk FROM TaiKhoan tk WHERE tk.loaiTaiKhoan.name = ('STAFF') ")
-    List<TaiKhoan> listNhanVien();
+    @Query(value = "select taikhoan.id, taikhoan.fullname, taikhoan.mataikhoan from taikhoan where idloaitaikhoan = '8FBBB1DF-1A27-4378-8498-D547FF4EC072'\n", nativeQuery = true)
+    List<NhanVienOrderResponse> listNv();
 }

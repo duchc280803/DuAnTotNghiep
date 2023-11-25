@@ -34,4 +34,6 @@ public class HoaDonDTOResponse {
 
     private int trangThai;
 
+    private UUID idNhanVien;
+
 }

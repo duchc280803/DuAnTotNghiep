@@ -2,6 +2,7 @@ package com.example.duantotnghiep.service.hoa_don_service;
 
 import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.entity.HoaDonChiTiet;
+import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.request.TraHangRequest;
 import com.example.duantotnghiep.request.TransactionRequest;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
@@ -46,4 +47,7 @@ public interface HoaDonChiTietService {
 
     OrderDetailUpdate orderDetailUpdate(UUID id);
 
+    List<NhanVienOrderResponse> taiKhoanList();
+
+    MessageResponse updateNhanVien(UUID idHoaDon, UUID idNhanVien);
 }
