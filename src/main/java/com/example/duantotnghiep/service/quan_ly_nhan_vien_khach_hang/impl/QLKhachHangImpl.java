@@ -1,8 +1,10 @@
 package com.example.duantotnghiep.service.quan_ly_nhan_vien_khach_hang.impl;
 
+import com.example.duantotnghiep.entity.DiaChi;
 import com.example.duantotnghiep.entity.LoaiTaiKhoan;
 import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.enums.TypeAccountEnum;
+import com.example.duantotnghiep.repository.DiaChiRepository;
 import com.example.duantotnghiep.repository.KhachHangRepository;
 import com.example.duantotnghiep.repository.LoaiTaiKhoanRepository;
 import com.example.duantotnghiep.request.CreateQLKhachHangRequest;
@@ -44,6 +46,9 @@ public class QLKhachHangImpl implements QLKhachHangService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private DiaChiRepository diaChiRepository;
+
     @Override
     public List<QLKhachHangResponse> getQLKhachHang(Integer trangThai, String name, String soDienThoai, String maTaiKhoan, Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
@@ -53,7 +58,7 @@ public class QLKhachHangImpl implements QLKhachHangService {
 
     @Override
     public MessageResponse createKhachHang(MultipartFile file, CreateQLKhachHangRequest createQLKhachHangRequest, boolean sendEmail) {
-        String fileName = file.getOriginalFilename();
+        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
         List<TaiKhoan> taiKhoans = khachHangRepository.listKhachHang();
         try {
             Files.copy(file.getInputStream(), Paths.get("D:\\FE_DuAnTotNghiep\\assets\\ảnh giày", fileName), StandardCopyOption.REPLACE_EXISTING);
@@ -80,6 +85,15 @@ public class QLKhachHangImpl implements QLKhachHangService {
         taiKhoan.setMatKhau(passwordEncoder.encode(converted));
         taiKhoan.setLoaiTaiKhoan(loaiTaiKhoan);
         khachHangRepository.save(taiKhoan);
+
+        DiaChi diaChi = new DiaChi();
+        diaChi.setId(UUID.randomUUID());
+        diaChi.setDiaChi(createQLKhachHangRequest.getDiaChi());
+        diaChi.setXa(createQLKhachHangRequest.getPhuong());
+        diaChi.setHuyen(createQLKhachHangRequest.getHuyen());
+        diaChi.setTinh(createQLKhachHangRequest.getTinh());
+        diaChi.setTaiKhoan(taiKhoan);
+        diaChiRepository.save(diaChi);
         if (sendEmail) {
             sendConfirmationEmail(taiKhoan.getEmail(), taiKhoan.getUsername(), converted);
             System.out.println("gửi mail");

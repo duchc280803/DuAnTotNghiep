@@ -1,13 +1,18 @@
 package com.example.duantotnghiep.service.account_service.impl;
 
+import com.example.duantotnghiep.entity.DiaChi;
 import com.example.duantotnghiep.entity.LoaiTaiKhoan;
 import com.example.duantotnghiep.entity.TaiKhoan;
+import com.example.duantotnghiep.enums.TypeAccountEnum;
+import com.example.duantotnghiep.repository.DiaChiRepository;
+import com.example.duantotnghiep.repository.KhachHangRepository;
 import com.example.duantotnghiep.repository.LoaiTaiKhoanRepository;
 import com.example.duantotnghiep.repository.TaiKhoanRepository;
 import com.example.duantotnghiep.request.NhanVienDTORequest;
 import com.example.duantotnghiep.response.HoaDonDTOResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.NhanVienDTOReponse;
+import com.example.duantotnghiep.response.NhanVienOrderResponse;
 import com.example.duantotnghiep.service.account_service.NhanVienCustomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +23,19 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Pattern;
+
 @Service
 @RequiredArgsConstructor
 public class NhanVienServiceImpl implements NhanVienCustomService {
@@ -31,12 +44,19 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
     private TaiKhoanRepository taiKhoanRepository;
 
     @Autowired
+    private KhachHangRepository khachHangRepository;
+
+    @Autowired
     private LoaiTaiKhoanRepository loaiTaiKhoanRepository;
 
     @Autowired
     private JavaMailSender javaMailSender;
 
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private DiaChiRepository diaChiRepository;
 
     @Override
     public List<NhanVienDTOReponse> getAllNhanVien(String maTaiKhoan, String name, String soDienThoai, Integer trangThai, Integer pageNumber, Integer pageSize) {
@@ -57,37 +77,48 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
     }
 
     @Override
-    public MessageResponse create(NhanVienDTORequest request) {
-        return create(request, false);
-    }
-
-    @Override
-    public MessageResponse create(NhanVienDTORequest request, boolean sendEmail) {
-        TaiKhoan taiKhoan = new TaiKhoan();
-        Optional<LoaiTaiKhoan> loaiTaiKhoanOptional = loaiTaiKhoanRepository.findById(request.getIdLoaiTaiKhoan());
-        if (loaiTaiKhoanOptional.isPresent()) {
-            taiKhoan.setId(UUID.randomUUID());
-            taiKhoan.setNgaySinh(request.getNgaySinh());
-            taiKhoan.setSoDienThoai(request.getSoDienThoai());
-            taiKhoan.setGioiTinh(request.getGioiTinh());
-            taiKhoan.setEmail(request.getEmail());
-            taiKhoan.setUsername(request.getUsername());
-            taiKhoan.setMatKhau(passwordEncoder.encode(request.getPassword()));
-            taiKhoan.setLoaiTaiKhoan(loaiTaiKhoanOptional.get());
-            taiKhoan.setTrangThai(request.getTrangThai());
-            taiKhoan.setImage("default.png");
-            taiKhoan.setName(request.getFullName());
-            taiKhoan.setMaTaiKhoan(request.getMaTaiKhoan());
-            taiKhoanRepository.save(taiKhoan);
-
-            if (sendEmail) {
-                sendConfirmationEmail(taiKhoan.getEmail(), taiKhoan.getUsername(), request.getPassword());
-                System.out.println("gửi mail");
-            }
-
-            return MessageResponse.builder().message("Thêm thành công").build();
+    public MessageResponse create(MultipartFile file, NhanVienDTORequest request, boolean sendEmail) {
+        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        List<NhanVienOrderResponse> taiKhoans = khachHangRepository.listNv();
+        try {
+            Files.copy(file.getInputStream(), Paths.get("D:\\FE_DuAnTotNghiep\\assets\\ảnh giày", fileName), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return MessageResponse.builder().message("Thêm thất bại").build();
+
+        String normalized = removeDiacritics(request.getTen());
+
+        String converted = normalized.toLowerCase().replaceAll("\\s", "");
+
+        LoaiTaiKhoan loaiTaiKhoan = loaiTaiKhoanRepository.findByName(TypeAccountEnum.STAFF).get();
+        TaiKhoan taiKhoan = new TaiKhoan();
+        taiKhoan.setId(UUID.randomUUID());
+        taiKhoan.setName(request.getTen());
+        taiKhoan.setEmail(request.getEmail());
+        taiKhoan.setSoDienThoai(request.getSoDienThoai());
+        taiKhoan.setImage(fileName);
+        taiKhoan.setGioiTinh(request.getGioiTinh());
+        taiKhoan.setNgaySinh(request.getNgaySinh());
+        taiKhoan.setTrangThai(request.getTrangThai());
+        taiKhoan.setMaTaiKhoan(converted + taiKhoans.size() + 1);
+        taiKhoan.setUsername(converted + taiKhoans.size() + 1);
+        taiKhoan.setMatKhau(passwordEncoder.encode(converted));
+        taiKhoan.setLoaiTaiKhoan(loaiTaiKhoan);
+        taiKhoanRepository.save(taiKhoan);
+
+        DiaChi diaChi = new DiaChi();
+        diaChi.setId(UUID.randomUUID());
+        diaChi.setDiaChi(request.getDiaChi());
+        diaChi.setXa(request.getPhuong());
+        diaChi.setHuyen(request.getHuyen());
+        diaChi.setTinh(request.getTinh());
+        diaChi.setTaiKhoan(taiKhoan);
+        diaChiRepository.save(diaChi);
+        if (sendEmail) {
+            sendConfirmationEmail(taiKhoan.getEmail(), taiKhoan.getUsername(), converted);
+            System.out.println("gửi mail");
+        }
+        return MessageResponse.builder().message("Thêm Thành Công").build();
     }
 
     private void sendConfirmationEmail(String email, String username, String password) {
@@ -105,8 +136,6 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
     public MessageResponse update(UUID id, NhanVienDTORequest request) {
         Optional<TaiKhoan> taiKhoanOptional = taiKhoanRepository.findById(id);
         if (taiKhoanOptional.isPresent()) {
-            Optional<LoaiTaiKhoan> loaiTaiKhoanOptional = loaiTaiKhoanRepository.findById(request.getIdLoaiTaiKhoan());
-            if (loaiTaiKhoanOptional.isPresent()) {
                 TaiKhoan taiKhoan = taiKhoanOptional.get();
                 taiKhoan.setNgaySinh(request.getNgaySinh());
                 taiKhoan.setSoDienThoai(request.getSoDienThoai());
@@ -114,12 +143,9 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
                 taiKhoan.setEmail(request.getEmail());
                 taiKhoan.setTrangThai(request.getTrangThai());
                 taiKhoan.setImage("default.png");
-                taiKhoan.setName(request.getFullName());
-                taiKhoan.setMaTaiKhoan(request.getMaTaiKhoan());
+                taiKhoan.setName(request.getTen());
                 taiKhoanRepository.save(taiKhoan);
                 return MessageResponse.builder().message("Cập nhật thành công").build();
-            }
-            return MessageResponse.builder().message("Cập nhật thất bại không được vì thiếu loại tài khoản").build();
         } else {
             return MessageResponse.builder().message("Không tìm thấy tài khoản với ID: " + id).build();
         }
@@ -134,6 +160,12 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
         } else {
             return MessageResponse.builder().message("Không tìm thấy thương hiệu với ID: " + id).build();
         }
+    }
+
+    public static String removeDiacritics(String input) {
+        input = Normalizer.normalize(input, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(input).replaceAll("");
     }
 
 }

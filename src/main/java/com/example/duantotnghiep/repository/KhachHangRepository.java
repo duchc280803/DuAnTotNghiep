@@ -36,7 +36,6 @@ public interface KhachHangRepository extends JpaRepository<TaiKhoan, UUID> {
             "FROM TaiKhoan tk JOIN tk.diaChiList dc WHERE tk.loaiTaiKhoan.name = ('USER') AND (:trangThai is null or tk.trangThai = :trangThai) AND (:name is null or tk.name like %:name%) AND (:soDienThoai is null or tk.soDienThoai like %:soDienThoai%) AND (:maTaiKhoan is null or tk.maTaiKhoan like %:maTaiKhoan%)")
     Page<QLKhachHangResponse> findlistQLKhachHang(@Param("trangThai") Integer trangThai, @Param("name") String name, @Param("soDienThoai") String soDienThoai, @Param("maTaiKhoan") String maTaiKhoan, Pageable pageable);
 
-
     @Query("SELECT new com.example.duantotnghiep.response.QLKhachHangResponse(tk.id, tk.name, tk.email, tk.soDienThoai, tk.image, tk.gioiTinh, tk.maTaiKhoan, tk.username, tk.matKhau, tk.ngaySinh, tk.trangThai, dc.tinh, dc.huyen, dc.xa) " +
             "FROM TaiKhoan tk JOIN tk.diaChiList dc WHERE tk.id = :id")
     QLKhachHangResponse detailQLKhachHang(@Param("id") UUID id);
