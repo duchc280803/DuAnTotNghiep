@@ -389,14 +389,22 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         return MessageResponse.builder().message("Trả hàng thất bại").build();
     }
 
+    /**
+     * Xóa sản phẩm khỏi hóa đơn chi tiết
+     * @param id
+     * @param username
+     * @throws IOException
+     * @throws CsvValidationException
+     */
     @Override
-    public void deleteOrderDetail(UUID id, String username) throws IOException, CsvValidationException {
+    public void deleteOrderDetail(UUID idHoaDon, UUID id, String username) throws IOException, CsvValidationException {
         hoaDonChiTietRepository.deleteById(id);
         TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).orElse(null);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        Optional<HoaDonChiTiet> hoaDonChiTietOptional = hoaDonChiTietRepository.findById(id);
-
-        Optional<HoaDon> hoaDon = hoaDonRepository.findById(hoaDonChiTietOptional.get().getHoaDon().getId());
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+        if(hoaDon.isEmpty()) {
+            System.out.printf("Null");
+        }
         BigDecimal tongTienDonGia = BigDecimal.ZERO;
         BigDecimal tongTienDonGiaSauGIam = BigDecimal.ZERO;
         BigDecimal tongTienHang = BigDecimal.ZERO;
@@ -416,7 +424,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         }
         hoaDonRepository.save(hoaDon.get());
 
-        auditLogService.writeAuditLogHoadonChiTiet("DELETE", username, taiKhoan.getEmail(), "Xóa sản phẩm", hoaDon.get().getMa(), "Mã sản phẩm: " + hoaDonChiTietOptional.get().getSanPhamChiTiet().getSanPham().getMaSanPham(), "", "");
+//        auditLogService.writeAuditLogHoadonChiTiet("DELETE", username, taiKhoan.getEmail(), "Xóa sản phẩm", hoaDon.get().getMa(), "Mã sản phẩm: " + hoaDon.get().getHoaDonChiTietList().getSanPhamChiTiet().getSanPham().getMaSanPham(), "", "");
         TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
         trangThaiHoaDon.setId(UUID.randomUUID());
         trangThaiHoaDon.setHoaDon(hoaDon.get());
