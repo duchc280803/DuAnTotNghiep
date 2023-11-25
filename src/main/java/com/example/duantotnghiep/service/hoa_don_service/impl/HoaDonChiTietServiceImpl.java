@@ -124,18 +124,24 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public MessageResponse themSanPhamVaoHoaDonChiTiet(UUID idHoaDon, UUID idSanPhamChiTiet, int soLuong) {
+    public MessageResponse themSanPhamVaoHoaDonChiTiet(UUID idHoaDon, UUID idSanPhamChiTiet, int soLuong, String username) throws IOException, CsvValidationException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDon> findByHoaDon = hoaDonRepository.findById(idHoaDon);
+        TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).orElse(null);
         if (findByHoaDon.isEmpty()) {
             return MessageResponse.builder().message("Hóa Đơn Null").build();
         }
         SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(idSanPhamChiTiet).get();
         HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findByHoaDonAndSanPhamChiTiet_Id(findByHoaDon.get(), idSanPhamChiTiet);
+
+
+        // Truyền vào hóa đơn chi tiết id hóa đơn và id sản phẩm chi tiết
+
         if (hoaDonChiTiet != null) {
             hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() + soLuong);
             hoaDonChiTiet.setDonGiaSauGiam(sanPhamChiTiet.getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId()))));
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
+            auditLogService.writeAuditLogHoadonChiTiet("UPDATE", username, taiKhoan.getEmail(), "Thêm sản phẩm", findByHoaDon.get().getMa(), "Mã sản phẩm: "+  hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getMaSanPham(), "Số lượng: " +soLuong + "", "");
         } else {
             hoaDonChiTiet = new HoaDonChiTiet();
             hoaDonChiTiet.setId(UUID.randomUUID());
@@ -145,6 +151,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             hoaDonChiTiet.setDonGia(sanPhamChiTiet.getSanPham().getGiaBan());
             hoaDonChiTiet.setDonGiaSauGiam(sanPhamChiTiet.getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId()))));
             hoaDonChiTiet.setTrangThai(1);
+            auditLogService.writeAuditLogHoadonChiTiet("CREATE", username, taiKhoan.getEmail(), "Thêm sản phẩm", findByHoaDon.get().getMa(),"Mã sản phẩm: "+ sanPhamChiTiet.getSanPham().getMaSanPham(),"Số lượng: " + soLuong + "", "");
         }
 
         chiTietSanPhamRepository.save(sanPhamChiTiet);
@@ -179,9 +186,10 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public void capNhatSoLuong(UUID idHoaDonChiTiet, int soLuongMoi) {
+    public void capNhatSoLuong(UUID idHoaDonChiTiet, int soLuongMoi, String username) throws IOException, CsvValidationException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDonChiTiet> hoaDonChiTietOptional = hoaDonChiTietRepository.findById(idHoaDonChiTiet);
+        TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).orElse(null);
         if (hoaDonChiTietOptional.isPresent()) {
             hoaDonChiTietOptional.get().setSoLuong(soLuongMoi);
             hoaDonChiTietRepository.save(hoaDonChiTietOptional.get());
@@ -216,6 +224,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setThoiGian(timestamp);
         trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
+
+        auditLogService.writeAuditLogHoadonChiTiet("UPDATE", username, taiKhoan.getEmail(),"Cập nhật số lượng", hoaDon.get().getMa(),  "Mã sản phẩm: " +hoaDonChiTietOptional.get().getSanPhamChiTiet().getSanPham().getMaSanPham(), "Số lượng: " +soLuongMoi + "", "");
+
     }
 
     @Override
@@ -259,7 +270,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public MessageResponse createOrUpdate(UUID idhdct, TraHangRequest traHangRequest, String username)  throws IOException, CsvValidationException {
+    public MessageResponse createOrUpdate(UUID idhdct, TraHangRequest traHangRequest, String username) throws IOException, CsvValidationException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findById(idhdct).orElse(null);
         TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
@@ -278,12 +289,13 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
                 for (SanPhamHoaDonChiTietResponse sanPham : productInHoaDon) {
                     if (sanPham.getTrangThai() == 5) {
-                        count++;                        }
+                        count++;
+                    }
                 }
                 if (count == 0) {
                     hoaDon.setTrangThai(6);
                 } else {
-                    if (count == 1){
+                    if (count == 1) {
                         if (traHangRequest.getSoLuong() == hoaDonChiTiet.getSoLuong()) {
                             hoaDonChiTiet.setTrangThai(7);
                             hoaDonChiTiet.setComment(traHangRequest.getGhiChu());
@@ -295,7 +307,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                             trangThaiHoaDon.setHoaDon(hoaDon);
                             hoaDon.setTrangThai(6);
                             hoaDonChiTietRepository.save(hoaDonChiTiet);
-                        }else {
+                        } else {
                             HoaDonChiTiet addTraHang = new HoaDonChiTiet();
                             addTraHang.setId(UUID.randomUUID());
                             addTraHang.setComment(traHangRequest.getGhiChu());
@@ -315,8 +327,8 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                             trangThaiHoaDon.setHoaDon(hoaDon);
                             hoaDonChiTietRepository.save(hoaDonChiTiet);
                         }
-                    }else {
-                        if(hoaDonChiTiet.getSoLuong() == traHangRequest.getSoLuong()){
+                    } else {
+                        if (hoaDonChiTiet.getSoLuong() == traHangRequest.getSoLuong()) {
                             hoaDonChiTiet.setTrangThai(7);
                             hoaDonChiTiet.setComment(traHangRequest.getGhiChu());
                             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
@@ -326,7 +338,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                             trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
                             trangThaiHoaDon.setHoaDon(hoaDon);
                             hoaDonChiTietRepository.save(hoaDonChiTiet);
-                        }else {
+                        } else {
                             HoaDonChiTiet addTraHang = new HoaDonChiTiet();
                             addTraHang.setId(UUID.randomUUID());
                             addTraHang.setComment(traHangRequest.getGhiChu());
@@ -367,7 +379,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                 chiTietSanPhamRepository.save(sanPhamChiTiet);
                 trangThaiHoaDonRepository.save(trangThaiHoaDon);
                 hoaDonRepository.save(hoaDon);
-                auditLogService.writeAuditLogHoadonChiTiet("UPDATE", username, taiKhoan.getEmail(),"Trả hàng", hoaDon.getMa(), "Mã sản phẩm: "+ sanPhamHoaDon.getMaSanPham(), "Số lượng trả: " + traHangRequest.getSoLuong().toString(), "");
+                auditLogService.writeAuditLogHoadonChiTiet("UPDATE", username, taiKhoan.getEmail(), "Trả hàng", hoaDon.getMa(), "Mã sản phẩm: " + sanPhamHoaDon.getMaSanPham(), "Số lượng trả: " + traHangRequest.getSoLuong().toString(), "");
 
                 return MessageResponse.builder().message("Trả hàng thành công").build();
             }
@@ -377,8 +389,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public void deleteOrderDetail(UUID id) {
+    public void deleteOrderDetail(UUID id, String username) throws IOException, CsvValidationException {
         hoaDonChiTietRepository.deleteById(id);
+        TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).orElse(null);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDonChiTiet> hoaDonChiTietOptional = hoaDonChiTietRepository.findById(id);
 
@@ -402,6 +415,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         }
         hoaDonRepository.save(hoaDon.get());
 
+        auditLogService.writeAuditLogHoadonChiTiet("DELETE", username, taiKhoan.getEmail(), "Xóa sản phẩm", hoaDon.get().getMa(), "Mã sản phẩm: " + hoaDonChiTietOptional.get().getSanPhamChiTiet().getSanPham().getMaSanPham(), "", "");
         TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
         trangThaiHoaDon.setId(UUID.randomUUID());
         trangThaiHoaDon.setHoaDon(hoaDon.get());
@@ -414,7 +428,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     @Override
     public boolean traHang(UUID id) {
         List<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietRepository.findByHoaDon_Id(id);
-        for (HoaDonChiTiet x: hoaDonChiTiet){
+        for (HoaDonChiTiet x : hoaDonChiTiet) {
             if (x.getTrangThai() == 7) {
                 return true;
             }
