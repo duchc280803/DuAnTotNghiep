@@ -27,5 +27,4 @@ public class CreateQLKhachHangRequest {
 
     private String maTaiKhoan;
 
-
 }

@@ -163,7 +163,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
                 hoaDonChiTiet.setDonGia(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getGiaBan());
                 hoaDonChiTiet.setDonGiaSauGiam(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(gioHangChiTiet.get().getSanPhamChiTiet().getSanPham().getId()))));
                 hoaDonChiTiet.setSoLuong(gioHangChiTiet.get().getSoLuong());
-                hoaDonChiTiet.setTrangThai(1);
+                hoaDonChiTiet.setTrangThai(5);
                 hoaDonChiTietRepository.save(hoaDonChiTiet);
 
                 SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(gioHangChiTiet.get().getSanPhamChiTiet().getId()).get();
