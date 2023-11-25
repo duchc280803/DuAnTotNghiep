@@ -8,4 +8,7 @@ import java.util.UUID;
 public interface PDFGeneratorService {
 
     void orderCouter(HttpServletResponse response, UUID idHoaDon) throws IOException;
+
+    boolean traHang(UUID id);
+
 }
