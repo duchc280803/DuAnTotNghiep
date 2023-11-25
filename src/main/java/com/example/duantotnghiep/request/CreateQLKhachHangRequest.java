@@ -25,6 +25,4 @@ public class CreateQLKhachHangRequest {
 
     private Integer trangThai;
 
-    private String maTaiKhoan;
-
 }

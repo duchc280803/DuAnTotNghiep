@@ -174,7 +174,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
             int stt = 1;
             BigDecimal tongTienSanPham = BigDecimal.ZERO;
             for (HoaDonChiTiet hoaDonChiTiet : hoaDonChiTietList) {
-                if (hoaDonChiTiet.getTrangThai() == 5) {
+                if (hoaDonChiTiet.getTrangThai() != 7) {
                     table.addCell(Integer.toString(stt)); // STT
                     table.addCell(hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getTenSanPham()); // Tên sản phẩm
                     table.addCell(Integer.toString(hoaDonChiTiet.getSoLuong())); // Số lượng
@@ -276,7 +276,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
                     paragraph15.setAlignment(Element.ALIGN_LEFT);
                     document.add(paragraph15);
                 }
-                Paragraph paragraph16 = new Paragraph("      +)Tiền thừa: " + (hoaDon.get().getTienThua() == null ? 0 + " VND" : hoaDon.get().getTienThua() + " VND"), fontParagraph);
+                Paragraph paragraph16 = new Paragraph("      +)Tiền thừa: " + (decimalFormat.format(hoaDon.get().getTienThua()) == null ? 0 + " VND" : decimalFormat.format(hoaDon.get().getTienThua()) + " VND"), fontParagraph);
                 paragraph16.setAlignment(Element.ALIGN_LEFT);
                 document.add(paragraph16);
             }

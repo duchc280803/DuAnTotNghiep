@@ -54,7 +54,7 @@ public class QLKhachHangImpl implements QLKhachHangService {
     @Override
     public MessageResponse createKhachHang(MultipartFile file, CreateQLKhachHangRequest createQLKhachHangRequest, boolean sendEmail) {
         String fileName = file.getOriginalFilename();
-        List<TaiKhoan> taiKhoans = khachHangRepository.listNhanVien();
+        List<TaiKhoan> taiKhoans = khachHangRepository.listKhachHang();
         try {
             Files.copy(file.getInputStream(), Paths.get("D:\\FE_DuAnTotNghiep\\assets\\ảnh giày", fileName), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
