@@ -3,6 +3,7 @@ package com.example.duantotnghiep.controller.authentication_controller;
 import com.example.duantotnghiep.entity.LoaiTaiKhoan;
 import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.entity.XuatXu;
+import com.example.duantotnghiep.request.CreateQLKhachHangRequest;
 import com.example.duantotnghiep.request.NhanVienDTORequest;
 import com.example.duantotnghiep.response.LoaiTaiKhoanResponse;
 import com.example.duantotnghiep.response.MessageResponse;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -50,8 +52,10 @@ public class NhanVienController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<MessageResponse> createThuongHieu(@RequestBody NhanVienDTORequest request) {
-        return new ResponseEntity<>(nhanVienService.create(request, true), HttpStatus.CREATED);
+    public ResponseEntity<MessageResponse> createNhanVien(
+            @RequestParam("file") MultipartFile file,
+            @ModelAttribute NhanVienDTORequest createQLKhachHangRequest) {
+        return new ResponseEntity<>(nhanVienService.create(file, createQLKhachHangRequest, true), HttpStatus.CREATED);
     }
 
     @PutMapping("update")

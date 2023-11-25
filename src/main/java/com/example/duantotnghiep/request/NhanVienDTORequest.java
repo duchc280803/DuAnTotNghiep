@@ -13,27 +13,25 @@ import java.util.UUID;
 @Getter
 @Setter
 public class NhanVienDTORequest {
-    private String fullName;
 
-    private String maTaiKhoan;
+    private String ten;
 
-    private Date ngaySinh;
+    private String email;
 
     private String soDienThoai;
 
     private Boolean gioiTinh;
 
-    private String email;
-
-    private String username;
-
-    private String password;
-
-    private UUID idLoaiTaiKhoan;
+    private Date ngaySinh;
 
     private Integer trangThai;
 
-    private String image;
+    private String tinh;
 
+    private String huyen;
+
+    private String phuong;
+
+    private String diaChi;
 
 }
