@@ -128,9 +128,11 @@ public class HoaDonChiTietController {
     }
 
     @DeleteMapping("delete")
-    public ResponseEntity<MessageResponse> deleteOrderDetail(@RequestParam(name = "id") UUID id,
-                                                             Principal principal) throws IOException, CsvValidationException {
-        hoaDonChiTietService.deleteOrderDetail(id, principal.getName());
+    public ResponseEntity<MessageResponse> deleteOrderDetail(
+            @RequestParam(name = "idHoaDon") UUID idHoaDon,
+            @RequestParam(name = "id") UUID id,
+            Principal principal) throws IOException, CsvValidationException {
+        hoaDonChiTietService.deleteOrderDetail(idHoaDon, id, principal.getName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -143,6 +145,7 @@ public class HoaDonChiTietController {
     public ResponseEntity<OrderDetailUpdate> orderDetailUpdate(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(hoaDonChiTietService.orderDetailUpdate(idHoaDon), HttpStatus.OK);
     }
+
     @GetMapping("list-nhan-vien")
     public ResponseEntity<List<NhanVienOrderResponse>> nhanVienList() {
         return new ResponseEntity<>(hoaDonChiTietService.taiKhoanList(), HttpStatus.OK);

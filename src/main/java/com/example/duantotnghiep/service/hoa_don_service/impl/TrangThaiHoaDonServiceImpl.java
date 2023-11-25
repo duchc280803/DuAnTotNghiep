@@ -93,8 +93,14 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             hoaDon.setEmail(request.getEmail());
             hoaDon.setNgayCapNhap(timestamp);
 
-            BigDecimal thanhTien = hoaDon.getThanhTien() != null ? hoaDon.getThanhTien() : BigDecimal.ZERO;
-            hoaDon.setThanhTien(thanhTien.add(request.getTienShip()));
+            if (hoaDon.getTienShip() != null) {
+                hoaDon.setTienShip(request.getTienShip());
+                hoaDon.setThanhTien(hoaDon.getThanhTien().subtract(hoaDon.getTienShip()).add(request.getTienShip()));
+            }
+            if (hoaDon.getTienShip() == null) {
+                hoaDon.setTienShip(request.getTienShip());
+                hoaDon.setThanhTien(hoaDon.getThanhTien().add(request.getTienShip()));
+            }
 
             hoaDonRepository.save(hoaDon);
             return MessageResponse.builder().message("Cập nhập thành công").build();
@@ -102,6 +108,5 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             return MessageResponse.builder().message("Không tìm thấy hóa đơn").build();
         }
     }
-
 
 }

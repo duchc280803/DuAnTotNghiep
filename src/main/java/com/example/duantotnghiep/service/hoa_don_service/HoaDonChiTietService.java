@@ -41,7 +41,7 @@ public interface HoaDonChiTietService {
 
     MessageResponse createOrUpdate(UUID idhdct, TraHangRequest traHangResponse, String username) throws IOException, CsvValidationException;
 
-    void deleteOrderDetail(UUID id, String username) throws IOException, CsvValidationException;
+    void deleteOrderDetail(UUID idHoaDon, UUID id, String username) throws IOException, CsvValidationException;
 
     boolean traHang(UUID id);
 
