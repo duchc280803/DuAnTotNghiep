@@ -79,29 +79,33 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
     @Override
     public MessageResponse confirmOrderClient(UUID hoadonId, ConfirmOrderClientRequest request) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        Optional<HoaDon> hoaDonOptional = hoaDonRepository.findById(hoadonId);
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(hoadonId);
 
-        if (hoaDonOptional.isPresent()) {
-            HoaDon hoaDon = hoaDonOptional.get();
+        if (hoaDon.isPresent()) {
+            hoaDon.get().setTenNguoiShip(request.getHoVaTenNguoiShip());
+            hoaDon.get().setTienShip(request.getTienShip());
+            hoaDon.get().setSdtNguoiShip(request.getHoVaTenNguoiShip());
+            hoaDon.get().setDiaChi(request.getDiaChi());
+            hoaDon.get().setSdtNguoiNhan(request.getSdtClient());
+            hoaDon.get().setTenNguoiNhan(request.getHoVatenClient());
+            hoaDon.get().setEmail(request.getEmail());
+            hoaDon.get().setNgayCapNhap(timestamp);
 
-            hoaDon.setTenNguoiShip(request.getHoVaTenNguoiShip());
-            hoaDon.setTienShip(request.getTienShip());
-            hoaDon.setSdtNguoiShip(request.getHoVaTenNguoiShip());
-            hoaDon.setDiaChi(request.getDiaChi());
-            hoaDon.setSdtNguoiNhan(request.getSdtClient());
-            hoaDon.setTenNguoiNhan(request.getHoVatenClient());
-            hoaDon.setEmail(request.getEmail());
-            hoaDon.setNgayCapNhap(timestamp);
 
-            BigDecimal thanhTien = hoaDon.getThanhTien() != null ? hoaDon.getThanhTien() : BigDecimal.ZERO;
-            hoaDon.setThanhTien(thanhTien.add(request.getTienShip()));
+            BigDecimal tongTien = BigDecimal.ZERO;
+            for (HoaDonChiTiet hdct: hoaDon.get().getHoaDonChiTietList()) {
+                BigDecimal donGiaSauGiam = hdct.getDonGiaSauGiam() != null ? hdct.getDonGiaSauGiam() : BigDecimal.ZERO;
+                Integer soLuong = hdct.getSoLuong() != null ? hdct.getSoLuong() : 0;
+                tongTien = tongTien.add(donGiaSauGiam.multiply(new BigDecimal(soLuong)));
+            }
 
-            hoaDonRepository.save(hoaDon);
+            hoaDon.get().setThanhTien(tongTien.add(request.getTienShip()));
+
+            hoaDonRepository.save(hoaDon.get());
             return MessageResponse.builder().message("Cập nhập thành công").build();
         } else {
             return MessageResponse.builder().message("Không tìm thấy hóa đơn").build();
         }
     }
-
 
 }

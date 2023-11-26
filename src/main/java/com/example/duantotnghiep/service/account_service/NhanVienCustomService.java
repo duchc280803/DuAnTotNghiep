@@ -4,6 +4,7 @@ import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.request.NhanVienDTORequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.NhanVienDTOReponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,11 +16,10 @@ public interface NhanVienCustomService {
 
     NhanVienDTOReponse getNhanVienById(UUID id);
 
-    MessageResponse create(NhanVienDTORequest request, boolean sendEmail);
+    MessageResponse create(MultipartFile file, NhanVienDTORequest request, boolean sendEmail);
 
     MessageResponse update(UUID id, NhanVienDTORequest request);
 
     MessageResponse delete(UUID id);
 
-    MessageResponse create(NhanVienDTORequest request);
 }

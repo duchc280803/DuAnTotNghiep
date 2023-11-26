@@ -3,6 +3,7 @@ package com.example.duantotnghiep.service.hoa_don_service.impl;
 import com.example.duantotnghiep.config.VnPayConfig;
 import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.enums.StatusOrderEnums;
+import com.example.duantotnghiep.enums.TypeAccountEnum;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.TraHangRequest;
 import com.example.duantotnghiep.request.TransactionRequest;
@@ -104,38 +105,42 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     public Long getGiaGiamCuoiCung(UUID id) {
-        long sumPriceTien = 0L;
-        long sumPricePhanTram = 0L;
+        long tongTienGiam = 0L;
         List<SpGiamGia> spGiamGiaList = spGiamGiaRepository.findBySanPham_Id(id);
 
         for (SpGiamGia spGiamGia : spGiamGiaList) {
-            long mucGiam = spGiamGia.getMucGiam();
-            if (spGiamGia.getGiamGia().getHinhThucGiam() == 1) {
-                sumPriceTien += mucGiam;
+            // Cập nhật tổng tiền giảm đúng cách, không khai báo lại biến tongTienGiam
+            if (spGiamGia.getGiaGiam() == null) {
+                return tongTienGiam;
             }
-            if (spGiamGia.getGiamGia().getHinhThucGiam() == 2) {
-                long donGiaAsLong = spGiamGia.getDonGia().longValue();
-                double giamGia = (double) mucGiam / 100;
-                long giaTienSauGiamGia = (long) (donGiaAsLong * giamGia);
-                sumPricePhanTram += giaTienSauGiamGia;
+            if (spGiamGia.getGiaGiam() != null){
+                tongTienGiam += spGiamGia.getGiaGiam().longValue();
             }
+
         }
-        return sumPriceTien + sumPricePhanTram;
+
+        return tongTienGiam;
     }
 
     @Override
-    public MessageResponse themSanPhamVaoHoaDonChiTiet(UUID idHoaDon, UUID idSanPhamChiTiet, int soLuong) {
+    public MessageResponse themSanPhamVaoHoaDonChiTiet(UUID idHoaDon, UUID idSanPhamChiTiet, int soLuong, String username) throws IOException, CsvValidationException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDon> findByHoaDon = hoaDonRepository.findById(idHoaDon);
+        TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).orElse(null);
         if (findByHoaDon.isEmpty()) {
             return MessageResponse.builder().message("Hóa Đơn Null").build();
         }
         SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(idSanPhamChiTiet).get();
         HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findByHoaDonAndSanPhamChiTiet_Id(findByHoaDon.get(), idSanPhamChiTiet);
+
+
+        // Truyền vào hóa đơn chi tiết id hóa đơn và id sản phẩm chi tiết
+
         if (hoaDonChiTiet != null) {
             hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() + soLuong);
             hoaDonChiTiet.setDonGiaSauGiam(sanPhamChiTiet.getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId()))));
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
+            auditLogService.writeAuditLogHoadonChiTiet("UPDATE", username, taiKhoan.getEmail(), "Thêm sản phẩm", findByHoaDon.get().getMa(), "Mã sản phẩm: "+  hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getMaSanPham(), "Số lượng: " +soLuong + "", "");
         } else {
             hoaDonChiTiet = new HoaDonChiTiet();
             hoaDonChiTiet.setId(UUID.randomUUID());
@@ -145,6 +150,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             hoaDonChiTiet.setDonGia(sanPhamChiTiet.getSanPham().getGiaBan());
             hoaDonChiTiet.setDonGiaSauGiam(sanPhamChiTiet.getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId()))));
             hoaDonChiTiet.setTrangThai(1);
+            auditLogService.writeAuditLogHoadonChiTiet("CREATE", username, taiKhoan.getEmail(), "Thêm sản phẩm", findByHoaDon.get().getMa(),"Mã sản phẩm: "+ sanPhamChiTiet.getSanPham().getMaSanPham(),"Số lượng: " + soLuong + "", "");
         }
 
         chiTietSanPhamRepository.save(sanPhamChiTiet);
@@ -179,9 +185,10 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public void capNhatSoLuong(UUID idHoaDonChiTiet, int soLuongMoi) {
+    public void capNhatSoLuong(UUID idHoaDonChiTiet, int soLuongMoi, String username) throws IOException, CsvValidationException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDonChiTiet> hoaDonChiTietOptional = hoaDonChiTietRepository.findById(idHoaDonChiTiet);
+        TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).orElse(null);
         if (hoaDonChiTietOptional.isPresent()) {
             hoaDonChiTietOptional.get().setSoLuong(soLuongMoi);
             hoaDonChiTietRepository.save(hoaDonChiTietOptional.get());
@@ -216,6 +223,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setThoiGian(timestamp);
         trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
+
+        auditLogService.writeAuditLogHoadonChiTiet("UPDATE", username, taiKhoan.getEmail(),"Cập nhật số lượng", hoaDon.get().getMa(),  "Mã sản phẩm: " +hoaDonChiTietOptional.get().getSanPhamChiTiet().getSanPham().getMaSanPham(), "Số lượng: " +soLuongMoi + "", "");
+
     }
 
     @Override
@@ -259,7 +269,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public MessageResponse createOrUpdate(UUID idhdct, TraHangRequest traHangRequest, String username)  throws IOException, CsvValidationException {
+    public MessageResponse createOrUpdate(UUID idhdct, TraHangRequest traHangRequest, String username) throws IOException, CsvValidationException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findById(idhdct).orElse(null);
         TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
@@ -278,12 +288,13 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
                 for (SanPhamHoaDonChiTietResponse sanPham : productInHoaDon) {
                     if (sanPham.getTrangThai() == 5) {
-                        count++;                        }
+                        count++;
+                    }
                 }
                 if (count == 0) {
                     hoaDon.setTrangThai(6);
                 } else {
-                    if (count == 1){
+                    if (count == 1) {
                         if (traHangRequest.getSoLuong() == hoaDonChiTiet.getSoLuong()) {
                             hoaDonChiTiet.setTrangThai(7);
                             hoaDonChiTiet.setComment(traHangRequest.getGhiChu());
@@ -295,7 +306,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                             trangThaiHoaDon.setHoaDon(hoaDon);
                             hoaDon.setTrangThai(6);
                             hoaDonChiTietRepository.save(hoaDonChiTiet);
-                        }else {
+                        } else {
                             HoaDonChiTiet addTraHang = new HoaDonChiTiet();
                             addTraHang.setId(UUID.randomUUID());
                             addTraHang.setComment(traHangRequest.getGhiChu());
@@ -315,8 +326,8 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                             trangThaiHoaDon.setHoaDon(hoaDon);
                             hoaDonChiTietRepository.save(hoaDonChiTiet);
                         }
-                    }else {
-                        if(hoaDonChiTiet.getSoLuong() == traHangRequest.getSoLuong()){
+                    } else {
+                        if (hoaDonChiTiet.getSoLuong() == traHangRequest.getSoLuong()) {
                             hoaDonChiTiet.setTrangThai(7);
                             hoaDonChiTiet.setComment(traHangRequest.getGhiChu());
                             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
@@ -326,7 +337,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                             trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
                             trangThaiHoaDon.setHoaDon(hoaDon);
                             hoaDonChiTietRepository.save(hoaDonChiTiet);
-                        }else {
+                        } else {
                             HoaDonChiTiet addTraHang = new HoaDonChiTiet();
                             addTraHang.setId(UUID.randomUUID());
                             addTraHang.setComment(traHangRequest.getGhiChu());
@@ -367,7 +378,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                 chiTietSanPhamRepository.save(sanPhamChiTiet);
                 trangThaiHoaDonRepository.save(trangThaiHoaDon);
                 hoaDonRepository.save(hoaDon);
-                auditLogService.writeAuditLogHoadonChiTiet("UPDATE", username, taiKhoan.getEmail(),"Trả hàng", hoaDon.getMa(), "Mã sản phẩm: "+ sanPhamHoaDon.getMaSanPham(), "Số lượng trả: " + traHangRequest.getSoLuong().toString(), "");
+                auditLogService.writeAuditLogHoadonChiTiet("UPDATE", username, taiKhoan.getEmail(), "Trả hàng", hoaDon.getMa(), "Mã sản phẩm: " + sanPhamHoaDon.getMaSanPham(), "Số lượng trả: " + traHangRequest.getSoLuong().toString(), "");
 
                 return MessageResponse.builder().message("Trả hàng thành công").build();
             }
@@ -376,13 +387,22 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         return MessageResponse.builder().message("Trả hàng thất bại").build();
     }
 
+    /**
+     * Xóa sản phẩm khỏi hóa đơn chi tiết
+     * @param id
+     * @param username
+     * @throws IOException
+     * @throws CsvValidationException
+     */
     @Override
-    public void deleteOrderDetail(UUID id) {
+    public void deleteOrderDetail(UUID idHoaDon, UUID id, String username) throws IOException, CsvValidationException {
         hoaDonChiTietRepository.deleteById(id);
+        TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).orElse(null);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        Optional<HoaDonChiTiet> hoaDonChiTietOptional = hoaDonChiTietRepository.findById(id);
-
-        Optional<HoaDon> hoaDon = hoaDonRepository.findById(hoaDonChiTietOptional.get().getHoaDon().getId());
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+        if(hoaDon.isEmpty()) {
+            System.out.printf("Null");
+        }
         BigDecimal tongTienDonGia = BigDecimal.ZERO;
         BigDecimal tongTienDonGiaSauGIam = BigDecimal.ZERO;
         BigDecimal tongTienHang = BigDecimal.ZERO;
@@ -402,6 +422,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         }
         hoaDonRepository.save(hoaDon.get());
 
+//        auditLogService.writeAuditLogHoadonChiTiet("DELETE", username, taiKhoan.getEmail(), "Xóa sản phẩm", hoaDon.get().getMa(), "Mã sản phẩm: " + hoaDon.get().getHoaDonChiTietList().getSanPhamChiTiet().getSanPham().getMaSanPham(), "", "");
         TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
         trangThaiHoaDon.setId(UUID.randomUUID());
         trangThaiHoaDon.setHoaDon(hoaDon.get());
@@ -414,7 +435,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     @Override
     public boolean traHang(UUID id) {
         List<HoaDonChiTiet> hoaDonChiTiet = hoaDonChiTietRepository.findByHoaDon_Id(id);
-        for (HoaDonChiTiet x: hoaDonChiTiet){
+        for (HoaDonChiTiet x : hoaDonChiTiet) {
             if (x.getTrangThai() == 7) {
                 return true;
             }
@@ -425,6 +446,41 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     @Override
     public OrderDetailUpdate orderDetailUpdate(UUID id) {
         return hoaDonRepository.orderDetailUpdate(id);
+    }
+
+
+    @Override
+    public List<NhanVienOrderResponse> taiKhoanList() {
+        return khachHangRepository.listNv();
+    }
+
+    @Override
+    public MessageResponse updateNhanVien(UUID idHoaDon, UUID idNhanVien) {
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+        Optional<TaiKhoan> nhanVien = khachHangRepository.findById(idNhanVien);
+        hoaDon.get().setTaiKhoanNhanVien(nhanVien.get());
+        hoaDonRepository.save(hoaDon.get());
+        return MessageResponse.builder().message("Update thành công").build();
+    }
+
+    @Override
+    public BigDecimal tongTienHang(UUID id) {
+        Optional<HoaDon> hoaDonOptional = hoaDonRepository.findById(id);
+        if (hoaDonOptional.isEmpty()) {
+            // Xử lý trường hợp không tìm thấy hoá đơn với ID cụ thể
+            return BigDecimal.ZERO;
+        }
+
+        HoaDon hoaDon = hoaDonOptional.get();
+        List<HoaDonChiTiet> hoaDonChiTiets = hoaDon.getHoaDonChiTietList();
+
+        BigDecimal tongTien = BigDecimal.ZERO;
+        for (HoaDonChiTiet hdct: hoaDonChiTiets) {
+            BigDecimal donGiaSauGiam = hdct.getDonGiaSauGiam() != null ? hdct.getDonGiaSauGiam() : BigDecimal.ZERO;
+            Integer soLuong = hdct.getSoLuong() != null ? hdct.getSoLuong() : 0;
+            tongTien = tongTien.add(donGiaSauGiam.multiply(new BigDecimal(soLuong)));
+        }
+        return tongTien;
     }
 
 }

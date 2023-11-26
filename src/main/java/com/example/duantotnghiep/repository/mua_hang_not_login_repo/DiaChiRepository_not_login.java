@@ -9,7 +9,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface DiaChiRepository_not_login extends JpaRepository<DiaChi, UUID> {
-    @Query(value = "SELECT TK.fullname,sodienthoai,DC.id,DC.diachi,DC.trangthai FROM DIACHI DC JOIN TAIKHOAN TK ON DC.idtaikhoan = TK.id  where TK.username = ?",nativeQuery = true)
+    @Query(value = "SELECT TK.fullname,sodienthoai,DC.id,DC.diachi,DC.tinh,DC.huyen,DC.xa,DC.trangthai \n" +
+            "FROM DIACHI DC JOIN TAIKHOAN TK ON DC.idtaikhoan = TK.id  where TK.username = ?",nativeQuery = true)
     List<loadDiaChi_not_login> loadDiaChi(String username);
 
     List<DiaChi> findByTrangThaiAndTaiKhoanUsername(int trangThai, String taiKhoanUsername);

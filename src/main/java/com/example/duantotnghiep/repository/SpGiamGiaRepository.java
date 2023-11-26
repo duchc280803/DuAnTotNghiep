@@ -191,7 +191,11 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
                         @Param("idsize") UUID idsize, @Param("idchatlieu") UUID idchatlieu,
                         @Param("tensanpham") String tensanpham);
 
-        List<SpGiamGia> findBySanPham_Id(UUID id);
+        @Query("SELECT spgg FROM SpGiamGia spgg JOIN spgg.giamGia gg JOIN spgg.sanPham sp WHERE gg.trangThai = 1 AND sp.trangThai = 1 AND sp.id = :id")
+        List<SpGiamGia> findBySanPham_Id(@Param("id") UUID id);
+
+        @Query("SELECT COUNT(spgg) FROM SpGiamGia spgg JOIN spgg.giamGia gg WHERE gg.trangThai = 1 AND spgg.sanPham.id = :id")
+        Long countSpGiamGia(@Param("id") UUID id);
 
         @Modifying
         @Query("DELETE FROM SpGiamGia spgg WHERE spgg.giamGia = :giamGia")

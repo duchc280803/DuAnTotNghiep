@@ -25,7 +25,12 @@ public class CreateQLKhachHangRequest {
 
     private Integer trangThai;
 
-    private String maTaiKhoan;
+    private String tinh;
 
+    private String huyen;
+
+    private String phuong;
+
+    private String diaChi;
 
 }

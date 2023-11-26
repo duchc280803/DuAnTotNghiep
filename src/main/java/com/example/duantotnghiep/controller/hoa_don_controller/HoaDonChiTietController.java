@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.controller.hoa_don_controller;
 
 import com.example.duantotnghiep.entity.HoaDon;
+import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.repository.LoaiHinhThucThanhToanRepository;
 import com.example.duantotnghiep.request.*;
 import com.example.duantotnghiep.response.*;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
@@ -77,18 +79,20 @@ public class HoaDonChiTietController {
     public ResponseEntity<MessageResponse> themSanPhamVaoGioHangChiTiet(
             @RequestParam(name = "idHoaDon") UUID idHoaDon,
             @RequestParam(name = "idSanPhamChiTiet") UUID idSanPhamChiTiet,
-            @RequestParam(name = "soLuong") int soLuong) {
+            @RequestParam(name = "soLuong") int soLuong,
+            Principal principal) throws IOException, CsvValidationException {
         return new ResponseEntity<>(
-                hoaDonChiTietService.themSanPhamVaoHoaDonChiTiet(idHoaDon, idSanPhamChiTiet, soLuong),
+                hoaDonChiTietService.themSanPhamVaoHoaDonChiTiet(idHoaDon, idSanPhamChiTiet, soLuong, principal.getName()),
                 HttpStatus.CREATED);
     }
 
     @PutMapping("update-quantity")
     public ResponseEntity<String> capNhatSL(
             @RequestParam(name = "idHoaDonChiTiet") UUID idHoaDonChiTiet,
-            @RequestParam(name = "quantity") Integer quantity) {
+            @RequestParam(name = "quantity") Integer quantity,
+            Principal principal) throws IOException, CsvValidationException {
         try {
-            hoaDonChiTietService.capNhatSoLuong(idHoaDonChiTiet, quantity);
+            hoaDonChiTietService.capNhatSoLuong(idHoaDonChiTiet, quantity, principal.getName());
             return ResponseEntity.ok("Số lượng đã được cập nhật.(-> nên xem lại Console log)");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest().body("Không tìm thấy sản phẩm trong giỏ hàng.");
@@ -124,8 +128,11 @@ public class HoaDonChiTietController {
     }
 
     @DeleteMapping("delete")
-    public ResponseEntity<MessageResponse> deleteOrderDetail(@RequestParam(name = "id") UUID id) {
-        hoaDonChiTietService.deleteOrderDetail(id);
+    public ResponseEntity<MessageResponse> deleteOrderDetail(
+            @RequestParam(name = "idHoaDon") UUID idHoaDon,
+            @RequestParam(name = "id") UUID id,
+            Principal principal) throws IOException, CsvValidationException {
+        hoaDonChiTietService.deleteOrderDetail(idHoaDon, id, principal.getName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -137,6 +144,23 @@ public class HoaDonChiTietController {
     @GetMapping("order-detail-update/{idHoaDon}")
     public ResponseEntity<OrderDetailUpdate> orderDetailUpdate(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(hoaDonChiTietService.orderDetailUpdate(idHoaDon), HttpStatus.OK);
+    }
+
+    @GetMapping("list-nhan-vien")
+    public ResponseEntity<List<NhanVienOrderResponse>> nhanVienList() {
+        return new ResponseEntity<>(hoaDonChiTietService.taiKhoanList(), HttpStatus.OK);
+    }
+
+    @PutMapping("update-nhan-vien")
+    public ResponseEntity<MessageResponse> updateNhanVien(
+            @RequestParam(name = "idHoaDon") UUID idHoaDon,
+            @RequestParam(name = "idNhanVien") UUID idNhanVien) {
+        return new ResponseEntity<>(hoaDonChiTietService.updateNhanVien(idHoaDon, idNhanVien), HttpStatus.OK);
+    }
+
+    @GetMapping("tong-tien-don-hang/{id}")
+    public ResponseEntity<BigDecimal> tongTienSanPham(@PathVariable("id") UUID id) {
+        return new ResponseEntity<>(hoaDonChiTietService.tongTienHang(id), HttpStatus.OK);
     }
 
 }

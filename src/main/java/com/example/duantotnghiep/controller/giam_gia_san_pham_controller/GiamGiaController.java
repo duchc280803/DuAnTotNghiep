@@ -59,8 +59,10 @@ public class GiamGiaController {
     }
 
     @GetMapping("showproduct")
-    public ResponseEntity<List<ProductDetailResponse>> getAllProduct() {
-        return new ResponseEntity<>(Service.getAllProduct(), HttpStatus.OK);
+    public ResponseEntity<List<ProductDetailResponse>> getAllProduct(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        return new ResponseEntity<>(Service.getAllProduct(pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("detail")
@@ -107,6 +109,11 @@ public class GiamGiaController {
     public ResponseEntity<Boolean> checkProductRecordCount(@RequestParam(name = "idsanpham") UUID productId) {
         boolean result = Service.checkProductRecordCount(productId);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("gia")
+    public ResponseEntity<Long> giaGiam(@RequestParam(name = "idsanpham") UUID productId) {
+        return new ResponseEntity<>(Service.getGiaGiamCuoiCung(productId), HttpStatus.OK);
     }
 
 }
