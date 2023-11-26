@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,8 +42,8 @@ public class VoucherController {
 
     @PutMapping("update/{id}")
     public ResponseEntity<MessageResponse> updateVoucher(@PathVariable UUID id,
-            @RequestBody VoucherRequest createKhachRequest) throws IOException, CsvValidationException {
-        Service.updateVoucher(id, createKhachRequest);
+            @RequestBody VoucherRequest createKhachRequest,    Principal principal) throws IOException, CsvValidationException {
+        Service.updateVoucher(id, createKhachRequest, principal.getName());
         return new ResponseEntity<>(
                 MessageResponse.builder().message("Cập nhật thông tin giảm giá thành công.").build(), HttpStatus.OK);
     }

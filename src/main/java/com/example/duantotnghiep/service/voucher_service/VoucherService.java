@@ -15,7 +15,7 @@ public interface VoucherService {
 
     MessageResponse createVoucher(VoucherRequest createVoucherRequest);
 
-    MessageResponse updateVoucher(UUID id, VoucherRequest createVoucherRequest) throws IOException, CsvValidationException;
+    MessageResponse updateVoucher(UUID id, VoucherRequest createVoucherRequest, String username) throws IOException, CsvValidationException;
 
     public Voucher findById(UUID id);
     List<Voucher> searchByTrangThai(Integer trangThai);
