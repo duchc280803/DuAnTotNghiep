@@ -105,23 +105,21 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     public Long getGiaGiamCuoiCung(UUID id) {
-        long sumPriceTien = 0L;
-        long sumPricePhanTram = 0L;
+        long tongTienGiam = 0L;
         List<SpGiamGia> spGiamGiaList = spGiamGiaRepository.findBySanPham_Id(id);
 
         for (SpGiamGia spGiamGia : spGiamGiaList) {
-            long mucGiam = spGiamGia.getMucGiam();
-            if (spGiamGia.getGiamGia().getHinhThucGiam() == 1) {
-                sumPriceTien += mucGiam;
+            // Cập nhật tổng tiền giảm đúng cách, không khai báo lại biến tongTienGiam
+            if (spGiamGia.getGiaGiam() == null) {
+                return tongTienGiam;
             }
-            if (spGiamGia.getGiamGia().getHinhThucGiam() == 2) {
-                long donGiaAsLong = spGiamGia.getDonGia().longValue();
-                double giamGia = (double) mucGiam / 100;
-                long giaTienSauGiamGia = (long) (donGiaAsLong * giamGia);
-                sumPricePhanTram += giaTienSauGiamGia;
+            if (spGiamGia.getGiaGiam() != null){
+                tongTienGiam += spGiamGia.getGiaGiam().longValue();
             }
+
         }
-        return sumPriceTien + sumPricePhanTram;
+
+        return tongTienGiam;
     }
 
     @Override

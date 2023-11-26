@@ -18,7 +18,7 @@ public interface GiamGiaService {
 
     Page<GiamGiaResponse> getAll(Pageable pageable);
 
-    List<ProductDetailResponse> getAllProduct();
+    List<ProductDetailResponse> getAllProduct(Integer pageNumber, Integer pageSize);
 
     List<GiamGiaResponse> findbyValueString(String key);
 
