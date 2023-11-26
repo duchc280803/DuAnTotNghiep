@@ -137,7 +137,6 @@ public class AuditLogService {
         }
     }
 
-
     public List<AuditLog> readAuditLog(String filePath) throws IOException, CsvValidationException {
         List<AuditLog> auditLogList = new ArrayList<>();
         try (CSVReader reader = new CSVReader(new BufferedReader(new InputStreamReader(new FileInputStream(filePath), "UTF-8")))) {

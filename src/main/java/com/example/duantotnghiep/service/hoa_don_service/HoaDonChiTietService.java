@@ -33,7 +33,7 @@ public interface HoaDonChiTietService {
 
     void capNhatSoLuong(UUID idHoaDonChiTiet, int soLuongMoi, String username) throws IOException, CsvValidationException;
 
-    MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest, String username) throws IOException, CsvValidationException;
+    MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest);
 
     HoaDon findByHoaDon(UUID id);
 

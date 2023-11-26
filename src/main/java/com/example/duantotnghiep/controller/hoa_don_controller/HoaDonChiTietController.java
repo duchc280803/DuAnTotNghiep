@@ -103,10 +103,9 @@ public class HoaDonChiTietController {
     public ResponseEntity<MessageResponse> createTransaction(
             @RequestParam(name = "idHoaDon") UUID idHoaDon,
             @RequestParam(name = "id") UUID id,
-            @RequestBody TransactionRequest transactionRequest,
-            Principal principal
+            @RequestBody TransactionRequest transactionRequest
     ) throws IOException, CsvValidationException {
-        return new ResponseEntity<>(hoaDonChiTietService.createTransaction(idHoaDon, id, transactionRequest, principal.getName()), HttpStatus.CREATED);
+        return new ResponseEntity<>(hoaDonChiTietService.createTransaction(idHoaDon, id, transactionRequest), HttpStatus.CREATED);
     }
 
     @GetMapping("status-order/{id}")
