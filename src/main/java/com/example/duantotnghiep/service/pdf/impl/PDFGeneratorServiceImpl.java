@@ -276,11 +276,11 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
                     paragraph15.setAlignment(Element.ALIGN_LEFT);
                     document.add(paragraph15);
                 }
-                if (hoaDon.get().getTienThua() != null) {
-                    Paragraph paragraph16 = new Paragraph("      +)Tiền thừa: " + decimalFormat.format(hoaDon.get().getTienThua() + " VND"), fontParagraph);
-                    paragraph16.setAlignment(Element.ALIGN_LEFT);
-                    document.add(paragraph16);
-                }
+//                if (hoaDon.get().getTienThua() != null) {
+//                    Paragraph paragraph16 = new Paragraph("      +)Tiền thừa: " + decimalFormat.format(hoaDon.get().getTienThua() + " VND"), fontParagraph);
+//                    paragraph16.setAlignment(Element.ALIGN_LEFT);
+//                    document.add(paragraph16);
+//                }
             }
 
             document.add(new Paragraph("\n")); // Thêm một dòng trống

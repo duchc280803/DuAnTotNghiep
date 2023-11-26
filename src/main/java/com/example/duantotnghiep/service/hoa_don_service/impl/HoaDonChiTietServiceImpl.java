@@ -229,10 +229,10 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest, String username) throws IOException, CsvValidationException {
+    public MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest) {
         Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
-        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
+//        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
 
         LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
         loaiHinhThucThanhToan.setId(UUID.randomUUID());
@@ -253,7 +253,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
 
-        auditLogService.writeAuditLogHoadonChiTiet("CREATE", username, taiKhoanUser.getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(), "Loại thanh toán: " + transactionRequest.getTenLoai(), "Số tiền: " + transactionRequest.getSoTien(), "Thanh toán: " + (transactionRequest.getTrangThai() == 1 ? "Tiền mặt" : "Chuyển khoản"));
+//        auditLogService.writeAuditLogHoadonChiTiet("CREATE", username, taiKhoanUser.getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(), "Loại thanh toán: " + transactionRequest.getTenLoai(), "Số tiền: " + transactionRequest.getSoTien(), "Thanh toán: " + (transactionRequest.getTrangThai() == 1 ? "Tiền mặt" : "Chuyển khoản"));
 
         return MessageResponse.builder().message("Thanh toán thành công").build();
     }
@@ -476,9 +476,11 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
         BigDecimal tongTien = BigDecimal.ZERO;
         for (HoaDonChiTiet hdct: hoaDonChiTiets) {
-            BigDecimal donGiaSauGiam = hdct.getDonGiaSauGiam() != null ? hdct.getDonGiaSauGiam() : BigDecimal.ZERO;
-            Integer soLuong = hdct.getSoLuong() != null ? hdct.getSoLuong() : 0;
-            tongTien = tongTien.add(donGiaSauGiam.multiply(new BigDecimal(soLuong)));
+            if (hdct.getTrangThai() != 7) {
+                BigDecimal donGiaSauGiam = hdct.getDonGiaSauGiam() != null ? hdct.getDonGiaSauGiam() : BigDecimal.ZERO;
+                Integer soLuong = hdct.getSoLuong() != null ? hdct.getSoLuong() : 0;
+                tongTien = tongTien.add(donGiaSauGiam.multiply(new BigDecimal(soLuong)));
+            }
         }
         return tongTien;
     }
