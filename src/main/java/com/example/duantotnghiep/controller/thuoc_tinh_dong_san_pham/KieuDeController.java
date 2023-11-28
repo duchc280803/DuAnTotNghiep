@@ -31,7 +31,7 @@ public class KieuDeController {
             @RequestParam(name = "tenKieuDe", required = false) String tenKieuDe,
             @RequestParam(name = "trangThai", required = false) Integer trangThai,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
     ) {
         return new ResponseEntity<>(kieuDeService.getAllKieuDe(trangThai, tenKieuDe, pageNumber, pageSize), HttpStatus.OK);
     }

@@ -8,6 +8,9 @@ import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.voucher_service.VoucherService;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -20,12 +23,15 @@ public class VoucherServiceimpl implements VoucherService {
     @Autowired
     private VoucherRepository Repository;
 
-    @Override
-    public List<Voucher> getAll() {
-        return Repository.findAll();
-    }
     @Autowired
     private AuditLogService auditLogService;
+
+    @Override
+    public Page<Voucher> getAll(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return Repository.findAll(pageable);
+    }
+
     @Override
     public MessageResponse createVoucher(VoucherRequest createVoucherRequest) {
         Voucher voucher = new Voucher();
