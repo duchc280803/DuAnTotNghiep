@@ -48,8 +48,31 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND spct.trangThai = 1 " +
             "AND s.trangThai = 1 " +
             "AND cl.trangThai = 1 " +
-            "AND ms.trangThai = 1")
+            "AND ms.trangThai = 1 ORDER BY sp.ngayTao DESC")
     Page<Object[]> getAll(Pageable pageable);
+
+    @Query("SELECT sp.id, spct.id, i.tenImage, sp.tenSanPham, sp.giaBan, spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu " +
+            "FROM SanPham sp " +
+            "JOIN sp.listImage i " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "JOIN sp.listSanPhamChiTiet spct " +
+            "JOIN spct.size s " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.mauSac ms " +
+            "WHERE i.isDefault = TRUE " +
+            "AND kd.trangThai = 1 " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND dm.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "AND spct.trangThai = 1 " +
+            "AND s.trangThai = 1 " +
+            "AND cl.trangThai = 1 " +
+            "AND ms.trangThai = 1 AND sp.tenSanPham = :name")
+    List<Object[]> getOne(@Param("name") String name);
 
     //TODO: Tìm kiếm sản phẩm theo tên
     @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu " +

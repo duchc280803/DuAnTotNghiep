@@ -20,6 +20,7 @@ import java.util.UUID;
 
 @Repository
 public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
+
         // load sanpham on shop
         @Query(value = "SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam,sp.idThuongHieu\n"
                         +

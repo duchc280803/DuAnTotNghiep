@@ -1,7 +1,9 @@
 package com.example.duantotnghiep.controller.giam_gia_san_pham_controller;
 
+import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
 import com.example.duantotnghiep.response.GiamGiaResponse;
 import com.example.duantotnghiep.response.SanPhamResponse;
+import com.example.duantotnghiep.service.ban_tai_quay_service.impl.ProductCounterServiceImpl;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.SanPhamServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,18 +25,28 @@ public class HomeController {
 
     @Autowired
     private SanPhamServiceImpl sanPhamService;
+
+    @Autowired
+    private ProductCounterServiceImpl chiTietSanPhamService;
+
     @GetMapping("home")
-    public ResponseEntity<List<SanPhamResponse>> getAll(){
-        return new ResponseEntity<>(sanPhamService.getNewProduct(), HttpStatus.OK);
+    public ResponseEntity<List<ChiTietSanPhamCustom>> getAll(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "8") Integer pageSize
+    ) {
+        return new ResponseEntity<>(chiTietSanPhamService.getAll(pageNumber, pageSize), HttpStatus.OK);
     }
+
     @GetMapping("list")
-    public ResponseEntity<List<SanPhamResponse>> getProductSelt(){
+    public ResponseEntity<List<SanPhamResponse>> getProductSelt() {
         return new ResponseEntity<>(sanPhamService.getBestSellingProducts(), HttpStatus.OK);
     }
+
     @GetMapping("detailList")
     public ResponseEntity<List<SanPhamResponse>> ListDetail(@RequestParam(name = "id") UUID id) {
         return new ResponseEntity<>(sanPhamService.getNewProductbyId(id), HttpStatus.OK);
     }
+
     @GetMapping("detailListSelt")
     public ResponseEntity<List<SanPhamResponse>> ListDetailSelt(@RequestParam(name = "id") UUID id) {
         return new ResponseEntity<>(sanPhamService.getBestSellingProductsbyId(id), HttpStatus.OK);
