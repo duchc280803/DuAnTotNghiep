@@ -348,26 +348,6 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                 chiTietSanPhamRepository.save(sanPhamChiTiet);
                 trangThaiHoaDonRepository.save(trangThaiHoaDon);
                 hoaDonRepository.save(hoaDon);
-                if (hoaDonChiTiet.getTrangThai() == 7) {
-                    LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
-                    loaiHinhThucThanhToan.setId(UUID.randomUUID());
-                    loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
-                    loaiHinhThucThanhToan.setTenLoai("Nhân viên hoàn tiền");
-                    loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
-
-                    HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
-                    hinhThucThanhToan.setId(UUID.randomUUID());
-                    hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
-                    hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
-                    hinhThucThanhToan.setTongSoTien(hoaDonChiTiet.getDonGiaSauGiam());
-                    hinhThucThanhToan.setGhiChu("");
-                    hinhThucThanhToan.setPhuongThucThanhToan(1);
-                    hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
-                    hinhThucThanhToan.setHoaDon(hoaDon);
-                    hinhThucThanhToan.setTrangThai(1);
-                    hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
-                    hinhThucThanhToanRepository.save(hinhThucThanhToan);
-                }
                 auditLogService.writeAuditLogHoadonChiTiet("UPDATE", username, taiKhoan.getEmail(), "Trả hàng", hoaDon.getMa(), "Mã sản phẩm: " + sanPhamHoaDon.getMaSanPham(), "Số lượng trả: " + traHangRequest.getSoLuong().toString(), "");
 
                 return MessageResponse.builder().message("Trả hàng thành công").build();
