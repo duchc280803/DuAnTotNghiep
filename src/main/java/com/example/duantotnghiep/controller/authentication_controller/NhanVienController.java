@@ -32,7 +32,7 @@ public class NhanVienController {
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "soDienThoai", required = false) String soDienTHoai,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
     ) {
         return new ResponseEntity<>(nhanVienService.getAllNhanVien(maNhanVien, name, soDienTHoai, trangThai, pageNumber, pageSize), HttpStatus.OK);
     }

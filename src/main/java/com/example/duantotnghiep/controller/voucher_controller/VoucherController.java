@@ -1,11 +1,8 @@
 package com.example.duantotnghiep.controller.voucher_controller;
 
 import com.example.duantotnghiep.entity.Voucher;
-import com.example.duantotnghiep.request.GiamGiaRequest;
 import com.example.duantotnghiep.request.VoucherRequest;
-import com.example.duantotnghiep.response.GiamGiaResponse;
 import com.example.duantotnghiep.response.MessageResponse;
-import com.example.duantotnghiep.service.giam_gia_service.impl.GiamGiaServiceimpl;
 import com.example.duantotnghiep.service.voucher_service.impl.VoucherServiceimpl;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +17,15 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/voucher/")
 public class VoucherController {
+
     @Autowired
     private VoucherServiceimpl Service;
 
     @GetMapping("show")
-    public ResponseEntity<List<Voucher>> getAll() {
-        return new ResponseEntity<>(Service.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<Voucher>> getAll(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize) {
+        return new ResponseEntity<>(Service.getAll(pageNumber, pageSize).getContent(), HttpStatus.OK);
     }
 
     @PostMapping("create")
@@ -41,7 +41,7 @@ public class VoucherController {
 
     @PutMapping("update/{id}")
     public ResponseEntity<MessageResponse> updateVoucher(@PathVariable UUID id,
-            @RequestBody VoucherRequest createKhachRequest) throws IOException, CsvValidationException {
+                                                         @RequestBody VoucherRequest createKhachRequest) throws IOException, CsvValidationException {
         Service.updateVoucher(id, createKhachRequest);
         return new ResponseEntity<>(
                 MessageResponse.builder().message("Cập nhật thông tin giảm giá thành công.").build(), HttpStatus.OK);

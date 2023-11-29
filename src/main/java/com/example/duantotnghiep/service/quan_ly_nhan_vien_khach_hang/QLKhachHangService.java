@@ -15,7 +15,7 @@ public interface QLKhachHangService {
 
     QLKhachHangResponse detailKhachHang(UUID id);
 
-    MessageResponse updateKhachHang(UUID khachHangId, CreateQLKhachHangRequest createQLKhachHangRequest);
+    MessageResponse updateKhachHang(MultipartFile file, UUID khachHangId, CreateQLKhachHangRequest createQLKhachHangRequest);
 
 
 }

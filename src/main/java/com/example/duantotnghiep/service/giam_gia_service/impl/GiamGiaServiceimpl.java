@@ -41,9 +41,12 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     private SpGiamGiaRepository spGiamGiaRepository;
 
     @Override
-    public List<GiamGiaResponse> getAll()  {
-        return Repository.listGiamGia();
+    public List<GiamGiaResponse> getAll(Integer pageNumber, Integer pageSize)  {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<GiamGiaResponse> giamGiaResponses = Repository.listGiamGias(pageable);
+        return giamGiaResponses.getContent();
     }
+
     @Autowired
     private AuditLogService auditLogService;
 
@@ -203,7 +206,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     }
 
     @Override
-    public List<GiamGiaResponse> checkAndSetStatus() {
+    public MessageResponse checkAndSetStatus() {
         List<GiamGia> giamGiaList = Repository.findAll();
         Date currentDate = new Date(); // Ngày hiện tại
 
@@ -218,8 +221,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                 }
             }
         }
-
-        return Repository.listGiamGia();
+        return MessageResponse.builder().message("Ok").build();
     }
 
     @Override
