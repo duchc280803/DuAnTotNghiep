@@ -28,7 +28,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
     BigDecimal calculatePriceDifference(@Param("id") UUID id);
 
     // TODO: Load sản phẩm ở quầy
-    @Query("SELECT sp.id, spct.id, i.tenImage, sp.tenSanPham, sp.giaBan, spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu " +
+    @Query("SELECT sp.id, spct.id, i.tenImage, sp.tenSanPham, sp.giaBan, spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +
             "JOIN sp.listImage i " +
             "JOIN sp.kieuDe kd " +
@@ -51,7 +51,30 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND ms.trangThai = 1 ORDER BY sp.ngayTao DESC")
     Page<Object[]> getAll(Pageable pageable);
 
-    @Query("SELECT sp.id, spct.id, i.tenImage, sp.tenSanPham, sp.giaBan, spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu " +
+    @Query("SELECT sp.id, spct.id, i.tenImage, sp.tenSanPham, sp.giaBan, spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
+            "FROM SanPham sp " +
+            "JOIN sp.listImage i " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "JOIN sp.listSanPhamChiTiet spct " +
+            "JOIN spct.size s " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.mauSac ms " +
+            "WHERE i.isDefault = TRUE " +
+            "AND kd.trangThai = 1 " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND dm.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "AND spct.trangThai = 1 " +
+            "AND s.trangThai = 1 " +
+            "AND cl.trangThai = 1 " +
+            "AND ms.trangThai = 1 AND th.id = :idthuonghieu")
+    Page<Object[]> getAll(@Param("idthuonghieu") UUID idthuonghieu, Pageable pageable);
+
+    @Query("SELECT sp.id, spct.id, i.tenImage, sp.tenSanPham, sp.giaBan, spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +
             "JOIN sp.listImage i " +
             "JOIN sp.kieuDe kd " +
@@ -75,7 +98,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
     List<Object[]> getOne(@Param("name") String name);
 
     //TODO: Tìm kiếm sản phẩm theo tên
-    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu " +
+    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +
             "JOIN sp.listImage i " +
             "JOIN sp.kieuDe kd " +
@@ -100,7 +123,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
     List<Object[]> searchByName(@Param("name") String name);
 
     //TODO: Lọc theo tên thương hiệu
-    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu " +
+    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +
             "JOIN sp.listImage i " +
             "JOIN sp.kieuDe kd " +
@@ -125,7 +148,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
     List<Object[]> filterBrand(@Param("name") String name);
 
     //TODO: Lọc theo tên danh mục
-    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu " +
+    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +
             "JOIN sp.listImage i " +
             "JOIN sp.kieuDe kd " +
@@ -150,7 +173,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
     List<Object[]> filterCategory(@Param("name") String name);
 
     //TODO: Lọc theo tên đế
-    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu " +
+    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +
             "JOIN sp.listImage i " +
             "JOIN sp.kieuDe kd " +
@@ -175,7 +198,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
     List<Object[]> filterSole(@Param("name") String name);
 
     //TODO: Lọc theo tên xuất xứ
-    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu " +
+    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +
             "JOIN sp.listImage i " +
             "JOIN sp.kieuDe kd " +
@@ -200,7 +223,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
     List<Object[]> filterOrigin(@Param("name") String name);
 
     //TODO: Lọc theo size
-    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu " +
+    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +
             "JOIN sp.listImage i " +
             "JOIN sp.kieuDe kd " +
@@ -225,7 +248,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
     List<Object[]> filterSize(@Param("size") Integer size);
 
     //TODO: Lọc theo tên chất liệu
-    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu " +
+    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +
             "JOIN sp.listImage i " +
             "JOIN sp.kieuDe kd " +
@@ -250,7 +273,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
     List<Object[]> filterMaterial(@Param("name") String name);
 
     //TODO: Lọc theo tên màu sắc
-    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu " +
+    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +
             "JOIN sp.listImage i " +
             "JOIN sp.kieuDe kd " +

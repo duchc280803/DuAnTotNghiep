@@ -45,8 +45,12 @@ public class SanPhamGiamGiaController {
     }
 
     @GetMapping("show-sp-lien-quan")
-    public ResponseEntity<List<loadsanpham_not_login>> showSpLienQuan(@RequestParam UUID idthuonghieu) {
-        return ResponseEntity.ok(spGiamGiaRepository.getSanPhamLienQuan(idthuonghieu));
+    public ResponseEntity<List<ChiTietSanPhamCustom>> showSpLienQuan(
+            @RequestParam UUID idthuonghieu,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "8") Integer pageSize
+    ) {
+        return ResponseEntity.ok(productCounterService.getSanPhamLienQuan(idthuonghieu, pageNumber, pageSize));
     }
 
     @GetMapping("show-name-price-image/{name}")

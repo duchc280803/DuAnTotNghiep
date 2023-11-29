@@ -31,4 +31,6 @@ public class ChiTietSanPhamCustom {
     private Integer size;
 
     private String chatLieu;
+
+    private UUID idThuongHieu;
 }
