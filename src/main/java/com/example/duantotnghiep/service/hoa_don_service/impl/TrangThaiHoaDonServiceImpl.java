@@ -4,6 +4,7 @@ import com.example.duantotnghiep.config.VnPayConfig;
 import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.ConfirmOrderClientRequest;
+import com.example.duantotnghiep.request.ConfirmOrderDeliver;
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.hoa_don_service.TrangThaiHoaDonService;
@@ -103,9 +104,7 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(hoadonId);
 
         if (hoaDon.isPresent()) {
-            hoaDon.get().setTenNguoiShip(request.getHoVaTenNguoiShip());
             hoaDon.get().setTienShip(request.getTienShip());
-            hoaDon.get().setSdtNguoiShip(request.getHoVaTenNguoiShip());
             hoaDon.get().setDiaChi(request.getDiaChi());
             hoaDon.get().setSdtNguoiNhan(request.getSdtClient());
             hoaDon.get().setTenNguoiNhan(request.getHoVatenClient());
@@ -121,6 +120,23 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             }
 
             hoaDon.get().setThanhTien(tongTien.add(request.getTienShip()));
+
+            hoaDonRepository.save(hoaDon.get());
+            return MessageResponse.builder().message("Cập nhập thành công").build();
+        } else {
+            return MessageResponse.builder().message("Không tìm thấy hóa đơn").build();
+        }
+    }
+
+    @Override
+    public MessageResponse confirmOrderDeliver(UUID hoadonId, ConfirmOrderDeliver request) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(hoadonId);
+
+        if (hoaDon.isPresent()) {
+            hoaDon.get().setSdtNguoiShip(request.getSoDienThoaiGiao());
+            hoaDon.get().setTenNguoiShip(request.getTenNguoiGiao());
+            hoaDon.get().setNgayCapNhap(timestamp);
 
             hoaDonRepository.save(hoaDon.get());
             return MessageResponse.builder().message("Cập nhập thành công").build();

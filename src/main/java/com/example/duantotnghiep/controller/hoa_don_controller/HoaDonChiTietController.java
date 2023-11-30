@@ -64,6 +64,13 @@ public class HoaDonChiTietController {
         return new ResponseEntity<>(trangThaiHoaDonService.confirmOrderClient(hoadonId, request), HttpStatus.CREATED);
     }
 
+    @PutMapping("confirm-order-deliver/{hoadonId}")
+    public ResponseEntity<MessageResponse> confirmOrderDeliver(
+            @PathVariable UUID hoadonId,
+            @RequestBody ConfirmOrderDeliver request) {
+        return new ResponseEntity<>(trangThaiHoaDonService.confirmOrderDeliver(hoadonId, request), HttpStatus.CREATED);
+    }
+
     @PostMapping("confirm-thanh-toan/{hoadonId}")
     public ResponseEntity<String> confirmThanhToan(@PathVariable UUID hoadonId, @RequestBody XacNhanThanhToanRequest request) {
         hoaDonChiTietService.confirmThanhToan(hoadonId, request);
