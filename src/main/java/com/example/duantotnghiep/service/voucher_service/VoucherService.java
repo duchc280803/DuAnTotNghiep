@@ -14,11 +14,15 @@ import java.util.UUID;
 public interface VoucherService {
     Page<Voucher> getAll(Integer pageNumber, Integer pageSize);
 
-    MessageResponse createVoucher(VoucherRequest createVoucherRequest);
+    MessageResponse createVoucher(VoucherRequest createVoucherRequest, String username)
+            throws IOException, CsvValidationException;;
 
-    MessageResponse updateVoucher(UUID id, VoucherRequest createVoucherRequest) throws IOException, CsvValidationException;
+    MessageResponse updateVoucher(UUID id, VoucherRequest createVoucherRequest, String username)
+            throws IOException, CsvValidationException;
 
     public Voucher findById(UUID id);
+
     List<Voucher> searchByTrangThai(Integer trangThai);
+
     public List<Voucher> searchByTenOrMaVoucher(String keyword);
 }

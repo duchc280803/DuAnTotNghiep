@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -42,8 +43,9 @@ public class GiamGiaController {
 
     @PutMapping("update/{id}")
     public ResponseEntity<MessageResponse> updateGiamGia(@PathVariable UUID id,
-            @RequestBody UpdateGiamGiaResquest updateGiamGiaRequest)  {
-        Service.updateGiamGia(id, updateGiamGiaRequest);
+            @RequestBody UpdateGiamGiaResquest updateGiamGiaRequest, Principal principal)
+            throws IOException, CsvValidationException {
+        Service.updateGiamGia(id, updateGiamGiaRequest, principal.getName());
         return new ResponseEntity<>(
                 MessageResponse.builder().message("Cập nhật thông tin giảm giá thành công.").build(), HttpStatus.OK);
     }
@@ -98,8 +100,9 @@ public class GiamGiaController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<MessageResponse> createKhachHang(@RequestBody GiamGiaRequest createKhachRequest) {
-        return new ResponseEntity<>(Service.createGiamGia(createKhachRequest), HttpStatus.CREATED);
+    public ResponseEntity<MessageResponse> createKhachHang(@RequestBody GiamGiaRequest createKhachRequest,
+            Principal principal) throws IOException, CsvValidationException {
+        return new ResponseEntity<>(Service.createGiamGia(createKhachRequest, principal.getName()), HttpStatus.CREATED);
     }
 
     @GetMapping("checkTenGiamGia")
