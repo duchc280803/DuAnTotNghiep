@@ -23,7 +23,7 @@ public class SanPhamChiTietController {
     public ResponseEntity<List<SanPhamChiTietResponse>> viewHoaDonTaiQuay(
             @RequestParam(name = "id") UUID id,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize) {
         if (pageNumber <= 0) {
             pageNumber = 0;
         }

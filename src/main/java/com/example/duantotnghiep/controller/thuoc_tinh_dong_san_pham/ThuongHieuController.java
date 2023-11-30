@@ -24,7 +24,7 @@ public class ThuongHieuController {
             @RequestParam(name = "tenThuongHieu", required = false) String tenThuongHieu,
             @RequestParam(name = "trangThai", required = false) Integer trangThai,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
     ) {
         return new ResponseEntity<>(thuongHieuService.getAllThuongHieu(trangThai, tenThuongHieu, pageNumber, pageSize), HttpStatus.OK);
     }

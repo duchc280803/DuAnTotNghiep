@@ -4,6 +4,7 @@ import com.example.duantotnghiep.entity.GioHangChiTiet;
 import com.example.duantotnghiep.mapper.GioHangCustom;
 import com.example.duantotnghiep.response.MessageResponse;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,4 +19,6 @@ public interface CartDetailCounterService {
     void deleteProductInCart(UUID id);
 
     List<GioHangChiTiet>  getIdCartDetail(UUID idCart);
+
+    String tongTienHang(UUID id);
 }

@@ -71,16 +71,23 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
         BigDecimal tienChuyenKhoan = BigDecimal.ZERO;
         BigDecimal tienMat = BigDecimal.ZERO;
 
+        BigDecimal tongTienHoan = BigDecimal.ZERO;
+
         for (HinhThucThanhToan h : hinhThucThanhToanList) {
-            if (h.getPhuongThucThanhToan() == 1) {
+            if (h.getPhuongThucThanhToan() == 1 && h.getLoaiHinhThucThanhToan().getTenLoai().equalsIgnoreCase("Khách thanh toán")) {
                 tienMat = tienMat.add(h.getTongSoTien());
             }
 
-            if (h.getPhuongThucThanhToan() == 2) {
+            if (h.getPhuongThucThanhToan() == 2 && h.getLoaiHinhThucThanhToan().getTenLoai().equalsIgnoreCase("Khách thanh toán")) {
                 tienChuyenKhoan = tienChuyenKhoan.add(h.getTongSoTien());
             }
 
-            tongTienKhachTra = tongTienKhachTra.add(h.getTongSoTien());
+            if (h.getLoaiHinhThucThanhToan().getTenLoai().equalsIgnoreCase("Khách thanh toán")) {
+                tongTienKhachTra = tongTienKhachTra.add(h.getTongSoTien());
+            }
+            if (h.getLoaiHinhThucThanhToan().getTenLoai().equalsIgnoreCase("Nhân viên hoàn tiền")) {
+                tongTienHoan = tongTienHoan.add(h.getTongSoTien());
+            }
         }
 
         Document document = new Document(PageSize.A4);
@@ -178,7 +185,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
                     table.addCell(hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getTenSanPham()); // Tên sản phẩm
                     table.addCell(Integer.toString(hoaDonChiTiet.getSoLuong())); // Số lượng
                     table.addCell(FormatNumber.formatBigDecimal(hoaDonChiTiet.getDonGiaSauGiam()) + " VND"); // Đơn giá
-                    BigDecimal thanhTien = hoaDonChiTiet.getDonGia().multiply(new BigDecimal(hoaDonChiTiet.getSoLuong()));
+                    BigDecimal thanhTien = hoaDonChiTiet.getDonGiaSauGiam().multiply(new BigDecimal(hoaDonChiTiet.getSoLuong()));
                     table.addCell(FormatNumber.formatBigDecimal(thanhTien) + " VND"); // Thành tiền
                     tongTienSanPham = tongTienSanPham.add(thanhTien);
                     stt++;
@@ -221,7 +228,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
                         table1.addCell(hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getTenSanPham()); // Tên sản phẩm
                         table1.addCell(Integer.toString(hoaDonChiTiet.getSoLuong())); // Số lượng
                         table1.addCell(FormatNumber.formatBigDecimal(hoaDonChiTiet.getDonGiaSauGiam()) + " VND"); // Đơn giá
-                        BigDecimal thanhTien = hoaDonChiTiet.getDonGia().multiply(new BigDecimal(hoaDonChiTiet.getSoLuong()));
+                        BigDecimal thanhTien = hoaDonChiTiet.getDonGiaSauGiam().multiply(new BigDecimal(hoaDonChiTiet.getSoLuong()));
                         table1.addCell(FormatNumber.formatBigDecimal(thanhTien) + " VND"); // Thành tiền
                         tongTienSanPhamTra = tongTienSanPhamTra.add(thanhTien);
                         table1.addCell(hoaDon.get().getTaiKhoanNhanVien().getName());
@@ -260,7 +267,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
             document.add(paragraph18);
 
             if (tongTienKhachTra != BigDecimal.ZERO) {
-                Paragraph paragraph13 = new Paragraph("Tổng số tiền khách trả: " + FormatNumber.formatBigDecimal(tongTienKhachTra) + " VND", fontParagraph);
+                Paragraph paragraph13 = new Paragraph("Tổng tiền khách trả: " + FormatNumber.formatBigDecimal(tongTienKhachTra) + " VND", fontParagraph);
                 paragraph13.setAlignment(Element.ALIGN_LEFT);
                 document.add(paragraph13);
 
@@ -275,11 +282,12 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
                     paragraph15.setAlignment(Element.ALIGN_LEFT);
                     document.add(paragraph15);
                 }
-//                if (hoaDon.get().getTienThua() != null) {
-//                    Paragraph paragraph16 = new Paragraph("      +)Tiền thừa: " + decimalFormat.format(hoaDon.get().getTienThua() + " VND"), fontParagraph);
-//                    paragraph16.setAlignment(Element.ALIGN_LEFT);
-//                    document.add(paragraph16);
-//                }
+            }
+
+            if (tongTienHoan != BigDecimal.ZERO) {
+                Paragraph paragraph22 = new Paragraph("Tổng tiền hoàn: " + FormatNumber.formatBigDecimal(tongTienHoan) + " VND", fontParagraph);
+                paragraph22.setAlignment(Element.ALIGN_LEFT);
+                document.add(paragraph22);
             }
 
             document.add(new Paragraph("\n")); // Thêm một dòng trống
