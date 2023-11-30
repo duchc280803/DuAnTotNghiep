@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.service.hoa_don_service;
 
 import com.example.duantotnghiep.request.ConfirmOrderClientRequest;
+import com.example.duantotnghiep.request.ConfirmOrderDeliver;
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 
@@ -11,4 +12,6 @@ public interface TrangThaiHoaDonService {
     MessageResponse confirmOrder(UUID hoadonId, TrangThaiHoaDonRequest request, String name);
 
     MessageResponse confirmOrderClient(UUID hoadonId, ConfirmOrderClientRequest request);
+
+    MessageResponse confirmOrderDeliver(UUID hoadonId, ConfirmOrderDeliver request);
 }

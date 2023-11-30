@@ -23,7 +23,7 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
     List<HoaDonChiTiet> findAllByHoaDon(HoaDon hoaDon);
 
     @Query("SELECT new com.example.duantotnghiep.response.ThongTinDonHang" +
-            "(hd.ma, hd.trangThai,ld.tenLoaiDon, hd.diaChi, hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.tenNguoiShip, hd.sdtNguoiShip, nv.id) " +
+            "(hd.ma, hd.trangThai,ld.tenLoaiDon, hd.diaChi, hd.tenNguoiNhan, hd.sdtNguoiNhan, hd.tenNguoiShip, hd.sdtNguoiShip, nv.id, hd.email) " +
             "FROM HoaDon hd JOIN " +
             "hd.loaiDon ld LEFT JOIN hd.taiKhoanNhanVien nv " +
             "WHERE hd.id = :idHoaDon")
