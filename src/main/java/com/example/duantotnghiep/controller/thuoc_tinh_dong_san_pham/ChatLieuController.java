@@ -37,7 +37,7 @@ public class ChatLieuController {
             @RequestParam(name = "tenChatLieu", required = false) String tenChatLieu,
             @RequestParam(name = "trangThai", required = false) Integer trangThai,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
     ) {
         return new ResponseEntity<>(chatLieuService.getAllChatLieu(trangThai, tenChatLieu, pageNumber, pageSize), HttpStatus.OK);
     }

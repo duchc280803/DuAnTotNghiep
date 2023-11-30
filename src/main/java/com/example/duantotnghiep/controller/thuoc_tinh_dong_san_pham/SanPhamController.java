@@ -28,7 +28,8 @@ public class SanPhamController {
     @GetMapping("hien-thi")
     public ResponseEntity<List<ProductResponse>> filterSanPham(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
+    ) {
         return new ResponseEntity<>(sanPhamService.getHoaDonByFilter(pageNumber, pageSize), HttpStatus.OK);
     }
 

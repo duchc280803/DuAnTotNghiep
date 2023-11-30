@@ -23,4 +23,5 @@ public class GioHangCustom {
     Integer size;
     String chatLieu;
     String mauSac;
+    BigDecimal tongTien;
 }

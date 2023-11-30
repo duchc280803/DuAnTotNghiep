@@ -20,9 +20,9 @@ public class ChiTietSanPhamCustom {
 
     private String tenSanPham;
 
-    private BigDecimal giaBan;
+    private String giaBan;
 
-    private BigDecimal giaGiamGia;
+    private String giaGiamGia;
 
     private Integer soLuong;
 
@@ -31,4 +31,6 @@ public class ChiTietSanPhamCustom {
     private Integer size;
 
     private String chatLieu;
+
+    private UUID idThuongHieu;
 }

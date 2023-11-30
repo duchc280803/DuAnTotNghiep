@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public interface GiamGiaService {
 
-        List<GiamGiaResponse> getAll() throws IOException, CsvValidationException;
+    List<GiamGiaResponse> getAll(Integer pageNumber, Integer pageSize) throws IOException, CsvValidationException;
 
         Page<GiamGiaResponse> getAll(Pageable pageable);
 
@@ -28,7 +28,7 @@ public interface GiamGiaService {
 
         List<GiamGiaResponse> findbyValueStatus(Integer key);
 
-        List<GiamGiaResponse> checkAndSetStatus();
+    MessageResponse checkAndSetStatus();
 
         List<ProductDetailResponse> ListSearch(UUID id);
 

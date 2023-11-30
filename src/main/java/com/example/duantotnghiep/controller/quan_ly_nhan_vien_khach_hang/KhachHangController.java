@@ -28,8 +28,8 @@ public class KhachHangController {
             @RequestParam(name = "soDienThoai", required = false) String soDienThoai,
             @RequestParam(name = "maTaiKhoan", required = false) String maTaiKhoan,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
-            ) {
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
+    ) {
 
         return new ResponseEntity<>(service.getQLKhachHang(trangThai, name, soDienThoai, maTaiKhoan, pageNumber, pageSize), HttpStatus.OK);
     }
@@ -49,13 +49,10 @@ public class KhachHangController {
     @PutMapping("/update")
     public ResponseEntity<MessageResponse> updateKhachHang(
             @RequestParam("khachHangId") UUID khachHangId,
-            @RequestBody CreateQLKhachHangRequest createQLKhachHangRequest) {
-        try {
-            MessageResponse response = service.updateKhachHang(khachHangId, createQLKhachHangRequest);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            @RequestParam("file") MultipartFile file,
+            @ModelAttribute CreateQLKhachHangRequest createQLKhachHangRequest) {
+        MessageResponse response = service.updateKhachHang(file, khachHangId, createQLKhachHangRequest);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

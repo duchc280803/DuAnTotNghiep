@@ -32,7 +32,7 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
                         "JOIN spgg.sanPham sp " +
                         "WHERE gg.trangThai = 1 " +
                         "ORDER BY gg.ngayBatDau DESC ")
-        List<GiamGiaResponse> listGiamGia();
+        Page<GiamGiaResponse> listGiamGia(Pageable pageable);
 
         @Query("SELECT DISTINCT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id,gg.maGiamGia,gg.tenGiamGia, gg.ngayBatDau, gg.ngayKetThuc, gg.hinhThucGiam, gg.trangThai, spgg.mucGiam) "
                         +

@@ -24,6 +24,8 @@ public interface TaiKhoanRepository extends JpaRepository<TaiKhoan, UUID> {
 
     Optional<TaiKhoan> findByUsername(String username);
 
+    Optional<TaiKhoan> findByEmail(String email);
+
     @Query("SELECT tk FROM TaiKhoan tk WHERE tk.id =: id")
     Optional<TaiKhoan> findByKhachHang(UUID id);
 
