@@ -1,4 +1,4 @@
-package com.example.duantotnghiep.controller.authentication_controller;
+package com.example.duantotnghiep.controller.quan_ly_nhan_vien_khach_hang;
 
 import com.example.duantotnghiep.request.NhanVienDTORequest;
 import com.example.duantotnghiep.response.LoaiTaiKhoanResponse;
