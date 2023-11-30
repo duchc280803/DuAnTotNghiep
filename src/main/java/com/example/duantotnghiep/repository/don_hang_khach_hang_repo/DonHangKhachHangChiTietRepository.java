@@ -29,7 +29,6 @@ public interface DonHangKhachHangChiTietRepository extends JpaRepository<HoaDonC
             "    hoadon HD\n" +
             "JOIN loaidon LD ON HD.idloaidon = LD.id\n" +
             "JOIN trangthaihoadon TTHD ON TTHD.idhoadon = HD.id\n" +
-            "JOIN hinhthucthanhtoan HTTT ON HTTT.idhoadon = HD.id\n" +
             "JOIN taikhoan TK ON TK.id = HD.idkhachhang\n" +
             "WHERE\n" +
             "    TTHD.idhoadon = :idHoaDon\n" +
@@ -51,7 +50,7 @@ public interface DonHangKhachHangChiTietRepository extends JpaRepository<HoaDonC
             "WHERE i.isDefault = 1 AND hd.id = :idHoaDon and tk.username = :username \n",nativeQuery = true)
     List<ThongTinSanPhamKhachHangMap> getSanPhamHDCT(@Param("idHoaDon") UUID idHoaDon,@Param("username") String username);
 
-    @Query("SELECT new com.example.duantotnghiep.response.MoneyResponse(hd.thanhTien, hd.tienShip, hd.tienThua, hd.tienGiamGia)" +
+    @Query("SELECT new com.example.duantotnghiep.response.MoneyResponse(hd.thanhTien, hd.tienShip, hd.tienGiamGia)" +
             "FROM HoaDon hd WHERE hd.id = :idHoaDon")
     MoneyResponse getAllMoneyByHoaDon(UUID idHoaDon);
 
@@ -59,6 +58,6 @@ public interface DonHangKhachHangChiTietRepository extends JpaRepository<HoaDonC
             "FROM HoaDon hd " +
             "JOIN hd.trangThaiHoaDonList tthd " +
             "LEFT JOIN hd.taiKhoanNhanVien tknv WHERE hd.id = :id ORDER BY tthd.thoiGian ASC ")
-    List<TrangThaiHoaDonResponse> getAllTrangThaiHoaDon(@Param("id") UUID id);
+    List<TrangThaiHoaDonResponse> getAllTrangThaiHoaDon(@Param("id ") UUID id);
 
 }
