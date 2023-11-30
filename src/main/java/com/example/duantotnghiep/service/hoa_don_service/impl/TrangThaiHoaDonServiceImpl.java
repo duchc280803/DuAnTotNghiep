@@ -1,13 +1,8 @@
 package com.example.duantotnghiep.service.hoa_don_service.impl;
 
-import com.example.duantotnghiep.entity.HoaDon;
-import com.example.duantotnghiep.entity.HoaDonChiTiet;
-import com.example.duantotnghiep.entity.TaiKhoan;
-import com.example.duantotnghiep.entity.TrangThaiHoaDon;
-import com.example.duantotnghiep.repository.HoaDonChiTietRepository;
-import com.example.duantotnghiep.repository.HoaDonRepository;
-import com.example.duantotnghiep.repository.TaiKhoanRepository;
-import com.example.duantotnghiep.repository.TrangThaiHoaDonRepository;
+import com.example.duantotnghiep.config.VnPayConfig;
+import com.example.duantotnghiep.entity.*;
+import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.ConfirmOrderClientRequest;
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.response.MessageResponse;
@@ -17,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,6 +33,12 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
 
     @Autowired
     private HoaDonChiTietRepository hoaDonChiTietRepository;
+
+    @Autowired
+    private HinhThucThanhToanRepository hinhThucThanhToanRepository;
+
+    @Autowired
+    private LoaiHinhThucThanhToanRepository loaiHinhThucThanhToanRepository;
 
     @Override
     public MessageResponse confirmOrder(UUID hoadonId, TrangThaiHoaDonRequest request, String name) {
@@ -72,6 +73,26 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             // Lưu cả hai bảng
             hoaDonRepository.save(hoaDon);
             trangThaiHoaDonRepository.save(trangThaiHoaDon);
+            if (request.getNewTrangThai() == 5) {
+                LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+                loaiHinhThucThanhToan.setId(UUID.randomUUID());
+                loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
+                loaiHinhThucThanhToan.setTenLoai("Khách thanh toán");
+                loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+
+                HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+                hinhThucThanhToan.setId(UUID.randomUUID());
+                hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+                hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
+                hinhThucThanhToan.setTongSoTien(hoaDon.getThanhTien());
+                hinhThucThanhToan.setGhiChu("");
+                hinhThucThanhToan.setPhuongThucThanhToan(1);
+                hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
+                hinhThucThanhToan.setHoaDon(hoaDon);
+                hinhThucThanhToan.setTrangThai(1);
+                hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
+                hinhThucThanhToanRepository.save(hinhThucThanhToan);
+            }
         }
         return MessageResponse.builder().message("Thêm thành công").build();
     }

@@ -229,36 +229,6 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest) {
-        Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
-        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
-//        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
-
-        LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
-        loaiHinhThucThanhToan.setId(UUID.randomUUID());
-        loaiHinhThucThanhToan.setNgayTao(new Date(System.currentTimeMillis()));
-        loaiHinhThucThanhToan.setTenLoai(transactionRequest.getTenLoai());
-        loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
-
-        HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
-        hinhThucThanhToan.setId(UUID.randomUUID());
-        hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
-        hinhThucThanhToan.setTaiKhoan(taiKhoan.get());
-        hinhThucThanhToan.setTongSoTien(transactionRequest.getSoTien());
-        hinhThucThanhToan.setGhiChu(transactionRequest.getGhiChu());
-        hinhThucThanhToan.setPhuongThucThanhToan(transactionRequest.getTrangThai());
-        hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
-        hinhThucThanhToan.setHoaDon(hoaDon.get());
-        hinhThucThanhToan.setTrangThai(1);
-        hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
-        hinhThucThanhToanRepository.save(hinhThucThanhToan);
-
-//        auditLogService.writeAuditLogHoadonChiTiet("CREATE", username, taiKhoanUser.getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(), "Loại thanh toán: " + transactionRequest.getTenLoai(), "Số tiền: " + transactionRequest.getSoTien(), "Thanh toán: " + (transactionRequest.getTrangThai() == 1 ? "Tiền mặt" : "Chuyển khoản"));
-
-        return MessageResponse.builder().message("Thanh toán thành công").build();
-    }
-
-    @Override
     public HoaDon findByHoaDon(UUID id) {
         return hoaDonRepository.findById(id).get();
     }

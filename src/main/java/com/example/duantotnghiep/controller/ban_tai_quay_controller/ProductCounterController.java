@@ -20,7 +20,7 @@ public class ProductCounterController {
     @GetMapping("hien-thi")
     public ResponseEntity<List<ChiTietSanPhamCustom>> getAll(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize) {
         return ResponseEntity.ok(chiTietSanPhamService.getAll(pageNumber, pageSize));
     }
 

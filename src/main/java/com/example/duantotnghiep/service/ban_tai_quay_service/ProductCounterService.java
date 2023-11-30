@@ -11,6 +11,8 @@ public interface ProductCounterService {
 
     List<ChiTietSanPhamCustom> getAll(Integer pageNumber, Integer pageSize);
 
+    List<ChiTietSanPhamCustom> getSanPhamLienQuan(UUID idthuonghieu, Integer pageNumber, Integer pageSize);
+
     ChiTietSanPhamCustom getOne(String name);
 
     List<ChiTietSanPhamCustom> searchByName(String name);

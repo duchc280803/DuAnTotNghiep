@@ -99,15 +99,6 @@ public class HoaDonChiTietController {
         }
     }
 
-    @PostMapping("thanh-toan-hoa-don-online")
-    public ResponseEntity<MessageResponse> createTransaction(
-            @RequestParam(name = "idHoaDon") UUID idHoaDon,
-            @RequestParam(name = "id") UUID id,
-            @RequestBody TransactionRequest transactionRequest
-    ) throws IOException, CsvValidationException {
-        return new ResponseEntity<>(hoaDonChiTietService.createTransaction(idHoaDon, id, transactionRequest), HttpStatus.CREATED);
-    }
-
     @GetMapping("status-order/{id}")
     public ResponseEntity<HoaDon> getStatusOrder(@PathVariable(name = "id") UUID id) {
         return new ResponseEntity<>(hoaDonChiTietService.findByHoaDon(id), HttpStatus.OK);

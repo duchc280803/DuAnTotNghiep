@@ -31,7 +31,7 @@ public class DanhMucController {
             @RequestParam(name = "tenDanhMuc", required = false) String tenDanhMuc,
             @RequestParam(name = "trangThai", required = false) Integer trangThai,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
     ) {
         return new ResponseEntity<>(danhMucService.getAllDanhMuc(trangThai, tenDanhMuc, pageNumber, pageSize), HttpStatus.OK);
     }

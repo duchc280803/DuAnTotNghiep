@@ -12,6 +12,7 @@ import com.example.duantotnghiep.repository.GioHangRepository;
 import com.example.duantotnghiep.repository.SpGiamGiaRepository;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.CartDetailCounterService;
+import com.example.duantotnghiep.util.FormatNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -124,9 +125,26 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
 
     @Override
     public List<GioHangCustom> loadGH(UUID id, Integer pageNumber, Integer pageSize) {
+        List<GioHangCustom> resultList = new ArrayList<>();
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<GioHangCustom> gioHangCustomPage = gioHangChiTietRepository.loadOnGioHang(id, pageable);
-        return gioHangCustomPage.getContent();
+        Page<Object[]> gioHangCustomPage = gioHangChiTietRepository.loadOnGioHang(id, pageable);
+        for (Object[] result : gioHangCustomPage.getContent()) {
+            UUID idGh = (UUID) result[0];
+            String imgage = (String) result[1];
+            String tenSanPham = (String) result[2];
+            BigDecimal giaBan = (BigDecimal) result[3];
+            BigDecimal giaGiam = (BigDecimal) result[4];
+            Integer soLuong = (Integer) result[5];
+            Integer size = (Integer) result[6];
+            String mauSac = (String) result[7];
+            String chatLieu = (String) result[8];
+            BigDecimal tongTien = giaGiam.multiply(new BigDecimal(soLuong));
+
+            GioHangCustom chiTietSanPhamCustom = new GioHangCustom(
+                    idGh, imgage, tenSanPham, giaBan, giaGiam, soLuong, size, mauSac, chatLieu, tongTien);
+            resultList.add(chiTietSanPhamCustom);
+        }
+        return resultList;
     }
 
     @Override
@@ -140,6 +158,18 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
     @Override
     public List<GioHangChiTiet> getIdCartDetail(UUID idCart) {
         return gioHangChiTietRepository.findByGioHang_Id(idCart);
+    }
+
+    @Override
+    public String tongTienHang(UUID id) {
+        BigDecimal tongTien = BigDecimal.ZERO;
+        List<Object[]> gioHangCustomPage = gioHangChiTietRepository.tongTien(id);
+        for (Object[] result : gioHangCustomPage) {
+            BigDecimal giaGiam = (BigDecimal) result[0];
+            Integer soLuong = (Integer) result[1];
+            tongTien = tongTien.add(giaGiam.multiply(new BigDecimal(soLuong)));
+        }
+        return FormatNumber.formatBigDecimal(tongTien);
     }
 
     public void capNhatSoLuong(UUID idgiohangchitiet, int soLuongMoi) {
