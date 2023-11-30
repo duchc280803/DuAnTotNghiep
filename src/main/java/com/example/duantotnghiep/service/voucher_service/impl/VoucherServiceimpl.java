@@ -26,13 +26,16 @@ public class VoucherServiceimpl implements VoucherService {
     public List<Voucher> getAll() {
         return Repository.findAll();
     }
+
     @Autowired
     private AuditLogService auditLogService;
     @Autowired
     private TaiKhoanRepository taiKhoanRepository;
 
     @Override
-    public MessageResponse createVoucher(VoucherRequest createVoucherRequest) {
+    public MessageResponse createVoucher(VoucherRequest createVoucherRequest, String username)
+            throws IOException, CsvValidationException {
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         Voucher voucher = new Voucher();
         voucher.setId(UUID.randomUUID());
         voucher.setMaVoucher(createVoucherRequest.getMaVoucher());
@@ -46,11 +49,20 @@ public class VoucherServiceimpl implements VoucherService {
         voucher.setHinhThucGiam(createVoucherRequest.getHinhThucGiam());
         voucher.setTrangThai(createVoucherRequest.getTrangThai());
         Repository.save(voucher);
+        auditLogService.writeAuditLogVoucher("create", username, taiKhoanUser.getEmail(), null,
+                "Mã : " + createVoucherRequest.getMaVoucher() + "," + "Tên :" + createVoucherRequest.getTenVoucher()
+                        + "," + "Giá trị tối thiểu : " + createVoucherRequest.getGiaTriToiThieuDonhang() + ","
+                        + "Giá trị giảm : " + createVoucherRequest.getGiaTriGiam() + "," + "Số lượng Giảm : "
+                        + createVoucherRequest.getSoLuongMa() + "Ngày Bắt đầu : "
+                        + createVoucherRequest.getNgayBatDau() + "," + "Ngày Kết thúc :"
+                        + createVoucherRequest.getNgayKetThuc(),
+                null, null, null);
         return MessageResponse.builder().message("Thêm Thành Công").build();
     }
 
     @Override
-    public MessageResponse updateVoucher(UUID id, VoucherRequest createVoucherRequest, String username) throws IOException, CsvValidationException {
+    public MessageResponse updateVoucher(UUID id, VoucherRequest createVoucherRequest, String username)
+            throws IOException, CsvValidationException {
         Voucher voucher = Repository.findById(id).orElse(null);
         TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         if (voucher != null) {
@@ -64,7 +76,14 @@ public class VoucherServiceimpl implements VoucherService {
             voucher.setHinhThucGiam(createVoucherRequest.getHinhThucGiam());
             voucher.setTrangThai(createVoucherRequest.getTrangThai());
             Repository.save(voucher);
-            auditLogService.writeAuditLogVoucher("update",  username, taiKhoanUser.getEmail(),null,createVoucherRequest.getMaVoucher(),createVoucherRequest.getTenVoucher(),null,null);
+            auditLogService.writeAuditLogVoucher("update", username, taiKhoanUser.getEmail(), null,
+                    "Mã : " + createVoucherRequest.getMaVoucher() + "," + "Tên :" + createVoucherRequest.getTenVoucher()
+                            + "," + "Giá trị tối thiểu : " + createVoucherRequest.getGiaTriToiThieuDonhang() + ","
+                            + "Giá trị giảm : " + createVoucherRequest.getGiaTriGiam() + "," + "Số lượng Giảm : "
+                            + createVoucherRequest.getSoLuongMa() + "Ngày Bắt đầu : "
+                            + createVoucherRequest.getNgayBatDau() + "," + "Ngày Kết thúc :"
+                            + createVoucherRequest.getNgayKetThuc(),
+                    null, null, null);
             return MessageResponse.builder().message("Cập nhật Thành Công").build();
         } else {
             // Handle the case where the discount is not found
@@ -79,7 +98,7 @@ public class VoucherServiceimpl implements VoucherService {
 
     @Override
     public List<Voucher> searchByTrangThai(Integer trangThai) {
-        return  Repository.findByTrangThai(trangThai);
+        return Repository.findByTrangThai(trangThai);
     }
 
     @Override

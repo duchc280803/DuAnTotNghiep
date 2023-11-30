@@ -36,22 +36,23 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     @Autowired
     private SanPhamRepository spRepository;
 
-
     @Autowired
     private SpGiamGiaRepository spGiamGiaRepository;
 
     @Override
-    public List<GiamGiaResponse> getAll()  {
+    public List<GiamGiaResponse> getAll() {
         return Repository.listGiamGia();
     }
+
     @Autowired
     private AuditLogService auditLogService;
+    @Autowired
+    private TaiKhoanRepository taiKhoanRepository;
 
     @Override
     public Page<GiamGiaResponse> getAll(Pageable pageable) {
         return Repository.listGiamGias(pageable);
     }
-
 
     public Long getGiaGiamCuoiCung(UUID id) {
         long tongTienGiam = 0L;
@@ -62,7 +63,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
             if (spGiamGia.getGiaGiam() == null) {
                 return tongTienGiam;
             }
-            if (spGiamGia.getGiaGiam() != null){
+            if (spGiamGia.getGiaGiam() != null) {
                 tongTienGiam += spGiamGia.getGiaGiam().longValue();
             }
 
@@ -86,7 +87,8 @@ public class GiamGiaServiceimpl implements GiamGiaService {
             String image = (String) result[1];
             String tenSanPham = (String) result[2];
             BigDecimal giaBan = (BigDecimal) result[3];
-            ProductDetailResponse productDetailResponse = new ProductDetailResponse(id, image, tenSanPham, giaBan, countQuantity(id), new BigDecimal(getGiaGiamCuoiCung(id)));
+            ProductDetailResponse productDetailResponse = new ProductDetailResponse(id, image, tenSanPham, giaBan,
+                    countQuantity(id), new BigDecimal(getGiaGiamCuoiCung(id)));
             resultList.add(productDetailResponse);
         }
         return resultList;
@@ -94,7 +96,9 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
     @Override
     @Transactional
-    public MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest)  {
+    public MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest, String username)
+            throws IOException, CsvValidationException {
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         // Kiểm tra xem đối tượng GiamGia có tồn tại không
         GiamGia existingGiamGia = Repository.findById(id).orElse(null);
 
@@ -148,7 +152,14 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                     // Handle the case where the product is not found
                 }
             }
-
+            auditLogService.writeAuditLogKhuyenmai("update", username, taiKhoanUser.getEmail(), null,
+                    "Mã :" + updateGiamGiaRequest.getMaGiamGia() + "," + "Tên:" + updateGiamGiaRequest.getTenGiamGia()
+                            + "," + "Mức Giảm : " + updateGiamGiaRequest.getMucGiam() + "," + "Hình Thức Giảm : "
+                            + updateGiamGiaRequest.getHinhThucGiam() + "," + "Ngày Bắt Đầu : "
+                            + updateGiamGiaRequest.getNgayBatDau() + "," + "Ngày Kết Thúc : "
+                            + updateGiamGiaRequest.getNgayKetThuc() + "," + "sản phẩm :"
+                            + updateGiamGiaRequest.getIdsanpham(),
+                    null, null, null);
             return MessageResponse.builder().message("Cập nhật Thành Công").build();
         } else {
             // Handle the case where the discount is not found
@@ -186,7 +197,8 @@ public class GiamGiaServiceimpl implements GiamGiaService {
             String image = (String) result[1];
             String tenSanPham = (String) result[2];
             BigDecimal giaBan = (BigDecimal) result[3];
-            ProductDetailResponse productDetailResponse = new ProductDetailResponse(id, image, tenSanPham, giaBan, countQuantity(id), new BigDecimal(getGiaGiamCuoiCung(id)));
+            ProductDetailResponse productDetailResponse = new ProductDetailResponse(id, image, tenSanPham, giaBan,
+                    countQuantity(id), new BigDecimal(getGiaGiamCuoiCung(id)));
             resultList.add(productDetailResponse);
         }
         return resultList;
@@ -231,7 +243,8 @@ public class GiamGiaServiceimpl implements GiamGiaService {
             String image = (String) result[1];
             String tenSanPham = (String) result[2];
             BigDecimal giaBan = (BigDecimal) result[3];
-            ProductDetailResponse productDetailResponse = new ProductDetailResponse(idProduct, image, tenSanPham, giaBan, countQuantity(id), new BigDecimal(getGiaGiamCuoiCung(id)));
+            ProductDetailResponse productDetailResponse = new ProductDetailResponse(idProduct, image, tenSanPham,
+                    giaBan, countQuantity(id), new BigDecimal(getGiaGiamCuoiCung(id)));
             resultList.add(productDetailResponse);
         }
         return resultList;
@@ -243,8 +256,10 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     }
 
     @Override
-    public MessageResponse createGiamGia(GiamGiaRequest createKhachRequest) {
+    public MessageResponse createGiamGia(GiamGiaRequest createKhachRequest, String username)
+            throws IOException, CsvValidationException {
         // Tạo đối tượng GiamGia
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         GiamGia giamGia = new GiamGia();
         giamGia.setId(UUID.randomUUID());
         giamGia.setMaGiamGia(createKhachRequest.getMaGiamGia());
@@ -336,7 +351,13 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                 // Handle the case where the product is not found
             }
         }
-
+        auditLogService.writeAuditLogKhuyenmai("create", username, taiKhoanUser.getEmail(), null,
+                "Mã :" + createKhachRequest.getMaGiamGia() + "," + "Tên:" + createKhachRequest.getTenGiamGia() + ","
+                        + "Mức Giảm : " + createKhachRequest.getMucGiam() + "," + "Hình Thức Giảm : "
+                        + createKhachRequest.getHinhThucGiam() + "," + "Ngày Bắt Đầu : "
+                        + createKhachRequest.getNgayBatDau() + "," + "Ngày Kết Thúc : "
+                        + createKhachRequest.getNgayKetThuc() + "," + "sản phẩm :" + createKhachRequest.getIdsanpham(),
+                null, null, null);
         // Trả về thông báo thành công
         return MessageResponse.builder().message("Thêm Thành Công").build();
     }

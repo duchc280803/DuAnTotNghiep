@@ -30,8 +30,9 @@ public class VoucherController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<MessageResponse> createVoucher(@RequestBody VoucherRequest createKhachRequest) {
-        return new ResponseEntity<>(Service.createVoucher(createKhachRequest), HttpStatus.CREATED);
+    public ResponseEntity<MessageResponse> createVoucher(@RequestBody VoucherRequest createKhachRequest,
+            Principal principal) throws CsvValidationException, IOException {
+        return new ResponseEntity<>(Service.createVoucher(createKhachRequest, principal.getName()), HttpStatus.CREATED);
     }
 
     // Thêm endpoint tìm kiếm theo tên hoặc mã voucher
@@ -42,7 +43,8 @@ public class VoucherController {
 
     @PutMapping("update/{id}")
     public ResponseEntity<MessageResponse> updateVoucher(@PathVariable UUID id,
-            @RequestBody VoucherRequest createKhachRequest,    Principal principal) throws IOException, CsvValidationException {
+            @RequestBody VoucherRequest createKhachRequest, Principal principal)
+            throws IOException, CsvValidationException {
         Service.updateVoucher(id, createKhachRequest, principal.getName());
         return new ResponseEntity<>(
                 MessageResponse.builder().message("Cập nhật thông tin giảm giá thành công.").build(), HttpStatus.OK);
@@ -53,7 +55,6 @@ public class VoucherController {
         Voucher voucher = Service.findById(id);
         return ResponseEntity.ok(voucher);
     }
-
 
     @GetMapping("searchByTrangThai")
     public ResponseEntity<List<Voucher>> searchByTrangThai(@RequestParam Integer trangThai) {

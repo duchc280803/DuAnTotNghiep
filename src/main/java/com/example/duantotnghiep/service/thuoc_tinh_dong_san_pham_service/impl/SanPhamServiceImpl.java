@@ -4,13 +4,17 @@ import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.ProductRequest;
 import com.example.duantotnghiep.response.*;
+import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.SanPhamService;
+import com.opencsv.exceptions.CsvValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
@@ -34,6 +38,10 @@ public class SanPhamServiceImpl implements SanPhamService {
 
     @Autowired
     private KieuDeRepository kieuDeRepository;
+    @Autowired
+    private AuditLogService auditLogService;
+    @Autowired
+    private TaiKhoanRepository taiKhoanRepository;
 
     @Override
     public List<SanPhamResponse> getNewProduct() {
@@ -95,7 +103,9 @@ public class SanPhamServiceImpl implements SanPhamService {
     }
 
     @Override
-    public SanPham createProduct(ProductRequest productRequest) {
+    public SanPham createProduct(ProductRequest productRequest, String username)
+            throws CsvValidationException, IOException {
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<KieuDe> kieuDe = kieuDeRepository.findById(productRequest.getIdKieuDe());
         Optional<XuatXu> xuatXu = xuatSuRepository.findById(productRequest.getIdXuatXu());
@@ -115,11 +125,17 @@ public class SanPhamServiceImpl implements SanPhamService {
         sanPham.setXuatXu(xuatXu.get());
         sanPham.setTrangThai(1);
         sanPhamRepository.save(sanPham);
+        auditLogService.writeAuditLogSanPham("create", username, taiKhoanUser.getEmail(), null,
+                "Mã : " + productRequest.getMaSanPham() + "," + "Tên :" + productRequest.getProductName()
+                        + "," + "Giá bán : " + productRequest.getPrice() + ","
+                        + "Bảo Hành : " + productRequest.getBaoHang() + "," + "Mô Tả : "
+                        + productRequest.getDescribe(),
+                null, null, null);
         return sanPham;
     }
 
     public List<SanPhamResponse> getNewProductbyId(UUID id) {
-       return sanPhamRepository.getNewProductbyId(id);
+        return sanPhamRepository.getNewProductbyId(id);
     }
 
     @Override
@@ -139,7 +155,7 @@ public class SanPhamServiceImpl implements SanPhamService {
 
     @Override
     public List<SanPhamResponse> getNewProductbyMoney(BigDecimal key1, BigDecimal key2) {
-        return sanPhamRepository.getNewProductbyMoney(key1,key2);
+        return sanPhamRepository.getNewProductbyMoney(key1, key2);
     }
 
 }
