@@ -149,11 +149,11 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
 
     @Override
     public void deleteProductInCart(UUID id) {
-        gioHangChiTietRepository.deleteById(id);
         GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findById(id).get();
         SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(gioHangChiTiet.getSanPhamChiTiet().getId()).get();
         sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + gioHangChiTiet.getSoLuong());
         chiTietSanPhamRepository.save(sanPhamChiTiet);
+        gioHangChiTietRepository.deleteById(id);
     }
     @Override
     public List<GioHangChiTiet> getIdCartDetail(UUID idCart) {

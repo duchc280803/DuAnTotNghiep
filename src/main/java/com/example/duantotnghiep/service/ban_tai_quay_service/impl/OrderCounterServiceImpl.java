@@ -196,6 +196,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         hoaDon.get().setTienShip(hoaDonGiaoThanhToanRequest.getTienGiao());
         hoaDon.get().setTenNguoiShip(hoaDonGiaoThanhToanRequest.getTenNguoiShip());
         hoaDon.get().setSdtNguoiShip(hoaDonGiaoThanhToanRequest.getSoDienThoaiNguoiShip());
+        hoaDon.get().setEmail(hoaDonGiaoThanhToanRequest.getEmail());
         hoaDon.get().setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
         hoaDonRepository.save(hoaDon.get());
 
