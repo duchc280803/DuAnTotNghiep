@@ -393,7 +393,6 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
     /**
      * Xóa sản phẩm khỏi hóa đơn chi tiết
-     *
      * @param id
      * @param username
      * @throws IOException
