@@ -4,11 +4,14 @@ import com.example.duantotnghiep.request.CreateKhachRequest;
 import com.example.duantotnghiep.response.KhachHangResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.impl.CustomerCounterServiceImpl;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,9 +47,10 @@ public class CustomerCounterController {
     public ResponseEntity<MessageResponse> updateHoaDon(
             @RequestParam(name = "id") UUID id,
             @RequestParam(name = "idHoaDon") UUID idHoaDon,
-            @RequestParam(name = "idGioHang") UUID idGioHang
-    ) {
-        return new ResponseEntity<>(khachHangService.updateHoaDon(id, idHoaDon, idGioHang), HttpStatus.OK);
+            @RequestParam(name = "idGioHang") UUID idGioHang,
+            Principal principal
+    ) throws IOException, CsvValidationException {
+        return new ResponseEntity<>(khachHangService.updateHoaDon(id, idHoaDon, idGioHang, principal.getName()), HttpStatus.OK);
     }
 
 }

@@ -1,17 +1,13 @@
 package com.example.duantotnghiep.service.ban_tai_quay_service.impl;
 
-import com.example.duantotnghiep.entity.GioHang;
-import com.example.duantotnghiep.entity.GioHangChiTiet;
-import com.example.duantotnghiep.entity.SanPhamChiTiet;
-import com.example.duantotnghiep.entity.SpGiamGia;
+import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
 import com.example.duantotnghiep.mapper.GioHangCustom;
-import com.example.duantotnghiep.repository.ChiTietSanPhamRepository;
-import com.example.duantotnghiep.repository.GioHangChiTietRepository;
-import com.example.duantotnghiep.repository.GioHangRepository;
-import com.example.duantotnghiep.repository.SpGiamGiaRepository;
+import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.ban_tai_quay_service.CartDetailCounterService;
+import com.opencsv.exceptions.CsvValidationException;
 import com.example.duantotnghiep.util.FormatNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,28 +37,45 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
     @Autowired
     private SpGiamGiaRepository spGiamGiaRepository;
 
+    @Autowired
+    private TaiKhoanRepository taiKhoanRepository;
+
+    @Autowired
+    private HoaDonRepository hoaDonRepository;
+
+    @Autowired
+    private AuditLogService auditLogService;
+
     @Override
-    public MessageResponse themSanPhamVaoGioHangChiTiet(UUID idGioHang, UUID idSanPhamChiTiet, int soLuong) {
+    public MessageResponse themSanPhamVaoGioHangChiTiet(UUID idGioHang, UUID idSanPhamChiTiet, int soLuong, String username) throws IOException, CsvValidationException {
+        Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByUsername(username);
         GioHang gioHang = gioHangRepository.findByGioHang(idGioHang);
+        Optional<TaiKhoan> taiKhoanHoaDon = taiKhoanRepository.findById(gioHang.getTaiKhoan().getId());
+        Optional<HoaDon> hoaDon = hoaDonRepository.findByTaiKhoanKhachHang(taiKhoanHoaDon.get());
+
         if (gioHang == null) {
             return MessageResponse.builder().message("Giỏ Hàng Null").build();
         }
-
         GioHangChiTiet ghct = gioHangChiTietRepository.findByGioHangAndSanPhamChiTiet_Id(gioHang, idSanPhamChiTiet);
         SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(idSanPhamChiTiet).get();
         if (ghct != null) {
             ghct.setSoLuong(ghct.getSoLuong() + soLuong);
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
+            auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
+                    "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
+                    "Số lượng: " + soLuong, "");
         } else {
             ghct = new GioHangChiTiet();
             ghct.setId(UUID.randomUUID());
             ghct.setGioHang(gioHang);
             ghct.setDonGia(sanPhamChiTiet.getSanPham().getGiaBan());
             ghct.setDonGiaKhiGiam(sanPhamChiTiet.getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId()))));
-
             sanPhamChiTiet.setId(idSanPhamChiTiet);
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
             ghct.setSanPhamChiTiet(sanPhamChiTiet);
+            auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
+                    "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
+                    "Số lượng: " + soLuong, "");
 
             ghct.setSoLuong(soLuong);
         }
@@ -73,8 +87,11 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
     }
 
     @Override
-    public MessageResponse themSanPhamVaoGioHangChiTietQrCode(UUID idGioHang, String qrCode) {
+    public MessageResponse themSanPhamVaoGioHangChiTietQrCode(UUID idGioHang, String qrCode, String username) throws IOException, CsvValidationException {
+        Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByUsername(username);
         GioHang gioHang = gioHangRepository.findByGioHang(idGioHang);
+        Optional<TaiKhoan> taiKhoanHoaDon = taiKhoanRepository.findById(gioHang.getTaiKhoan().getId());
+        Optional<HoaDon> hoaDon = hoaDonRepository.findByTaiKhoanKhachHang(taiKhoanHoaDon.get());
         if (gioHang == null) {
             return MessageResponse.builder().message("Giỏ Hàng Null").build();
         }
@@ -84,19 +101,22 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         if (ghct != null) {
             ghct.setSoLuong(ghct.getSoLuong() + 1);
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - 1);
+            auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
+                    "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
+                    "Số lượng: 1" , "");
         } else {
             ghct = new GioHangChiTiet();
             ghct.setId(UUID.randomUUID());
             ghct.setGioHang(gioHang);
             ghct.setDonGia(sanPhamChiTiet.getSanPham().getGiaBan());
             ghct.setDonGiaKhiGiam(sanPhamChiTiet.getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId()))));
-
             sanPhamChiTiet.setId(sanPhamChiTiet.getId());
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - 1);
-
             ghct.setSanPhamChiTiet(sanPhamChiTiet);
-
             ghct.setSoLuong(1);
+            auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
+                    "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
+                    "Số lượng: 1" , "");
         }
 
         chiTietSanPhamRepository.save(sanPhamChiTiet);
@@ -160,6 +180,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         return gioHangChiTietRepository.findByGioHang_Id(idCart);
     }
 
+
     @Override
     public String tongTienHang(UUID id) {
         BigDecimal tongTien = BigDecimal.ZERO;
@@ -172,11 +193,23 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         return FormatNumber.formatBigDecimal(tongTien);
     }
 
-    public void capNhatSoLuong(UUID idgiohangchitiet, int soLuongMoi) {
+    public void capNhatSoLuong(UUID idgiohangchitiet, int soLuongMoi, String username) throws IOException, CsvValidationException {
+
         Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findById(idgiohangchitiet);
+
+        Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByUsername(username);
+        GioHang gioHang = gioHangRepository.findByGioHang(optionalGioHangChiTiet.get().getGioHang().getId());
+        Optional<TaiKhoan> taiKhoanHoaDon = taiKhoanRepository.findById(gioHang.getTaiKhoan().getId());
+        Optional<HoaDon> hoaDon = hoaDonRepository.findByTaiKhoanKhachHang(taiKhoanHoaDon.get());
+        Optional<SanPhamChiTiet> sanPhamChiTiet = chiTietSanPhamRepository.findById(optionalGioHangChiTiet.get().getSanPhamChiTiet().getId());
+
         if (optionalGioHangChiTiet.isPresent()) {
             optionalGioHangChiTiet.get().setSoLuong(soLuongMoi);
             gioHangChiTietRepository.save(optionalGioHangChiTiet.get());
+            auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Cập nhật số lượng", hoaDon.get().getMa(),
+                    "Mã sản phẩm: " + sanPhamChiTiet.get().getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.get().getSanPham().getTenSanPham(),
+                    "Số lượng: " +soLuongMoi , "");
+
         } else {
             System.out.println("ID sản phẩm chi tiết không tồn tại");
         }

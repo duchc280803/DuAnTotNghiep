@@ -9,7 +9,9 @@ import com.example.duantotnghiep.response.HoaDonResponse;
 import com.example.duantotnghiep.response.IdGioHangResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.OrderCounterCartsResponse;
+import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.ban_tai_quay_service.OrderCounterService;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
@@ -40,6 +43,9 @@ public class OrderCounterServiceImpl implements OrderCounterService {
     private HoaDonChiTietRepository hoaDonChiTietRepository;
 
     @Autowired
+    private AuditLogService auditLogService;
+
+    @Autowired
     private LoaiDonRepository loaiDonRepository;
 
     @Autowired
@@ -57,7 +63,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
     @Override
     @Transactional
     // TODO Thêm hóa đơn tại quầy
-    public HoaDon taoHoaDon(String name) {
+    public HoaDon taoHoaDon(String name) throws IOException, CsvValidationException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<TaiKhoan> findByNhanVien = taiKhoanRepository.findByUsername(name);
 
@@ -98,6 +104,8 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         trangThaiHoaDon.setGhiChu("Nhân viên tạo đơn cho khách");
         trangThaiHoaDon.setHoaDon(hoaDon);
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
+        auditLogService.writeAuditLogHoadon(name, findByNhanVien.get().getEmail(), "Nhân viên tạo hóa đơn", hoaDon.getMa(),  "" , "",  "", "");
+
         return hoaDon;
     }
 
@@ -182,9 +190,11 @@ public class OrderCounterServiceImpl implements OrderCounterService {
     }
 
     @Override
-    public MessageResponse updateHoaDonGiaoTaiQuay(UUID idHoaDon, HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest) {
+    public MessageResponse updateHoaDonGiaoTaiQuay(UUID idHoaDon, HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest, String username) throws IOException, CsvValidationException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+        Optional<TaiKhoan> findByNhanVien = taiKhoanRepository.findByUsername(username);
+
         hoaDon.get().setNgayNhan(timestamp);
         hoaDon.get().setNgayThanhToan(timestamp);
         hoaDon.get().setTienKhachTra(hoaDonGiaoThanhToanRequest.getTienKhachTra());
@@ -198,7 +208,12 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         hoaDon.get().setSdtNguoiShip(hoaDonGiaoThanhToanRequest.getSoDienThoaiNguoiShip());
         hoaDon.get().setEmail(hoaDonGiaoThanhToanRequest.getEmail());
         hoaDon.get().setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
+        auditLogService.writeAuditLogHoadon(username, findByNhanVien.get().getEmail(), "Cập nhật địa chỉ", hoaDon.get().getMa(),
+                "Tên người nhận: "+ hoaDonGiaoThanhToanRequest.getHoTen() ,
+                "SĐT: "+hoaDonGiaoThanhToanRequest.getSoDienThoai(),
+                "Địa chỉ: "+hoaDonGiaoThanhToanRequest.getDiaChi(), "Phí vận chuyển: "+hoaDonGiaoThanhToanRequest.getTienGiao());
         hoaDonRepository.save(hoaDon.get());
+
 
         for (UUID idGioHangChiTiet : hoaDonGiaoThanhToanRequest.getGioHangChiTietList()) {
             Optional<GioHangChiTiet> gioHangChiTiet = gioHangChiTietRepository.findById(idGioHangChiTiet);

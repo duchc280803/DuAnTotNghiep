@@ -60,8 +60,8 @@ public class HoaDonChiTietController {
     @PutMapping("confirm-order-client/{hoadonId}")
     public ResponseEntity<MessageResponse> confirmOrderClient(
             @PathVariable UUID hoadonId,
-            @RequestBody ConfirmOrderClientRequest request) {
-        return new ResponseEntity<>(trangThaiHoaDonService.confirmOrderClient(hoadonId, request), HttpStatus.CREATED);
+            @RequestBody ConfirmOrderClientRequest request, Principal principal) throws IOException, CsvValidationException {
+        return new ResponseEntity<>(trangThaiHoaDonService.confirmOrderClient(hoadonId, request, principal.getName()), HttpStatus.CREATED);
     }
 
     @PutMapping("confirm-order-deliver/{hoadonId}")

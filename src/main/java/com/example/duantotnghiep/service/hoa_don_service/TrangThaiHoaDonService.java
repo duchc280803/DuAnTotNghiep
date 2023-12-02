@@ -4,14 +4,17 @@ import com.example.duantotnghiep.request.ConfirmOrderClientRequest;
 import com.example.duantotnghiep.request.ConfirmOrderDeliver;
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.opencsv.exceptions.CsvValidationException;
 
+import java.io.IOException;
 import java.util.UUID;
 
 public interface TrangThaiHoaDonService {
 
     MessageResponse confirmOrder(UUID hoadonId, TrangThaiHoaDonRequest request, String name);
 
-    MessageResponse confirmOrderClient(UUID hoadonId, ConfirmOrderClientRequest request);
+    MessageResponse confirmOrderClient(UUID hoadonId, ConfirmOrderClientRequest request, String username) throws IOException, CsvValidationException;
 
     MessageResponse confirmOrderDeliver(UUID hoadonId, ConfirmOrderDeliver request);
+
 }

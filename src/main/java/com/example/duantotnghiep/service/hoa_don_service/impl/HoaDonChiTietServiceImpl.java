@@ -3,7 +3,6 @@ package com.example.duantotnghiep.service.hoa_don_service.impl;
 import com.example.duantotnghiep.config.VnPayConfig;
 import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.enums.StatusOrderEnums;
-import com.example.duantotnghiep.enums.TypeAccountEnum;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.TraHangRequest;
 import com.example.duantotnghiep.request.TransactionRequest;
@@ -12,17 +11,13 @@ import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.hoa_don_service.HoaDonChiTietService;
 import com.opencsv.exceptions.CsvValidationException;
-import org.bouncycastle.tsp.TSPUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -140,7 +135,10 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() + soLuong);
             hoaDonChiTiet.setDonGiaSauGiam(sanPhamChiTiet.getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId()))));
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
-            auditLogService.writeAuditLogHoadonChiTiet("UPDATE", username, taiKhoan.getEmail(), "Thêm sản phẩm", findByHoaDon.get().getMa(), "Mã sản phẩm: "+  hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getMaSanPham(), "Số lượng: " +soLuong + "", "");
+            auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Thêm sản phẩm", findByHoaDon.get().getMa(),
+                    "Mã sản phẩm: " + hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getMaSanPham(),
+                    "Tên sản phẩm: " + hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getTenSanPham(),
+                    "Số lượng: " + soLuong, "");
         } else {
             hoaDonChiTiet = new HoaDonChiTiet();
             hoaDonChiTiet.setId(UUID.randomUUID());
@@ -150,7 +148,10 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             hoaDonChiTiet.setDonGia(sanPhamChiTiet.getSanPham().getGiaBan());
             hoaDonChiTiet.setDonGiaSauGiam(sanPhamChiTiet.getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId()))));
             hoaDonChiTiet.setTrangThai(1);
-            auditLogService.writeAuditLogHoadonChiTiet("CREATE", username, taiKhoan.getEmail(), "Thêm sản phẩm", findByHoaDon.get().getMa(),"Mã sản phẩm: "+ sanPhamChiTiet.getSanPham().getMaSanPham(),"Số lượng: " + soLuong + "", "");
+            auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Thêm sản phẩm", findByHoaDon.get().getMa(),
+                    "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(),
+                    "Tên sản phẩm: "+ sanPhamChiTiet.getSanPham().getTenSanPham(),
+                    "Số lượng: " + soLuong + "",  "");
         }
 
         chiTietSanPhamRepository.save(sanPhamChiTiet);
@@ -224,8 +225,41 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
 
-        auditLogService.writeAuditLogHoadonChiTiet("UPDATE", username, taiKhoan.getEmail(),"Cập nhật số lượng", hoaDon.get().getMa(),  "Mã sản phẩm: " +hoaDonChiTietOptional.get().getSanPhamChiTiet().getSanPham().getMaSanPham(), "Số lượng: " +soLuongMoi + "", "");
+        auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Cập nhật số lượng", hoaDon.get().getMa(),
+                "Mã sản phẩm: " + hoaDonChiTietOptional.get().getSanPhamChiTiet().getSanPham().getMaSanPham(),
+                "Tên sản phẩm: " + hoaDonChiTietOptional.get().getSanPhamChiTiet().getSanPham().getTenSanPham(),
+                + soLuongMoi + "", "");
 
+    }
+
+    @Override
+    public MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest, String username) throws IOException, CsvValidationException {
+        Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
+
+        LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+        loaiHinhThucThanhToan.setId(UUID.randomUUID());
+        loaiHinhThucThanhToan.setNgayTao(new Date(System.currentTimeMillis()));
+        loaiHinhThucThanhToan.setTenLoai(transactionRequest.getTenLoai());
+        loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+
+        HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+        hinhThucThanhToan.setId(UUID.randomUUID());
+        hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+        hinhThucThanhToan.setTaiKhoan(taiKhoan.get());
+        hinhThucThanhToan.setTongSoTien(transactionRequest.getSoTien());
+        hinhThucThanhToan.setGhiChu(transactionRequest.getGhiChu());
+        hinhThucThanhToan.setPhuongThucThanhToan(transactionRequest.getTrangThai());
+        hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
+        hinhThucThanhToan.setHoaDon(hoaDon.get());
+        hinhThucThanhToan.setTrangThai(1);
+        hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
+        hinhThucThanhToanRepository.save(hinhThucThanhToan);
+
+        auditLogService.writeAuditLogHoadon(username, taiKhoanUser.getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(), "Số tiền: " + transactionRequest.getSoTien(), "Thanh toán: " + (transactionRequest.getTrangThai() == 1 ? "Tiền mặt" : "Chuyển khoản"), "", "");
+
+        return MessageResponse.builder().message("Thanh toán thành công").build();
     }
 
     @Override
@@ -348,7 +382,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                 chiTietSanPhamRepository.save(sanPhamChiTiet);
                 trangThaiHoaDonRepository.save(trangThaiHoaDon);
                 hoaDonRepository.save(hoaDon);
-                auditLogService.writeAuditLogHoadonChiTiet("UPDATE", username, taiKhoan.getEmail(), "Trả hàng", hoaDon.getMa(), "Mã sản phẩm: " + sanPhamHoaDon.getMaSanPham(), "Số lượng trả: " + traHangRequest.getSoLuong().toString(), "");
+                auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Trả hàng", hoaDon.getMa(), "Mã sản phẩm: " + sanPhamHoaDon.getMaSanPham(), "Tên sản phẩm: "+sanPhamHoaDon.getTenSanPham(), "Số lượng trả: " + traHangRequest.getSoLuong().toString(), "");
 
                 return MessageResponse.builder().message("Trả hàng thành công").build();
             }
@@ -359,6 +393,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
     /**
      * Xóa sản phẩm khỏi hóa đơn chi tiết
+     *
      * @param id
      * @param username
      * @throws IOException
@@ -366,11 +401,14 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
      */
     @Override
     public void deleteOrderDetail(UUID idHoaDon, UUID id, String username) throws IOException, CsvValidationException {
-        hoaDonChiTietRepository.deleteById(id);
+        HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findById(id).orElse(null);
         TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).orElse(null);
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
-        if(hoaDon.isEmpty()) {
+        auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Xóa sản phẩm", hoaDon.get().getMa(), "Mã sản phẩm: " + hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getMaSanPham(), "Tên sản phẩm: "+hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getTenSanPham(), "", "");
+        hoaDonChiTietRepository.deleteById(id);
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        if (hoaDon.isEmpty()) {
             System.out.printf("Null");
         }
         BigDecimal tongTienDonGia = BigDecimal.ZERO;
@@ -392,7 +430,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         }
         hoaDonRepository.save(hoaDon.get());
 
-//        auditLogService.writeAuditLogHoadonChiTiet("DELETE", username, taiKhoan.getEmail(), "Xóa sản phẩm", hoaDon.get().getMa(), "Mã sản phẩm: " + hoaDon.get().getHoaDonChiTietList().getSanPhamChiTiet().getSanPham().getMaSanPham(), "", "");
+
         TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
         trangThaiHoaDon.setId(UUID.randomUUID());
         trangThaiHoaDon.setHoaDon(hoaDon.get());

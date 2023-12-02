@@ -7,11 +7,14 @@ import com.example.duantotnghiep.request.ConfirmOrderClientRequest;
 import com.example.duantotnghiep.request.ConfirmOrderDeliver;
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.hoa_don_service.TrangThaiHoaDonService;
+import com.opencsv.exceptions.CsvValidationException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -25,6 +28,9 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
 
     @Autowired
     private HoaDonRepository hoaDonRepository;
+
+    @Autowired
+    private AuditLogService auditLogService;
 
     @Autowired
     private TrangThaiHoaDonRepository trangThaiHoaDonRepository;
@@ -99,8 +105,9 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
     }
 
     @Override
-    public MessageResponse confirmOrderClient(UUID hoadonId, ConfirmOrderClientRequest request) {
+    public MessageResponse confirmOrderClient(UUID hoadonId, ConfirmOrderClientRequest request, String username) throws IOException, CsvValidationException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).orElse(null);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(hoadonId);
 
         if (hoaDon.isPresent()) {
@@ -121,6 +128,29 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
 
             hoaDon.get().setThanhTien(tongTien.add(request.getTienShip()));
 
+            hoaDon.setTenNguoiShip(request.getHoVaTenNguoiShip());
+            hoaDon.setTienShip(request.getTienShip());
+            hoaDon.setSdtNguoiShip(request.getHoVaTenNguoiShip());
+            hoaDon.setDiaChi(request.getDiaChi());
+            hoaDon.setSdtNguoiNhan(request.getSdtClient());
+            hoaDon.setTenNguoiNhan(request.getHoVatenClient());
+            hoaDon.setEmail(request.getEmail());
+            hoaDon.setNgayCapNhap(timestamp);
+            System.out.println("Tên khách: "+request.getHoVatenClient());
+            auditLogService.writeAuditLogHoadon( username, taiKhoan.getEmail(), "Cập nhật địa chỉ",
+                    hoaDon.get().getMa(), "Tên khách: "+  request.getHoVatenClient(), "SĐT: " +request.getSdtClient(),
+                    "Tiền ship: "+ request.getTienShip(), "Địa chỉ: "+request.getDiaChi());
+
+            if (hoaDon.getTienShip() != null) {
+                hoaDon.setTienShip(request.getTienShip());
+                hoaDon.setThanhTien(hoaDon.getThanhTien().subtract(hoaDon.getTienShip()).add(request.getTienShip()));
+            }
+            if (hoaDon.getTienShip() == null) {
+                hoaDon.setTienShip(request.getTienShip());
+                hoaDon.setThanhTien(hoaDon.getThanhTien().add(request.getTienShip()));
+            }
+            hoaDonRepository.save(hoaDon);
+
             hoaDonRepository.save(hoaDon.get());
             return MessageResponse.builder().message("Cập nhập thành công").build();
         } else {
@@ -137,7 +167,6 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             hoaDon.get().setSdtNguoiShip(request.getSoDienThoaiGiao());
             hoaDon.get().setTenNguoiShip(request.getTenNguoiGiao());
             hoaDon.get().setNgayCapNhap(timestamp);
-
             hoaDonRepository.save(hoaDon.get());
             return MessageResponse.builder().message("Cập nhập thành công").build();
         } else {

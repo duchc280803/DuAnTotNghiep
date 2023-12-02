@@ -6,10 +6,13 @@ import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.CreateKhachRequest;
 import com.example.duantotnghiep.response.KhachHangResponse;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.ban_tai_quay_service.CustomerCounterService;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,10 +30,16 @@ public class CustomerCounterServiceImpl implements CustomerCounterService {
     private HoaDonRepository hoaDonRepository;
 
     @Autowired
+    private AuditLogService auditLogService;
+
+    @Autowired
     private GioHangRepository gioHangRepository;
 
     @Autowired
     private LoaiTaiKhoanRepository loaiTaiKhoanRepository;
+
+    @Autowired
+    private TaiKhoanRepository taiKhoanRepository;
 
     @Override
     public List<KhachHangResponse> getKhachHang() {
@@ -66,7 +75,9 @@ public class CustomerCounterServiceImpl implements CustomerCounterService {
     }
 
     @Override
-    public MessageResponse updateHoaDon(UUID id, UUID idHoaDon, UUID idGioHang) {
+    public MessageResponse updateHoaDon(UUID id, UUID idHoaDon, UUID idGioHang, String username) throws IOException, CsvValidationException {
+
+        Optional<TaiKhoan> findByNhanVien = taiKhoanRepository.findByUsername(username);
 
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
         if (hoaDon.isEmpty()) {
@@ -82,6 +93,8 @@ public class CustomerCounterServiceImpl implements CustomerCounterService {
         GioHang gioHang = gioHangRepository.findById(idGioHang).get();
         gioHang.setTaiKhoan(khachHang.get());
         gioHangRepository.save(gioHang);
+
+        auditLogService.writeAuditLogHoadon(username, findByNhanVien.get().getEmail(), "Cập nhật khách hàng", hoaDon.get().getMa(),  "Mã khách hàng: " +khachHang.get().getMaTaiKhoan() , "Tên khách hàng: "+ khachHang.get().getName(),  "", "");
 
         return MessageResponse.builder().message("Update Thành Công").build();
     }

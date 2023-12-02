@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.repository;
 
 import com.example.duantotnghiep.entity.HoaDon;
+import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.response.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,10 +11,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
+
+    Optional<HoaDon> findByTaiKhoanKhachHang(TaiKhoan taiKhoan);
 
     @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonResponse(hd.id, hd.ma, tknv.name, hd.ngayTao, tkkh.name, ld.tenLoaiDon, hd.trangThai)" +
             "FROM HoaDon hd " +

@@ -5,17 +5,17 @@ import com.example.duantotnghiep.entity.HinhThucThanhToan;
 import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.entity.LoaiHinhThucThanhToan;
 import com.example.duantotnghiep.entity.TaiKhoan;
-import com.example.duantotnghiep.repository.HinhThucThanhToanRepository;
-import com.example.duantotnghiep.repository.HoaDonRepository;
-import com.example.duantotnghiep.repository.KhachHangRepository;
-import com.example.duantotnghiep.repository.LoaiHinhThucThanhToanRepository;
+import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.TransactionRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.TransactionResponse;
+import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.ban_tai_quay_service.TransactionCounterService;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.*;
@@ -33,10 +33,17 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
     private HoaDonRepository hoaDonRepository;
 
     @Autowired
+    private AuditLogService auditLogService;
+
+    @Autowired
+    private TaiKhoanRepository taiKhoanRepository;
+
+    @Autowired
     private LoaiHinhThucThanhToanRepository loaiHinhThucThanhToanRepository;
 
     @Override
-    public MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest) {
+    public MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest, String username) throws IOException, CsvValidationException {
+        Optional<TaiKhoan> nhanVien = taiKhoanRepository.findByUsername(username);
         Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
 
@@ -57,6 +64,8 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
         hinhThucThanhToan.setTrangThai(1);
         hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
+        auditLogService.writeAuditLogHoadon( username, nhanVien.get().getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(),  "Số tiền: " + transactionRequest.getSoTien(), "Thanh toán: Tiền mặt" , "", "");
+
         return MessageResponse.builder().message("Thanh toán thành công").build();
     }
 
@@ -67,6 +76,7 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
 
     @Override
     public MessageResponse cashVnPay(UUID idHoaDon, UUID id, BigDecimal vnpAmount) {
+//        Optional<TaiKhoan> nhanVien = taiKhoanRepository.findByUsername(username);
         Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
 
@@ -87,6 +97,7 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
         hinhThucThanhToan.setTrangThai(2);
         hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
+//        auditLogService.writeAuditLogHoadon( username, nhanVien.get().getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(),  "Số tiền: " + vnpAmount, "Thanh toán: Chuyển khoản" , "Mã khách hàng: "+taiKhoan.get().getMaTaiKhoan(), "");
         return MessageResponse.builder().message("Thanh toán thành công").build();
     }
 
