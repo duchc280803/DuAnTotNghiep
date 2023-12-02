@@ -105,7 +105,6 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         trangThaiHoaDon.setHoaDon(hoaDon);
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
         auditLogService.writeAuditLogHoadon(name, findByNhanVien.get().getEmail(), "Nhân viên tạo hóa đơn", hoaDon.getMa(),  "" , "",  "", "");
-
         return hoaDon;
     }
 

@@ -126,15 +126,6 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
                 tongTien = tongTien.add(donGiaSauGiam.multiply(new BigDecimal(soLuong))).subtract(hoaDon.get().getTienGiamGia());
             }
 
-            hoaDon.get().setThanhTien(tongTien.add(request.getTienShip()));
-
-            hoaDon.get().setTienShip(request.getTienShip());
-            hoaDon.get().setDiaChi(request.getDiaChi());
-            hoaDon.get().setSdtNguoiNhan(request.getSdtClient());
-            hoaDon.get().setTenNguoiNhan(request.getHoVatenClient());
-            hoaDon.get().setEmail(request.getEmail());
-            hoaDon.get().setNgayCapNhap(timestamp);
-            System.out.println("Tên khách: "+request.getHoVatenClient());
             auditLogService.writeAuditLogHoadon( username, taiKhoan.getEmail(), "Cập nhật địa chỉ",
                     hoaDon.get().getMa(), "Tên khách: "+  request.getHoVatenClient(), "SĐT: " +request.getSdtClient(),
                     "Tiền ship: "+ request.getTienShip(), "Địa chỉ: "+request.getDiaChi());
@@ -147,7 +138,6 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
                 hoaDon.get().setTienShip(request.getTienShip());
                 hoaDon.get().setThanhTien(hoaDon.get().getThanhTien().add(request.getTienShip()));
             }
-            hoaDonRepository.save(hoaDon.get());
 
             hoaDonRepository.save(hoaDon.get());
             return MessageResponse.builder().message("Cập nhập thành công").build();
