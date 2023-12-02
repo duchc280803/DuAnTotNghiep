@@ -49,4 +49,6 @@ public interface HoaDonChiTietService {
     MessageResponse updateNhanVien(UUID idHoaDon, UUID idNhanVien);
 
     BigDecimal tongTienHang(UUID id);
+
+    MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest, String username) throws CsvValidationException, IOException;
 }

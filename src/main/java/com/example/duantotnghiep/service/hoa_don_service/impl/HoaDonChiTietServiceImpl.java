@@ -233,7 +233,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest, String username) throws IOException, CsvValidationException {
+    public MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest, String username) throws CsvValidationException, IOException {
         Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
         TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
