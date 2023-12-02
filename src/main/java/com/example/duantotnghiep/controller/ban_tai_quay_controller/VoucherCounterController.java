@@ -3,12 +3,15 @@ package com.example.duantotnghiep.controller.ban_tai_quay_controller;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.VoucherCounterResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.impl.VoucherCounterServiceImpl;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +38,9 @@ public class VoucherCounterController {
     public ResponseEntity<MessageResponse> updateHoaDon(
             @RequestParam(name = "idHoaDon") UUID idHoaDon,
             @RequestParam(name = "idVoucher") UUID idVoucher,
-            @RequestParam(name = "thanhTien") BigDecimal thanhTien) {
-        return new ResponseEntity<>(voucherCounterService.addVoucherOrder(idHoaDon, idVoucher, thanhTien), HttpStatus.OK);
+            @RequestParam(name = "thanhTien") BigDecimal thanhTien,
+            Principal principal) throws IOException, CsvValidationException {
+        return new ResponseEntity<>(voucherCounterService.addVoucherOrder(idHoaDon, idVoucher, thanhTien, principal.getName()), HttpStatus.OK);
     }
 
     @GetMapping("name")

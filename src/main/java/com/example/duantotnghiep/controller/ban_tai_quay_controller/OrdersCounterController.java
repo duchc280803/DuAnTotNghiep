@@ -8,11 +8,13 @@ import com.example.duantotnghiep.response.IdGioHangResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.OrderCounterCartsResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.impl.OrderCounterServiceImpl;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
@@ -50,7 +52,7 @@ public class OrdersCounterController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<HoaDon> taoHoaDon(Principal principal) {
+    public ResponseEntity<HoaDon> taoHoaDon(Principal principal) throws IOException, CsvValidationException {
         return new ResponseEntity<>(hoaDonService.taoHoaDon(principal.getName()), HttpStatus.CREATED);
     }
 
@@ -64,8 +66,9 @@ public class OrdersCounterController {
     @PostMapping("create-hoa-don-chi-tiet-giao")
     public ResponseEntity<MessageResponse> taoHoaDonGiao(
             @RequestParam("idHoaDon") UUID idHoaDon,
-            @RequestBody HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest) {
-        return new ResponseEntity<>(hoaDonService.updateHoaDonGiaoTaiQuay(idHoaDon, hoaDonGiaoThanhToanRequest), HttpStatus.CREATED);
+            @RequestBody HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest,
+            Principal principal) throws IOException, CsvValidationException {
+        return new ResponseEntity<>(hoaDonService.updateHoaDonGiaoTaiQuay(idHoaDon, hoaDonGiaoThanhToanRequest, principal.getName()), HttpStatus.CREATED);
     }
 
 }

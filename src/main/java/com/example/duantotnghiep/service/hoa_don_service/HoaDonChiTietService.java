@@ -20,7 +20,6 @@ public interface HoaDonChiTietService {
 
     List<SanPhamHoaDonChiTietResponse> getSanPhamHDCT(UUID idHoaDon);
 
-
     List<HinhThucThanhToanResponse> getLichSuThanhToan(UUID idHoaDon);
 
     List<TrangThaiHoaDonResponse> getAllTrangThaiHoaDon(UUID idHoaDon);
