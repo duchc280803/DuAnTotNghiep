@@ -128,28 +128,26 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
 
             hoaDon.get().setThanhTien(tongTien.add(request.getTienShip()));
 
-            hoaDon.setTenNguoiShip(request.getHoVaTenNguoiShip());
-            hoaDon.setTienShip(request.getTienShip());
-            hoaDon.setSdtNguoiShip(request.getHoVaTenNguoiShip());
-            hoaDon.setDiaChi(request.getDiaChi());
-            hoaDon.setSdtNguoiNhan(request.getSdtClient());
-            hoaDon.setTenNguoiNhan(request.getHoVatenClient());
-            hoaDon.setEmail(request.getEmail());
-            hoaDon.setNgayCapNhap(timestamp);
+            hoaDon.get().setTienShip(request.getTienShip());
+            hoaDon.get().setDiaChi(request.getDiaChi());
+            hoaDon.get().setSdtNguoiNhan(request.getSdtClient());
+            hoaDon.get().setTenNguoiNhan(request.getHoVatenClient());
+            hoaDon.get().setEmail(request.getEmail());
+            hoaDon.get().setNgayCapNhap(timestamp);
             System.out.println("Tên khách: "+request.getHoVatenClient());
             auditLogService.writeAuditLogHoadon( username, taiKhoan.getEmail(), "Cập nhật địa chỉ",
                     hoaDon.get().getMa(), "Tên khách: "+  request.getHoVatenClient(), "SĐT: " +request.getSdtClient(),
                     "Tiền ship: "+ request.getTienShip(), "Địa chỉ: "+request.getDiaChi());
 
-            if (hoaDon.getTienShip() != null) {
-                hoaDon.setTienShip(request.getTienShip());
-                hoaDon.setThanhTien(hoaDon.getThanhTien().subtract(hoaDon.getTienShip()).add(request.getTienShip()));
+            if (hoaDon.get().getTienShip() != null) {
+                hoaDon.get().setTienShip(request.getTienShip());
+                hoaDon.get().setThanhTien(hoaDon.get().getThanhTien().subtract(hoaDon.get().getTienShip()).add(request.getTienShip()));
             }
-            if (hoaDon.getTienShip() == null) {
-                hoaDon.setTienShip(request.getTienShip());
-                hoaDon.setThanhTien(hoaDon.getThanhTien().add(request.getTienShip()));
+            if (hoaDon.get().getTienShip() == null) {
+                hoaDon.get().setTienShip(request.getTienShip());
+                hoaDon.get().setThanhTien(hoaDon.get().getThanhTien().add(request.getTienShip()));
             }
-            hoaDonRepository.save(hoaDon);
+            hoaDonRepository.save(hoaDon.get());
 
             hoaDonRepository.save(hoaDon.get());
             return MessageResponse.builder().message("Cập nhập thành công").build();
