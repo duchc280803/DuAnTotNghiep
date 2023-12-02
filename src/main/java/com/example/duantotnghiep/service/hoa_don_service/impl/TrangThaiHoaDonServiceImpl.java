@@ -118,28 +118,19 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             hoaDon.get().setEmail(request.getEmail());
             hoaDon.get().setNgayCapNhap(timestamp);
 
-
             BigDecimal tongTien = BigDecimal.ZERO;
-            for (HoaDonChiTiet hdct: hoaDon.get().getHoaDonChiTietList()) {
+            for (HoaDonChiTiet hdct : hoaDon.get().getHoaDonChiTietList()) {
                 BigDecimal donGiaSauGiam = hdct.getDonGiaSauGiam() != null ? hdct.getDonGiaSauGiam() : BigDecimal.ZERO;
                 Integer soLuong = hdct.getSoLuong() != null ? hdct.getSoLuong() : 0;
                 tongTien = tongTien.add(donGiaSauGiam.multiply(new BigDecimal(soLuong))).subtract(hoaDon.get().getTienGiamGia());
             }
 
-            auditLogService.writeAuditLogHoadon( username, taiKhoan.getEmail(), "Cập nhật địa chỉ",
-                    hoaDon.get().getMa(), "Tên khách: "+  request.getHoVatenClient(), "SĐT: " +request.getSdtClient(),
-                    "Tiền ship: "+ request.getTienShip(), "Địa chỉ: "+request.getDiaChi());
-
-            if (hoaDon.get().getTienShip() != null) {
-                hoaDon.get().setTienShip(request.getTienShip());
-                hoaDon.get().setThanhTien(hoaDon.get().getThanhTien().subtract(hoaDon.get().getTienShip()).add(request.getTienShip()));
-            }
-            if (hoaDon.get().getTienShip() == null) {
-                hoaDon.get().setTienShip(request.getTienShip());
-                hoaDon.get().setThanhTien(hoaDon.get().getThanhTien().add(request.getTienShip()));
-            }
+            hoaDon.get().setThanhTien(tongTien.add(request.getTienShip()));
 
             hoaDonRepository.save(hoaDon.get());
+            auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Cập nhật địa chỉ",
+                    hoaDon.get().getMa(), "Tên khách: " + request.getHoVatenClient(), "SĐT: " + request.getSdtClient(),
+                    "Tiền ship: " + request.getTienShip(), "Địa chỉ: " + request.getDiaChi());
             return MessageResponse.builder().message("Cập nhập thành công").build();
         } else {
             return MessageResponse.builder().message("Không tìm thấy hóa đơn").build();
