@@ -19,10 +19,6 @@ public class HoaDonGiaoThanhToanRequest {
 
     private String hoTen;
 
-    private String tenNguoiShip;
-
-    private String soDienThoaiNguoiShip;
-
     private String soDienThoai;
 
     private String diaChi;
