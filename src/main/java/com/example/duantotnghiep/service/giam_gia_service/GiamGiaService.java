@@ -14,33 +14,35 @@ import java.util.UUID;
 
 public interface GiamGiaService {
 
-    List<GiamGiaResponse> getAll() throws IOException, CsvValidationException;
+    List<GiamGiaResponse> getAll(Integer pageNumber, Integer pageSize) throws IOException, CsvValidationException;
 
-    Page<GiamGiaResponse> getAll(Pageable pageable);
+        Page<GiamGiaResponse> getAll(Pageable pageable);
 
-    List<ProductDetailResponse> getAllProduct();
+        List<ProductDetailResponse> getAllProduct(Integer pageNumber, Integer pageSize);
 
-    List<GiamGiaResponse> findbyValueString(String key);
+        List<GiamGiaResponse> findbyValueString(String key);
 
-    List<ProductDetailResponse> findbyProduct(String key);
+        List<ProductDetailResponse> findbyProduct(String key);
 
-    List<GiamGiaResponse> findbyValueDate(Date key1, Date key2);
+        List<GiamGiaResponse> findbyValueDate(Date key1, Date key2);
 
-    List<GiamGiaResponse> findbyValueStatus(Integer key);
+        List<GiamGiaResponse> findbyValueStatus(Integer key);
 
-    List<GiamGiaResponse> checkAndSetStatus();
+    MessageResponse checkAndSetStatus();
 
-    List<ProductDetailResponse> ListSearch(UUID id);
+        List<ProductDetailResponse> ListSearch(UUID id);
 
-    List<GiamGiaResponse> ListGiamGiaDeatil(UUID id);
+        List<GiamGiaResponse> ListGiamGiaDeatil(UUID id);
 
-    MessageResponse createGiamGia(GiamGiaRequest createKhachRequest);
+        MessageResponse createGiamGia(GiamGiaRequest createKhachRequest, String username)
+                        throws IOException, CsvValidationException;
 
-    boolean isTenGiamGiaExists(String tenGiamGia);
+        boolean isTenGiamGiaExists(String tenGiamGia);
 
-    boolean checkProductRecordCount(UUID productId);
+        boolean checkProductRecordCount(UUID productId);
 
-    MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest) throws IOException, CsvValidationException;
+        MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest, String username)
+                        throws IOException, CsvValidationException;
 
-    MessageResponse updateGiamGiaStaus(UUID id);
+        MessageResponse updateGiamGiaStaus(UUID id);
 }

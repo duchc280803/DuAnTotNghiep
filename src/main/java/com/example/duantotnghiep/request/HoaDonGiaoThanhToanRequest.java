@@ -35,5 +35,7 @@ public class HoaDonGiaoThanhToanRequest {
 
     private BigDecimal tienThua;
 
+    private String email;
+
     private List<UUID> gioHangChiTietList;
 }

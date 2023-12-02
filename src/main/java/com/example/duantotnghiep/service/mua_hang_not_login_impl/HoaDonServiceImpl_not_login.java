@@ -137,6 +137,10 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
         //Nếu null sẽ không lưu
         if(voucher.isPresent()){
             hoaDon.setVoucher(voucher.get());
+            // Tăng giá trị soluongdung lên 1
+            voucher.get().setSoLuongDung(voucher.get().getSoLuongDung() + 1);
+            // Lưu lại vào cơ sở dữ liệu
+            voucherRepository.save(voucher.get());
         }
 
         hoaDonRepository.save(hoaDon);
@@ -264,6 +268,10 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
         //Nếu null sẽ không lưu
         if(voucher.isPresent()){
             hoaDon.setVoucher(voucher.get());
+            // Tăng giá trị soluongdung lên 1
+            voucher.get().setSoLuongDung(voucher.get().getSoLuongDung() + 1);
+            // Lưu lại vào cơ sở dữ liệu
+            voucherRepository.save(voucher.get());
         }
 
         hoaDonRepository.save(hoaDon);

@@ -79,6 +79,13 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
 //        Optional<TaiKhoan> nhanVien = taiKhoanRepository.findByUsername(username);
         Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+
+        LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+        loaiHinhThucThanhToan.setId(UUID.randomUUID());
+        loaiHinhThucThanhToan.setNgayTao(new Date(System.currentTimeMillis()));
+        loaiHinhThucThanhToan.setTenLoai("Khách thanh toán");
+        loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+
         HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
         hinhThucThanhToan.setId(UUID.randomUUID());
         hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
@@ -88,6 +95,7 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
         hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
         hinhThucThanhToan.setHoaDon(hoaDon.get());
         hinhThucThanhToan.setTrangThai(2);
+        hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
 //        auditLogService.writeAuditLogHoadon( username, nhanVien.get().getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(),  "Số tiền: " + vnpAmount, "Thanh toán: Chuyển khoản" , "Mã khách hàng: "+taiKhoan.get().getMaTaiKhoan(), "");
         return MessageResponse.builder().message("Thanh toán thành công").build();

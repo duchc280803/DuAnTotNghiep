@@ -21,8 +21,7 @@ public class VnpayController {
     @PostMapping("pay")
     public ResponseEntity<JsonNode> customerPostAPI(
             HttpServletRequest req,
-            @RequestParam(name = "amount") String amoutParam,
-            @RequestParam(name = "idHoaDon") String idHoaDon)
+            @RequestParam(name = "amount") String amoutParam)
             throws UnsupportedEncodingException {
         ObjectMapper mapper;
         ObjectNode node = null;
@@ -33,18 +32,18 @@ public class VnpayController {
         String vnp_IpAddr = VnPayConfig.getIpAddress(req);
         String vnp_TmnCode = VnPayConfig.vnp_TmnCode;
 
+        int amount = Integer.parseInt(amoutParam) * 100;//
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-        int amount = Integer.parseInt(amoutParam) * 100;
         vnp_Params.put("vnp_Amount", String.valueOf(amount));
         vnp_Params.put("vnp_CurrCode", "VND");
         if ("NCB" != null && !"NCB".isEmpty()) {
             vnp_Params.put("vnp_BankCode", "NCB");
         }
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", idHoaDon);
+        vnp_Params.put("vnp_OrderInfo", "OK");
         vnp_Params.put("vnp_OrderType", "ok");
 
         if ("vn" != null && !"vn".isEmpty()) {

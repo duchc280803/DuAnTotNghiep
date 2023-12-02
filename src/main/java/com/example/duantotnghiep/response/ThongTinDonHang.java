@@ -30,4 +30,6 @@ public class ThongTinDonHang {
     String sdtNguoiShip;
 
     UUID idNhanVien;
+
+    String email;
 }

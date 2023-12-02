@@ -1,14 +1,10 @@
 package com.example.duantotnghiep.service.hoa_don_service.impl;
 
-import com.example.duantotnghiep.entity.HoaDon;
-import com.example.duantotnghiep.entity.HoaDonChiTiet;
-import com.example.duantotnghiep.entity.TaiKhoan;
-import com.example.duantotnghiep.entity.TrangThaiHoaDon;
-import com.example.duantotnghiep.repository.HoaDonChiTietRepository;
-import com.example.duantotnghiep.repository.HoaDonRepository;
-import com.example.duantotnghiep.repository.TaiKhoanRepository;
-import com.example.duantotnghiep.repository.TrangThaiHoaDonRepository;
+import com.example.duantotnghiep.config.VnPayConfig;
+import com.example.duantotnghiep.entity.*;
+import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.ConfirmOrderClientRequest;
+import com.example.duantotnghiep.request.ConfirmOrderDeliver;
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
@@ -20,8 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -44,6 +40,12 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
 
     @Autowired
     private HoaDonChiTietRepository hoaDonChiTietRepository;
+
+    @Autowired
+    private HinhThucThanhToanRepository hinhThucThanhToanRepository;
+
+    @Autowired
+    private LoaiHinhThucThanhToanRepository loaiHinhThucThanhToanRepository;
 
     @Override
     public MessageResponse confirmOrder(UUID hoadonId, TrangThaiHoaDonRequest request, String name) {
@@ -78,6 +80,26 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             // Lưu cả hai bảng
             hoaDonRepository.save(hoaDon);
             trangThaiHoaDonRepository.save(trangThaiHoaDon);
+            if (request.getNewTrangThai() == 5) {
+                LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+                loaiHinhThucThanhToan.setId(UUID.randomUUID());
+                loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
+                loaiHinhThucThanhToan.setTenLoai("Khách thanh toán");
+                loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+
+                HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+                hinhThucThanhToan.setId(UUID.randomUUID());
+                hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+                hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
+                hinhThucThanhToan.setTongSoTien(hoaDon.getThanhTien());
+                hinhThucThanhToan.setGhiChu("");
+                hinhThucThanhToan.setPhuongThucThanhToan(1);
+                hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
+                hinhThucThanhToan.setHoaDon(hoaDon);
+                hinhThucThanhToan.setTrangThai(1);
+                hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
+                hinhThucThanhToanRepository.save(hinhThucThanhToan);
+            }
         }
         return MessageResponse.builder().message("Thêm thành công").build();
     }
@@ -86,10 +108,25 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
     public MessageResponse confirmOrderClient(UUID hoadonId, ConfirmOrderClientRequest request, String username) throws IOException, CsvValidationException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).orElse(null);
-        Optional<HoaDon> hoaDonOptional = hoaDonRepository.findById(hoadonId);
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(hoadonId);
 
-        if (hoaDonOptional.isPresent()) {
-            HoaDon hoaDon = hoaDonOptional.get();
+        if (hoaDon.isPresent()) {
+            hoaDon.get().setTienShip(request.getTienShip());
+            hoaDon.get().setDiaChi(request.getDiaChi());
+            hoaDon.get().setSdtNguoiNhan(request.getSdtClient());
+            hoaDon.get().setTenNguoiNhan(request.getHoVatenClient());
+            hoaDon.get().setEmail(request.getEmail());
+            hoaDon.get().setNgayCapNhap(timestamp);
+
+
+            BigDecimal tongTien = BigDecimal.ZERO;
+            for (HoaDonChiTiet hdct: hoaDon.get().getHoaDonChiTietList()) {
+                BigDecimal donGiaSauGiam = hdct.getDonGiaSauGiam() != null ? hdct.getDonGiaSauGiam() : BigDecimal.ZERO;
+                Integer soLuong = hdct.getSoLuong() != null ? hdct.getSoLuong() : 0;
+                tongTien = tongTien.add(donGiaSauGiam.multiply(new BigDecimal(soLuong))).subtract(hoaDon.get().getTienGiamGia());
+            }
+
+            hoaDon.get().setThanhTien(tongTien.add(request.getTienShip()));
 
             hoaDon.setTenNguoiShip(request.getHoVaTenNguoiShip());
             hoaDon.setTienShip(request.getTienShip());
@@ -101,7 +138,7 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             hoaDon.setNgayCapNhap(timestamp);
             System.out.println("Tên khách: "+request.getHoVatenClient());
             auditLogService.writeAuditLogHoadon( username, taiKhoan.getEmail(), "Cập nhật địa chỉ",
-                    hoaDonOptional.get().getMa(), "Tên khách: "+  request.getHoVatenClient(), "SĐT: " +request.getSdtClient(),
+                    hoaDon.get().getMa(), "Tên khách: "+  request.getHoVatenClient(), "SĐT: " +request.getSdtClient(),
                     "Tiền ship: "+ request.getTienShip(), "Địa chỉ: "+request.getDiaChi());
 
             if (hoaDon.getTienShip() != null) {
@@ -114,6 +151,23 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             }
             hoaDonRepository.save(hoaDon);
 
+            hoaDonRepository.save(hoaDon.get());
+            return MessageResponse.builder().message("Cập nhập thành công").build();
+        } else {
+            return MessageResponse.builder().message("Không tìm thấy hóa đơn").build();
+        }
+    }
+
+    @Override
+    public MessageResponse confirmOrderDeliver(UUID hoadonId, ConfirmOrderDeliver request) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Optional<HoaDon> hoaDon = hoaDonRepository.findById(hoadonId);
+
+        if (hoaDon.isPresent()) {
+            hoaDon.get().setSdtNguoiShip(request.getSoDienThoaiGiao());
+            hoaDon.get().setTenNguoiShip(request.getTenNguoiGiao());
+            hoaDon.get().setNgayCapNhap(timestamp);
+            hoaDonRepository.save(hoaDon.get());
             return MessageResponse.builder().message("Cập nhập thành công").build();
         } else {
             return MessageResponse.builder().message("Không tìm thấy hóa đơn").build();

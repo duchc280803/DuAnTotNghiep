@@ -16,8 +16,7 @@ import java.util.UUID;
 
 public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, UUID> {
 
-    @Query("SELECT new com.example.duantotnghiep.mapper.GioHangCustom" +
-            "(ghct.id, i.tenImage, sp.tenSanPham, ghct.donGia, ghct.donGiaKhiGiam, ghct.soLuong, s.size, cl.tenChatLieu,ms.tenMauSac)  " +
+    @Query("SELECT ghct.id, i.tenImage, sp.tenSanPham, ghct.donGia, ghct.donGiaKhiGiam, ghct.soLuong, s.size, cl.tenChatLieu,ms.tenMauSac " +
             "FROM SanPhamChiTiet spct " +
             "JOIN spct.sanPham sp " +
             "JOIN sp.listImage i " +
@@ -28,7 +27,20 @@ public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, 
             "JOIN ghct.gioHang gh " +
             "JOIN gh.taiKhoan tk " +
             "WHERE i.isDefault = true AND gh.trangThai = 1 AND tk.id = :id")
-    Page<GioHangCustom> loadOnGioHang(@Param("id") UUID id, Pageable pageable);
+    Page<Object[]> loadOnGioHang(@Param("id") UUID id, Pageable pageable);
+
+    @Query("SELECT ghct.donGiaKhiGiam, ghct.soLuong " +
+            "FROM SanPhamChiTiet spct " +
+            "JOIN spct.sanPham sp " +
+            "JOIN sp.listImage i " +
+            "JOIN spct.size s " +
+            "JOIN spct.mauSac ms " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.gioHangChiTietList ghct " +
+            "JOIN ghct.gioHang gh " +
+            "JOIN gh.taiKhoan tk " +
+            "WHERE i.isDefault = true AND gh.trangThai = 1 AND tk.id = :id")
+    List<Object[]> tongTien(@Param("id") UUID id);
 
     // Tìm mục trong giỏ hàng chi tiết dựa trên idGioHang và idSanPhamChiTiet
     GioHangChiTiet findByGioHangAndSanPhamChiTiet_Id(GioHang gioHang, UUID idSanPhamChiTiet);

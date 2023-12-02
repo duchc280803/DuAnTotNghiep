@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -26,8 +27,11 @@ public class GiamGiaController {
     private GiamGiaServiceimpl Service;
 
     @GetMapping("show")
-    public ResponseEntity<List<GiamGiaResponse>> getAllGiamGia()  {
-        return new ResponseEntity<>(Service.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<GiamGiaResponse>> getAllGiamGia(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
+    )  {
+        return new ResponseEntity<>(Service.getAll(pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("showhh")
@@ -39,8 +43,9 @@ public class GiamGiaController {
 
     @PutMapping("update/{id}")
     public ResponseEntity<MessageResponse> updateGiamGia(@PathVariable UUID id,
-            @RequestBody UpdateGiamGiaResquest updateGiamGiaRequest)  {
-        Service.updateGiamGia(id, updateGiamGiaRequest);
+            @RequestBody UpdateGiamGiaResquest updateGiamGiaRequest, Principal principal)
+            throws IOException, CsvValidationException {
+        Service.updateGiamGia(id, updateGiamGiaRequest, principal.getName());
         return new ResponseEntity<>(
                 MessageResponse.builder().message("Cập nhật thông tin giảm giá thành công.").build(), HttpStatus.OK);
     }
@@ -59,8 +64,10 @@ public class GiamGiaController {
     }
 
     @GetMapping("showproduct")
-    public ResponseEntity<List<ProductDetailResponse>> getAllProduct() {
-        return new ResponseEntity<>(Service.getAllProduct(), HttpStatus.OK);
+    public ResponseEntity<List<ProductDetailResponse>> getAllProduct(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
+        return new ResponseEntity<>(Service.getAllProduct(pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("detail")
@@ -93,8 +100,9 @@ public class GiamGiaController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<MessageResponse> createKhachHang(@RequestBody GiamGiaRequest createKhachRequest) {
-        return new ResponseEntity<>(Service.createGiamGia(createKhachRequest), HttpStatus.CREATED);
+    public ResponseEntity<MessageResponse> createKhachHang(@RequestBody GiamGiaRequest createKhachRequest,
+            Principal principal) throws IOException, CsvValidationException {
+        return new ResponseEntity<>(Service.createGiamGia(createKhachRequest, principal.getName()), HttpStatus.CREATED);
     }
 
     @GetMapping("checkTenGiamGia")
@@ -107,6 +115,11 @@ public class GiamGiaController {
     public ResponseEntity<Boolean> checkProductRecordCount(@RequestParam(name = "idsanpham") UUID productId) {
         boolean result = Service.checkProductRecordCount(productId);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("gia")
+    public ResponseEntity<Long> giaGiam(@RequestParam(name = "idsanpham") UUID productId) {
+        return new ResponseEntity<>(Service.getGiaGiamCuoiCung(productId), HttpStatus.OK);
     }
 
 }

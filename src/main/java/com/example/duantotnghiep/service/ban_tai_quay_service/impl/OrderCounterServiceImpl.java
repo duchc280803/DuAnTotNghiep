@@ -122,23 +122,21 @@ public class OrderCounterServiceImpl implements OrderCounterService {
     }
 
     public Long getGiaGiamCuoiCung(UUID id) {
-        long sumPriceTien = 0L;
-        long sumPricePhanTram = 0L;
+        long tongTienGiam = 0L;
         List<SpGiamGia> spGiamGiaList = spGiamGiaRepository.findBySanPham_Id(id);
 
         for (SpGiamGia spGiamGia : spGiamGiaList) {
-            long mucGiam = spGiamGia.getMucGiam();
-            if (spGiamGia.getGiamGia().getHinhThucGiam() == 1) {
-                sumPriceTien += mucGiam;
+            // Cập nhật tổng tiền giảm đúng cách, không khai báo lại biến tongTienGiam
+            if (spGiamGia.getGiaGiam() == null) {
+                return tongTienGiam;
             }
-            if (spGiamGia.getGiamGia().getHinhThucGiam() == 2) {
-                long donGiaAsLong = spGiamGia.getDonGia().longValue();
-                double giamGia = (double) mucGiam / 100;
-                long giaTienSauGiamGia = (long) (donGiaAsLong * giamGia);
-                sumPricePhanTram += giaTienSauGiamGia;
+            if (spGiamGia.getGiaGiam() != null){
+                tongTienGiam += spGiamGia.getGiaGiam().longValue();
             }
+
         }
-        return sumPriceTien + sumPricePhanTram;
+
+        return tongTienGiam;
     }
 
     @Override
@@ -208,6 +206,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         hoaDon.get().setTienShip(hoaDonGiaoThanhToanRequest.getTienGiao());
         hoaDon.get().setTenNguoiShip(hoaDonGiaoThanhToanRequest.getTenNguoiShip());
         hoaDon.get().setSdtNguoiShip(hoaDonGiaoThanhToanRequest.getSoDienThoaiNguoiShip());
+        hoaDon.get().setEmail(hoaDonGiaoThanhToanRequest.getEmail());
         hoaDon.get().setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
         auditLogService.writeAuditLogHoadon(username, findByNhanVien.get().getEmail(), "Cập nhật địa chỉ", hoaDon.get().getMa(),
                 "Tên người nhận: "+ hoaDonGiaoThanhToanRequest.getHoTen() ,

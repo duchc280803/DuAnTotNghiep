@@ -8,6 +8,7 @@ import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.ban_tai_quay_service.CartDetailCounterService;
 import com.opencsv.exceptions.CsvValidationException;
+import com.example.duantotnghiep.util.FormatNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -125,50 +126,75 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
     }
 
     public Long getGiaGiamCuoiCung(UUID id) {
-        long sumPriceTien = 0L;
-        long sumPricePhanTram = 0L;
+        long tongTienGiam = 0L;
         List<SpGiamGia> spGiamGiaList = spGiamGiaRepository.findBySanPham_Id(id);
-        if (spGiamGiaList.isEmpty()) {
-            return 0L;
-        } else {
-            for (SpGiamGia spGiamGia : spGiamGiaList) {
-                long mucGiam = spGiamGia.getMucGiam();
-                if (spGiamGia.getGiamGia().getHinhThucGiam() == 1) {
-                    sumPriceTien += mucGiam;
-                }
-                if (spGiamGia.getGiamGia().getHinhThucGiam() == 2) {
-                    long donGiaAsLong = spGiamGia.getDonGia().longValue();
-                    double giamGia = (double) mucGiam / 100;
-                    long giaTienSauGiamGia = (long) (donGiaAsLong * giamGia);
-                    sumPricePhanTram += giaTienSauGiamGia;
-                }
+
+        for (SpGiamGia spGiamGia : spGiamGiaList) {
+            // Cập nhật tổng tiền giảm đúng cách, không khai báo lại biến tongTienGiam
+            if (spGiamGia.getGiaGiam() == null) {
+                return tongTienGiam;
             }
+            if (spGiamGia.getGiaGiam() != null){
+                tongTienGiam += spGiamGia.getGiaGiam().longValue();
+            }
+
         }
-        return sumPriceTien + sumPricePhanTram;
+
+        return tongTienGiam;
     }
 
     @Override
     public List<GioHangCustom> loadGH(UUID id, Integer pageNumber, Integer pageSize) {
+        List<GioHangCustom> resultList = new ArrayList<>();
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<GioHangCustom> gioHangCustomPage = gioHangChiTietRepository.loadOnGioHang(id, pageable);
-        return gioHangCustomPage.getContent();
+        Page<Object[]> gioHangCustomPage = gioHangChiTietRepository.loadOnGioHang(id, pageable);
+        for (Object[] result : gioHangCustomPage.getContent()) {
+            UUID idGh = (UUID) result[0];
+            String imgage = (String) result[1];
+            String tenSanPham = (String) result[2];
+            BigDecimal giaBan = (BigDecimal) result[3];
+            BigDecimal giaGiam = (BigDecimal) result[4];
+            Integer soLuong = (Integer) result[5];
+            Integer size = (Integer) result[6];
+            String mauSac = (String) result[7];
+            String chatLieu = (String) result[8];
+            BigDecimal tongTien = giaGiam.multiply(new BigDecimal(soLuong));
+
+            GioHangCustom chiTietSanPhamCustom = new GioHangCustom(
+                    idGh, imgage, tenSanPham, giaBan, giaGiam, soLuong, size, mauSac, chatLieu, tongTien);
+            resultList.add(chiTietSanPhamCustom);
+        }
+        return resultList;
     }
 
     @Override
     public void deleteProductInCart(UUID id) {
-        gioHangChiTietRepository.deleteById(id);
         GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findById(id).get();
         SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(gioHangChiTiet.getSanPhamChiTiet().getId()).get();
         sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + gioHangChiTiet.getSoLuong());
         chiTietSanPhamRepository.save(sanPhamChiTiet);
+        gioHangChiTietRepository.deleteById(id);
     }
-
     @Override
     public List<GioHangChiTiet> getIdCartDetail(UUID idCart) {
         return gioHangChiTietRepository.findByGioHang_Id(idCart);
     }
 
+
+    @Override
+    public String tongTienHang(UUID id) {
+        BigDecimal tongTien = BigDecimal.ZERO;
+        List<Object[]> gioHangCustomPage = gioHangChiTietRepository.tongTien(id);
+        for (Object[] result : gioHangCustomPage) {
+            BigDecimal giaGiam = (BigDecimal) result[0];
+            Integer soLuong = (Integer) result[1];
+            tongTien = tongTien.add(giaGiam.multiply(new BigDecimal(soLuong)));
+        }
+        return FormatNumber.formatBigDecimal(tongTien);
+    }
+
     public void capNhatSoLuong(UUID idgiohangchitiet, int soLuongMoi, String username) throws IOException, CsvValidationException {
+
         Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findById(idgiohangchitiet);
 
         Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByUsername(username);

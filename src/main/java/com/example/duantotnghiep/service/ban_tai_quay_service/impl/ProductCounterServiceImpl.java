@@ -7,6 +7,7 @@ import com.example.duantotnghiep.repository.SpGiamGiaRepository;
 import com.example.duantotnghiep.response.DetailQuantityToSizeReponse;
 import com.example.duantotnghiep.response.SanPhamGetAllResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.ProductCounterService;
+import com.example.duantotnghiep.util.FormatNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,23 +29,21 @@ public class ProductCounterServiceImpl implements ProductCounterService {
     private SpGiamGiaRepository spGiamGiaRepository;
 
     public Long getGiaGiamCuoiCung(UUID id) {
-        long sumPriceTien = 0L;
-        long sumPricePhanTram = 0L;
+        long tongTienGiam = 0L;
         List<SpGiamGia> spGiamGiaList = spGiamGiaRepository.findBySanPham_Id(id);
 
         for (SpGiamGia spGiamGia : spGiamGiaList) {
-            long mucGiam = spGiamGia.getMucGiam();
-            if (spGiamGia.getGiamGia().getHinhThucGiam() == 1) {
-                sumPriceTien += mucGiam;
+            // Cập nhật tổng tiền giảm đúng cách, không khai báo lại biến tongTienGiam
+            if (spGiamGia.getGiaGiam() == null) {
+                return tongTienGiam;
             }
-            if (spGiamGia.getGiamGia().getHinhThucGiam() == 2) {
-                long donGiaAsLong = spGiamGia.getDonGia().longValue();
-                double giamGia = (double) mucGiam / 100;
-                long giaTienSauGiamGia = (long) (donGiaAsLong * giamGia);
-                sumPricePhanTram += giaTienSauGiamGia;
+            if (spGiamGia.getGiaGiam() != null) {
+                tongTienGiam += spGiamGia.getGiaGiam().longValue();
             }
+
         }
-        return sumPriceTien + sumPricePhanTram;
+
+        return tongTienGiam;
     }
 
     @Override
@@ -62,13 +61,64 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer size = (Integer) result[7];
             String chatLieu = (String) result[8];
+            UUID idThuongHieu = (UUID) result[9];
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
+                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
+    }
+
+    public List<ChiTietSanPhamCustom> getSanPhamLienQuan(UUID idthuonghieu, Integer pageNumber, Integer pageSize) {
+        List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = chiTietSanPhamRepository.getAll(pageable);
+        for (Object[] result : queryResult.getContent()) {
+            UUID idSp = (UUID) result[0];
+            UUID idCtsp = (UUID) result[1];
+            String imgage = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Integer soLuong = (Integer) result[5];
+            String mauSac = (String) result[6];
+            Integer size = (Integer) result[7];
+            String chatLieu = (String) result[8];
+            UUID idThuongHieu = (UUID) result[9];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
+                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
+            resultList.add(chiTietSanPhamCustom);
+        }
+        return resultList;
+    }
+
+    @Override
+    public ChiTietSanPhamCustom getOne(String name) {
+        List<Object[]> resultList = chiTietSanPhamRepository.getOne(name);
+        ChiTietSanPhamCustom chiTietSanPhamCustom = null; // Khởi tạo đối tượng ngoài vòng lặp
+
+        if (resultList != null && !resultList.isEmpty()) {
+            Object[] result = resultList.get(0);
+
+            UUID idSp = (UUID) result[0];
+            UUID idCtsp = (UUID) result[1];
+            String imgage = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Integer soLuong = (Integer) result[5];
+            String mauSac = (String) result[6];
+            Integer size = (Integer) result[7];
+            String chatLieu = (String) result[8];
+            UUID idThuongHieu = (UUID) result[9];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            chiTietSanPhamCustom = new ChiTietSanPhamCustom(
+                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
+        }
+        return chiTietSanPhamCustom; // Trả về bên ngoài vòng lặp
     }
 
     @Override
@@ -85,10 +135,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer size = (Integer) result[7];
             String chatLieu = (String) result[8];
+            UUID idThuongHieu = (UUID) result[9];
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
+                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -108,10 +159,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer size = (Integer) result[7];
             String chatLieu = (String) result[8];
+            UUID idThuongHieu = (UUID) result[9];
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
+                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -131,10 +183,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer size = (Integer) result[7];
             String chatLieu = (String) result[8];
+            UUID idThuongHieu = (UUID) result[9];
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
+                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -154,10 +207,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer size = (Integer) result[7];
             String chatLieu = (String) result[8];
+            UUID idThuongHieu = (UUID) result[9];
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
+                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -177,10 +231,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer size = (Integer) result[7];
             String chatLieu = (String) result[8];
+            UUID idThuongHieu = (UUID) result[9];
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, size, chatLieu);
+                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -200,10 +255,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer ssize = (Integer) result[7];
             String chatLieu = (String) result[8];
+            UUID idThuongHieu = (UUID) result[9];
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, ssize, chatLieu);
+                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, ssize, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -223,10 +279,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer ssize = (Integer) result[7];
             String chatLieu = (String) result[8];
+            UUID idThuongHieu = (UUID) result[9];
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, ssize, chatLieu);
+                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, ssize, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -246,10 +303,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             String mauSac = (String) result[6];
             Integer ssize = (Integer) result[7];
             String chatLieu = (String) result[8];
+            UUID idThuongHieu = (UUID) result[9];
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, mauSac, ssize, chatLieu);
+                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, ssize, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;

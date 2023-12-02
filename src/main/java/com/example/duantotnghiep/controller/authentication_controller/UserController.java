@@ -3,6 +3,7 @@ package com.example.duantotnghiep.controller.authentication_controller;
 import com.example.duantotnghiep.entity.RefreshToken;
 import com.example.duantotnghiep.jwt.JwtService;
 import com.example.duantotnghiep.model.UserCustomDetails;
+import com.example.duantotnghiep.request.ForgotPassword;
 import com.example.duantotnghiep.request.LoginRequest;
 import com.example.duantotnghiep.request.RegisterRequest;
 import com.example.duantotnghiep.response.MessageResponse;
@@ -12,10 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth/")
@@ -37,7 +35,16 @@ public class UserController {
         return new ResponseEntity<>(userService.register(registerRequest), HttpStatus.CREATED);
     }
 
-    // TODO: phương thức có nhiệm vụ cập nhật token.
+    @PutMapping("forgot-password")
+    public ResponseEntity<MessageResponse> forgotPassword(@Valid @RequestBody ForgotPassword ForgotPassword) {
+        return new ResponseEntity<>(userService.forgotPassword(ForgotPassword), HttpStatus.OK);
+    }
+
+    @PostMapping("send-email-forgot-password")
+    public ResponseEntity<MessageResponse> sendConfirmEmailForgotPassWord(@RequestParam("email") String email) {
+        return new ResponseEntity<>(userService.sendConfirmEmailForgotPassWord(email), HttpStatus.OK);
+    }
+
     @PostMapping("refresh-token")
     public ResponseEntity<TokenResponse> refreshToken(@RequestBody RefreshToken refreshToken) {
         try {

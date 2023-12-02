@@ -1,4 +1,4 @@
-package com.example.duantotnghiep.controller.authentication_controller;
+package com.example.duantotnghiep.controller.quan_ly_nhan_vien_khach_hang;
 
 import com.example.duantotnghiep.request.NhanVienDTORequest;
 import com.example.duantotnghiep.response.LoaiTaiKhoanResponse;
@@ -32,7 +32,7 @@ public class NhanVienController {
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "soDienThoai", required = false) String soDienTHoai,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
     ) {
         return new ResponseEntity<>(nhanVienService.getAllNhanVien(maNhanVien, name, soDienTHoai, trangThai, pageNumber, pageSize), HttpStatus.OK);
     }

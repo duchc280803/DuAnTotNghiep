@@ -13,10 +13,6 @@ import java.math.BigDecimal;
 @Getter
 public class ConfirmOrderClientRequest {
 
-    private String hoVaTenNguoiShip;
-
-    private String soDienThoaiShip;
-
     private BigDecimal tienShip;
 
     private String diaChi;

@@ -64,6 +64,13 @@ public class HoaDonChiTietController {
         return new ResponseEntity<>(trangThaiHoaDonService.confirmOrderClient(hoadonId, request, principal.getName()), HttpStatus.CREATED);
     }
 
+    @PutMapping("confirm-order-deliver/{hoadonId}")
+    public ResponseEntity<MessageResponse> confirmOrderDeliver(
+            @PathVariable UUID hoadonId,
+            @RequestBody ConfirmOrderDeliver request) {
+        return new ResponseEntity<>(trangThaiHoaDonService.confirmOrderDeliver(hoadonId, request), HttpStatus.CREATED);
+    }
+
     @PostMapping("confirm-thanh-toan/{hoadonId}")
     public ResponseEntity<String> confirmThanhToan(@PathVariable UUID hoadonId, @RequestBody XacNhanThanhToanRequest request) {
         hoaDonChiTietService.confirmThanhToan(hoadonId, request);
@@ -97,16 +104,6 @@ public class HoaDonChiTietController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.badRequest().body("Không tìm thấy sản phẩm trong giỏ hàng.");
         }
-    }
-
-    @PostMapping("thanh-toan-hoa-don-online")
-    public ResponseEntity<MessageResponse> createTransaction(
-            @RequestParam(name = "idHoaDon") UUID idHoaDon,
-            @RequestParam(name = "id") UUID id,
-            @RequestBody TransactionRequest transactionRequest,
-            Principal principal
-    ) throws IOException, CsvValidationException {
-        return new ResponseEntity<>(hoaDonChiTietService.createTransaction(idHoaDon, id, transactionRequest, principal.getName()), HttpStatus.CREATED);
     }
 
     @GetMapping("status-order/{id}")

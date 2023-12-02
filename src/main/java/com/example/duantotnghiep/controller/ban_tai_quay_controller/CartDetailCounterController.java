@@ -10,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.security.Principal;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -89,6 +91,14 @@ public class CartDetailCounterController {
     public ResponseEntity<List<GioHangChiTiet>> show(
             @RequestParam(name = "id") UUID id) {
         return new ResponseEntity<>(gioHangChiTietService.getIdCartDetail(id), HttpStatus.OK);
+    }
+
+    @GetMapping("total-price")
+    public ResponseEntity<?> tongTien(@RequestParam(name = "id") UUID id) {
+        String totalPrice = gioHangChiTietService.tongTienHang(id);
+        Map<String, String> response = new HashMap<>();
+        response.put("totalPrice", totalPrice);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

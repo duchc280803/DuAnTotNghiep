@@ -32,7 +32,7 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
                         "JOIN spgg.sanPham sp " +
                         "WHERE gg.trangThai = 1 " +
                         "ORDER BY gg.ngayBatDau DESC ")
-        List<GiamGiaResponse> listGiamGia();
+        Page<GiamGiaResponse> listGiamGia(Pageable pageable);
 
         @Query("SELECT DISTINCT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id,gg.maGiamGia,gg.tenGiamGia, gg.ngayBatDau, gg.ngayKetThuc, gg.hinhThucGiam, gg.trangThai, spgg.mucGiam) "
                         +
@@ -76,45 +76,20 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
         List<GiamGiaResponse> findbyValueStatus(@Param("key") Integer key);
         //
 
-        @Query("SELECT new com.example.duantotnghiep.response.ProductDetailResponse(sp.id, i.tenImage, sp.tenSanPham,s.size,kd.tenDe,ms.tenMauSac,ct.tenChatLieu,sp.trangThai) "
-                        +
-                        "FROM SanPham sp " +
-                        "JOIN sp.thuongHieu th " +
-                        "JOIN sp.danhMuc dm " +
-                        "JOIN sp.xuatXu xx " +
-                        "JOIN sp.listSanPhamChiTiet spct " +
-                        "JOIN spct.size s" +
-                        " JOIN spct.mauSac ms " +
-                        "JOIN sp.kieuDe kd " +
-                        "JOIN spct.chatLieu ct " +
-                        "JOIN sp.listImage i WHERE sp.tenSanPham  LIKE :key   ")
-        List<ProductDetailResponse> ProductDetailResponse(@Param("key") String key);
+        @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan FROM SanPham sp JOIN sp.listImage i WHERE i.isDefault = TRUE AND sp.tenSanPham LIKE :key ")
+        List<Object[]> ProductDetailResponse(@Param("key") String key);
 
-        @Query("SELECT new com.example.duantotnghiep.response.ProductDetailResponse(sp.id, i.tenImage, sp.tenSanPham, sp.trangThai, kd.tenDe, sp.tenSanPham, sp.tenSanPham, sp.trangThai, i.id, i.id, i.id, i.id, kd.id, spgg.donGia, COUNT(spgg.id), spgg.donGia - COALESCE(SUM(spgg.giaGiam), 0)) "
-                        +
-                        "FROM SanPham sp " +
-                        "LEFT JOIN sp.spGiamGiaList spgg " +
-                        "JOIN sp.kieuDe kd " +
-                        "JOIN sp.thuongHieu th " +
-                        "JOIN sp.danhMuc dm " +
-                        "JOIN sp.xuatXu xx " +
-                        "JOIN sp.listImage i  " +
-                        "GROUP BY sp.id, i.tenImage, sp.tenSanPham, sp.trangThai, kd.tenDe, sp.tenSanPham, sp.tenSanPham, sp.trangThai,i.id,  i.id, i.id, i.id, kd.id, spgg.donGia ")
-        List<ProductDetailResponse> listProductResponse();
+        @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan FROM SanPham sp JOIN sp.listImage i WHERE i.isDefault = TRUE")
+        Page<Object[]> listProductResponse(Pageable pageable);
 
-        @Query("SELECT new com.example.duantotnghiep.response.ProductDetailResponse(sp.id, i.tenImage, sp.tenSanPham,s.size,kd.tenDe,ms.tenMauSac,ct.tenChatLieu,sp.trangThai ) "
-                        +
-                        "FROM SanPhamChiTiet spct " +
-                        "JOIN spct.size s" +
-                        " JOIN spct.mauSac ms " +
-                        "JOIN spct.sanPham sp " +
-                        "JOIN sp.kieuDe kd " +
-                        "JOIN sp.thuongHieu th " +
-                        "JOIN sp.danhMuc dm " +
-                        "JOIN sp.xuatXu xx " +
-                        "JOIN spct.chatLieu ct " +
-                        "JOIN sp.listImage i where s.id =:id or ms.id = :id or kd.id = :id or sp.id = :id or th.id = :id or dm.id = :id or xx.id = :id or ct.id = :id")
-        List<ProductDetailResponse> ListSearchDanhMuc(@Param("id") UUID id);
+        @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan FROM SanPham sp " +
+                "JOIN sp.listImage i " +
+                "JOIN sp.kieuDe kd " +
+                "JOIN sp.thuongHieu th " +
+                "JOIN sp.danhMuc dm " +
+                "JOIN sp.xuatXu xx  " +
+                "WHERE i.isDefault = TRUE AND kd.id = :id or th.id = :id or dm.id = :id or xx.id = :id")
+        List<Object[]> ListSearchDanhMuc(@Param("id") UUID id);
 
         @Query("SELECT COUNT(spgg.id) FROM GiamGia gg JOIN gg.spGiamGiaList spgg WHERE spgg.sanPham.id = :productId")
         int countRecordsByProductId(@Param("productId") UUID productId);

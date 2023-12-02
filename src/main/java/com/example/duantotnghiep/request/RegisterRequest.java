@@ -24,6 +24,4 @@ public class RegisterRequest {
     @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$", message = "Địa chỉ email không hợp lệ")
     private String email;
 
-    @NotNull(message = "Không được để trống quyền hạn")
-    private TypeAccountEnum role;
 }

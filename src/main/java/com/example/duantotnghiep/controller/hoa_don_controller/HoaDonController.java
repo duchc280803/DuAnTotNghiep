@@ -34,7 +34,7 @@ public class HoaDonController {
             @RequestParam(name = "ma", required = false) String ma,
             @RequestParam(name = "soDienThoai", required = false) String soDienThoai,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
             Principal principal
     ) {
         String username = principal.getName();

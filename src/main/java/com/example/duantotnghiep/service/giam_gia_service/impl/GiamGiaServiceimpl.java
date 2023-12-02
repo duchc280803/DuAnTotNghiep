@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.service.giam_gia_service.impl;
 
 import com.example.duantotnghiep.entity.*;
+import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.GiamGiaRequest;
 import com.example.duantotnghiep.request.UpdateGiamGiaResquest;
@@ -14,16 +15,14 @@ import com.opencsv.exceptions.CsvValidationException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class GiamGiaServiceimpl implements GiamGiaService {
@@ -37,26 +36,71 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     @Autowired
     private SanPhamRepository spRepository;
 
+    @Autowired
+    private SpGiamGiaRepository spGiamGiaRepository;
+
     @Override
-    public List<GiamGiaResponse> getAll()  {
-        return Repository.listGiamGia();
+    public List<GiamGiaResponse> getAll(Integer pageNumber, Integer pageSize)  {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<GiamGiaResponse> giamGiaResponses = Repository.listGiamGias(pageable);
+        return giamGiaResponses.getContent();
     }
+
     @Autowired
     private AuditLogService auditLogService;
+    @Autowired
+    private TaiKhoanRepository taiKhoanRepository;
 
     @Override
     public Page<GiamGiaResponse> getAll(Pageable pageable) {
         return Repository.listGiamGias(pageable);
     }
 
+    public Long getGiaGiamCuoiCung(UUID id) {
+        long tongTienGiam = 0L;
+        List<SpGiamGia> spGiamGiaList = spGiamGiaRepository.findBySanPham_Id(id);
+
+        for (SpGiamGia spGiamGia : spGiamGiaList) {
+            // Cập nhật tổng tiền giảm đúng cách, không khai báo lại biến tongTienGiam
+            if (spGiamGia.getGiaGiam() == null) {
+                return tongTienGiam;
+            }
+            if (spGiamGia.getGiaGiam() != null) {
+                tongTienGiam += spGiamGia.getGiaGiam().longValue();
+            }
+
+        }
+
+        return tongTienGiam;
+    }
+
+    public Long countQuantity(UUID id) {
+        long count = spGiamGiaRepository.countSpGiamGia(id);
+        return count;
+    }
+
     @Override
-    public List<ProductDetailResponse> getAllProduct() {
-        return Repository.listProductResponse();
+    public List<ProductDetailResponse> getAllProduct(Integer pageNumber, Integer pageSize) {
+        List<ProductDetailResponse> resultList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = Repository.listProductResponse(pageable);
+        for (Object[] result : queryResult.getContent()) {
+            UUID id = (UUID) result[0];
+            String image = (String) result[1];
+            String tenSanPham = (String) result[2];
+            BigDecimal giaBan = (BigDecimal) result[3];
+            ProductDetailResponse productDetailResponse = new ProductDetailResponse(id, image, tenSanPham, giaBan,
+                    countQuantity(id), new BigDecimal(getGiaGiamCuoiCung(id)));
+            resultList.add(productDetailResponse);
+        }
+        return resultList;
     }
 
     @Override
     @Transactional
-    public MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest)  {
+    public MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest, String username)
+            throws IOException, CsvValidationException {
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         // Kiểm tra xem đối tượng GiamGia có tồn tại không
         GiamGia existingGiamGia = Repository.findById(id).orElse(null);
 
@@ -110,7 +154,14 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                     // Handle the case where the product is not found
                 }
             }
-
+            auditLogService.writeAuditLogKhuyenmai("update", username, taiKhoanUser.getEmail(), null,
+                    "Mã :" + updateGiamGiaRequest.getMaGiamGia() + "," + "Tên:" + updateGiamGiaRequest.getTenGiamGia()
+                            + "," + "Mức Giảm : " + updateGiamGiaRequest.getMucGiam() + "," + "Hình Thức Giảm : "
+                            + updateGiamGiaRequest.getHinhThucGiam() + "," + "Ngày Bắt Đầu : "
+                            + updateGiamGiaRequest.getNgayBatDau() + "," + "Ngày Kết Thúc : "
+                            + updateGiamGiaRequest.getNgayKetThuc() + "," + "sản phẩm :"
+                            + updateGiamGiaRequest.getIdsanpham(),
+                    null, null, null);
             return MessageResponse.builder().message("Cập nhật Thành Công").build();
         } else {
             // Handle the case where the discount is not found
@@ -141,7 +192,18 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
     @Override
     public List<ProductDetailResponse> findbyProduct(String key) {
-        return Repository.ProductDetailResponse(key);
+        List<ProductDetailResponse> resultList = new ArrayList<>();
+        List<Object[]> queryResult = Repository.ProductDetailResponse(key);
+        for (Object[] result : queryResult) {
+            UUID id = (UUID) result[0];
+            String image = (String) result[1];
+            String tenSanPham = (String) result[2];
+            BigDecimal giaBan = (BigDecimal) result[3];
+            ProductDetailResponse productDetailResponse = new ProductDetailResponse(id, image, tenSanPham, giaBan,
+                    countQuantity(id), new BigDecimal(getGiaGiamCuoiCung(id)));
+            resultList.add(productDetailResponse);
+        }
+        return resultList;
     }
 
     @Override
@@ -155,7 +217,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     }
 
     @Override
-    public List<GiamGiaResponse> checkAndSetStatus() {
+    public MessageResponse checkAndSetStatus() {
         List<GiamGia> giamGiaList = Repository.findAll();
         Date currentDate = new Date(); // Ngày hiện tại
 
@@ -170,13 +232,23 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                 }
             }
         }
-
-        return Repository.listGiamGia();
+        return MessageResponse.builder().message("Ok").build();
     }
 
     @Override
     public List<ProductDetailResponse> ListSearch(UUID id) {
-        return Repository.ListSearchDanhMuc(id);
+        List<ProductDetailResponse> resultList = new ArrayList<>();
+        List<Object[]> queryResult = Repository.ListSearchDanhMuc(id);
+        for (Object[] result : queryResult) {
+            UUID idProduct = (UUID) result[0];
+            String image = (String) result[1];
+            String tenSanPham = (String) result[2];
+            BigDecimal giaBan = (BigDecimal) result[3];
+            ProductDetailResponse productDetailResponse = new ProductDetailResponse(idProduct, image, tenSanPham,
+                    giaBan, countQuantity(id), new BigDecimal(getGiaGiamCuoiCung(id)));
+            resultList.add(productDetailResponse);
+        }
+        return resultList;
     }
 
     @Override
@@ -185,8 +257,10 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     }
 
     @Override
-    public MessageResponse createGiamGia(GiamGiaRequest createKhachRequest) {
+    public MessageResponse createGiamGia(GiamGiaRequest createKhachRequest, String username)
+            throws IOException, CsvValidationException {
         // Tạo đối tượng GiamGia
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         GiamGia giamGia = new GiamGia();
         giamGia.setId(UUID.randomUUID());
         giamGia.setMaGiamGia(createKhachRequest.getMaGiamGia());
@@ -278,7 +352,13 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                 // Handle the case where the product is not found
             }
         }
-
+        auditLogService.writeAuditLogKhuyenmai("create", username, taiKhoanUser.getEmail(), null,
+                "Mã :" + createKhachRequest.getMaGiamGia() + "," + "Tên:" + createKhachRequest.getTenGiamGia() + ","
+                        + "Mức Giảm : " + createKhachRequest.getMucGiam() + "," + "Hình Thức Giảm : "
+                        + createKhachRequest.getHinhThucGiam() + "," + "Ngày Bắt Đầu : "
+                        + createKhachRequest.getNgayBatDau() + "," + "Ngày Kết Thúc : "
+                        + createKhachRequest.getNgayKetThuc() + "," + "sản phẩm :" + createKhachRequest.getIdsanpham(),
+                null, null, null);
         // Trả về thông báo thành công
         return MessageResponse.builder().message("Thêm Thành Công").build();
     }
