@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -21,8 +20,7 @@ public class VnpayController {
     @PostMapping("pay")
     public ResponseEntity<JsonNode> customerPostAPI(
             HttpServletRequest req,
-            @RequestParam(name = "amount") String amoutParam)
-            throws UnsupportedEncodingException {
+            @RequestParam(name = "amount") String amoutParam){
         ObjectMapper mapper;
         ObjectNode node = null;
         String vnp_Version = "2.1.0";
