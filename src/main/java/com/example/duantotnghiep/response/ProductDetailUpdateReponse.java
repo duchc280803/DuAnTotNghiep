@@ -23,5 +23,7 @@ public class ProductDetailUpdateReponse {
 
     private Integer quantity;
 
+    private String qrcode;
+
     private Integer trangThai;
 }

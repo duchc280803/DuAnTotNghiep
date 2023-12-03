@@ -73,6 +73,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/voucher-login/**").permitAll()
                         .requestMatchers("/api/v1/audilog/**").permitAll()
                         .requestMatchers("/api/v1/pdf/**").permitAll()
+                        .requestMatchers("/api/qrcode/**").permitAll()
 
                         .anyRequest()
                         .authenticated())

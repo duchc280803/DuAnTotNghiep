@@ -36,6 +36,8 @@ public class QLKhachHangResponse {
 
     private Integer trangThai;
 
+    private String diaChi;
+
     private String tinh;
 
     private String huyen;
