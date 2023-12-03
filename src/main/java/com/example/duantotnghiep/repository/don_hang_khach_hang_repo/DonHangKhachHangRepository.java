@@ -114,4 +114,28 @@ public interface DonHangKhachHangRepository extends JpaRepository<HoaDon, UUID> 
             "                        SELECT idhoadon,mahoadon,idsanpham,tensanpham,tenimage,size,tenchatlieu,tenmausac,soluong,dongia,dongiasaugiam,thanhtien,tongsoluong FROM CTE WHERE RowNum = 1\n" +
             "                        AND (tensanpham LIKE %:tensanpham% OR mahoadon LIKE %:mahoadon%)\n",nativeQuery = true)
     List<DonHangKhachHangMap> searchByMaOrNameTraHang(@Param("username") String username, @Param("tensanpham") String tensanpham, @Param("mahoadon") String mahoadon);
+
+    @Query(value = "WITH CTE AS (SELECT hd.id AS idhoadon,hd.ma AS mahoadon,sp.id AS idsanpham,sp.tensanpham,img.tenimage,s.size,cl.tenchatlieu,ms.tenmausac,hdct.soluong,hdct.dongia,hdct.dongiasaugiam,hd.thanhtien as thanhtien,\n" +
+            "                            SUM(hdct.soluong) OVER (PARTITION BY hd.id) AS tongsoluong,\n" +
+            "                            ROW_NUMBER() OVER (PARTITION BY hd.id ORDER BY hdct.id) AS RowNum\n" +
+            "                            FROM hoadon hd JOIN hoadonchitiet hdct ON hd.id = hdct.idhoadon JOIN sanphamchitiet spct ON hdct.idsanphamchitiet = spct.id JOIN sanpham sp ON spct.idsanpham = sp.id\n" +
+            "                            JOIN danhmuc dm ON sp.iddanhmuc = dm.id JOIN thuonghieu th ON sp.idthuonghieu = th.id JOIN xuatxu xx ON sp.idxuatxu = xx.id JOIN image img ON sp.id = img.idsanpham\n" +
+            "                            JOIN kieude kd ON sp.idkieude = kd.id JOIN size s ON spct.idsize = s.id JOIN mausac ms ON spct.idmausac = ms.id JOIN chatlieu cl ON spct.idchatlieu = cl.id\n" +
+            "                            JOIN trangthaihoadon tthd ON tthd.idhoadon = hd.id JOIN taikhoan tk ON tk.id = hd.idkhachhang\n" +
+            "                            WHERE img.isdefault = 'true' AND tk.username = :username AND tthd.trangthai = 6\n" +
+            "                        )\n" +
+            "                        SELECT idhoadon,mahoadon,idsanpham,tensanpham,tenimage,size,tenchatlieu,tenmausac,soluong,dongia,dongiasaugiam,thanhtien,tongsoluong FROM CTE WHERE RowNum = 1\n",nativeQuery = true)
+    List<DonHangKhachHangMap> loadDonHuy(String username);
+
+    @Query(value = "WITH CTE AS (SELECT hd.id AS idhoadon,hd.ma AS mahoadon,sp.id AS idsanpham,sp.tensanpham,img.tenimage,s.size,cl.tenchatlieu,ms.tenmausac,hdct.soluong,hdct.dongia,hdct.dongiasaugiam,hd.thanhtien as thanhtien,\n" +
+            "                            SUM(hdct.soluong) OVER (PARTITION BY hd.id) AS tongsoluong,\n" +
+            "                            ROW_NUMBER() OVER (PARTITION BY hd.id ORDER BY hdct.id) AS RowNum\n" +
+            "                            FROM hoadon hd JOIN hoadonchitiet hdct ON hd.id = hdct.idhoadon JOIN sanphamchitiet spct ON hdct.idsanphamchitiet = spct.id JOIN sanpham sp ON spct.idsanpham = sp.id\n" +
+            "                            JOIN danhmuc dm ON sp.iddanhmuc = dm.id JOIN thuonghieu th ON sp.idthuonghieu = th.id JOIN xuatxu xx ON sp.idxuatxu = xx.id JOIN image img ON sp.id = img.idsanpham\n" +
+            "                            JOIN kieude kd ON sp.idkieude = kd.id JOIN size s ON spct.idsize = s.id JOIN mausac ms ON spct.idmausac = ms.id JOIN chatlieu cl ON spct.idchatlieu = cl.id\n" +
+            "                            JOIN trangthaihoadon tthd ON tthd.idhoadon = hd.id JOIN taikhoan tk ON tk.id = hd.idkhachhang\n" +
+            "                            WHERE img.isdefault = 'true' AND tk.username = :username AND tthd.trangthai = 6) \n" +
+            "                        SELECT idhoadon,mahoadon,idsanpham,tensanpham,tenimage,size,tenchatlieu,tenmausac,soluong,dongia,dongiasaugiam,thanhtien,tongsoluong FROM CTE WHERE RowNum = 1\n" +
+            "                        AND (tensanpham LIKE %:tensanpham% OR mahoadon LIKE %:mahoadon%)\n",nativeQuery = true)
+    List<DonHangKhachHangMap> searchByMaOrNameDonHuy(@Param("username") String username, @Param("tensanpham") String tensanpham, @Param("mahoadon") String mahoadon);
 }

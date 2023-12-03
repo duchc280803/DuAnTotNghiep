@@ -47,4 +47,16 @@ public class DonHangKhachHangController {
         String username = principal.getName();
         return ResponseEntity.ok(donHangKhachHangRepository.searchByMaOrNameTraHang(username,tensanpham,mahoadon));
     }
+
+    @GetMapping("load-don-huy")
+    public ResponseEntity<List<DonHangKhachHangMap>> loadDonHuy(Principal principal) {
+        String username = principal.getName();
+        return ResponseEntity.ok(donHangKhachHangRepository.loadDonHuy(username));
+    }
+
+    @GetMapping("search-don-huy")
+    public ResponseEntity<List<DonHangKhachHangMap>> searchDonHuy(Principal principal, @RequestParam String tensanpham, @RequestParam String mahoadon) {
+        String username = principal.getName();
+        return ResponseEntity.ok(donHangKhachHangRepository.searchByMaOrNameDonHuy(username,tensanpham,mahoadon));
+    }
 }

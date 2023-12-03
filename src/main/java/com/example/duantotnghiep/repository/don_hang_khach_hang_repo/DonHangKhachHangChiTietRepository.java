@@ -37,7 +37,7 @@ public interface DonHangKhachHangChiTietRepository extends JpaRepository<HoaDonC
             "    TTHD.thoigian DESC;\n", nativeQuery = true)
     ThongTinDonHangKhachHangMap getThongTinDonHang(@Param("idHoaDon") UUID idHoaDon, @Param("username") String username);
 
-    @Query(value = "SELECT hdct.id AS id,i.tenImage AS tenImage,sp.tenSanPham AS tenSanPham,hdct.donGia AS donGia,hdct.donGiaSauGiam AS donGiaSauGiam,hdct.soLuong AS soLuong,s.size,ms.tenmausac,cl.tenchatlieu, hdct.trangThai \n" +
+    @Query(value = "SELECT hdct.id AS id,i.tenImage AS tenImage,sp.tenSanPham AS tenSanPham,hdct.donGia AS donGia,hdct.donGiaSauGiam AS donGiaSauGiam,hdct.soLuong AS soLuong,s.size,ms.tenmausac,cl.tenchatlieu\n" +
             "FROM HoaDon hd\n" +
             "JOIN hoaDonChiTiet hdct ON hd.id = hdct.idHoaDon\n" +
             "JOIN sanPhamChiTiet spct ON hdct.idSanPhamChiTiet = spct.id\n" +
@@ -57,7 +57,7 @@ public interface DonHangKhachHangChiTietRepository extends JpaRepository<HoaDonC
     @Query("SELECT new com.example.duantotnghiep.response.TrangThaiHoaDonResponse(tthd.trangThai, tthd.thoiGian, tknv.name, tthd.ghiChu) " +
             "FROM HoaDon hd " +
             "JOIN hd.trangThaiHoaDonList tthd " +
-            "LEFT JOIN hd.taiKhoanNhanVien tknv WHERE hd.id = :id ORDER BY tthd.thoiGian ASC ")
-    List<TrangThaiHoaDonResponse> getAllTrangThaiHoaDon(@Param("id ") UUID id);
+            "LEFT JOIN hd.taiKhoanNhanVien tknv WHERE hd.id = :idHoaDon ORDER BY tthd.thoiGian DESC ")
+    List<TrangThaiHoaDonResponse> getAllTrangThaiHoaDon(@Param("idHoaDon") UUID idHoaDon);
 
 }
