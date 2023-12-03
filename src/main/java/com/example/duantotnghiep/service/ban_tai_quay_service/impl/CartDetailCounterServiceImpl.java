@@ -175,6 +175,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         chiTietSanPhamRepository.save(sanPhamChiTiet);
         gioHangChiTietRepository.deleteById(id);
     }
+
     @Override
     public List<GioHangChiTiet> getIdCartDetail(UUID idCart) {
         return gioHangChiTietRepository.findByGioHang_Id(idCart);
