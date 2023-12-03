@@ -6,10 +6,7 @@ import com.example.duantotnghiep.enums.StatusCartEnums;
 import com.example.duantotnghiep.enums.StatusOrderDetailEnums;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
-import com.example.duantotnghiep.response.HoaDonDTOResponse;
-import com.example.duantotnghiep.response.MessageResponse;
-import com.example.duantotnghiep.response.NhanVienResponse;
-import com.example.duantotnghiep.response.TokenResponse;
+import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.hoa_don_service.HoaDonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -50,6 +47,7 @@ public class HoaDonServiceImpl implements HoaDonService {
         Page<HoaDonDTOResponse> pageList = hoaDonRepository.getAllHoaDonCTTStaff(loaiDon, ma, soDienThoai, pageable);
         return pageList.getContent();
     }
+
     @Override
     public HoaDon updateHoaDon(UUID hoaDonId, String name) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -79,6 +77,15 @@ public class HoaDonServiceImpl implements HoaDonService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<NhanVienResponse> nhanVienResponses = taiKhoanRepository.getAllPage(pageable);
         return nhanVienResponses.getContent();
+    }
+
+    @Override
+    public EmployeeAndInvoiceResponse findById(UUID id) {
+        HoaDon hoaDon = hoaDonRepository.findById(id).get();
+        EmployeeAndInvoiceResponse employeeAndInvoiceResponse = new EmployeeAndInvoiceResponse();
+        employeeAndInvoiceResponse.setIdHoaDon(hoaDon.getId());
+        employeeAndInvoiceResponse.setIdNhanVien(hoaDon.getTaiKhoanNhanVien().getId());
+        return employeeAndInvoiceResponse;
     }
 
 }

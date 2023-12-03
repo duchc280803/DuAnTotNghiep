@@ -2,11 +2,13 @@ package com.example.duantotnghiep.controller.hoa_don_controller;
 
 import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.entity.TaiKhoan;
+import com.example.duantotnghiep.response.EmployeeAndInvoiceResponse;
 import com.example.duantotnghiep.response.HoaDonDTOResponse;
 import com.example.duantotnghiep.response.NhanVienResponse;
 import com.example.duantotnghiep.service.account_service.TaiKhoanService;
 import com.example.duantotnghiep.service.hoa_don_service.impl.HoaDonServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +42,6 @@ public class HoaDonController {
         String username = principal.getName();
         Optional<TaiKhoan> taiKhoan = taiKhoanService.findByUserName(username);
         String role = taiKhoan.get().getLoaiTaiKhoan().getName().name();
-
         if (role == "STAFF") {
             if (trangThaiHD == 1) {
                 return new ResponseEntity<>(hoaDonService.getAllHoaDonCTTStaff(loaiDon, ma, soDienThoai, pageNumber, pageSize), HttpStatus.OK);
@@ -66,6 +67,11 @@ public class HoaDonController {
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
         return new ResponseEntity<>(hoaDonService.nhanVienList(pageNumber, pageSize), HttpStatus.OK);
+    }
+
+    @GetMapping("employee-and-invoice")
+    public ResponseEntity<EmployeeAndInvoiceResponse> getEmployeeAndInvoiceInfo(@RequestParam(name = "idHoaDon") UUID idHoaDon) {
+        return new ResponseEntity<>(hoaDonService.findById(idHoaDon), HttpStatus.OK);
     }
 
 }

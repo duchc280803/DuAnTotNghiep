@@ -4,6 +4,7 @@ import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.entity.HoaDonChiTiet;
 import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.request.TraHangRequest;
+import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.request.TransactionRequest;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
 import com.example.duantotnghiep.response.*;
@@ -51,4 +52,6 @@ public interface HoaDonChiTietService {
     BigDecimal tongTienHang(UUID id);
 
     MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest, String username) throws CsvValidationException, IOException;
+
+    MessageResponse comfirmStatusHuyDon(UUID idHoaDon, TrangThaiHoaDonRequest request);
 }

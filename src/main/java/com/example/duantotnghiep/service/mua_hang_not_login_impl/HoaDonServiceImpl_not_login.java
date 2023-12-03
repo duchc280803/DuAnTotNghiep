@@ -226,6 +226,22 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
     }
 
+    @Override
+    public MessageResponse yeuCauTraHang(UUID idHoaDon, UUID idHoaDonChiTiet, String lyDo) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        HoaDon hoaDon = hoaDonRepository.findById(idHoaDon).get();
+        HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findById(idHoaDonChiTiet).get();
+        hoaDonChiTiet.setTrangThai(9);
+        TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+        trangThaiHoaDon.setId(UUID.randomUUID());
+        trangThaiHoaDon.setTrangThai(9);
+        trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setHoaDon(hoaDon);
+        trangThaiHoaDon.setGhiChu(lyDo);
+        trangThaiHoaDonRepository.save(trangThaiHoaDon);
+        return MessageResponse.builder().message("Thành công").build();
+    }
+
     public MessageResponse thanhToanLogin(CreateKhachRequest_not_login createKhachRequest_not_login, Principal principal) {
 
         Optional<Voucher> voucher = voucherRepository.findById(createKhachRequest_not_login.getIdGiamGia());

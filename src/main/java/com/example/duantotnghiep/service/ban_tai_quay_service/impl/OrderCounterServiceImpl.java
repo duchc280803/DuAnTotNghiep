@@ -203,8 +203,6 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         hoaDon.get().setSdtNguoiNhan(hoaDonGiaoThanhToanRequest.getSoDienThoai());
         hoaDon.get().setDiaChi(hoaDonGiaoThanhToanRequest.getDiaChi());
         hoaDon.get().setTienShip(hoaDonGiaoThanhToanRequest.getTienGiao());
-        hoaDon.get().setTenNguoiShip(hoaDonGiaoThanhToanRequest.getTenNguoiShip());
-        hoaDon.get().setSdtNguoiShip(hoaDonGiaoThanhToanRequest.getSoDienThoaiNguoiShip());
         hoaDon.get().setEmail(hoaDonGiaoThanhToanRequest.getEmail());
         hoaDon.get().setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
         auditLogService.writeAuditLogHoadon(username, findByNhanVien.get().getEmail(), "Cập nhật địa chỉ", hoaDon.get().getMa(),

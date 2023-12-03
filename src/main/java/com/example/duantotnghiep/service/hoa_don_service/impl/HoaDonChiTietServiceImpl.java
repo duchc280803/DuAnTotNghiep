@@ -5,6 +5,7 @@ import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.enums.StatusOrderEnums;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.TraHangRequest;
+import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.request.TransactionRequest;
 import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
 import com.example.duantotnghiep.response.*;
@@ -234,19 +235,20 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
     @Override
     public MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest, String username) throws CsvValidationException, IOException {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
         TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
 
         LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
         loaiHinhThucThanhToan.setId(UUID.randomUUID());
-        loaiHinhThucThanhToan.setNgayTao(new Date(System.currentTimeMillis()));
+        loaiHinhThucThanhToan.setNgayTao(timestamp);
         loaiHinhThucThanhToan.setTenLoai(transactionRequest.getTenLoai());
         loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
 
         HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
         hinhThucThanhToan.setId(UUID.randomUUID());
-        hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+        hinhThucThanhToan.setNgayThanhToan(timestamp);
         hinhThucThanhToan.setTaiKhoan(taiKhoan.get());
         hinhThucThanhToan.setTongSoTien(transactionRequest.getSoTien());
         hinhThucThanhToan.setGhiChu(transactionRequest.getGhiChu());
@@ -260,6 +262,51 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         auditLogService.writeAuditLogHoadon(username, taiKhoanUser.getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(), "Số tiền: " + transactionRequest.getSoTien(), "Thanh toán: " + (transactionRequest.getTrangThai() == 1 ? "Tiền mặt" : "Chuyển khoản"), "", "");
 
         return MessageResponse.builder().message("Thanh toán thành công").build();
+    }
+
+    @Override
+    public MessageResponse comfirmStatusHuyDon(UUID idHoaDon, TrangThaiHoaDonRequest request) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        HoaDon hoaDon = hoaDonRepository.findById(idHoaDon).get();
+        hoaDon.setNgayCapNhap(timestamp);
+        hoaDon.setTrangThai(request.getNewTrangThai());
+        hoaDonRepository.save(hoaDon);
+
+        TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+        trangThaiHoaDon.setId(UUID.randomUUID());
+        trangThaiHoaDon.setTrangThai(request.getNewTrangThai());
+        trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setHoaDon(hoaDon);
+        trangThaiHoaDon.setGhiChu(request.getGhiChu());
+        trangThaiHoaDonRepository.save(trangThaiHoaDon);
+
+        for (HoaDonChiTiet x :hoaDon.getHoaDonChiTietList()) {
+            SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(x.getSanPhamChiTiet().getId()).get();
+            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + x.getSoLuong());
+            chiTietSanPhamRepository.save(sanPhamChiTiet);
+        }
+        HinhThucThanhToan hinhThucThanhToan = hinhThucThanhToanRepository.findByHoaDon(hoaDon);
+        if (hinhThucThanhToan != null) {
+            LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+            loaiHinhThucThanhToan.setId(UUID.randomUUID());
+            loaiHinhThucThanhToan.setNgayTao(timestamp);
+            loaiHinhThucThanhToan.setTenLoai("Nhân viên hoàn tiền");
+            loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+
+            HinhThucThanhToan hoanTienChoKhach = new HinhThucThanhToan();
+            hoanTienChoKhach.setId(UUID.randomUUID());
+            hoanTienChoKhach.setTongSoTien(hoaDon.getThanhTien());
+            hoanTienChoKhach.setNgayThanhToan(timestamp);
+            hoanTienChoKhach.setHoaDon(hoaDon);
+            hoanTienChoKhach.setGhiChu("Hoàn tiền");
+            hoanTienChoKhach.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
+            hoanTienChoKhach.setTrangThai(1);
+            hoanTienChoKhach.setPhuongThucThanhToan(1);
+            hoanTienChoKhach.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
+            hoanTienChoKhach.setCodeTransaction(VnPayConfig.getRandomNumber(8));
+            hinhThucThanhToanRepository.save(hoanTienChoKhach);
+        }
+        return MessageResponse.builder().message("Update thành công").build();
     }
 
     @Override
