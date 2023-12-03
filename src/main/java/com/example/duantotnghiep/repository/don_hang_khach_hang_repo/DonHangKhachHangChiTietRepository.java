@@ -37,7 +37,7 @@ public interface DonHangKhachHangChiTietRepository extends JpaRepository<HoaDonC
             "    TTHD.thoigian DESC;\n", nativeQuery = true)
     ThongTinDonHangKhachHangMap getThongTinDonHang(@Param("idHoaDon") UUID idHoaDon, @Param("username") String username);
 
-    @Query(value = "SELECT hdct.id AS id,i.tenImage AS tenImage,sp.tenSanPham AS tenSanPham,hdct.donGia AS donGia,hdct.donGiaSauGiam AS donGiaSauGiam,hdct.soLuong AS soLuong,s.size,ms.tenmausac,cl.tenchatlieu\n" +
+    @Query(value = "SELECT hdct.id AS id,i.tenImage AS tenImage,sp.tenSanPham AS tenSanPham,hdct.donGia AS donGia,hdct.donGiaSauGiam AS donGiaSauGiam,hdct.soLuong AS soLuong,s.size,ms.tenmausac,cl.tenchatlieu,hdct.trangthai\n" +
             "FROM HoaDon hd\n" +
             "JOIN hoaDonChiTiet hdct ON hd.id = hdct.idHoaDon\n" +
             "JOIN sanPhamChiTiet spct ON hdct.idSanPhamChiTiet = spct.id\n" +

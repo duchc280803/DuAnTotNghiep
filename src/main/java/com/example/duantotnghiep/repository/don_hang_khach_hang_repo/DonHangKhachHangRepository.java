@@ -33,6 +33,7 @@ public interface DonHangKhachHangRepository extends JpaRepository<HoaDon, UUID> 
             "        hdct.dongiasaugiam,\n" +
             "        hd.thanhtien AS thanhtien,\n" +
             "        SUM(hdct.soluong) OVER (PARTITION BY hd.id) AS tongsoluong,\n" +
+            "        tthd.trangthai AS trangthaihoadon,\n" +
             "        ROW_NUMBER() OVER (PARTITION BY hd.id ORDER BY hdct.id) AS RowNum,\n" +
             "        tthd.thoigian AS thoigian -- Chọn trường thoigian vào CTE\n" +
             "    FROM \n" +
@@ -70,11 +71,17 @@ public interface DonHangKhachHangRepository extends JpaRepository<HoaDon, UUID> 
             "    dongia,\n" +
             "    dongiasaugiam,\n" +
             "    thanhtien,\n" +
-            "    tongsoluong \n" +
+            "    tongsoluong, \n" +
+            "    trangthaihoadon \n" +
             "FROM \n" +
             "    CTE \n" +
             "WHERE \n" +
-            "    RowNum = 1 \n" +
+            "    RowNum = 1 AND NOT EXISTS (\n" +
+            "        SELECT 1\n" +
+            "        FROM trangthaihoadon tthd\n" +
+            "        WHERE tthd.idhoadon = CTE.idhoadon\n" +
+            "        AND tthd.trangthai = 7 -- Trạng thái của đơn trả hàng\n" +
+            "    ) \n" +
             "ORDER BY \n" +
             "    thoigian DESC; -- Sắp xếp theo thoigian\n",nativeQuery = true)
     List<DonHangKhachHangMap> filterStatus(String username,Integer trangthai);
