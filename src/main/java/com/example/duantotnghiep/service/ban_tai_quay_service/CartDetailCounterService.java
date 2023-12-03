@@ -17,7 +17,7 @@ public interface CartDetailCounterService {
 
     List<GioHangCustom> loadGH(UUID id, Integer pageNumber, Integer pageSize);
 
-    void deleteProductInCart(UUID id);
+    void deleteProductInCart(UUID id, String username) throws IOException, CsvValidationException;
 
     List<GioHangChiTiet>  getIdCartDetail(UUID idCart);
 
