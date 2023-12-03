@@ -2,6 +2,7 @@ package com.example.duantotnghiep.repository;
 
 import com.example.duantotnghiep.entity.HinhThucThanhToan;
 
+import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.response.HinhThucThanhToanResponse;
 import com.example.duantotnghiep.response.ThongTinDonHang;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @Repository
 public interface HinhThucThanhToanRepository extends JpaRepository<HinhThucThanhToan, UUID> {
 
+    HinhThucThanhToan findByHoaDon(HoaDon hoaDon);
 
     @Query("SELECT new com.example.duantotnghiep.response.TransactionResponse(httt.codeTransaction, httt.tongSoTien, httt.phuongThucThanhToan) "
             +

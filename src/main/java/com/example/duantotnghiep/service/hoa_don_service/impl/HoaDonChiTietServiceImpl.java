@@ -285,6 +285,27 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + x.getSoLuong());
             chiTietSanPhamRepository.save(sanPhamChiTiet);
         }
+        HinhThucThanhToan hinhThucThanhToan = hinhThucThanhToanRepository.findByHoaDon(hoaDon);
+        if (hinhThucThanhToan != null) {
+            LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+            loaiHinhThucThanhToan.setId(UUID.randomUUID());
+            loaiHinhThucThanhToan.setNgayTao(timestamp);
+            loaiHinhThucThanhToan.setTenLoai("Nhân viên hoàn tiền");
+            loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+
+            HinhThucThanhToan hoanTienChoKhach = new HinhThucThanhToan();
+            hoanTienChoKhach.setId(UUID.randomUUID());
+            hoanTienChoKhach.setTongSoTien(hoaDon.getThanhTien());
+            hoanTienChoKhach.setNgayThanhToan(timestamp);
+            hoanTienChoKhach.setHoaDon(hoaDon);
+            hoanTienChoKhach.setGhiChu("Hoàn tiền");
+            hoanTienChoKhach.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
+            hoanTienChoKhach.setTrangThai(1);
+            hoanTienChoKhach.setPhuongThucThanhToan(1);
+            hoanTienChoKhach.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
+            hoanTienChoKhach.setCodeTransaction(VnPayConfig.getRandomNumber(8));
+            hinhThucThanhToanRepository.save(hoanTienChoKhach);
+        }
         return MessageResponse.builder().message("Update thành công").build();
     }
 

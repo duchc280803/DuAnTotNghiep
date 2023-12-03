@@ -5,12 +5,12 @@ import com.example.duantotnghiep.request.not_login.CreateKhachRequest_not_login;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.mua_hang_not_login_impl.HoaDonServiceImpl_not_login;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/checkout-not-login")
@@ -34,6 +34,14 @@ public class HoaDonController_not_login {
             Principal principal
     ) {
         return hoaDonService_not_login.thanhToanLogin(createKhachRequest_not_login,principal);
+    }
+
+    @PostMapping("/yeu-cau-tra-hang")
+    public ResponseEntity<MessageResponse> yeuCauTraHang(
+            @RequestParam(name = "idHoaDon") UUID idHoaDon,
+            @RequestParam(name = "idHoaDonChiTiet") UUID idHoaDonChiTiet
+            ,@RequestParam(name = "lyDo") String lyDo) {
+        return new ResponseEntity<>(hoaDonService_not_login.yeuCauTraHang(idHoaDon, idHoaDonChiTiet, lyDo), HttpStatus.CREATED);
     }
 
 }
