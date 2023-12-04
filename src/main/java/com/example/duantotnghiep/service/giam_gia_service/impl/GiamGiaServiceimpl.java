@@ -154,7 +154,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                     // Handle the case where the product is not found
                 }
             }
-            auditLogService.writeAuditLogKhuyenmai("update", username, taiKhoanUser.getEmail(), null,
+            auditLogService.writeAuditLogKhuyenmai("Sửa Khuyến Mãi", username, taiKhoanUser.getEmail(), null,
                     "Mã :" + updateGiamGiaRequest.getMaGiamGia() + "," + "Tên:" + updateGiamGiaRequest.getTenGiamGia()
                             + "," + "Mức Giảm : " + updateGiamGiaRequest.getMucGiam() + "," + "Hình Thức Giảm : "
                             + updateGiamGiaRequest.getHinhThucGiam() + "," + "Ngày Bắt Đầu : "
@@ -352,7 +352,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                 // Handle the case where the product is not found
             }
         }
-        auditLogService.writeAuditLogKhuyenmai("create", username, taiKhoanUser.getEmail(), null,
+        auditLogService.writeAuditLogKhuyenmai("Thêm Khuyến Mãi", username, taiKhoanUser.getEmail(), null,
                 "Mã :" + createKhachRequest.getMaGiamGia() + "," + "Tên:" + createKhachRequest.getTenGiamGia() + ","
                         + "Mức Giảm : " + createKhachRequest.getMucGiam() + "," + "Hình Thức Giảm : "
                         + createKhachRequest.getHinhThucGiam() + "," + "Ngày Bắt Đầu : "

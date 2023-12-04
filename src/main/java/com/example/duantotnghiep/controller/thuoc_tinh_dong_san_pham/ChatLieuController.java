@@ -7,6 +7,7 @@ import com.example.duantotnghiep.request.DanhMucRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.ChatLieuServiceImpl;
 import com.example.duantotnghiep.schedulingtasks.UserExcelExporter;
+import com.opencsv.exceptions.CsvValidationException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -65,14 +67,14 @@ public class ChatLieuController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<MessageResponse> createDanhMuc(@RequestBody ChatLieuRequest chatLieuRequest) {
-        return new ResponseEntity<>(chatLieuService.create(chatLieuRequest), HttpStatus.CREATED);
+    public ResponseEntity<MessageResponse> createDanhMuc(@RequestBody ChatLieuRequest chatLieuRequest, Principal principal) throws IOException, CsvValidationException {
+        return new ResponseEntity<>(chatLieuService.create(chatLieuRequest, principal.getName()), HttpStatus.CREATED);
     }
 
     @PutMapping("update")
-    public ResponseEntity<MessageResponse> updateDanhMuc(@RequestParam UUID id, @RequestBody ChatLieuRequest chatLieuRequest) {
+    public ResponseEntity<MessageResponse> updateDanhMuc(@RequestParam UUID id, @RequestBody ChatLieuRequest chatLieuRequest,Principal principal) {
         try {
-            MessageResponse response = chatLieuService.update(id, chatLieuRequest);
+            MessageResponse response = chatLieuService.update(id, chatLieuRequest,principal.getName());
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);

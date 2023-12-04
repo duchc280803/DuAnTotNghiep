@@ -53,11 +53,11 @@ public class VoucherServiceimpl implements VoucherService {
         voucher.setHinhThucGiam(createVoucherRequest.getHinhThucGiam());
         voucher.setTrangThai(createVoucherRequest.getTrangThai());
         Repository.save(voucher);
-        auditLogService.writeAuditLogVoucher("create", username, taiKhoanUser.getEmail(), null,
+        auditLogService.writeAuditLogVoucher("Tạo Voucher", username, taiKhoanUser.getEmail(), null,
                 "Mã : " + createVoucherRequest.getMaVoucher() + "," + "Tên :" + createVoucherRequest.getTenVoucher()
                         + "," + "Giá trị tối thiểu : " + createVoucherRequest.getGiaTriToiThieuDonhang() + ","
                         + "Giá trị giảm : " + createVoucherRequest.getGiaTriGiam() + "," + "Số lượng Giảm : "
-                        + createVoucherRequest.getSoLuongMa() + "Ngày Bắt đầu : "
+                        + createVoucherRequest.getSoLuongMa()+  "," +"Ngày Bắt đầu : "
                         + createVoucherRequest.getNgayBatDau() + "," + "Ngày Kết thúc :"
                         + createVoucherRequest.getNgayKetThuc(),
                 null, null, null);
@@ -80,11 +80,11 @@ public class VoucherServiceimpl implements VoucherService {
             voucher.setHinhThucGiam(createVoucherRequest.getHinhThucGiam());
             voucher.setTrangThai(createVoucherRequest.getTrangThai());
             Repository.save(voucher);
-            auditLogService.writeAuditLogVoucher("update", username, taiKhoanUser.getEmail(), null,
+            auditLogService.writeAuditLogVoucher("Cập Nhật Voucher", username, taiKhoanUser.getEmail(), null,
                     "Mã : " + createVoucherRequest.getMaVoucher() + "," + "Tên :" + createVoucherRequest.getTenVoucher()
                             + "," + "Giá trị tối thiểu : " + createVoucherRequest.getGiaTriToiThieuDonhang() + ","
                             + "Giá trị giảm : " + createVoucherRequest.getGiaTriGiam() + "," + "Số lượng Giảm : "
-                            + createVoucherRequest.getSoLuongMa() + "Ngày Bắt đầu : "
+                            + createVoucherRequest.getSoLuongMa() +  "," + "Ngày Bắt đầu : "
                             + createVoucherRequest.getNgayBatDau() + "," + "Ngày Kết thúc :"
                             + createVoucherRequest.getNgayKetThuc(),
                     null, null, null);

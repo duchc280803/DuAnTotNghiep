@@ -5,8 +5,10 @@ import com.example.duantotnghiep.entity.ThuongHieu;
 import com.example.duantotnghiep.request.KieuDeRequest;
 import com.example.duantotnghiep.request.MauSacRequest;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 @Service
@@ -18,9 +20,9 @@ public interface KieuDeService {
 
     KieuDe getById(UUID id);
 
-    MessageResponse create(KieuDeRequest kieuDeRequest);
+    MessageResponse create(KieuDeRequest kieuDeRequest,String username) throws IOException, CsvValidationException;
 
-    MessageResponse update(UUID id, KieuDeRequest kieuDeRequest);
+    MessageResponse update(UUID id, KieuDeRequest kieuDeRequest,String username) throws IOException, CsvValidationException;
 
     MessageResponse delete(UUID id);
 }
