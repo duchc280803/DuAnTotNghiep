@@ -30,6 +30,9 @@ public class TrangThaiHoaDon {
     @Column(name = "ghichu")
     private String ghiChu;
 
+    @Column(name = "username")
+    private String username;
+
     @ManyToOne
     @JoinColumn(name = "idhoadon")
     @JsonBackReference
