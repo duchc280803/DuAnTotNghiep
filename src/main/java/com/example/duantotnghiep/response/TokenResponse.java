@@ -2,6 +2,8 @@ package com.example.duantotnghiep.response;
 
 import lombok.*;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,4 +16,8 @@ public class TokenResponse {
     private String token;
 
     private String message;
+
+    private String role;
+
+    private String username;
 }

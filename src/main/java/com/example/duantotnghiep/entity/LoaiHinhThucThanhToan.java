@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,10 +24,16 @@ public class LoaiHinhThucThanhToan {
     private UUID id;
 
     @Column(name = "tenloai")
-    private String tenChatLieu;
+    private String tenLoai;
 
     @Column(name = "trangthai")
     private Integer trangThai;
+
+    @Column(name = "ngaytao")
+    private Date ngayTao;
+
+    @Column(name = "ngaycapnhat")
+    private Date ngayCapNhat;
 
     @OneToMany(mappedBy = "loaiHinhThucThanhToan",fetch = FetchType.LAZY)
     @JsonManagedReference

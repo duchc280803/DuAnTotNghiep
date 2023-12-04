@@ -19,8 +19,14 @@ public class KhachHangResponse {
 
     private String email;
 
-    private String sodienthoai;
+    private String soDienThoai;
 
     private String diaChi;
+
+    private String xa;
+
+    private String huyen;
+
+    private String tinh;
 
 }

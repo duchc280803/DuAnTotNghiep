@@ -8,9 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -20,6 +19,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "giohang")
 public class GioHang {
+
     @Id
     @Column(name = "id")
     private UUID id;
@@ -43,5 +43,5 @@ public class GioHang {
 
     @OneToMany(mappedBy = "gioHang",fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<GioHangChiTiet> gioHangChiTiets;
+    private List<GioHangChiTiet> gioHangChiTietList;
 }

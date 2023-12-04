@@ -1,6 +1,6 @@
 package com.example.duantotnghiep.config;
 
-import com.example.duantotnghiep.service.impl.UserDetailServiceImpl;
+import com.example.duantotnghiep.service.authentication_service.impl.UserDetailServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

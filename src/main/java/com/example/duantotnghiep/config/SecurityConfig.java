@@ -1,6 +1,5 @@
 package com.example.duantotnghiep.config;
 
-
 import com.example.duantotnghiep.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -33,12 +32,23 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/v1/hoa-don-chi-tiet/**").permitAll()
+                        .requestMatchers("/api/ql-khach-hang/**").permitAll()
+                        .requestMatchers("/api/public/**").permitAll()
+                        .requestMatchers("/api/manager/hoa-don/**").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/api/khach-hang/**").permitAll()
-                        .requestMatchers("/api/nhan-vien/**").permitAll()
+                        .requestMatchers("/api/v1/nhan-vien/**").permitAll()
                         .requestMatchers("/api/chi-tiet-sp/**").permitAll()
                         .requestMatchers("/api/gio-hang/**").permitAll()
                         .requestMatchers("/api/gio-hang-chi-tiet/**").permitAll()
+                        .requestMatchers("/api/gio-hang-chi-tiet-not-login/**").permitAll()
+                        .requestMatchers("/api/gio-hang-not-login/**").permitAll()
+                        .requestMatchers("/api/khach-hang-not-login/**").permitAll()
+                        .requestMatchers("/api/checkout-not-login/**").permitAll()
+                        .requestMatchers("/api/v1/san-pham/**").permitAll()
+                        .requestMatchers("/api/v1/product/**").permitAll()
+                        .requestMatchers("/api/v1/don-hang/**").permitAll()
                         .requestMatchers("/api/v1/hoa-don/**").permitAll()
                         .requestMatchers("/api/v1/kieu-de/**").permitAll()
                         .requestMatchers("/api/v1/mau-sac/**").permitAll()
@@ -48,9 +58,27 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/xuat-xu/**").permitAll()
                         .requestMatchers("/api/v1/chat-lieu/**").permitAll()
                         .requestMatchers("/api/v1/san-pham-giam-gia/**").permitAll()
+                        .requestMatchers("/api/v1/transaction/**").permitAll()
+                        .requestMatchers("/api/v1/giam-gia/**").permitAll()
+                        .requestMatchers("/api/v1/invoice/**").permitAll()
+                        .requestMatchers("/api/v1/chat-lieu/**").permitAll()
+                        .requestMatchers("/api/v1/payment/**").permitAll()
+                        .requestMatchers("/api/v1/voucher/**").permitAll()
+                        .requestMatchers("/api/v1/voucher-counter/**").permitAll()
+                        .requestMatchers("/api/v1/san-pham-chi-tiet/**").permitAll()
+                        .requestMatchers("/api/v1/account/**").permitAll()
+                        .requestMatchers("/api/v1/images/**").permitAll()
+                        .requestMatchers("/api/v1/don-hang-khach-hang/**").permitAll()
+                        .requestMatchers("/api/v1/don-hang-khach-hang-chi-tiet/**").permitAll()
+                        .requestMatchers("/api/v1/voucher-login/**").permitAll()
+                        .requestMatchers("/api/v1/audilog/**").permitAll()
+                        .requestMatchers("/api/v1/pdf/**").permitAll()
+                        .requestMatchers("/api/qrcode/**").permitAll()
+
                         .anyRequest()
                         .authenticated())
-                .sessionManagement(sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(
+                        sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();

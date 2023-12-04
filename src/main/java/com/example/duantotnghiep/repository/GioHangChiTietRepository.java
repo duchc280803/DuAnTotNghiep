@@ -1,5 +1,10 @@
 package com.example.duantotnghiep.repository;
 
+import com.example.duantotnghiep.entity.GioHang;
+import com.example.duantotnghiep.entity.GioHangChiTiet;
+import com.example.duantotnghiep.mapper.GioHangCustom;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import com.example.duantotnghiep.entity.GioHangChiTiet;
 import com.example.duantotnghiep.mapper.GioHangCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,20 +16,39 @@ import java.util.UUID;
 
 public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, UUID> {
 
-    @Query("SELECT new com.example.duantotnghiep.mapper.GioHangCustom(i.tenImage, sp.tenSanPham, spct.giaBan, spct.soLuong, s.size, kd.tenDe,ms.tenMauSac) " +
+    @Query("SELECT ghct.id, i.tenImage, sp.tenSanPham, ghct.donGia, ghct.donGiaKhiGiam, ghct.soLuong, s.size, cl.tenChatLieu,ms.tenMauSac " +
             "FROM SanPhamChiTiet spct " +
-            "JOIN spct.listImage i " +
             "JOIN spct.sanPham sp " +
+            "JOIN sp.listImage i " +
             "JOIN spct.size s " +
-            "JOIN spct.kieuDe kd " +
             "JOIN spct.mauSac ms " +
+            "JOIN spct.chatLieu cl " +
             "JOIN spct.gioHangChiTietList ghct " +
             "JOIN ghct.gioHang gh " +
             "JOIN gh.taiKhoan tk " +
-            "WHERE i.isDefault = true AND tk.name = :name")
-    List<GioHangCustom> loadOnGioHang(@Param("name") String name);
+            "WHERE i.isDefault = true AND gh.trangThai = 1 AND tk.id = :id")
+    Page<Object[]> loadOnGioHang(@Param("id") UUID id, Pageable pageable);
+
+    @Query("SELECT ghct.donGiaKhiGiam, ghct.soLuong " +
+            "FROM SanPhamChiTiet spct " +
+            "JOIN spct.sanPham sp " +
+            "JOIN sp.listImage i " +
+            "JOIN spct.size s " +
+            "JOIN spct.mauSac ms " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.gioHangChiTietList ghct " +
+            "JOIN ghct.gioHang gh " +
+            "JOIN gh.taiKhoan tk " +
+            "WHERE i.isDefault = true AND gh.trangThai = 1 AND tk.id = :id")
+    List<Object[]> tongTien(@Param("id") UUID id);
 
     // Tìm mục trong giỏ hàng chi tiết dựa trên idGioHang và idSanPhamChiTiet
-    GioHangChiTiet findByGioHang_IdAndSanPhamChiTiet_Id(UUID idGioHang, UUID idSanPhamChiTiet);
+    GioHangChiTiet findByGioHangAndSanPhamChiTiet_Id(GioHang gioHang, UUID idSanPhamChiTiet);
+
+    GioHangChiTiet findByGioHang(GioHang gioHang);
+
+    List<GioHangChiTiet> findByGioHang_Id(UUID id);
+
+
 
 }

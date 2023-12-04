@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -58,7 +59,7 @@ public class HoaDon {
     @Column(name = "tennguoiship")
     private String tenNguoiShip;
 
-    @Column(name = "tienthachtra")
+    @Column(name = "tienkhachtra")
     private BigDecimal tienKhachTra;
 
     @Column(name = "tienship")
@@ -76,13 +77,23 @@ public class HoaDon {
     @Column(name = "qrcode")
     private String qrcode;
 
-    @OneToMany(mappedBy = "hoaDon",fetch = FetchType.LAZY)
+    @Column(name = "tiengiamgia")
+    private BigDecimal tienGiamGia;
+
+    @Column(name = "email")
+    private String email;
+
+    @OneToMany(mappedBy = "hoaDon", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<HoaDonChiTiet> hoaDonChiTietList;
 
-    @OneToMany(mappedBy = "hoaDon",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hoaDon", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<HinhThucThanhToan> hinhThucThanhToanList;
+
+    @OneToMany(mappedBy = "hoaDon", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<TrangThaiHoaDon> trangThaiHoaDonList;
 
     @ManyToOne
     @JoinColumn(name = "idkhachhang")

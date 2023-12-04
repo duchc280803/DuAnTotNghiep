@@ -23,9 +23,9 @@ public class Image {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "idsanphamchitiet")
+    @JoinColumn(name = "idsanpham")
     @JsonBackReference
-    private SanPhamChiTiet sanPhamChiTiet;
+    private SanPham sanPham;
 
     @Column(name = "tenimage")
     private String tenImage;

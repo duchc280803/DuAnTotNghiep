@@ -1,15 +1,14 @@
 package com.example.duantotnghiep.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -24,11 +23,17 @@ public class HinhThucThanhToan {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "ngaythanhtoan")
+    @Column(name = "ngaytao")
     private Date ngayThanhToan;
 
-    @Column(name = "tongsotien")
-    private Integer tongSoTien;
+    @Column(name = "ngaycapnhap")
+    private Date ngayCapNhap;
+
+    @Column(name = "magiaodinh")
+    private String codeTransaction;
+
+    @Column(name = "sotientra")
+    private BigDecimal tongSoTien;
 
     @Column(name = "phuongthucthanhtoan")
     private Integer phuongThucThanhToan;
@@ -53,4 +58,5 @@ public class HinhThucThanhToan {
     @JoinColumn(name = "idloai")
     @JsonBackReference
     private LoaiHinhThucThanhToan loaiHinhThucThanhToan;
+
 }

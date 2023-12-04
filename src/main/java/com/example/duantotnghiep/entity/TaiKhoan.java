@@ -48,6 +48,15 @@ public class TaiKhoan {
     @Column(name = "gioitinh")
     private Boolean gioiTinh;
 
+    @Column(name = "mataikhoan")
+    private String maTaiKhoan;
+
+    @Column(name = "ngaytao")
+    private Date ngayTao;
+
+    @Column(name = "ngaycapnhat")
+    private Date ngayCapNhat;
+
     @ManyToOne
     @JoinColumn(name = "idloaitaikhoan")
     @Enumerated(EnumType.STRING)

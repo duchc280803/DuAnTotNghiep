@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -40,6 +41,11 @@ public class SanPham {
     @JsonBackReference
     private XuatXu xuatXu;
 
+    @ManyToOne
+    @JoinColumn(name = "idkieude")
+    @JsonBackReference
+    private KieuDe kieuDe;
+
     @Column(name = "masanpham")
     private String maSanPham;
 
@@ -58,8 +64,22 @@ public class SanPham {
     @Column(name = "trangthai")
     private Integer trangThai;
 
-    @OneToMany(mappedBy = "sanPham",fetch = FetchType.LAZY)
+    @Column(name = "ngaytao")
+    private Date ngayTao;
+
+    @Column(name = "ngaycapnhat")
+    private Date ngayCapNhat;
+
+    @OneToMany(mappedBy = "sanPham", fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<SanPhamChiTiet> listSanPhamChiTiet;
+
+    @OneToMany(mappedBy = "sanPham", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<SpGiamGia> spGiamGiaList;
+
+    @OneToMany(mappedBy = "sanPham", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Image> listImage;
 
 }

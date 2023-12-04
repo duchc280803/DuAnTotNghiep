@@ -39,11 +39,15 @@ public class GiamGia {
     @Column(name = "ngaycapnhap")
     private Date ngayCapNhap;
 
+    @Column(name = "ngaytao")
+    private Date ngayTao;
+
     @Column(name = "hinhthucgiam")
     private Integer hinhThucGiam;
 
     @Column(name = "trangthai")
     private Integer trangThai;
+
 
     @OneToMany(mappedBy = "giamGia",fetch = FetchType.LAZY)
     @JsonManagedReference

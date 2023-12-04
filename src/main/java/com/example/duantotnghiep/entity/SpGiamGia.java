@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -26,7 +25,7 @@ public class SpGiamGia {
     @ManyToOne
     @JoinColumn(name = "idsanpham")
     @JsonBackReference
-    private SanPhamChiTiet sanPhamChiTiet;
+    private SanPham sanPham;
 
     @ManyToOne
     @JoinColumn(name = "idgiamgia")
@@ -44,5 +43,8 @@ public class SpGiamGia {
 
     @Column(name = "mucgiam")
     private Long mucGiam;
+
+    @Column(name = "giagiam")
+    private BigDecimal giaGiam;
 
 }

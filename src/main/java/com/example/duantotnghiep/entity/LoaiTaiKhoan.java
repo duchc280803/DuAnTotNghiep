@@ -3,14 +3,13 @@ package com.example.duantotnghiep.entity;
 import com.example.duantotnghiep.enums.TypeAccountEnum;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+@ToString
 @Getter
 @Setter
 @AllArgsConstructor
@@ -29,6 +28,12 @@ public class LoaiTaiKhoan {
 
     @Column(name = "trangthai")
     private Integer trangThai;
+
+    @Column(name = "ngaytao")
+    private Date ngayTao;
+
+    @Column(name = "ngaycapnhat")
+    private Date ngayCapNhat;
 
     @OneToMany(mappedBy = "loaiTaiKhoan", fetch = FetchType.LAZY)
     @JsonManagedReference

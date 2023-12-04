@@ -43,29 +43,21 @@ public class Voucher {
     @Column(name = "soluongdung")
     private Integer soLuongDung;
 
-    @Column(name = "dieukiengiamgia")
-    private Long dieuKienGiamGia;
+    @Column(name = "giatritoithieudonhang")
+    private Long giaTriToiThieuDonhang;
 
     @Column(name = "giatrigiam")
     private Long giaTriGiam;
 
-    @Column(name = "giatritoida")
-    private Long giaTriToiDa;
-
-    @Column(name = "giatridontoithieu")
-    private Long giaTriToiThieu;
-
     @Column(name = "hinhthucgiam")
     private Integer hinhThucGiam;
 
-    @Column(name = "idnhanvien")
-    private UUID idNhanVien;
-
-    @Column(name = "loaivoucher")
-    private String loaiGiamGia;
-
     @Column(name = "trangthai")
     private Integer trangThai;
+
+    @Column(name = "ngaytao")
+    private Date ngayTao;
+
 
     @OneToMany(mappedBy = "voucher", fetch = FetchType.LAZY)
     private List<HoaDon> hoaDonList;
