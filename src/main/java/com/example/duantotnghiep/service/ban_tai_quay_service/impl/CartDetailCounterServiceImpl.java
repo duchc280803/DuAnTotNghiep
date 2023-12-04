@@ -168,13 +168,23 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
     }
 
     @Override
-    public void deleteProductInCart(UUID id) {
+    public void deleteProductInCart(UUID id, String username) throws IOException, CsvValidationException {
+        Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByUsername(username);
         GioHangChiTiet gioHangChiTiet = gioHangChiTietRepository.findById(id).get();
         SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(gioHangChiTiet.getSanPhamChiTiet().getId()).get();
+
+        GioHang gioHang = gioHangRepository.findByGioHang(gioHangChiTiet.getGioHang().getId());
+        Optional<TaiKhoan> khachHang = taiKhoanRepository.findById(gioHang.getTaiKhoan().getId());
+        Optional<HoaDon> hoaDon = hoaDonRepository.findByTaiKhoanKhachHang(khachHang.get());
+
         sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + gioHangChiTiet.getSoLuong());
         chiTietSanPhamRepository.save(sanPhamChiTiet);
         gioHangChiTietRepository.deleteById(id);
+        auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Xóa sản phẩm", hoaDon.get().getMa(),
+                "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
+                "", "");
     }
+
     @Override
     public List<GioHangChiTiet> getIdCartDetail(UUID idCart) {
         return gioHangChiTietRepository.findByGioHang_Id(idCart);

@@ -2,10 +2,7 @@ package com.example.duantotnghiep.service.hoa_don_service;
 
 import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
-import com.example.duantotnghiep.response.HoaDonDTOResponse;
-import com.example.duantotnghiep.response.MessageResponse;
-import com.example.duantotnghiep.response.NhanVienResponse;
-import com.example.duantotnghiep.response.TokenResponse;
+import com.example.duantotnghiep.response.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,5 +18,7 @@ public interface HoaDonService {
     HoaDon updateHoaDon(UUID hoaDonId,  String username);
 
     List<NhanVienResponse> nhanVienList(Integer pageNumber, Integer pageSize);
+
+    EmployeeAndInvoiceResponse findById(UUID id);
 
 }

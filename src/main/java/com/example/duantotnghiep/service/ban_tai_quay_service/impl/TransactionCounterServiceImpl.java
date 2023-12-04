@@ -75,8 +75,8 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
     }
 
     @Override
-    public MessageResponse cashVnPay(UUID idHoaDon, UUID id, BigDecimal vnpAmount) {
-//        Optional<TaiKhoan> nhanVien = taiKhoanRepository.findByUsername(username);
+    public MessageResponse cashVnPay(UUID idHoaDon, UUID id, BigDecimal vnpAmount, String username) throws IOException, CsvValidationException {
+        Optional<TaiKhoan> nhanVien = taiKhoanRepository.findByUsername(username);
         Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
 
@@ -97,7 +97,7 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
         hinhThucThanhToan.setTrangThai(2);
         hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
-//        auditLogService.writeAuditLogHoadon( username, nhanVien.get().getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(),  "Số tiền: " + vnpAmount, "Thanh toán: Chuyển khoản" , "Mã khách hàng: "+taiKhoan.get().getMaTaiKhoan(), "");
+        auditLogService.writeAuditLogHoadon( username, nhanVien.get().getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(),  "Số tiền: " + vnpAmount, "Thanh toán: Chuyển khoản" , "", "");
         return MessageResponse.builder().message("Thanh toán thành công").build();
     }
 

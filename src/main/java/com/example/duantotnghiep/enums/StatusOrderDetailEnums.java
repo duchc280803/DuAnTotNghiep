@@ -14,9 +14,7 @@ public enum StatusOrderDetailEnums {
 
     DA_HUY(6),
 
-    TRAN_HANG(7),
-
-    TRA_HANG(8);
+    TRA_HANG(7);
 
     private final int value;
 

@@ -71,6 +71,7 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
         SanPhamChiTiet sanPhamChiTiet = new SanPhamChiTiet();
         sanPhamChiTiet.setId(UUID.randomUUID());
         sanPhamChiTiet.setSoLuong(productDetailRequest.getSoLuong());
+        sanPhamChiTiet.setQrcode(UUID.randomUUID().toString());
         sanPhamChiTiet.setTrangThai(1);
         sanPhamChiTiet.setSanPham(sanPham.get());
         sanPhamChiTiet.setMauSac(mauSac.get());

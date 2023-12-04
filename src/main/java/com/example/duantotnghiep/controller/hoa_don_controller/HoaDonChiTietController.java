@@ -160,4 +160,12 @@ public class HoaDonChiTietController {
         return new ResponseEntity<>(hoaDonChiTietService.tongTienHang(id), HttpStatus.OK);
     }
 
+    @PutMapping("huy-don/{id}")
+    public ResponseEntity<MessageResponse> comfirmStatusHuyDon(
+            @PathVariable("id") UUID id,
+            @RequestBody TrangThaiHoaDonRequest trangThaiHoaDonRequest
+    ) {
+        return new ResponseEntity<>(hoaDonChiTietService.comfirmStatusHuyDon(id, trangThaiHoaDonRequest), HttpStatus.OK);
+    }
+
 }

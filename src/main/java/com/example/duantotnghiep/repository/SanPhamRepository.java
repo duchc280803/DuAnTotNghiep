@@ -210,7 +210,7 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
     ProductUpdateResponse findByProduct(@Param("id") UUID id);
 
     @Query(value = "SELECT new com.example.duantotnghiep.response.ProductDetailUpdateReponse" +
-            "(spct.id, ms.tenMauSac, cl.tenChatLieu, s.size, spct.soLuong, spct.trangThai) " +
+            "(spct.id, ms.tenMauSac, cl.tenChatLieu, s.size, spct.soLuong, spct.qrcode, spct.trangThai) " +
             "FROM SanPhamChiTiet spct " +
             "JOIN spct.size s " +
             "JOIN spct.chatLieu cl " +

@@ -96,6 +96,7 @@ public class QLKhachHangImpl implements QLKhachHangService {
         diaChi.setHuyen(createQLKhachHangRequest.getHuyen());
         diaChi.setTinh(createQLKhachHangRequest.getTinh());
         diaChi.setTaiKhoan(taiKhoan);
+        diaChi.setTrangThai(1);
         diaChiRepository.save(diaChi);
         if (sendEmail) {
             sendConfirmationEmail(taiKhoan.getEmail(), taiKhoan.getUsername(), converted);

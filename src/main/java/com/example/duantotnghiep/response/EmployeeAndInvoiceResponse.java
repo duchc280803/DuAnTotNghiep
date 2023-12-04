@@ -11,19 +11,9 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDetailUpdateReponse {
+public class EmployeeAndInvoiceResponse {
 
-    private UUID id;
+    private UUID idNhanVien;
 
-    private String color;
-
-    private String chatLieu;
-
-    private Integer size;
-
-    private Integer quantity;
-
-    private String qrcode;
-
-    private Integer trangThai;
+    private UUID idHoaDon;
 }

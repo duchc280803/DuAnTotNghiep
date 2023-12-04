@@ -82,8 +82,8 @@ public class CartDetailCounterController {
         }
     }
     @DeleteMapping("delete_product")
-    public ResponseEntity<Void> deleteProductInCart(@RequestParam("id") UUID id) {
-        gioHangChiTietService.deleteProductInCart(id);
+    public ResponseEntity<Void> deleteProductInCart(@RequestParam("id") UUID id, Principal principal) throws IOException, CsvValidationException {
+        gioHangChiTietService.deleteProductInCart(id, principal.getName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
