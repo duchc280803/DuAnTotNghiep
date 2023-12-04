@@ -17,8 +17,8 @@ public class VnpayController {
 
     @PostMapping("vn_pay")
     public ResponseEntity<PaymentResponse> transfer(
-            HttpServletRequest req, @RequestBody PaymentRequest transactionRequest)
+            HttpServletRequest req, @RequestParam("amountParam") Long amountParam)
     {
-        return ResponseEntity.ok(vnPayService.callPaymentApi(req,transactionRequest));
+        return ResponseEntity.ok(vnPayService.callPaymentApi(req,amountParam));
     }
 }

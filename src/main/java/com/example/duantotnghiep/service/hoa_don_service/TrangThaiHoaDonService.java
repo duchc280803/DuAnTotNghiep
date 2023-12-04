@@ -11,10 +11,11 @@ import java.util.UUID;
 
 public interface TrangThaiHoaDonService {
 
-    MessageResponse confirmOrder(UUID hoadonId, TrangThaiHoaDonRequest request, String name);
+    MessageResponse confirmOrder(UUID hoadonId, TrangThaiHoaDonRequest request, String name, boolean sendEmail);
 
     MessageResponse confirmOrderClient(UUID hoadonId, ConfirmOrderClientRequest request, String username) throws IOException, CsvValidationException;
 
     MessageResponse confirmOrderDeliver(UUID hoadonId, ConfirmOrderDeliver request);
+
 
 }

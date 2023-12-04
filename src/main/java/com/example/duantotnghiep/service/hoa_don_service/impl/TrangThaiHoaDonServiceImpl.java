@@ -9,9 +9,14 @@ import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.hoa_don_service.TrangThaiHoaDonService;
+import com.example.duantotnghiep.util.FormatNumber;
 import com.opencsv.exceptions.CsvValidationException;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -47,8 +52,11 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
     @Autowired
     private LoaiHinhThucThanhToanRepository loaiHinhThucThanhToanRepository;
 
+    @Autowired
+    private JavaMailSender javaMailSender;
+
     @Override
-    public MessageResponse confirmOrder(UUID hoadonId, TrangThaiHoaDonRequest request, String name) {
+    public MessageResponse confirmOrder(UUID hoadonId, TrangThaiHoaDonRequest request, String name, boolean sendEmail) {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDon> hoaDonOptional = hoaDonRepository.findById(hoadonId);
         TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(name).get();
@@ -63,6 +71,7 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             trangThaiHoaDon.setHoaDon(hoaDon);
             trangThaiHoaDon.setThoiGian(timestamp);
             trangThaiHoaDon.setTrangThai(request.getNewTrangThai());
+            trangThaiHoaDon.setUsername(taiKhoan.getUsername());
             trangThaiHoaDon.setGhiChu(request.getGhiChu());
 
             // Cập nhật trạng thái của Hóa Đơn
@@ -80,6 +89,10 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             // Lưu cả hai bảng
             hoaDonRepository.save(hoaDon);
             trangThaiHoaDonRepository.save(trangThaiHoaDon);
+            if (sendEmail) {
+                sendEmailOrder(hoaDon);
+                System.out.println("gửi mail");
+            }
             if (request.getNewTrangThai() == 5) {
                 LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
                 loaiHinhThucThanhToan.setId(UUID.randomUUID());
@@ -150,6 +163,104 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             return MessageResponse.builder().message("Cập nhập thành công").build();
         } else {
             return MessageResponse.builder().message("Không tìm thấy hóa đơn").build();
+        }
+    }
+
+    private void sendEmailOrder(HoaDon hoaDon) {
+        String productList = ""; // Chuỗi để lưu thông tin về sản phẩm
+
+        List<HoaDonChiTiet> danhSachSanPham = hoaDon.getHoaDonChiTietList();// Giả sử danhSachSanPham lưu danh sách sản phẩm
+        int stt = 1; // Biến để đánh số thứ tự
+
+        for (HoaDonChiTiet sanPham : danhSachSanPham) {
+            productList += "<tr>\n" +
+                    "    <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">" + stt + "</td>\n" +
+                    "    <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">" + sanPham.getSanPhamChiTiet().getSanPham().getTenSanPham() + "</td>\n" +
+                    "    <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">" + sanPham.getSoLuong() + "</td>\n" +
+                    "    <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">" + FormatNumber.formatBigDecimal(sanPham.getDonGiaSauGiam()) + "</td>\n" +
+                    "    <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">" + FormatNumber.formatBigDecimal(sanPham.getDonGiaSauGiam().multiply(new BigDecimal(sanPham.getSoLuong()))) + "</td>\n" +
+                    "</tr>\n";
+            stt++;
+        }
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+
+        try {
+            helper.setTo(hoaDon.getEmail());
+            helper.setSubject("");
+
+            String htmlMsg = "<body style=\"font-family: Arial, sans-serif;\">\n" +
+                    "    <h1 style=\"color: #ff9900;\">Kính gửi Quý khách hàng: " + hoaDon.getTenNguoiNhan() + "</h1>\n" +
+                    "    <h6 style=\"color: black; font-size: 15px;\">Chúng tôi xin chân thành cảm ơn Quý khách đã đặt hàng tại <strong  style=\"color: #ff9900;\">NICE SHOE</strong>.</h6>\n" +
+                    "    <h6 style=\"color: black; font-size: 15px;\">Thông tin chi tiết về đơn hàng của Quý khách như sau:</h6>\n" +
+                    "    <table style=\"width: 100%; border-collapse: collapse; margin-bottom: 20px;\">\n" +
+                    "        <tr>\n" +
+                    "            <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">\n" +
+                    "                <h6 style=\"color: black; font-size: 13px;\">Mã đơn hàng: " + hoaDon.getMa() + "</h6>\n" +
+                    "            </td>\n" +
+                    "            <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">\n" +
+                    "                <h6 style=\"color: black; font-size: 13px;\">Ngày đặt hàng: " + hoaDon.getNgayTao() + "</h6>\n" +
+                    "            </td>\n" +
+                    "            <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">\n" +
+                    "                <h6 style=\"color: black; font-size: 13px;\">Khách hàng: " + hoaDon.getTenNguoiNhan() + "</h6>\n" +
+                    "            </td>\n" +
+                    "        </tr>\n" +
+                    "        <tr>\n" +
+                    "            <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">\n" +
+                    "                <h6 style=\"color: black; font-size: 13px;\">Email: " + hoaDon.getEmail() + "</h6>\n" +
+                    "            </td>\n" +
+                    "            <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">\n" +
+                    "                <h6 style=\"color: black; font-size: 13px;\">Số điện thoại: " + hoaDon.getSdtNguoiNhan() + "</h6>\n" +
+                    "            </td>\n" +
+                    "            <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">\n" +
+                    "                <h6 style=\"color: black; font-size: 13px;\">Tình trạng: " + hoaDon.getTrangThai() + "</h6>\n" +
+                    "            </td>\n" +
+                    "        </tr>\n" +
+                    "    </table>\n" +
+                    "    <h6 style=\"color: black; font-size: 15px;\">Thông tin chi tiết về sản phẩm của Quý khách như sau:</h6>\n" +
+                    "    <table style=\"width: 100%; border-collapse: collapse; margin-bottom: 20px;\">\n" +
+                    "        <thead>\n" +
+                    "            <tr>\n" +
+                    "                <th style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">STT</th>\n" +
+                    "                <th style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">Tên sản phẩm</th>\n" +
+                    "                <th style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">Số lượng</th>\n" +
+                    "                <th style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">Giá bán</th>\n" +
+                    "                <th style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">Tổng cộng</th>\n" +
+                    "            </tr>\n" +
+                    "        </thead>\n" +
+                    "    <tbody>\n" +
+                    productList + // Thêm danh sách sản phẩm vào đây
+                    "    </tbody>\n" +
+                    "<tfoot>\n" +
+                    "    <tr>\n" +
+                    "        <td colspan=\"4\" style=\"text-align: right;\"><strong>Tiền ship:</strong></td>\n" +
+                    "        <td><strong>" + FormatNumber.formatBigDecimal(hoaDon.getTienShip()) + "</strong></td>\n" +
+                    "    </tr>\n" +
+                    "    <tr>\n" +
+                    "        <td colspan=\"4\" style=\"text-align: right;\"><strong>Tiền giảm giá:</strong></td>\n" +
+                    "        <td><strong>" + FormatNumber.formatBigDecimal(hoaDon.getTienGiamGia()) + "</strong></td>\n" +
+                    "    </tr>\n" +
+                    "    <tr>\n" +
+                    "        <td colspan=\"4\" style=\"text-align: right;\"><strong>Tổng tiền hàng:</strong></td>\n" +
+                    "        <td><strong>" + FormatNumber.formatBigDecimal(hoaDon.getThanhTien()) + "</strong></td>\n" +
+                    "    </tr>\n" +
+                    "</tfoot>\n" +
+                    "    </table>\n" +
+                    "\n" +
+                    "    <p>Chúng tôi sẽ xử lý đơn hàng của Quý khách sớm nhất có thể và thông báo cho Quý khách khi đơn hàng đã được giao\n" +
+                    "        cho dịch vụ vận chuyển.</p>\n" +
+                    "    <p>Nếu có bất kỳ thắc mắc hoặc yêu cầu nào, vui lòng liên hệ với chúng tôi qua thông tin sau:</p>\n" +
+                    "    <p>- Điện thoại: 0971066455\n" +
+                    "        - Email: niceshoepoly@gmail.com</p>\n" +
+                    "    <p>Xin chân thành cảm ơn Quý khách hàng đã tin tưởng và lựa chọn sản phẩm của chúng tôi.</p>\n" +
+                    "    <footer style=\"margin-top: 20px;\">Trân trọng, NICESHOE</footer>\n" +
+                    "</body>";
+
+            helper.setText(htmlMsg, true);
+            javaMailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            // Xử lý ngoại lệ nếu gửi email thất bại
+            e.printStackTrace();
         }
     }
 
