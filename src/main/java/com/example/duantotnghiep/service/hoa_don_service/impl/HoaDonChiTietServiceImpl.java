@@ -310,6 +310,19 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
+    public MessageResponse rollBackOrder(UUID idHoaDon, TrangThaiHoaDonRequest request) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        HoaDon hoaDon = hoaDonRepository.findById(idHoaDon).get();
+        hoaDon.setTrangThai(request.getNewTrangThai());
+        hoaDonRepository.save(hoaDon);
+        for (HoaDonChiTiet hoaDonChiTiet: hoaDon.getHoaDonChiTietList()) {
+            hoaDonChiTiet.setTrangThai(request.getNewTrangThai());
+            hoaDonChiTietRepository.save(hoaDonChiTiet);
+        }
+        return null;
+    }
+
+    @Override
     public HoaDon findByHoaDon(UUID id) {
         return hoaDonRepository.findById(id).get();
     }
