@@ -213,116 +213,106 @@ public class AuditLogService {
 
     public void writeAuditLogHoadon(String action, String username, String email, String Id, String Ma, String Ten ,String TenKhach,String Loai)
             throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, Id, Ma, Ten,TenKhach,Loai,  AUDIT_LOG_HOADON_FILE_PATH);
+        AuditLog auditLog = new AuditLog(action, username, email, Id, Ma, Ten, TenKhach, Loai, LocalDateTime.now());
+        writeAuditLog(auditLog, AUDIT_LOG_HOADON_FILE_PATH);
     }
     public void writeAuditLogHoadonChiTiet(String action, String username, String email, String Id, String Ma, String Ten ,String TenKhach,String Loai)
             throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, Id, Ma, Ten,TenKhach,Loai,  AUDIT_LOG_HOADON_CHI_TIET_FILE_PATH);
+        AuditLog auditLog = new AuditLog(action, username, email, Id, Ma, Ten, TenKhach, Loai, LocalDateTime.now());
+        writeAuditLog(auditLog, AUDIT_LOG_HOADON_CHI_TIET_FILE_PATH);
     }
 
     public void writeAuditLogSanPham(String action, String username, String email, String Id, String Ma,  String Ten ,String TenKhach,String Loai)
             throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, Id, Ma, Ten,TenKhach,Loai,  AUDIT_LOG_SANPHAM_FILE_PATH);
+        AuditLog auditLog = new AuditLog(action, username, email, Id, Ma, Ten, TenKhach, Loai, LocalDateTime.now());
+        writeAuditLog(auditLog, AUDIT_LOG_SANPHAM_FILE_PATH);
     }
 
     public void writeAuditLogSize(String action, String username, String email, String Id, String Ma,  String Ten ,String TenKhach,String Loai)
             throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, Id, Ma, Ten,TenKhach,Loai,  AUDIT_LOG_SIZE_FILE_PATH);
+        AuditLog auditLog = new AuditLog(action, username, email, Id, Ma, Ten, TenKhach, Loai, LocalDateTime.now());
+        writeAuditLog(auditLog, AUDIT_LOG_SIZE_FILE_PATH);
     }
 
     public void writeAuditLogChatlieu(String action, String username, String email, String Id, String Ma,  String Ten ,String TenKhach,String Loai)
             throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, Id, Ma, Ten,TenKhach,Loai,  AUDIT_LOG_CHATLIEU_FILE_PATH);
+        AuditLog auditLog = new AuditLog(action, username, email, Id, Ma, Ten, TenKhach, Loai, LocalDateTime.now());
+        writeAuditLog(auditLog, AUDIT_LOG_CHATLIEU_FILE_PATH);
     }
 
     public void writeAuditLogMausac(String action, String username, String email, String Id, String Ma, String Ten ,String TenKhach,String Loai)
             throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, Id, Ma, Ten,TenKhach,Loai, AUDIT_LOG_MAUSAC_FILE_PATH);
+        AuditLog auditLog = new AuditLog(action, username, email, Id, Ma, Ten, TenKhach, Loai, LocalDateTime.now());
+        writeAuditLog(auditLog, AUDIT_LOG_MAUSAC_FILE_PATH);
     }
 
     public void writeAuditLogDanhmuc(String action, String username, String email, String Id, String Ma,  String Ten ,String TenKhach,String Loai)
             throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, Id, Ma, Ten,TenKhach,Loai,  AUDIT_LOG_DANHMUC_FILE_PATH);
+        AuditLog auditLog = new AuditLog(action, username, email, Id, Ma, Ten, TenKhach, Loai, LocalDateTime.now());
+        writeAuditLog(auditLog, AUDIT_LOG_DANHMUC_FILE_PATH);
     }
 
     public void writeAuditLogThuonghieu(String action, String username, String email, String Id, String Ma,  String Ten ,String TenKhach,String Loai)
             throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, Id, Ma, Ten,TenKhach,Loai, AUDIT_LOG_THUONGHIEU_FILE_PATH);
+        AuditLog auditLog = new AuditLog(action, username, email, Id, Ma, Ten, TenKhach, Loai, LocalDateTime.now());
+        writeAuditLog(auditLog, AUDIT_LOG_THUONGHIEU_FILE_PATH);
     }
 
     public void writeAuditLogXuatxu(String action, String username, String email, String Id, String Ma,  String Ten ,String TenKhach,String Loai)
             throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, Id, Ma, Ten,TenKhach,Loai,  AUDIT_LOG_XUATXU_FILE_PATH);
+        AuditLog auditLog = new AuditLog(action, username, email, Id, Ma, Ten, TenKhach, Loai, LocalDateTime.now());
+        writeAuditLog(auditLog, AUDIT_LOG_XUATXU_FILE_PATH);
     }
 
     public void writeAuditLogKieude(String action, String username, String email, String Id, String Ma, String Ten ,String TenKhach,String Loai)
             throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, Id, Ma, Ten,TenKhach,Loai, AUDIT_LOG_KIEUDE_FILE_PATH);
+        AuditLog auditLog = new AuditLog(action, username, email, Id, Ma, Ten, TenKhach, Loai, LocalDateTime.now());
+        writeAuditLog(auditLog, AUDIT_LOG_KIEUDE_FILE_PATH);
     }
 
     public void writeAuditLogNhanvien(String action, String username, String email, String Id, String Ma,  String Ten ,String TenKhach,String Loai)
             throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, Id, Ma, Ten,TenKhach,Loai,  AUDIT_LOG_NHANVIEN_FILE_PATH);
+        AuditLog auditLog = new AuditLog(action, username, email, Id, Ma, Ten, TenKhach, Loai, LocalDateTime.now());
+        writeAuditLog(auditLog, AUDIT_LOG_NHANVIEN_FILE_PATH);
     }
 
     public void writeAuditLogKhachhang(String action, String username, String email, String Id, String Ma,  String Ten ,String TenKhach,String Loai)
             throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, Id, Ma, Ten,TenKhach,Loai,  AUDIT_LOG_KHACHHANG_FILE_PATH);
+        AuditLog auditLog = new AuditLog(action, username, email, Id, Ma, Ten, TenKhach, Loai, LocalDateTime.now());
+        writeAuditLog(auditLog, AUDIT_LOG_KHACHHANG_FILE_PATH);
     }
 
-    public void writeAuditLogVoucher(String action, String username, String email, String Id, String Ma,  String Ten ,String TenKhach,String Loai)
+    public void writeAuditLogVoucher(String action, String username, String email, String Id, String Ma, String Ten, String TenKhach, String Loai)
             throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, Id, Ma, Ten,TenKhach,Loai,  AUDIT_LOG_VOUCHER_FILE_PATH);
+        AuditLog auditLog = new AuditLog(action, username, email, Id, Ma, Ten, TenKhach, Loai, LocalDateTime.now());
+        writeAuditLog(auditLog, AUDIT_LOG_VOUCHER_FILE_PATH);
     }
 
     public void writeAuditLogKhuyenmai(String action, String username, String email, String Id, String Ma, String Ten ,String TenKhach,String Loai)
             throws IOException, CsvValidationException {
-        writeAuditLog(action, username, email, Id, Ma, Ten,TenKhach,Loai, AUDIT_LOG_KHUYENMAI_FILE_PATH);
+        AuditLog auditLog = new AuditLog(action, username, email, Id, Ma, Ten, TenKhach, Loai, LocalDateTime.now());
+        writeAuditLog(auditLog, AUDIT_LOG_KHUYENMAI_FILE_PATH);
     }
 
-    private void writeAuditLog(String action, String username, String email, String Id, String Ma, String Ten,String TenKhach,String LoaiThanhToan,
-                               String filePath) throws IOException, CsvValidationException {
-        List<AuditLog> auditLogList = readAuditLog(filePath);
-
-        // Check if an entry with the same parameters already exists
-        Optional<AuditLog> existingEntry = auditLogList.stream()
-                .filter(log -> log.getAction().equals(action)
-                        && log.getUsername().equals(username)
-                        && log.getPassword().equals(email)
-                        && log.getId().equals(Id)
-                        && log.getMa().equals(Ma)
-                        && log.getTen().equals(Ten)
-                        && log.getTenKhachHang().equals(TenKhach)
-                        && log.getLoaiThanhToan().equals(LoaiThanhToan))
-                .findFirst();
-
-        // If the entry doesn't exist, add a new one
-        if (!existingEntry.isPresent()) {
-            auditLogList.add(new AuditLog(action, username, email, Id, Ma, Ten,TenKhach,LoaiThanhToan, LocalDateTime.now()));
-        } else {
-            // If the entry exists, update its timestamp
-            existingEntry.get().setTimestamp(LocalDateTime.now());
-        }
-
-        writeAuditLogToFile(auditLogList, filePath);
-    }
-
-
-    private void writeAuditLogToFile(List<AuditLog> auditLogList, String filePath) throws IOException {
+    public void writeAuditLog(AuditLog auditLog, String filePath) {
         try (CSVWriter writer = new CSVWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath, true), "UTF-8")))) {
-            // Ghi header nếu file chưa có dữ liệu
-            if (new File(filePath).length() == 0) {
-                String[] header = { "Action", "Username", "Email", "Id", "Ma", "Ten","TenKhach","Loai Thanh Toan", "Timestamp" };
-                writer.writeNext(header);
-            }
+            String[] logData = {
+                    auditLog.getAction(),
+                    auditLog.getUsername(),
+                    auditLog.getPassword(),
+                    auditLog.getId(),
+                    auditLog.getMa(),
+                    auditLog.getTen(),
+                    auditLog.getTenKhachHang(),
+                    auditLog.getLoaiThanhToan(),
+                    auditLog.getTimestamp().toString()
+            };
 
-            // Ghi dữ liệu mới vào cuối file
-            for (AuditLog auditLog : auditLogList) {
-                String[] data = { auditLog.getAction(), auditLog.getUsername(), auditLog.getPassword(),
-                        auditLog.getId(), auditLog.getMa(), auditLog.getTen(), auditLog.getTenKhachHang(),auditLog.getLoaiThanhToan(),auditLog.getTimestamp().toString() };
-                writer.writeNext(data);
-            }
+            writer.writeNext(logData);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
 
 }

@@ -1,16 +1,21 @@
 package com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl;
 
 import com.example.duantotnghiep.entity.DanhMuc;
+import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.repository.DanhMucRepository;
+import com.example.duantotnghiep.repository.TaiKhoanRepository;
 import com.example.duantotnghiep.request.DanhMucRequest;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.DanhMucService;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +28,10 @@ public class DanhMucServiceImpl implements DanhMucService {
     private DanhMucRepository danhMucRepository;
 
     private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-
+    @Autowired
+    private AuditLogService auditLogService;
+    @Autowired
+    private TaiKhoanRepository taiKhoanRepository;
     @Override
     public List<DanhMuc> getAll() {
         return danhMucRepository.findByTrangThai(1);
@@ -43,18 +51,23 @@ public class DanhMucServiceImpl implements DanhMucService {
     }
 
     @Override
-    public MessageResponse create(DanhMucRequest request) {
+    public MessageResponse create(DanhMucRequest request,String username) throws IOException, CsvValidationException {
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         DanhMuc danhMuc = new DanhMuc();
         danhMuc.setId(UUID.randomUUID());
         danhMuc.setTenDanhMuc(request.getTenDanhMuc());
         danhMuc.setTrangThai(request.getTrangThai());
         danhMuc.setNgayTao(timestamp);
         danhMucRepository.save(danhMuc);
+        auditLogService.writeAuditLogDanhmuc("Thêm Mới Danh Mục", username, taiKhoanUser.getEmail(), null,
+                "Tên danh mục: " + request.getTenDanhMuc() + "," + "Trạng Thái: " + request.getTrangThai() ,null,null,
+                null);
         return MessageResponse.builder().message("Thêm thành công").build();
     }
 
     @Override
-    public MessageResponse update(UUID id, DanhMucRequest request) {
+    public MessageResponse update(UUID id, DanhMucRequest request,String username) throws IOException, CsvValidationException {
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         Optional<DanhMuc> danhMucOptional= danhMucRepository.findById(id);
         if (danhMucOptional.isPresent()) {
             DanhMuc danhMuc = danhMucOptional.get();
@@ -62,6 +75,9 @@ public class DanhMucServiceImpl implements DanhMucService {
             danhMuc.setTrangThai(request.getTrangThai());
             danhMuc.setNgayCapNhat(timestamp);
             danhMucRepository.save(danhMuc);
+            auditLogService.writeAuditLogDanhmuc("Cập nhật Danh Mục", username, taiKhoanUser.getEmail(), null,
+                    "tên danh mục : " + request.getTenDanhMuc() + "," + "Trạng Thái: " + request.getTrangThai() ,null,null,
+                    null);
             return MessageResponse.builder().message("Cập nhật thành công").build();
         } else {
             return MessageResponse.builder().message("Không tìm thấy thương hiệu với ID: " + id).build();

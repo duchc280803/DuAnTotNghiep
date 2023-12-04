@@ -1,16 +1,21 @@
 package com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl;
 
 import com.example.duantotnghiep.entity.MauSac;
+import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.repository.MauSacRepository;
+import com.example.duantotnghiep.repository.TaiKhoanRepository;
 import com.example.duantotnghiep.request.MauSacRequest;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.MauSacService;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +26,10 @@ public class MauSacServiceImpl implements MauSacService {
 
     @Autowired
     private MauSacRepository mauSacRepository;
+    @Autowired
+    private AuditLogService auditLogService;
+    @Autowired
+    private TaiKhoanRepository taiKhoanRepository;
 
     private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
@@ -43,18 +52,26 @@ public class MauSacServiceImpl implements MauSacService {
     }
 
     @Override
-    public MessageResponse create(MauSacRequest request) {
+    public MessageResponse create(MauSacRequest request,String username) throws IOException, CsvValidationException {
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         MauSac mauSac = new MauSac();
         mauSac.setId(UUID.randomUUID());
         mauSac.setTenMauSac(request.getTenMauSac());
         mauSac.setTrangThai(request.getTrangThai());
         mauSac.setNgayTao(timestamp);
         mauSacRepository.save(mauSac);
+
+        auditLogService.writeAuditLogMausac("Thêm Mới Màu Sắc", username, taiKhoanUser.getEmail(), null,
+                "Màu Sắc : " + request.getTenMauSac() + "," + "Trạng Thái: " + request.getTrangThai() ,null,null,
+                null);
+
+
         return MessageResponse.builder().message("Thêm thành công").build();
     }
 
     @Override
-    public MessageResponse update(UUID id, MauSacRequest request) {
+    public MessageResponse update(UUID id, MauSacRequest request,String username) throws IOException, CsvValidationException {
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         Optional<MauSac> optionalMauSac= mauSacRepository.findById(id);
         if (optionalMauSac.isPresent()) {
             MauSac mauSac = optionalMauSac.get();
@@ -62,6 +79,10 @@ public class MauSacServiceImpl implements MauSacService {
             mauSac.setTrangThai(request.getTrangThai());
             mauSac.setNgayCapNhat(timestamp);
             mauSacRepository.save(mauSac);
+            auditLogService.writeAuditLogMausac("Cập nhật Màu Sắc", username, taiKhoanUser.getEmail(), null,
+                    "Màu Sắc : " + request.getTenMauSac() + "," + "Trạng Thái: " + request.getTrangThai() ,null,null,
+                    null);
+
             return MessageResponse.builder().message("Cập nhật thành công").build();
         } else {
             return MessageResponse.builder().message("Không tìm thấy thương hiệu với ID: " + id).build();

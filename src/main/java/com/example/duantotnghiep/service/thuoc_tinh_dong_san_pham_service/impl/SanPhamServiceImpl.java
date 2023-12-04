@@ -125,12 +125,21 @@ public class SanPhamServiceImpl implements SanPhamService {
         sanPham.setXuatXu(xuatXu.get());
         sanPham.setTrangThai(1);
         sanPhamRepository.save(sanPham);
-        auditLogService.writeAuditLogSanPham("create", username, taiKhoanUser.getEmail(), null,
+        String thuongHieuInfo = thuongHieu.isPresent() ? thuongHieu.get().getTenThuongHieu() : "";
+        String danhMucInfo = danhMuc.isPresent() ? danhMuc.get().getTenDanhMuc() : "";
+        String kieuDeInfo = kieuDe.isPresent() ? kieuDe.get().getTenDe() : "";
+        String xuatXuInfo = xuatXu.isPresent() ? xuatXu.get().getTenXuatXu() : "";
+
+        auditLogService.writeAuditLogSanPham("Thêm Mới sản phẩm", username, taiKhoanUser.getEmail(), null,
                 "Mã : " + productRequest.getMaSanPham() + "," + "Tên :" + productRequest.getProductName()
                         + "," + "Giá bán : " + productRequest.getPrice() + ","
                         + "Bảo Hành : " + productRequest.getBaoHang() + "," + "Mô Tả : "
-                        + productRequest.getDescribe(),
+                        + productRequest.getDescribe() + "," + "Thương Hiệu: " + thuongHieuInfo
+                        + "," + "Danh Mục: " + danhMucInfo + "," + "Kiểu Đế: " + kieuDeInfo
+                        + "," + "Xuất Xứ: " + xuatXuInfo,
                 null, null, null);
+
+
         return sanPham;
     }
 

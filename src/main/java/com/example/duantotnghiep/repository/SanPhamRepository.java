@@ -35,6 +35,12 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "ORDER BY sp.ngaytao DESC", nativeQuery = true)
     List<SanPhamResponse> getNewProductbyId(@Param("id") UUID id);
 
+    @Query(value = "SELECT  sp.tensanpham " +
+            "FROM sanpham sp  " +
+            "WHERE sp.id = :id " , nativeQuery = true)
+    SanPhamResponse getNewProductbyName(@Param("id") UUID id);
+
+
     @Query(value = "SELECT TOP 8 sp.id, sp.tensanpham, im.tenimage, sp.giaban, spgg.donGiaKhiGiam " +
             "FROM sanpham sp " +
             "JOIN sanphamchitiet spct ON sp.id = spct.idsanpham " +
