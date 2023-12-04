@@ -12,9 +12,9 @@ public class VnPayConfig {
 
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
-    public static String vnp_TmnCode = "OQBXD7Z7";
+    public static String vnp_TmnCode = "JBGBHR8E";
 
-    public static String secretKey = "IMZNUDIJCRRPSAEPYIEHHCRJPKLUNUGG";
+    public static String secretKey = "UPVBHGWBJTCUPIBRBTXBUBIRTDLNKFZA";
 
     public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
 
