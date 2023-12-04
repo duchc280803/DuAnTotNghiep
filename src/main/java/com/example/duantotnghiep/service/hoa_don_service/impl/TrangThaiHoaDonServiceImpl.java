@@ -71,6 +71,7 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             trangThaiHoaDon.setHoaDon(hoaDon);
             trangThaiHoaDon.setThoiGian(timestamp);
             trangThaiHoaDon.setTrangThai(request.getNewTrangThai());
+            trangThaiHoaDon.setUsername(taiKhoan.getUsername());
             trangThaiHoaDon.setGhiChu(request.getGhiChu());
 
             // Cập nhật trạng thái của Hóa Đơn

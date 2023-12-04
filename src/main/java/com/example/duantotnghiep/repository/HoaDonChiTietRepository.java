@@ -45,7 +45,7 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
             "JOIN hd.taiKhoanNhanVien nv WHERE hd.id = :idHoaDon")
     List<HinhThucThanhToanResponse> getLichSuThanhToan(UUID idHoaDon);
 
-    @Query("SELECT new com.example.duantotnghiep.response.TrangThaiHoaDonResponse(tthd.trangThai, tthd.thoiGian, tknv.name, tthd.ghiChu) " +
+    @Query("SELECT new com.example.duantotnghiep.response.TrangThaiHoaDonResponse(tthd.trangThai, tthd.thoiGian, tthd.username, tthd.ghiChu) " +
             "FROM HoaDon hd " +
             "JOIN hd.trangThaiHoaDonList tthd " +
             "LEFT JOIN hd.taiKhoanNhanVien tknv WHERE hd.id = :id ORDER BY tthd.thoiGian DESC ")
