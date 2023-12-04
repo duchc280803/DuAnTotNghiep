@@ -1,8 +1,6 @@
 package com.example.duantotnghiep.controller.hoa_don_controller;
 
 import com.example.duantotnghiep.entity.HoaDon;
-import com.example.duantotnghiep.entity.TaiKhoan;
-import com.example.duantotnghiep.repository.LoaiHinhThucThanhToanRepository;
 import com.example.duantotnghiep.request.*;
 import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.hoa_don_service.impl.HoaDonChiTietServiceImpl;
@@ -54,7 +52,7 @@ public class HoaDonChiTietController {
     public ResponseEntity<MessageResponse> confirmOrder(
             @PathVariable UUID hoadonId,
             @RequestBody TrangThaiHoaDonRequest request, Principal principal) {
-        return new ResponseEntity<>(trangThaiHoaDonService.confirmOrder(hoadonId, request, principal.getName()), HttpStatus.CREATED);
+        return new ResponseEntity<>(trangThaiHoaDonService.confirmOrder(hoadonId, request, principal.getName(), true), HttpStatus.CREATED);
     }
 
     @PutMapping("confirm-order-client/{hoadonId}")

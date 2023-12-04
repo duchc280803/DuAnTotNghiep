@@ -16,7 +16,7 @@ import java.util.*;
 public class VnPayServiceImpl implements VnPayService {
 
     @Override
-    public PaymentResponse callPaymentApi(HttpServletRequest req, PaymentRequest transactionRequest) {
+    public PaymentResponse callPaymentApi(HttpServletRequest req, Long amountParam) {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
 
@@ -28,7 +28,7 @@ public class VnPayServiceImpl implements VnPayService {
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-        vnp_Params.put("vnp_Amount", String.valueOf(transactionRequest.getAmountParam() * 100) );
+        vnp_Params.put("vnp_Amount", String.valueOf(amountParam * 100) );
         vnp_Params.put("vnp_CurrCode", "VND");
         if ("NCB" != null && !"NCB".isEmpty()) {
             vnp_Params.put("vnp_BankCode", "NCB");
@@ -81,6 +81,6 @@ public class VnPayServiceImpl implements VnPayService {
         String queryUrl = query.toString();
         String vnp_SecureHash = VnPayConfig.hmacSHA512(VnPayConfig.secretKey, hashData.toString());
         queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-        return PaymentResponse.builder().url("value" + VnPayConfig.vnp_PayUrl + "?" + queryUrl).build();
+        return PaymentResponse.builder().url(VnPayConfig.vnp_PayUrl + "?" + queryUrl).build();
     }
 }

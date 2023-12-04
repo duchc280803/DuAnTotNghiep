@@ -12,7 +12,11 @@ import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.hoa_don_service.HoaDonChiTietService;
 import com.opencsv.exceptions.CsvValidationException;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -109,7 +113,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             if (spGiamGia.getGiaGiam() == null) {
                 return tongTienGiam;
             }
-            if (spGiamGia.getGiaGiam() != null){
+            if (spGiamGia.getGiaGiam() != null) {
                 tongTienGiam += spGiamGia.getGiaGiam().longValue();
             }
 
@@ -151,8 +155,8 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             hoaDonChiTiet.setTrangThai(1);
             auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Thêm sản phẩm", findByHoaDon.get().getMa(),
                     "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(),
-                    "Tên sản phẩm: "+ sanPhamChiTiet.getSanPham().getTenSanPham(),
-                    "Số lượng: " + soLuong + "",  "");
+                    "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
+                    "Số lượng: " + soLuong + "", "");
         }
 
         chiTietSanPhamRepository.save(sanPhamChiTiet);
@@ -229,7 +233,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Cập nhật số lượng", hoaDon.get().getMa(),
                 "Mã sản phẩm: " + hoaDonChiTietOptional.get().getSanPhamChiTiet().getSanPham().getMaSanPham(),
                 "Tên sản phẩm: " + hoaDonChiTietOptional.get().getSanPhamChiTiet().getSanPham().getTenSanPham(),
-                + soLuongMoi + "", "");
+                +soLuongMoi + "", "");
 
     }
 
@@ -280,7 +284,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setGhiChu(request.getGhiChu());
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
 
-        for (HoaDonChiTiet x :hoaDon.getHoaDonChiTietList()) {
+        for (HoaDonChiTiet x : hoaDon.getHoaDonChiTietList()) {
             SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(x.getSanPhamChiTiet().getId()).get();
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + x.getSoLuong());
             chiTietSanPhamRepository.save(sanPhamChiTiet);
@@ -315,7 +319,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         HoaDon hoaDon = hoaDonRepository.findById(idHoaDon).get();
         hoaDon.setTrangThai(request.getNewTrangThai());
         hoaDonRepository.save(hoaDon);
-        for (HoaDonChiTiet hoaDonChiTiet: hoaDon.getHoaDonChiTietList()) {
+        for (HoaDonChiTiet hoaDonChiTiet : hoaDon.getHoaDonChiTietList()) {
             hoaDonChiTiet.setTrangThai(request.getNewTrangThai());
             hoaDonChiTietRepository.save(hoaDonChiTiet);
         }
@@ -442,7 +446,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                 chiTietSanPhamRepository.save(sanPhamChiTiet);
                 trangThaiHoaDonRepository.save(trangThaiHoaDon);
                 hoaDonRepository.save(hoaDon);
-                auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Trả hàng", hoaDon.getMa(), "Mã sản phẩm: " + sanPhamHoaDon.getMaSanPham(), "Tên sản phẩm: "+sanPhamHoaDon.getTenSanPham(), "Số lượng trả: " + traHangRequest.getSoLuong().toString(), "");
+                auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Trả hàng", hoaDon.getMa(), "Mã sản phẩm: " + sanPhamHoaDon.getMaSanPham(), "Tên sản phẩm: " + sanPhamHoaDon.getTenSanPham(), "Số lượng trả: " + traHangRequest.getSoLuong().toString(), "");
 
                 return MessageResponse.builder().message("Trả hàng thành công").build();
             }
@@ -453,6 +457,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
     /**
      * Xóa sản phẩm khỏi hóa đơn chi tiết
+     *
      * @param id
      * @param username
      * @throws IOException
@@ -463,7 +468,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findById(id).orElse(null);
         TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).orElse(null);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
-        auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Xóa sản phẩm", hoaDon.get().getMa(), "Mã sản phẩm: " + hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getMaSanPham(), "Tên sản phẩm: "+hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getTenSanPham(), "", "");
+        auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Xóa sản phẩm", hoaDon.get().getMa(), "Mã sản phẩm: " + hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getMaSanPham(), "Tên sản phẩm: " + hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getTenSanPham(), "", "");
         hoaDonChiTietRepository.deleteById(id);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
@@ -542,7 +547,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         List<HoaDonChiTiet> hoaDonChiTiets = hoaDon.getHoaDonChiTietList();
 
         BigDecimal tongTien = BigDecimal.ZERO;
-        for (HoaDonChiTiet hdct: hoaDonChiTiets) {
+        for (HoaDonChiTiet hdct : hoaDonChiTiets) {
             if (hdct.getTrangThai() != 7) {
                 BigDecimal donGiaSauGiam = hdct.getDonGiaSauGiam() != null ? hdct.getDonGiaSauGiam() : BigDecimal.ZERO;
                 Integer soLuong = hdct.getSoLuong() != null ? hdct.getSoLuong() : 0;
@@ -551,5 +556,6 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         }
         return tongTien;
     }
+
 
 }
