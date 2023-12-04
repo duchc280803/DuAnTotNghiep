@@ -68,7 +68,13 @@ public class OrdersCounterController {
             @RequestParam("idHoaDon") UUID idHoaDon,
             @RequestBody HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest,
             Principal principal) throws IOException, CsvValidationException {
-        return new ResponseEntity<>(hoaDonService.updateHoaDonGiaoTaiQuay(idHoaDon, hoaDonGiaoThanhToanRequest, principal.getName()), HttpStatus.CREATED);
+        return new ResponseEntity<>(hoaDonService.updateHoaDonGiaoTaiQuay(idHoaDon, hoaDonGiaoThanhToanRequest, principal.getName(), true), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("remove")
+    public ResponseEntity<Void> removeOrder(@RequestParam("id") UUID id) {
+        hoaDonService.removeOrder(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

@@ -25,10 +25,12 @@ public interface OrderCounterService {
 
     MessageResponse updateHoaDon(UUID idHoaDon, HoaDonThanhToanRequest hoaDonThanhToanRequest);
 
-    MessageResponse updateHoaDonGiaoTaiQuay(UUID idHoaDon, HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest, String username) throws IOException, CsvValidationException;
+    MessageResponse updateHoaDonGiaoTaiQuay(UUID idHoaDon, HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest, String username, boolean sendEmail) throws IOException, CsvValidationException;
 
     OrderCounterCartsResponse findByHoaDon(UUID id);
 
     IdGioHangResponse showIdGioHangCt(UUID id);
+
+    void removeOrder(UUID id);
 
 }

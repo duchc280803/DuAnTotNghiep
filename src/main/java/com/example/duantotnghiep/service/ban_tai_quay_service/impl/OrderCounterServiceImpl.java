@@ -68,6 +68,9 @@ public class OrderCounterServiceImpl implements OrderCounterService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Autowired
+    private HinhThucThanhToanRepository hinhThucThanhToanRepository;
+
     @Override
     @Transactional
     // TODO Thêm hóa đơn tại quầy
@@ -189,6 +192,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         trangThaiHoaDon.setId(UUID.randomUUID());
         trangThaiHoaDon.setTrangThai(StatusOrderDetailEnums.HOAN_THANH.getValue());
         trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setUsername(hoaDon.get().getTaiKhoanNhanVien().getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu("Nhân viên xác nhận đơn cho khách");
         trangThaiHoaDon.setHoaDon(hoaDon.get());
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
@@ -197,7 +201,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
     }
 
     @Override
-    public MessageResponse updateHoaDonGiaoTaiQuay(UUID idHoaDon, HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest, String username) throws IOException, CsvValidationException {
+    public MessageResponse updateHoaDonGiaoTaiQuay(UUID idHoaDon, HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest, String username, boolean sendEmail) throws IOException, CsvValidationException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
         Optional<TaiKhoan> findByNhanVien = taiKhoanRepository.findByUsername(username);
@@ -218,7 +222,6 @@ public class OrderCounterServiceImpl implements OrderCounterService {
                 "SĐT: "+hoaDonGiaoThanhToanRequest.getSoDienThoai(),
                 "Địa chỉ: "+hoaDonGiaoThanhToanRequest.getDiaChi(), "Phí vận chuyển: "+hoaDonGiaoThanhToanRequest.getTienGiao());
         hoaDonRepository.save(hoaDon.get());
-        sendEmailOrder(hoaDon.get());
 
         for (UUID idGioHangChiTiet : hoaDonGiaoThanhToanRequest.getGioHangChiTietList()) {
             Optional<GioHangChiTiet> gioHangChiTiet = gioHangChiTietRepository.findById(idGioHangChiTiet);
@@ -250,9 +253,14 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         trangThaiHoaDon.setId(UUID.randomUUID());
         trangThaiHoaDon.setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
         trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setUsername(hoaDon.get().getTaiKhoanNhanVien().getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu("Nhân viên xác nhận đơn cho khách");
         trangThaiHoaDon.setHoaDon(hoaDon.get());
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
+        if (sendEmail) {
+            sendEmailOrder(hoaDon.get());
+            System.out.println("gửi mail");
+        }
         return MessageResponse.builder().message("Thanh Toán Thành Công").build();
     }
 
@@ -263,6 +271,26 @@ public class OrderCounterServiceImpl implements OrderCounterService {
     @Override
     public IdGioHangResponse showIdGioHangCt(UUID id) {
         return hoaDonRepository.showIdGioHangCt(id);
+    }
+
+    @Override
+    public void removeOrder(UUID id) {
+        IdGioHangResponse idGioHangResponse = hoaDonRepository.showIdGioHangCt(id);
+        GioHang gioHang = gioHangRepository.findById(idGioHangResponse.getId()).get();
+        gioHang.setTrangThai(2);
+        gioHangRepository.save(gioHang);
+        HoaDon hoaDon = hoaDonRepository.findById(id).get();
+        for (TrangThaiHoaDon x : hoaDon.getTrangThaiHoaDonList()) {
+            if (x != null) {
+                trangThaiHoaDonRepository.deleteById(x.getId());
+            }
+        }
+        for (HinhThucThanhToan x : hoaDon.getHinhThucThanhToanList()) {
+            if (x != null) {
+                hinhThucThanhToanRepository.deleteById(x.getId());
+            }
+        }
+        hoaDonRepository.deleteById(id);
     }
 
     private void sendEmailOrder(HoaDon hoaDon) {

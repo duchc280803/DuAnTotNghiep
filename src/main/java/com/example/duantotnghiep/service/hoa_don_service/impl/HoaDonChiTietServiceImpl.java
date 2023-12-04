@@ -185,6 +185,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setHoaDon(findByHoaDon.get());
         trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
         trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setUsername(findByHoaDon.get().getTaiKhoanNhanVien().getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
         return MessageResponse.builder().message("Thêm thành công").build();
@@ -227,6 +228,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setHoaDon(hoaDon.get());
         trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
         trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setUsername(hoaDonChiTietOptional.get().getHoaDon().getTaiKhoanNhanVien().getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
 
@@ -281,6 +283,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setTrangThai(request.getNewTrangThai());
         trangThaiHoaDon.setThoiGian(timestamp);
         trangThaiHoaDon.setHoaDon(hoaDon);
+        trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu(request.getGhiChu());
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
 
@@ -371,9 +374,30 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                             trangThaiHoaDon.setTrangThai(6);
                             trangThaiHoaDon.setThoiGian(timestamp);
                             trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
+                            trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
                             trangThaiHoaDon.setHoaDon(hoaDon);
                             hoaDon.setTrangThai(6);
                             hoaDonChiTietRepository.save(hoaDonChiTiet);
+
+                            // Hoàn tiền cho khách
+                            LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+                            loaiHinhThucThanhToan.setId(UUID.randomUUID());
+                            loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
+                            loaiHinhThucThanhToan.setTenLoai("Nhân viên hoàn tiền");
+                            loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+
+                            HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+                            hinhThucThanhToan.setId(UUID.randomUUID());
+                            hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+                            hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
+                            hinhThucThanhToan.setTongSoTien(hoaDonChiTiet.getDonGiaSauGiam().multiply(new BigDecimal(hoaDonChiTiet.getSoLuong())));
+                            hinhThucThanhToan.setGhiChu("");
+                            hinhThucThanhToan.setPhuongThucThanhToan(1);
+                            hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
+                            hinhThucThanhToan.setHoaDon(hoaDon);
+                            hinhThucThanhToan.setTrangThai(1);
+                            hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
+                            hinhThucThanhToanRepository.save(hinhThucThanhToan);
                         } else {
                             HoaDonChiTiet addTraHang = new HoaDonChiTiet();
                             addTraHang.setId(UUID.randomUUID());
@@ -392,7 +416,27 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                             trangThaiHoaDon.setThoiGian(timestamp);
                             trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
                             trangThaiHoaDon.setHoaDon(hoaDon);
+                            trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
                             hoaDonChiTietRepository.save(hoaDonChiTiet);
+
+                            LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+                            loaiHinhThucThanhToan.setId(UUID.randomUUID());
+                            loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
+                            loaiHinhThucThanhToan.setTenLoai("Nhân viên hoàn tiền");
+                            loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+
+                            HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+                            hinhThucThanhToan.setId(UUID.randomUUID());
+                            hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+                            hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
+                            hinhThucThanhToan.setTongSoTien(addTraHang.getDonGiaSauGiam().multiply(new BigDecimal(addTraHang.getSoLuong())));
+                            hinhThucThanhToan.setGhiChu("");
+                            hinhThucThanhToan.setPhuongThucThanhToan(1);
+                            hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
+                            hinhThucThanhToan.setHoaDon(hoaDon);
+                            hinhThucThanhToan.setTrangThai(1);
+                            hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
+                            hinhThucThanhToanRepository.save(hinhThucThanhToan);
                         }
                     } else {
                         if (hoaDonChiTiet.getSoLuong() == traHangRequest.getSoLuong()) {
@@ -404,7 +448,27 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                             trangThaiHoaDon.setThoiGian(timestamp);
                             trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
                             trangThaiHoaDon.setHoaDon(hoaDon);
+                            trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
                             hoaDonChiTietRepository.save(hoaDonChiTiet);
+
+                            LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+                            loaiHinhThucThanhToan.setId(UUID.randomUUID());
+                            loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
+                            loaiHinhThucThanhToan.setTenLoai("Nhân viên hoàn tiền");
+                            loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+
+                            HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+                            hinhThucThanhToan.setId(UUID.randomUUID());
+                            hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+                            hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
+                            hinhThucThanhToan.setTongSoTien(hoaDonChiTiet.getDonGiaSauGiam().multiply(new BigDecimal(hoaDonChiTiet.getSoLuong())));
+                            hinhThucThanhToan.setGhiChu("");
+                            hinhThucThanhToan.setPhuongThucThanhToan(1);
+                            hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
+                            hinhThucThanhToan.setHoaDon(hoaDon);
+                            hinhThucThanhToan.setTrangThai(1);
+                            hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
+                            hinhThucThanhToanRepository.save(hinhThucThanhToan);
                         } else {
                             HoaDonChiTiet addTraHang = new HoaDonChiTiet();
                             addTraHang.setId(UUID.randomUUID());
@@ -424,8 +488,26 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                             trangThaiHoaDon.setThoiGian(timestamp);
                             trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
                             trangThaiHoaDon.setHoaDon(hoaDon);
+                            trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
                             hoaDonChiTietRepository.save(hoaDonChiTiet);
 
+                            LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+                            loaiHinhThucThanhToan.setId(UUID.randomUUID());
+                            loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
+                            loaiHinhThucThanhToan.setTenLoai("Nhân viên hoàn tiền");
+                            loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+
+                            HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+                            hinhThucThanhToan.setId(UUID.randomUUID());
+                            hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+                            hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
+                            hinhThucThanhToan.setTongSoTien(addTraHang.getDonGiaSauGiam().multiply(new BigDecimal(addTraHang.getSoLuong())));                            hinhThucThanhToan.setGhiChu("");
+                            hinhThucThanhToan.setPhuongThucThanhToan(1);
+                            hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
+                            hinhThucThanhToan.setHoaDon(hoaDon);
+                            hinhThucThanhToan.setTrangThai(1);
+                            hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
+                            hinhThucThanhToanRepository.save(hinhThucThanhToan);
                         }
                     }
                 }
@@ -500,6 +582,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setHoaDon(hoaDon.get());
         trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
         trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setUsername(hoaDon.get().getTaiKhoanNhanVien().getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
     }

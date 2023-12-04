@@ -392,7 +392,7 @@ public class AuditLogController {
         }
     }
 
-    @GetMapping("/auditlogbydate")
+    @GetMapping("/auditlogvoucherbydate")
     public List<AuditLog> getAuditLogByDate(
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
         try {
@@ -403,9 +403,140 @@ public class AuditLogController {
             return null;
         }
     }
+    @GetMapping("/auditlogsanphambydate")
+    public List<AuditLog> getAuditLogSanPhamByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        try {
+            return auditLogService.readAuditLogByDate(AUDIT_LOG_SANPHAM_FILE_PATH, searchDate);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
+    @GetMapping("/auditloghoadonbydate")
+    public List<AuditLog> getAuditLogHoaDonByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        try {
+            return auditLogService.readAuditLogByDate(AUDIT_LOG_HOADON_FILE_PATH, searchDate);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
 
+    @GetMapping("/auditlogkhuyenmaibydate")
+    public List<AuditLog> getAuditLogKhuyenMaiByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        try {
+            return auditLogService.readAuditLogByDate(AUDIT_LOG_KHUYENMAI_FILE_PATH, searchDate);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
+    @GetMapping("/auditlogsizebydate")
+    public List<AuditLog> getAuditLogSizeByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        try {
+            return auditLogService.readAuditLogByDate(AUDIT_LOG_SIZE_FILE_PATH, searchDate);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
 
-
+    @GetMapping("/auditlogchatlieubydate")
+    public List<AuditLog> getAuditLogChatLieuByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        try {
+            return auditLogService.readAuditLogByDate(AUDIT_LOG_CHATLIEU_FILE_PATH, searchDate);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
+    @GetMapping("/auditlogmausacbydate")
+    public List<AuditLog> getAuditLogMauSacByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        try {
+            return auditLogService.readAuditLogByDate(AUDIT_LOG_MAUSAC_FILE_PATH, searchDate);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
+    @GetMapping("/auditlogdanhmucbydate")
+    public List<AuditLog> getAuditLogDanhMucByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        try {
+            return auditLogService.readAuditLogByDate(AUDIT_LOG_DANHMUC_FILE_PATH, searchDate);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
+    @GetMapping("/auditlogthuonghieubydate")
+    public List<AuditLog> getAuditLogThuongHieuByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        try {
+            return auditLogService.readAuditLogByDate(AUDIT_LOG_THUONGHIEU_FILE_PATH, searchDate);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
+    @GetMapping("/auditlogxuatxubydate")
+    public List<AuditLog> getAuditLogXuatXuByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        try {
+            return auditLogService.readAuditLogByDate(AUDIT_LOG_XUATXU_FILE_PATH, searchDate);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
+    @GetMapping("/auditlogkieudebydate")
+    public List<AuditLog> getAuditLogKieuDeByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        try {
+            return auditLogService.readAuditLogByDate(AUDIT_LOG_KIEUDE_FILE_PATH, searchDate);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
+    @GetMapping("/auditlognhanvienbydate")
+    public List<AuditLog> getAuditLogNhanVienByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        try {
+            return auditLogService.readAuditLogByDate(AUDIT_LOG_NHANVIEN_FILE_PATH, searchDate);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
+    @GetMapping("/auditlogkhachhangbydate")
+    public List<AuditLog> getAuditLogKhachHangByDate(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate searchDate) {
+        try {
+            return auditLogService.readAuditLogByDate(AUDIT_LOG_KHACHHANG_FILE_PATH, searchDate);
+        } catch (IOException | CsvValidationException e) {
+            e.printStackTrace();
+            // Handle errors, possibly return a ResponseEntity to inform the client about the error
+            return null;
+        }
+    }
     @GetMapping("/hoadonchitietsearch")
     public List<AuditLog> getAuditLogHoaDonChiTiet(
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
