@@ -2,6 +2,7 @@ package com.example.duantotnghiep.service.hoa_don_service.impl;
 
 import com.example.duantotnghiep.config.VnPayConfig;
 import com.example.duantotnghiep.entity.*;
+import com.example.duantotnghiep.enums.StatusOrderEnums;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.ConfirmOrderClientRequest;
 import com.example.duantotnghiep.request.ConfirmOrderDeliver;
@@ -71,7 +72,7 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             trangThaiHoaDon.setHoaDon(hoaDon);
             trangThaiHoaDon.setThoiGian(timestamp);
             trangThaiHoaDon.setTrangThai(request.getNewTrangThai());
-            trangThaiHoaDon.setUsername(taiKhoan.getUsername());
+            trangThaiHoaDon.setUsername(taiKhoan.getMaTaiKhoan());
             trangThaiHoaDon.setGhiChu(request.getGhiChu());
 
             // Cập nhật trạng thái của Hóa Đơn
@@ -141,6 +142,16 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             hoaDon.get().setThanhTien(tongTien.add(request.getTienShip()));
 
             hoaDonRepository.save(hoaDon.get());
+
+            TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+            trangThaiHoaDon.setId(UUID.randomUUID());
+            trangThaiHoaDon.setHoaDon(hoaDon.get());
+            trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
+            trangThaiHoaDon.setThoiGian(timestamp);
+            trangThaiHoaDon.setUsername(hoaDon.get().getTaiKhoanNhanVien().getMaTaiKhoan());
+            trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
+            trangThaiHoaDonRepository.save(trangThaiHoaDon);
+
             auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Cập nhật địa chỉ",
                     hoaDon.get().getMa(), "Tên khách: " + request.getHoVatenClient(), "SĐT: " + request.getSdtClient(),
                     "Tiền ship: " + request.getTienShip(), "Địa chỉ: " + request.getDiaChi());
@@ -160,6 +171,15 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             hoaDon.get().setTenNguoiShip(request.getTenNguoiGiao());
             hoaDon.get().setNgayCapNhap(timestamp);
             hoaDonRepository.save(hoaDon.get());
+
+            TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+            trangThaiHoaDon.setId(UUID.randomUUID());
+            trangThaiHoaDon.setHoaDon(hoaDon.get());
+            trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
+            trangThaiHoaDon.setThoiGian(timestamp);
+            trangThaiHoaDon.setUsername(hoaDon.get().getTaiKhoanNhanVien().getMaTaiKhoan());
+            trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
+            trangThaiHoaDonRepository.save(trangThaiHoaDon);
             return MessageResponse.builder().message("Cập nhập thành công").build();
         } else {
             return MessageResponse.builder().message("Không tìm thấy hóa đơn").build();
@@ -177,8 +197,8 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
                     "    <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">" + stt + "</td>\n" +
                     "    <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">" + sanPham.getSanPhamChiTiet().getSanPham().getTenSanPham() + "</td>\n" +
                     "    <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">" + sanPham.getSoLuong() + "</td>\n" +
-                    "    <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">" + FormatNumber.formatBigDecimal(sanPham.getDonGiaSauGiam()) + "</td>\n" +
-                    "    <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">" + FormatNumber.formatBigDecimal(sanPham.getDonGiaSauGiam().multiply(new BigDecimal(sanPham.getSoLuong()))) + "</td>\n" +
+                    "    <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">" + FormatNumber.formatBigDecimal(sanPham.getDonGiaSauGiam()) + "đ</td>\n" +
+                    "    <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">" + FormatNumber.formatBigDecimal(sanPham.getDonGiaSauGiam().multiply(new BigDecimal(sanPham.getSoLuong()))) + "đ</td>\n" +
                     "</tr>\n";
             stt++;
         }
@@ -234,15 +254,15 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
                     "<tfoot>\n" +
                     "    <tr>\n" +
                     "        <td colspan=\"4\" style=\"text-align: right;\"><strong>Tiền ship:</strong></td>\n" +
-                    "        <td><strong>" + FormatNumber.formatBigDecimal(hoaDon.getTienShip()) + "</strong></td>\n" +
+                    "        <td><strong>" + FormatNumber.formatBigDecimal(hoaDon.getTienShip()) + "đ</strong></td>\n" +
                     "    </tr>\n" +
                     "    <tr>\n" +
                     "        <td colspan=\"4\" style=\"text-align: right;\"><strong>Tiền giảm giá:</strong></td>\n" +
-                    "        <td><strong>" + FormatNumber.formatBigDecimal(hoaDon.getTienGiamGia()) + "</strong></td>\n" +
+                    "        <td><strong>" + FormatNumber.formatBigDecimal(hoaDon.getTienGiamGia()) + "đ</strong></td>\n" +
                     "    </tr>\n" +
                     "    <tr>\n" +
                     "        <td colspan=\"4\" style=\"text-align: right;\"><strong>Tổng tiền hàng:</strong></td>\n" +
-                    "        <td><strong>" + FormatNumber.formatBigDecimal(hoaDon.getThanhTien()) + "</strong></td>\n" +
+                    "        <td><strong>" + FormatNumber.formatBigDecimal(hoaDon.getThanhTien()) + "đ</strong></td>\n" +
                     "    </tr>\n" +
                     "</tfoot>\n" +
                     "    </table>\n" +
