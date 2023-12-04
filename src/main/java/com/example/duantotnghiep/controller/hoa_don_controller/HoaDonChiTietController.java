@@ -168,4 +168,11 @@ public class HoaDonChiTietController {
         return new ResponseEntity<>(hoaDonChiTietService.comfirmStatusHuyDon(id, trangThaiHoaDonRequest), HttpStatus.OK);
     }
 
+    @PutMapping("roll-back/{id}")
+    public ResponseEntity<MessageResponse> rollBackOrder(
+            @PathVariable("id") UUID id,
+            @RequestBody TrangThaiHoaDonRequest trangThaiHoaDonRequest
+    ) {
+        return new ResponseEntity<>(hoaDonChiTietService.comfirmStatusHuyDon(id, trangThaiHoaDonRequest), HttpStatus.OK);
+    }
 }
