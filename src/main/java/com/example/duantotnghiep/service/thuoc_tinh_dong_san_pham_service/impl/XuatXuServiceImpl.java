@@ -1,16 +1,21 @@
 package com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl;
 
+import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.entity.XuatXu;
+import com.example.duantotnghiep.repository.TaiKhoanRepository;
 import com.example.duantotnghiep.repository.XuatSuRepository;
 import com.example.duantotnghiep.request.XuatXuRequest;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.XuatXuService;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +26,10 @@ public class XuatXuServiceImpl implements XuatXuService {
 
     @Autowired
     private XuatSuRepository xuatSuRepository;
-
+    @Autowired
+    private AuditLogService auditLogService;
+    @Autowired
+    private TaiKhoanRepository taiKhoanRepository;
     private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
     @Override
@@ -42,18 +50,24 @@ public class XuatXuServiceImpl implements XuatXuService {
     }
 
     @Override
-    public MessageResponse create(XuatXuRequest request) {
+    public MessageResponse create(XuatXuRequest request,String username) throws IOException, CsvValidationException {
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         XuatXu xuatXu = new XuatXu();
         xuatXu.setId(UUID.randomUUID());
         xuatXu.setTenXuatXu(request.getTenXuatXu());
         xuatXu.setTrangThai(request.getTrangThai());
         xuatXu.setNgayTao(timestamp);
         xuatSuRepository.save(xuatXu);
+        auditLogService.writeAuditLogXuatxu("Thêm Mới xuất xứ", username, taiKhoanUser.getEmail(), null,
+                "Tên Xuất xứ : " + request.getTenXuatXu() + "," + "Trạng Thái: " + request.getTrangThai() ,null,null,
+                null);
+
         return MessageResponse.builder().message("Thêm thành công").build();
     }
 
     @Override
-    public MessageResponse update(UUID id, XuatXuRequest request) {
+    public MessageResponse update(UUID id, XuatXuRequest request,String username) throws IOException, CsvValidationException {
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         Optional<XuatXu> optionalXuatXu= xuatSuRepository.findById(id);
         if (optionalXuatXu.isPresent()) {
             XuatXu xuatXu = optionalXuatXu.get();
@@ -61,6 +75,9 @@ public class XuatXuServiceImpl implements XuatXuService {
             xuatXu.setTrangThai(request.getTrangThai());
             xuatXu.setNgayCapNhat(timestamp);
             xuatSuRepository.save(xuatXu);
+            auditLogService.writeAuditLogXuatxu("Thêm Mới xuất xứ", username, taiKhoanUser.getEmail(), null,
+                    "Tên Xuất xứ : " + request.getTenXuatXu() + "," + "Trạng Thái: " + request.getTrangThai() ,null,null,
+                    null);
             return MessageResponse.builder().message("Cập nhật thành công").build();
         } else {
             return MessageResponse.builder().message("Không tìm thấy thương hiệu với ID: " + id).build();
