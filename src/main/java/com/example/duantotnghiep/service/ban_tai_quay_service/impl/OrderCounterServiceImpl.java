@@ -154,7 +154,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
         hoaDon.get().setNgayNhan(timestamp);
-        hoaDon.get().setNgayThanhToan(timestamp);
+        hoaDon.get().setNgayCapNhap(timestamp);
         hoaDon.get().setTienKhachTra(hoaDonThanhToanRequest.getTienKhachTra());
         hoaDon.get().setTienThua(hoaDonThanhToanRequest.getTienThua());
         hoaDon.get().setThanhTien(hoaDonThanhToanRequest.getTongTien());
@@ -207,7 +207,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         Optional<TaiKhoan> findByNhanVien = taiKhoanRepository.findByUsername(username);
 
         hoaDon.get().setNgayNhan(timestamp);
-        hoaDon.get().setNgayThanhToan(timestamp);
+        hoaDon.get().setNgayCapNhap(timestamp);
         hoaDon.get().setTienKhachTra(hoaDonGiaoThanhToanRequest.getTienKhachTra());
         hoaDon.get().setTienThua(hoaDonGiaoThanhToanRequest.getTienThua());
         hoaDon.get().setThanhTien(hoaDonGiaoThanhToanRequest.getTongTien());
