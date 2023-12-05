@@ -1,17 +1,28 @@
 package com.example.duantotnghiep.repository;
 
 import com.example.duantotnghiep.entity.HoaDon;
+import com.example.duantotnghiep.response.DoanhThuResponse;
 import com.example.duantotnghiep.response.SanPhamBanChayResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface ThongKeRepository extends JpaRepository<HoaDon, UUID> {
+
+    @Query(value = "SELECT CONVERT(date, CONVERT(date, hoadon.ngaycapnhap)) AS Ngay, SUM(hoadonchitiet.soluong * hoadonchitiet.dongiasaugiam) AS DoanhThu\n" +
+            "FROM dbo.hoadon \n" +
+            "INNER JOIN dbo.hoadonchitiet ON dbo.hoadon.id = dbo.hoadonchitiet.idhoadon\n" +
+            "WHERE hoadon.trangthai = 5 AND CONVERT(date, hoadon.ngaycapnhap) BETWEEN ? AND ?\n" +
+            "GROUP BY CONVERT(date, CONVERT(date, hoadon.ngaycapnhap))\n" +
+            "ORDER BY Ngay;", nativeQuery = true)
+    List<DoanhThuResponse> doanhThu(Date ngayBd,Date ngayKt);
 
     @Query("SELECT new com.example.duantotnghiep.response.SanPhamBanChayResponse(i.tenImage, sp.tenSanPham, hdct.donGia, hdct.donGiaSauGiam, SUM(hdct.soLuong)) " +
             "FROM HoaDonChiTiet hdct " +

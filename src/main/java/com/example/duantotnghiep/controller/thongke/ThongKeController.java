@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.controller.thongke;
 
+import com.example.duantotnghiep.response.DoanhThuResponse;
 import com.example.duantotnghiep.response.SanPhamBanChayResponse;
 import com.example.duantotnghiep.service.thongke.impl.ThongKeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -18,6 +21,13 @@ public class ThongKeController {
 
     @Autowired
     private ThongKeServiceImpl thongKeService;
+
+    @GetMapping("doanhthu")
+    public ResponseEntity<List<DoanhThuResponse>> doanhThu(
+            @RequestParam(name = "ngayBd") Date ngayBd,
+            @RequestParam(name = "ngayKt") Date ngayKt) {
+        return new ResponseEntity<>(thongKeService.doanhThu(ngayBd, ngayKt), HttpStatus.OK);
+    }
 
     @GetMapping("san-pham-ban-chay")
     public ResponseEntity<List<SanPhamBanChayResponse>> sanPhamBanChay() {
