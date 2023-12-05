@@ -1,11 +1,16 @@
 package com.example.duantotnghiep.service.thongke;
 
+import com.example.duantotnghiep.response.DoanhThuResponse;
 import com.example.duantotnghiep.response.SanPhamBanChayResponse;
+import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 public interface ThongKeService {
+
+    List<DoanhThuResponse> doanhThu(Date ngayBd, Date ngayKt);
 
     List<SanPhamBanChayResponse> listSanPhamBanChay();
 

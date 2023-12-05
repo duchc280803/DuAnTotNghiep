@@ -362,7 +362,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                     }
                 }
                 if (count == 0) {
-                    hoaDon.setTrangThai(6);
+                    hoaDon.setTrangThai(5);
                 } else {
                     if (count == 1) {
                         if (traHangRequest.getSoLuong() == hoaDonChiTiet.getSoLuong()) {

@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.service.thongke.impl;
 
 import com.example.duantotnghiep.repository.ThongKeRepository;
+import com.example.duantotnghiep.response.DoanhThuResponse;
 import com.example.duantotnghiep.response.SanPhamBanChayResponse;
 import com.example.duantotnghiep.service.thongke.ThongKeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -15,6 +17,11 @@ public class ThongKeServiceImpl implements ThongKeService {
 
     @Autowired
     private ThongKeRepository thongKeRepository;
+
+    @Override
+    public List<DoanhThuResponse> doanhThu(Date ngayBd, Date ngayKt) {
+        return thongKeRepository.doanhThu(ngayBd, ngayKt);
+    }
 
     @Override
     public List<SanPhamBanChayResponse> listSanPhamBanChay() {
