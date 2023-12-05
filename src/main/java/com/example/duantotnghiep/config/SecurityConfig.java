@@ -74,6 +74,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/audilog/**").permitAll()
                         .requestMatchers("/api/v1/pdf/**").permitAll()
                         .requestMatchers("/api/qrcode/**").permitAll()
+                        .requestMatchers("/api/thong-ke/**").permitAll()
 
                         .anyRequest()
                         .authenticated())
