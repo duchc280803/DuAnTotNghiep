@@ -283,7 +283,6 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setTrangThai(request.getNewTrangThai());
         trangThaiHoaDon.setThoiGian(timestamp);
         trangThaiHoaDon.setHoaDon(hoaDon);
-        trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu(request.getGhiChu());
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
 
@@ -371,12 +370,11 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                             hoaDonChiTiet.setComment(traHangRequest.getGhiChu());
                             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
                             trangThaiHoaDon.setId(UUID.randomUUID());
-                            trangThaiHoaDon.setTrangThai(6);
+                            trangThaiHoaDon.setTrangThai(7);
                             trangThaiHoaDon.setThoiGian(timestamp);
                             trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
                             trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
                             trangThaiHoaDon.setHoaDon(hoaDon);
-                            hoaDon.setTrangThai(6);
                             hoaDonChiTietRepository.save(hoaDonChiTiet);
 
                             // Hoàn tiền cho khách
