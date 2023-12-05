@@ -78,7 +78,7 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             // Cập nhật trạng thái của Hóa Đơn
             hoaDon.setTrangThai(request.getNewTrangThai());
             hoaDon.setTaiKhoanNhanVien(taiKhoan);
-
+            hoaDon.setNgayCapNhap(timestamp);
 
             hoaDonChiTietList.stream()
                     .filter(hoaDonChiTiet -> hoaDonChiTiet.getTrangThai() != 7)
