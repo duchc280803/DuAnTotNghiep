@@ -283,7 +283,6 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setTrangThai(request.getNewTrangThai());
         trangThaiHoaDon.setThoiGian(timestamp);
         trangThaiHoaDon.setHoaDon(hoaDon);
-        trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu(request.getGhiChu());
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
 
