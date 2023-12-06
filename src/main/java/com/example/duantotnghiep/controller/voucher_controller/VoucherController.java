@@ -35,7 +35,6 @@ public class VoucherController {
         return new ResponseEntity<>(Service.createVoucher(createKhachRequest, principal.getName()), HttpStatus.CREATED);
     }
 
-    // check
     // Thêm endpoint tìm kiếm theo tên hoặc mã voucher
     @GetMapping("search")
     public ResponseEntity<List<Voucher>> search(@RequestParam String keyword) {
