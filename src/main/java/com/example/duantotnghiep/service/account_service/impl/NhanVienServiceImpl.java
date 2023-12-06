@@ -158,21 +158,30 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
     }
 
     @Override
-    public MessageResponse update(UUID id, NhanVienDTORequest request) {
-        Optional<TaiKhoan> taiKhoanOptional = taiKhoanRepository.findById(id);
-        if (taiKhoanOptional.isPresent()) {
-                TaiKhoan taiKhoan = taiKhoanOptional.get();
-                taiKhoan.setNgaySinh(request.getNgaySinh());
-                taiKhoan.setSoDienThoai(request.getSoDienThoai());
-                taiKhoan.setGioiTinh(request.getGioiTinh());
-                taiKhoan.setEmail(request.getEmail());
-                taiKhoan.setTrangThai(request.getTrangThai());
-                taiKhoan.setImage("default.png");
-                taiKhoan.setName(request.getTen());
-                taiKhoanRepository.save(taiKhoan);
-                return MessageResponse.builder().message("Cập nhật thành công").build();
+    public MessageResponse update(MultipartFile file, UUID id, NhanVienDTORequest request) {
+        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        Optional<TaiKhoan> optionalTaiKhoan = khachHangRepository.findById(id);
+        try {
+            Files.copy(file.getInputStream(), Paths.get("D:\\FE_DuAnTotNghiep\\assets\\ảnh giày", fileName), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (optionalTaiKhoan.isPresent()) {
+            TaiKhoan taiKhoan = optionalTaiKhoan.get();
+
+            taiKhoan.setName(request.getTen());
+            taiKhoan.setEmail(request.getEmail());
+            taiKhoan.setSoDienThoai(request.getSoDienThoai());
+            taiKhoan.setGioiTinh(request.getGioiTinh());
+            taiKhoan.setNgaySinh(request.getNgaySinh());
+            taiKhoan.setTrangThai(request.getTrangThai());
+            taiKhoan.setImage(fileName);
+
+            khachHangRepository.save(taiKhoan);
+            return MessageResponse.builder().message("Cập Nhật Thành Công").build();
         } else {
-            return MessageResponse.builder().message("Không tìm thấy tài khoản với ID: " + id).build();
+            return MessageResponse.builder().message("Không Tìm Thấy Khách Hàng").build();
         }
     }
 
