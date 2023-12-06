@@ -18,7 +18,7 @@ public interface NhanVienCustomService {
 
     MessageResponse create(MultipartFile file, NhanVienDTORequest request, boolean sendEmail);
 
-    MessageResponse update(UUID id, NhanVienDTORequest request);
+    MessageResponse update(MultipartFile file, UUID id, NhanVienDTORequest request);
 
     MessageResponse delete(UUID id);
 
