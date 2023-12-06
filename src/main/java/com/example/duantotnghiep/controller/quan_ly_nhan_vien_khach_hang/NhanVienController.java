@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.controller.quan_ly_nhan_vien_khach_hang;
 
+import com.example.duantotnghiep.request.CreateQLKhachHangRequest;
 import com.example.duantotnghiep.request.NhanVienDTORequest;
 import com.example.duantotnghiep.response.LoaiTaiKhoanResponse;
 import com.example.duantotnghiep.response.MessageResponse;
@@ -54,18 +55,17 @@ public class NhanVienController {
         return new ResponseEntity<>(nhanVienService.create(file, createQLKhachHangRequest, true), HttpStatus.CREATED);
     }
 
-    @PutMapping("update")
-    public ResponseEntity<MessageResponse> updateThuongHieu(@RequestParam("idNhanVien") UUID id, @RequestBody NhanVienDTORequest request) {
-        try {
-            MessageResponse response = nhanVienService.update(id, request);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @PutMapping("/update")
+    public ResponseEntity<MessageResponse> updateKhachHang(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("idNhanVien") UUID khachHangId,
+            @ModelAttribute NhanVienDTORequest request) {
+        MessageResponse response = nhanVienService.update(file, khachHangId, request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("delete")
-    public ResponseEntity<MessageResponse> deleteThuongHieu(@RequestParam("idNhanVien")  UUID id) {
+    public ResponseEntity<MessageResponse> deleteThuongHieu(@RequestParam("idNhanVien") UUID id) {
         return new ResponseEntity<>(nhanVienService.delete(id), HttpStatus.OK);
     }
 }

@@ -41,18 +41,18 @@ public class KhachHangController {
         return new ResponseEntity<>(service.createKhachHang(file, createQLKhachHangRequest, true), HttpStatus.CREATED);
     }
 
-    @GetMapping("/detail")
-    public ResponseEntity<QLKhachHangResponse> search(@RequestParam(name = "id") UUID id) {
-        return new ResponseEntity<>(service.detailKhachHang(id), HttpStatus.OK);
-    }
-
     @PutMapping("/update")
     public ResponseEntity<MessageResponse> updateKhachHang(
-            @RequestParam("khachHangId") UUID khachHangId,
             @RequestParam("file") MultipartFile file,
+            @RequestParam("khachHangId") UUID khachHangId,
             @ModelAttribute CreateQLKhachHangRequest createQLKhachHangRequest) {
         MessageResponse response = service.updateKhachHang(file, khachHangId, createQLKhachHangRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<QLKhachHangResponse> search(@RequestParam(name = "id") UUID id) {
+        return new ResponseEntity<>(service.detailKhachHang(id), HttpStatus.OK);
     }
 
 }
