@@ -19,7 +19,7 @@ public interface TransactionCounterService {
 
     List<TransactionResponse> findAllTran(UUID id);
 
-    MessageResponse cashVnPay(UUID idHoaDon, UUID id, BigDecimal vnpAmount, String username) throws IOException, CsvValidationException;
+    MessageResponse cashVnPay(UUID idHoaDon, UUID id, BigDecimal vnpAmount, String maGiaoDinh, String username) throws IOException, CsvValidationException;
 
 
 }

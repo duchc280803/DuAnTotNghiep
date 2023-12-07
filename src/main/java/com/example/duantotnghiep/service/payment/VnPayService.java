@@ -7,4 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface VnPayService {
 
     PaymentResponse callPaymentApi(HttpServletRequest req, Long amountParam);
+
+    PaymentResponse callPaymentApiOnline(HttpServletRequest req, Long amountParam);
 }

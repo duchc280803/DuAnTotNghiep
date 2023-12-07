@@ -42,10 +42,11 @@ public class TransactionCounterController {
     public ResponseEntity<MessageResponse> createTransactionVnPay(
             @RequestParam(name = "idHoaDon") UUID idHoaDon,
             @RequestParam(name = "id") UUID id,
+            @RequestParam("maGiaoDinh") String maGiaoDinh,
             @RequestParam("vnp_Amount") BigDecimal vnpAmount,
             Principal principal
     ) throws IOException, CsvValidationException {
-        return new ResponseEntity<>(transactionService.cashVnPay(idHoaDon, id, vnpAmount, principal.getName()), HttpStatus.CREATED);
+        return new ResponseEntity<>(transactionService.cashVnPay(idHoaDon, id, vnpAmount, maGiaoDinh,principal.getName()), HttpStatus.CREATED);
     }
 
 }

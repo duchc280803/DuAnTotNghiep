@@ -1,6 +1,6 @@
 package com.example.duantotnghiep.service.hoa_don_service.impl;
 
-import com.example.duantotnghiep.config.VnPayConfig;
+import com.example.duantotnghiep.config.VnPayConfigTaiQuay;
 import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.enums.StatusOrderEnums;
 import com.example.duantotnghiep.repository.*;
@@ -14,7 +14,6 @@ import com.example.duantotnghiep.util.FormatNumber;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -27,7 +26,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
@@ -108,7 +106,7 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
                 hinhThucThanhToan.setTongSoTien(hoaDon.getThanhTien());
                 hinhThucThanhToan.setGhiChu("");
                 hinhThucThanhToan.setPhuongThucThanhToan(1);
-                hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
+                hinhThucThanhToan.setCodeTransaction(VnPayConfigTaiQuay.getRandomNumber(8));
                 hinhThucThanhToan.setHoaDon(hoaDon);
                 hinhThucThanhToan.setTrangThai(1);
                 hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);

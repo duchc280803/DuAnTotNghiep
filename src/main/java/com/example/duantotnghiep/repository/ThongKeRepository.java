@@ -77,7 +77,7 @@ public interface ThongKeRepository extends JpaRepository<HoaDon, UUID> {
     Integer soDonNamNay();
 
     @Query(value = "SELECT COUNT(hoadon.id)\n" +
-            "FROM dbo.hoadon WHERE hoadon.trangthai = 6 AND YEAR(hoadon.ngaycapnhap) = YEAR(GETDATE());", nativeQuery = true)
+            "FROM dbo.hoadon WHERE hoadon.trangthai = 6 AND CONVERT(date, hoadon.ngaycapnhap) = CONVERT(DATE, GETDATE());", nativeQuery = true)
     Integer soDonHuyHomNay();
 
     @Query(value = "SELECT COUNT(hoadon.id)\n" +
