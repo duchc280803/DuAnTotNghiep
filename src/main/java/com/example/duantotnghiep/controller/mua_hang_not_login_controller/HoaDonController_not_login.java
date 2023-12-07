@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.UUID;
 
@@ -42,6 +43,14 @@ public class HoaDonController_not_login {
             @RequestParam(name = "idHoaDonChiTiet") UUID idHoaDonChiTiet
             ,@RequestParam(name = "lyDo") String lyDo) {
         return new ResponseEntity<>(hoaDonService_not_login.yeuCauTraHang(idHoaDon, idHoaDonChiTiet, lyDo), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/vn-pay")
+    public ResponseEntity<MessageResponse> createTransactionVnPay(
+            @RequestParam(name = "id") UUID id,
+            @RequestParam("maGiaoDinh") String maGiaoDinh,
+            @RequestParam("vnp_Amount") BigDecimal vnpAmount) {
+        return new ResponseEntity<>(hoaDonService_not_login.cashVnPay(id, vnpAmount, maGiaoDinh), HttpStatus.CREATED);
     }
 
 }

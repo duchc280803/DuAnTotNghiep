@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/auth/")
 public class UserController {
@@ -35,14 +37,16 @@ public class UserController {
         return new ResponseEntity<>(userService.register(registerRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping("forgot-password")
-    public ResponseEntity<MessageResponse> forgotPassword(@Valid @RequestBody ForgotPassword ForgotPassword) {
-        return new ResponseEntity<>(userService.forgotPassword(ForgotPassword), HttpStatus.OK);
+    @PostMapping("forgot-password")
+    public ResponseEntity<MessageResponse> forgotPassword(@RequestParam(name = "email") String email) {
+        return new ResponseEntity<>(userService.forgotPassword(email), HttpStatus.OK);
     }
 
-    @PostMapping("send-email-forgot-password")
-    public ResponseEntity<MessageResponse> sendConfirmEmailForgotPassWord(@RequestParam("email") String email) {
-        return new ResponseEntity<>(userService.sendConfirmEmailForgotPassWord(email), HttpStatus.OK);
+    @PutMapping("dat-lai-pass")
+    public ResponseEntity<MessageResponse> datLaiMatKhau(
+            @RequestParam(name = "id") UUID id,
+            @RequestParam(name = "password") String password) {
+        return new ResponseEntity<>(userService.datLaiMatKhau(id, password), HttpStatus.OK);
     }
 
     @PostMapping("refresh-token")

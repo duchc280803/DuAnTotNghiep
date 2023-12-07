@@ -3,19 +3,20 @@ package com.example.duantotnghiep.service.mua_hang_not_login_impl;
 import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.enums.StatusOrderEnums;
 import com.example.duantotnghiep.enums.TypeOrderEnums;
-import com.example.duantotnghiep.repository.SpGiamGiaRepository;
-import com.example.duantotnghiep.repository.TrangThaiHoaDonRepository;
-import com.example.duantotnghiep.repository.VoucherRepository;
+import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.repository.mua_hang_not_login_repo.*;
 import com.example.duantotnghiep.request.not_login.CreateKhachRequest_not_login;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.mua_hang_not_login_service.HoaDonService_not_login;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -54,6 +55,12 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
     @Autowired
     private VoucherRepository voucherRepository;
+
+    @Autowired
+    private LoaiHinhThucThanhToanRepository loaiHinhThucThanhToanRepository;
+
+    @Autowired
+    private HinhThucThanhToanRepository hinhThucThanhToanRepository;
 
     @Override
     public MessageResponse thanhToanKhongDangNhap(CreateKhachRequest_not_login createKhachRequest_not_login) {
@@ -392,5 +399,26 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
             }
         }
         return sumPriceTien + sumPricePhanTram;
+    }
+
+    public MessageResponse cashVnPay(UUID id,BigDecimal vnpAmount, String maGiaoDinh) {
+        HoaDon hoaDon = hoaDonRepository.findById(id).get();
+        LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+        loaiHinhThucThanhToan.setId(UUID.randomUUID());
+        loaiHinhThucThanhToan.setNgayTao(new Date(System.currentTimeMillis()));
+        loaiHinhThucThanhToan.setTenLoai("Khách thanh toán");
+        loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+
+        HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+        hinhThucThanhToan.setId(UUID.randomUUID());
+        hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+        hinhThucThanhToan.setTongSoTien( vnpAmount);
+        hinhThucThanhToan.setPhuongThucThanhToan(2);
+        hinhThucThanhToan.setCodeTransaction(maGiaoDinh);
+        hinhThucThanhToan.setHoaDon(hoaDon);
+        hinhThucThanhToan.setTrangThai(2);
+        hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
+        hinhThucThanhToanRepository.save(hinhThucThanhToan);
+        return MessageResponse.builder().message("Thanh toán thành công").build();
     }
 }

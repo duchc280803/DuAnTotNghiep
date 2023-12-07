@@ -131,27 +131,25 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Qyên mật khẩu
-     * @param forgotPassword
+     * @param email
      * @return
      */
     @Override
-    public MessageResponse forgotPassword(ForgotPassword forgotPassword) {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        Optional<TaiKhoan> optionalAccount = taiKhoanRepository.findByEmail(forgotPassword.getEmail());
+    public MessageResponse forgotPassword(String email) {
+        Optional<TaiKhoan> optionalAccount = taiKhoanRepository.findByEmail(email);
         if (optionalAccount.isEmpty()) {
             return MessageResponse.builder().message("Email không tồn tại").build();
         }
-        optionalAccount.get().setMatKhau(forgotPassword.getPassword());
-        if (!forgotPassword.getEnterPassword().equals(forgotPassword.getPassword())) {
-            return MessageResponse.builder().message("Mật khẩu không khớp").build();
-        }
-        if (!checkCode(forgotPassword.getConfirmCode(), forgotPassword.getEmail())) {
-            return MessageResponse.builder().message("Mã không khớp").build();
-        }
-        optionalAccount.get().setNgayCapNhat(timestamp);
-        optionalAccount.get().setMatKhau(passwordEncoder.encode(forgotPassword.getPassword()));
-        taiKhoanRepository.save(optionalAccount.get());
+        sendConfirmEmailForgotPassWord(email, optionalAccount.get().getId());
         return MessageResponse.builder().message("Thay đổi mật khẩu thành công").build();
+    }
+
+    @Override
+    public MessageResponse datLaiMatKhau(UUID id, String password) {
+        Optional<TaiKhoan> optionalAccount = taiKhoanRepository.findById(id);
+        optionalAccount.get().setMatKhau(passwordEncoder.encode(password));
+        taiKhoanRepository.save(optionalAccount.get());
+        return MessageResponse.builder().message("OK").build();
     }
 
     /**
@@ -197,12 +195,12 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public MessageResponse sendConfirmEmailForgotPassWord(String email) {
+    public MessageResponse sendConfirmEmailForgotPassWord(String email, UUID id) {
         String confirmationCode = confirmationCodeForgotPassWord();
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(email);
-        simpleMailMessage.setSubject("Mã xác nhận quên mật khẩu của bạn là:");
-        simpleMailMessage.setText("Mã xác nhận của bạn là   " + confirmationCode);
+        simpleMailMessage.setSubject("Vui lòng click vào link dưới đây để đặt lại mật khẩu:");
+        simpleMailMessage.setText("http://127.0.0.1:5505/src/customer/index-customer.html#/dat-lai-password/" + id);
         javaMailSender.send(simpleMailMessage);
         codeMap.put(confirmationCode, email);
         return MessageResponse.builder().message("Send mã thành công").build();

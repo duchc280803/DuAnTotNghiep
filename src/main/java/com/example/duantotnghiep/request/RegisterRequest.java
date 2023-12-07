@@ -14,7 +14,7 @@ import lombok.*;
 public class RegisterRequest {
 
     @NotBlank(message = "Vui lòng điền username")
-    @Size(min = 7, max = 13, message = "Độ dài username phải từ 7 đến 13 ký tự")
+    @Size(min = 8, max = 15, message = "Độ dài username phải từ 7 đến 13 ký tự")
     @Pattern(regexp = "[a-zA-Z0-9]+", message = "Chỉ cho phép chữ và số")
     private String username;
 
