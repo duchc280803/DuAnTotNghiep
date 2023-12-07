@@ -14,6 +14,7 @@ import com.example.duantotnghiep.service.hoa_don_service.HoaDonChiTietService;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.validation.constraints.Max;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -62,6 +63,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
     @Autowired
     private LoaiHinhThucThanhToanRepository loaiHinhThucThanhToanRepository;
+
+    @Autowired
+    private VoucherRepository voucherRepository;
 
     @Override
     public ThongTinDonHang getThongTinDonHang(UUID idHoaDon) {
@@ -339,200 +343,232 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public MessageResponse createOrUpdate(UUID idhdct, TraHangRequest traHangRequest, String username) throws IOException, CsvValidationException {
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findById(idhdct).orElse(null);
-        TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+    public MessageResponse createOrUpdate(UUID id, UUID idhdct, TraHangRequest traHangRequest, String username) throws IOException, CsvValidationException {
+        HoaDon hoaDon = hoaDonRepository.findById(id).get();
+        HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findById(idhdct).get();
         TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).get();
+        SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(hoaDonChiTiet.getSanPhamChiTiet().getId()).orElse(null);
+        SanPham sanPhamHoaDon = sanPhamRepository.findById(sanPhamChiTiet.getSanPham().getId()).orElse(null);
+        Voucher voucher = null;
+        if (hoaDon.getVoucher() != null) {
+            voucher = voucherRepository.findById(hoaDon.getVoucher().getId()).get();
+        }
+        List<SanPhamHoaDonChiTietResponse> productInHoaDon = hoaDonChiTietRepository.getSanPhamHDCT(hoaDonChiTiet.getHoaDon().getId());
+        int count = 0;
 
-        if (hoaDonChiTiet != null) {
-            SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(hoaDonChiTiet.getSanPhamChiTiet().getId()).orElse(null);
-            HoaDon hoaDon = hoaDonRepository.findById(hoaDonChiTiet.getHoaDon().getId()).orElse(null);
-            SanPham sanPhamHoaDon = sanPhamRepository.findById(sanPhamChiTiet.getSanPham().getId()).orElse(null);
 
-            if (sanPhamChiTiet != null && hoaDon != null) {
+        for (SanPhamHoaDonChiTietResponse sanPham : productInHoaDon) {
+            if (sanPham.getTrangThai() == 5) {
+                count++;
+            }
+        }
+        // trả hàng
+        prepareOrderDetails(hoaDon, traHangRequest, hoaDonChiTiet, sanPhamChiTiet, count);
 
-                List<SanPhamHoaDonChiTietResponse> productInHoaDon = hoaDonChiTietRepository.getSanPhamHDCT(hoaDonChiTiet.getHoaDon().getId());
-                int count = 0;
-                BigDecimal tongTien = BigDecimal.ZERO;
-
-                for (SanPhamHoaDonChiTietResponse sanPham : productInHoaDon) {
-                    if (sanPham.getTrangThai() == 5) {
-                        count++;
-                    }
-                }
-                if (count == 0) {
-                    hoaDon.setTrangThai(5);
-                } else {
-                    if (count == 1) {
-                        if (traHangRequest.getSoLuong() == hoaDonChiTiet.getSoLuong()) {
-                            hoaDonChiTiet.setTrangThai(7);
-                            hoaDonChiTiet.setComment(traHangRequest.getGhiChu());
-                            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
-                            trangThaiHoaDon.setId(UUID.randomUUID());
-                            trangThaiHoaDon.setTrangThai(7);
-                            trangThaiHoaDon.setThoiGian(timestamp);
-                            trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
-                            trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
-                            trangThaiHoaDon.setHoaDon(hoaDon);
-                            hoaDonChiTietRepository.save(hoaDonChiTiet);
-
-                            // Hoàn tiền cho khách
-                            LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
-                            loaiHinhThucThanhToan.setId(UUID.randomUUID());
-                            loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
-                            loaiHinhThucThanhToan.setTenLoai("Nhân viên hoàn tiền");
-                            loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
-
-                            HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
-                            hinhThucThanhToan.setId(UUID.randomUUID());
-                            hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
-                            hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
-                            hinhThucThanhToan.setTongSoTien(hoaDonChiTiet.getDonGiaSauGiam().multiply(new BigDecimal(hoaDonChiTiet.getSoLuong())));
-                            hinhThucThanhToan.setGhiChu("");
-                            hinhThucThanhToan.setPhuongThucThanhToan(1);
-                            hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
-                            hinhThucThanhToan.setHoaDon(hoaDon);
-                            hinhThucThanhToan.setTrangThai(1);
-                            hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
-                            hinhThucThanhToanRepository.save(hinhThucThanhToan);
-                        } else {
-                            HoaDonChiTiet addTraHang = new HoaDonChiTiet();
-                            addTraHang.setId(UUID.randomUUID());
-                            addTraHang.setComment(traHangRequest.getGhiChu());
-                            addTraHang.setDonGia(hoaDonChiTiet.getDonGia());
-                            addTraHang.setTrangThai(7);
-                            addTraHang.setHoaDon(hoaDonChiTiet.getHoaDon());
-                            addTraHang.setSanPhamChiTiet(hoaDonChiTiet.getSanPhamChiTiet());
-                            addTraHang.setDonGiaSauGiam(hoaDonChiTiet.getDonGiaSauGiam());
-                            addTraHang.setSoLuong(traHangRequest.getSoLuong());
-                            hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() - traHangRequest.getSoLuong());
-                            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
-                            hoaDonChiTietRepository.save(addTraHang);
-                            trangThaiHoaDon.setId(UUID.randomUUID());
-                            trangThaiHoaDon.setTrangThai(7);
-                            trangThaiHoaDon.setThoiGian(timestamp);
-                            trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
-                            trangThaiHoaDon.setHoaDon(hoaDon);
-                            trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
-                            hoaDonChiTietRepository.save(hoaDonChiTiet);
-
-                            LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
-                            loaiHinhThucThanhToan.setId(UUID.randomUUID());
-                            loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
-                            loaiHinhThucThanhToan.setTenLoai("Nhân viên hoàn tiền");
-                            loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
-
-                            HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
-                            hinhThucThanhToan.setId(UUID.randomUUID());
-                            hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
-                            hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
-                            hinhThucThanhToan.setTongSoTien(addTraHang.getDonGiaSauGiam().multiply(new BigDecimal(addTraHang.getSoLuong())));
-                            hinhThucThanhToan.setGhiChu("");
-                            hinhThucThanhToan.setPhuongThucThanhToan(1);
-                            hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
-                            hinhThucThanhToan.setHoaDon(hoaDon);
-                            hinhThucThanhToan.setTrangThai(1);
-                            hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
-                            hinhThucThanhToanRepository.save(hinhThucThanhToan);
-                        }
-                    } else {
-                        if (hoaDonChiTiet.getSoLuong() == traHangRequest.getSoLuong()) {
-                            hoaDonChiTiet.setTrangThai(7);
-                            hoaDonChiTiet.setComment(traHangRequest.getGhiChu());
-                            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
-                            trangThaiHoaDon.setId(UUID.randomUUID());
-                            trangThaiHoaDon.setTrangThai(7);
-                            trangThaiHoaDon.setThoiGian(timestamp);
-                            trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
-                            trangThaiHoaDon.setHoaDon(hoaDon);
-                            trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
-                            hoaDonChiTietRepository.save(hoaDonChiTiet);
-
-                            LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
-                            loaiHinhThucThanhToan.setId(UUID.randomUUID());
-                            loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
-                            loaiHinhThucThanhToan.setTenLoai("Nhân viên hoàn tiền");
-                            loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
-
-                            HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
-                            hinhThucThanhToan.setId(UUID.randomUUID());
-                            hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
-                            hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
-                            hinhThucThanhToan.setTongSoTien(hoaDonChiTiet.getDonGiaSauGiam().multiply(new BigDecimal(hoaDonChiTiet.getSoLuong())));
-                            hinhThucThanhToan.setGhiChu("");
-                            hinhThucThanhToan.setPhuongThucThanhToan(1);
-                            hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
-                            hinhThucThanhToan.setHoaDon(hoaDon);
-                            hinhThucThanhToan.setTrangThai(1);
-                            hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
-                            hinhThucThanhToanRepository.save(hinhThucThanhToan);
-                        } else {
-                            HoaDonChiTiet addTraHang = new HoaDonChiTiet();
-                            addTraHang.setId(UUID.randomUUID());
-                            addTraHang.setComment(traHangRequest.getGhiChu());
-                            addTraHang.setDonGia(hoaDonChiTiet.getDonGia());
-                            addTraHang.setTrangThai(7);
-                            addTraHang.setHoaDon(hoaDonChiTiet.getHoaDon());
-                            addTraHang.setSanPhamChiTiet(hoaDonChiTiet.getSanPhamChiTiet());
-                            addTraHang.setDonGiaSauGiam(hoaDonChiTiet.getDonGiaSauGiam());
-                            addTraHang.setSoLuong(traHangRequest.getSoLuong());
-                            hoaDonChiTietRepository.save(addTraHang);
-
-                            hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() - traHangRequest.getSoLuong());
-                            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
-                            trangThaiHoaDon.setId(UUID.randomUUID());
-                            trangThaiHoaDon.setTrangThai(7);
-                            trangThaiHoaDon.setThoiGian(timestamp);
-                            trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
-                            trangThaiHoaDon.setHoaDon(hoaDon);
-                            trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
-                            hoaDonChiTietRepository.save(hoaDonChiTiet);
-
-                            LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
-                            loaiHinhThucThanhToan.setId(UUID.randomUUID());
-                            loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
-                            loaiHinhThucThanhToan.setTenLoai("Nhân viên hoàn tiền");
-                            loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
-
-                            HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
-                            hinhThucThanhToan.setId(UUID.randomUUID());
-                            hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
-                            hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
-                            hinhThucThanhToan.setTongSoTien(addTraHang.getDonGiaSauGiam().multiply(new BigDecimal(addTraHang.getSoLuong())));                            hinhThucThanhToan.setGhiChu("");
-                            hinhThucThanhToan.setPhuongThucThanhToan(1);
-                            hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
-                            hinhThucThanhToan.setHoaDon(hoaDon);
-                            hinhThucThanhToan.setTrangThai(1);
-                            hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
-                            hinhThucThanhToanRepository.save(hinhThucThanhToan);
-                        }
-                    }
-                }
-                if (hoaDon.getTienShip() == null) {
-                    hoaDon.setTienShip(BigDecimal.ZERO);
-                }
-                if (hoaDon.getTienGiamGia() == null) {
-                    hoaDon.setTienGiamGia(BigDecimal.ZERO);
-                }
-                List<SanPhamHoaDonChiTietResponse> checkGia = hoaDonChiTietRepository.getSanPhamHDCT(hoaDonChiTiet.getHoaDon().getId());
-                for (SanPhamHoaDonChiTietResponse sanPham : checkGia) {
-                    if (sanPham.getTrangThai() == 5) {
-                        tongTien = tongTien.add(sanPham.getDonGiaSauGiam().multiply(BigDecimal.valueOf(sanPham.getSoLuong())));
-                    }
-                }
-
-                hoaDon.setThanhTien(tongTien.add(hoaDon.getTienShip()).subtract(hoaDon.getTienGiamGia()));
-                chiTietSanPhamRepository.save(sanPhamChiTiet);
-                trangThaiHoaDonRepository.save(trangThaiHoaDon);
-                hoaDonRepository.save(hoaDon);
-                auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Trả hàng", hoaDon.getMa(), "Mã sản phẩm: " + sanPhamHoaDon.getMaSanPham(), "Tên sản phẩm: " + sanPhamHoaDon.getTenSanPham(), "Số lượng trả: " + traHangRequest.getSoLuong().toString(), "");
-
-                return MessageResponse.builder().message("Trả hàng thành công").build();
+        if (hoaDon.getTienShip() == null) {
+            hoaDon.setTienShip(BigDecimal.ZERO);
+        }
+        if (hoaDon.getTienGiamGia() == null) {
+            hoaDon.setTienGiamGia(BigDecimal.ZERO);
+        }
+        BigDecimal tongTienSauKhiDaTraHang = BigDecimal.ZERO;
+        List<SanPhamHoaDonChiTietResponse> checkGia = hoaDonChiTietRepository.getSanPhamHDCT(hoaDonChiTiet.getHoaDon().getId());
+        for (SanPhamHoaDonChiTietResponse sanPham : checkGia) {
+            if (sanPham.getTrangThai() == 5) {
+                tongTienSauKhiDaTraHang = tongTienSauKhiDaTraHang.add(sanPham.getDonGiaSauGiam().multiply(BigDecimal.valueOf(sanPham.getSoLuong())));
             }
         }
 
-        return MessageResponse.builder().message("Trả hàng thất bại").build();
+        // Save lại voucher
+        applyVoucherAndPayment(hoaDon, voucher, tongTienSauKhiDaTraHang);
+
+        BigDecimal tienSauKhiTra = tongTienSauKhiDaTraHang.add(hoaDon.getTienShip()).subtract(hoaDon.getTienGiamGia());
+
+        // Hoàn tiền
+        LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+        loaiHinhThucThanhToan.setId(UUID.randomUUID());
+        loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
+        loaiHinhThucThanhToan.setTenLoai("Nhân viên hoàn tiền");
+        HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+        hinhThucThanhToan.setId(UUID.randomUUID());
+        hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+        hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
+        hinhThucThanhToan.setTongSoTien(hoaDon.getThanhTien().subtract(tienSauKhiTra));
+        hinhThucThanhToan.setGhiChu("");
+        hinhThucThanhToan.setPhuongThucThanhToan(1);
+        hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
+        hinhThucThanhToan.setHoaDon(hoaDon);
+        hinhThucThanhToan.setTrangThai(1);
+        hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
+
+//        hoaDon.setThanhTien(tongTienSauKhiDaTraHang.add(hoaDon.getTienShip()).subtract(hoaDon.getTienGiamGia()));
+        loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+        hinhThucThanhToanRepository.save(hinhThucThanhToan);
+        auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Trả hàng", hoaDon.getMa(), "Mã sản phẩm: " + sanPhamHoaDon.getMaSanPham(), "Tên sản phẩm: " + sanPhamHoaDon.getTenSanPham(), "Số lượng trả: " + traHangRequest.getSoLuong().toString(), "");
+        return MessageResponse.builder().message("Trả hàng thành công").build();
+    }
+
+    /**
+     * Trả hàng
+     * @param hoaDon
+     * @param traHangRequest
+     * @param hoaDonChiTiet
+     * @param sanPhamChiTiet
+     * @param count
+     */
+    public void prepareOrderDetails(HoaDon hoaDon, TraHangRequest traHangRequest, HoaDonChiTiet hoaDonChiTiet, SanPhamChiTiet sanPhamChiTiet, int count) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        HoaDonChiTiet addTraHang = new HoaDonChiTiet();
+        TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+        if (count == 1) {
+            if (traHangRequest.getSoLuong() == hoaDonChiTiet.getSoLuong()) {
+                hoaDonChiTiet.setTrangThai(7);
+                hoaDonChiTiet.setComment(traHangRequest.getGhiChu());
+                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
+                trangThaiHoaDon.setId(UUID.randomUUID());
+                trangThaiHoaDon.setTrangThai(7);
+                trangThaiHoaDon.setThoiGian(timestamp);
+                trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
+                trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
+                trangThaiHoaDon.setHoaDon(hoaDon);
+            } else {
+                addTraHang.setId(UUID.randomUUID());
+                addTraHang.setComment(traHangRequest.getGhiChu());
+                addTraHang.setDonGia(hoaDonChiTiet.getDonGia());
+                addTraHang.setTrangThai(7);
+                addTraHang.setHoaDon(hoaDonChiTiet.getHoaDon());
+                addTraHang.setSanPhamChiTiet(hoaDonChiTiet.getSanPhamChiTiet());
+                addTraHang.setDonGiaSauGiam(hoaDonChiTiet.getDonGiaSauGiam());
+                addTraHang.setSoLuong(traHangRequest.getSoLuong());
+                hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() - traHangRequest.getSoLuong());
+                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
+                hoaDonChiTietRepository.save(addTraHang);
+                trangThaiHoaDon.setId(UUID.randomUUID());
+                trangThaiHoaDon.setTrangThai(7);
+                trangThaiHoaDon.setThoiGian(timestamp);
+                trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
+                trangThaiHoaDon.setHoaDon(hoaDon);
+                trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
+            }
+        }
+        if (count > 1) {
+            if (hoaDonChiTiet.getSoLuong() == traHangRequest.getSoLuong()) {
+                hoaDonChiTiet.setTrangThai(7);
+                hoaDonChiTiet.setComment(traHangRequest.getGhiChu());
+                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
+                trangThaiHoaDon.setId(UUID.randomUUID());
+                trangThaiHoaDon.setTrangThai(7);
+                trangThaiHoaDon.setThoiGian(timestamp);
+                trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
+                trangThaiHoaDon.setHoaDon(hoaDon);
+                trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
+            } else {
+                addTraHang.setId(UUID.randomUUID());
+                addTraHang.setComment(traHangRequest.getGhiChu());
+                addTraHang.setDonGia(hoaDonChiTiet.getDonGia());
+                addTraHang.setTrangThai(7);
+                addTraHang.setHoaDon(hoaDonChiTiet.getHoaDon());
+                addTraHang.setSanPhamChiTiet(hoaDonChiTiet.getSanPhamChiTiet());
+                addTraHang.setDonGiaSauGiam(hoaDonChiTiet.getDonGiaSauGiam());
+                addTraHang.setSoLuong(traHangRequest.getSoLuong());
+                hoaDonChiTietRepository.save(addTraHang);
+                hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() - traHangRequest.getSoLuong());
+                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + traHangRequest.getSoLuong());
+                trangThaiHoaDon.setId(UUID.randomUUID());
+                trangThaiHoaDon.setTrangThai(7);
+                trangThaiHoaDon.setThoiGian(timestamp);
+                trangThaiHoaDon.setGhiChu(traHangRequest.getGhiChu());
+                trangThaiHoaDon.setHoaDon(hoaDon);
+                trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
+
+            }
+        }
+        hoaDonChiTietRepository.save(hoaDonChiTiet);
+        trangThaiHoaDonRepository.save(trangThaiHoaDon);
+        chiTietSanPhamRepository.save(sanPhamChiTiet);
+    }
+
+    /**
+     * Tính lại app voucher
+     *
+     * @param hoaDon
+     * @param voucher
+     * @param ktVoucher
+     */
+    @Override
+    public void applyVoucherAndPayment(HoaDon hoaDon, Voucher voucher, BigDecimal ktVoucher) {
+        if (voucher != null) {
+            if (ktVoucher.longValue() < voucher.getGiaTriToiThieuDonhang()) {
+                List<Voucher> voucherList = voucherRepository.getAllVoucher();
+                Long maxDiscount = 0L; // Khởi tạo giá trị giảm giá lớn nhất ban đầu là 0
+                Voucher selectedVoucher = null; // Biến để lưu trữ voucher được chọn
+                for (Voucher v : voucherList) {
+                    if (ktVoucher.longValue() >= v.getGiaTriToiThieuDonhang()) {
+                        if (v.getGiaTriGiam().compareTo(maxDiscount) > 0) { // So sánh giá trị giảm giá với maxDiscount
+                            maxDiscount = v.getGiaTriGiam(); // Cập nhật maxDiscount nếu giá trị mới lớn hơn
+                            selectedVoucher = v; // Lưu trữ voucher có giá trị giảm giá lớn nhất
+                        }
+                    } else {
+                        hoaDon.setVoucher(null);
+                        hoaDon.setThanhTien(new BigDecimal(0));
+                        hoaDon.setTienGiamGia(BigDecimal.ZERO);
+                    }
+                }
+                if (selectedVoucher != null) {
+                    hoaDon.setVoucher(selectedVoucher); // Áp dụng voucher có giảm giá lớn nhất cho hoaDon
+                    if (selectedVoucher.getHinhThucGiam() == 1) {
+                        Long giaTriGiam = selectedVoucher.getGiaTriGiam(); // Lấy giá trị giảm giá từ selectedVoucher
+                        double giaTriGiamDouble = giaTriGiam.doubleValue() / 100.0; // Nhân giá trị giảm giá với 100
+
+                        hoaDon.setTienGiamGia(new BigDecimal(giaTriGiamDouble).multiply(ktVoucher));
+                    }
+                    if (selectedVoucher.getHinhThucGiam() == 2) {
+                        hoaDon.setTienGiamGia(new BigDecimal(selectedVoucher.getGiaTriGiam()));
+                    }
+                }
+            }
+        }
+
+        if (voucher == null) {
+            List<Voucher> voucherList = voucherRepository.getAllVoucher();
+            Long maxDiscount = 0L; // Khởi tạo giá trị giảm giá lớn nhất ban đầu là 0
+            Voucher selectedVoucher = null; // Biến để lưu trữ voucher được chọn
+            for (Voucher v : voucherList) {
+                if (ktVoucher.longValue() >= v.getGiaTriToiThieuDonhang()) {
+                    if (v.getGiaTriGiam().compareTo(maxDiscount) > 0) { // So sánh giá trị giảm giá với maxDiscount
+                        maxDiscount = v.getGiaTriGiam(); // Cập nhật maxDiscount nếu giá trị mới lớn hơn
+                        selectedVoucher = v; // Lưu trữ voucher có giá trị giảm giá lớn nhất
+                    }
+                } else {
+                    hoaDon.setVoucher(null);
+                    hoaDon.setThanhTien(new BigDecimal(0));
+                    hoaDon.setTienGiamGia(BigDecimal.ZERO);
+                }
+            }
+            if (selectedVoucher != null) {
+                hoaDon.setVoucher(selectedVoucher); // Áp dụng voucher có giảm giá lớn nhất cho hoaDon
+                if (selectedVoucher.getHinhThucGiam() == 1) {
+                    Long giaTriGiam = selectedVoucher.getGiaTriGiam(); // Lấy giá trị giảm giá từ selectedVoucher
+                    double giaTriGiamDouble = giaTriGiam.doubleValue() / 100.0; // Nhân giá trị giảm giá với 100
+
+                    hoaDon.setTienGiamGia(new BigDecimal(giaTriGiamDouble).multiply(ktVoucher));
+                }
+                if (selectedVoucher.getHinhThucGiam() == 2) {
+                    hoaDon.setTienGiamGia(new BigDecimal(selectedVoucher.getGiaTriGiam()));
+                }
+            }
+        }
+    }
+
+    /**
+     * Hàm hoàn tiền cho khách
+     *
+     * @param hoaDon
+     * @param tongTienSauTra
+     */
+    @Override
+    public void savePaymentDetails(HoaDon hoaDon, BigDecimal tongTienSauTra) {
+
     }
 
     /**
