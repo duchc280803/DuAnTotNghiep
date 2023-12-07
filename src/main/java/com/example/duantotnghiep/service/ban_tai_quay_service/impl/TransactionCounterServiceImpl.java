@@ -1,6 +1,6 @@
 package com.example.duantotnghiep.service.ban_tai_quay_service.impl;
 
-import com.example.duantotnghiep.config.VnPayConfig;
+import com.example.duantotnghiep.config.VnPayConfigTaiQuay;
 import com.example.duantotnghiep.entity.HinhThucThanhToan;
 import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.entity.LoaiHinhThucThanhToan;
@@ -59,7 +59,7 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
         hinhThucThanhToan.setTaiKhoan(taiKhoan.get());
         hinhThucThanhToan.setTongSoTien(transactionRequest.getSoTien());
         hinhThucThanhToan.setPhuongThucThanhToan(1);
-        hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
+        hinhThucThanhToan.setCodeTransaction(VnPayConfigTaiQuay.getRandomNumber(8));
         hinhThucThanhToan.setHoaDon(hoaDon.get());
         hinhThucThanhToan.setTrangThai(1);
         hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
@@ -75,7 +75,7 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
     }
 
     @Override
-    public MessageResponse cashVnPay(UUID idHoaDon, UUID id, BigDecimal vnpAmount, String username) throws IOException, CsvValidationException {
+    public MessageResponse cashVnPay(UUID idHoaDon, UUID id, BigDecimal vnpAmount, String maGiaoDinh, String username) throws IOException, CsvValidationException {
         Optional<TaiKhoan> nhanVien = taiKhoanRepository.findByUsername(username);
         Optional<TaiKhoan> taiKhoan = khachHangRepository.findById(id);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
@@ -92,7 +92,7 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
         hinhThucThanhToan.setTaiKhoan(taiKhoan.get());
         hinhThucThanhToan.setTongSoTien( vnpAmount);
         hinhThucThanhToan.setPhuongThucThanhToan(2);
-        hinhThucThanhToan.setCodeTransaction(VnPayConfig.getRandomNumber(8));
+        hinhThucThanhToan.setCodeTransaction(maGiaoDinh);
         hinhThucThanhToan.setHoaDon(hoaDon.get());
         hinhThucThanhToan.setTrangThai(2);
         hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);

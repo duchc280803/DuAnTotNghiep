@@ -115,10 +115,12 @@ public class HoaDonChiTietController {
     }
 
     @PostMapping("tra-hang")
-    public ResponseEntity<MessageResponse> createOrUpdate(@RequestParam("idhdct") UUID idhdct,
-                                                          @RequestBody TraHangRequest traHangRequest,
-                                                          Principal principal) throws IOException, CsvValidationException {
-        MessageResponse response = hoaDonChiTietService.createOrUpdate(idhdct, traHangRequest, principal.getName());
+    public ResponseEntity<MessageResponse> createOrUpdate(
+            @RequestParam("id") UUID id,
+            @RequestParam("idhdct") UUID idhdct,
+            @RequestBody TraHangRequest traHangRequest,
+            Principal principal) throws IOException, CsvValidationException {
+        MessageResponse response = hoaDonChiTietService.createOrUpdate(id, idhdct, traHangRequest, principal.getName());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
