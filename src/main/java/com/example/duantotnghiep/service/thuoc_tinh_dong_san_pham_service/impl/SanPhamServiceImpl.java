@@ -143,6 +143,29 @@ public class SanPhamServiceImpl implements SanPhamService {
         return sanPham;
     }
 
+    @Override
+    public MessageResponse updateProduct(ProductRequest productRequest, UUID id) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        Optional<KieuDe> kieuDe = kieuDeRepository.findById(productRequest.getIdKieuDe());
+        Optional<XuatXu> xuatXu = xuatSuRepository.findById(productRequest.getIdXuatXu());
+        Optional<DanhMuc> danhMuc = danhMucRepository.findById(productRequest.getIdCategory());
+        Optional<ThuongHieu> thuongHieu = thuongHieuRepository.findById(productRequest.getIdBrand());
+        SanPham sanPham = sanPhamRepository.findById(id).get();
+        sanPham.setNgayCapNhat(timestamp);
+        sanPham.setMaSanPham(productRequest.getMaSanPham());
+        sanPham.setTenSanPham(productRequest.getProductName());
+        sanPham.setMoTa(productRequest.getDescribe());
+        sanPham.setGiaBan(productRequest.getPrice());
+        sanPham.setBaoHanh(productRequest.getBaoHang());
+        sanPham.setDanhMuc(danhMuc.get());
+        sanPham.setThuongHieu(thuongHieu.get());
+        sanPham.setKieuDe(kieuDe.get());
+        sanPham.setXuatXu(xuatXu.get());
+        sanPham.setTrangThai(1);
+        sanPhamRepository.save(sanPham);
+        return MessageResponse.builder().message("Update thành công").build();
+    }
+
     public List<SanPhamResponse> getNewProductbyId(UUID id) {
         return sanPhamRepository.getNewProductbyId(id);
     }

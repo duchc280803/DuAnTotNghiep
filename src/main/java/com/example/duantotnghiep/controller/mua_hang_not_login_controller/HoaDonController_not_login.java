@@ -30,7 +30,7 @@ public class HoaDonController_not_login {
 
     // Endpoint để tạo hóa đơn và thanh toán khi khách hàng không đăng nhập
     @PostMapping("/thanh-toan-login")
-    public MessageResponse thanhToanLogin(
+    public UUID thanhToanLogin(
             @RequestBody CreateKhachRequest_not_login createKhachRequest_not_login,
             Principal principal
     ) {
