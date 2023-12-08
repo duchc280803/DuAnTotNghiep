@@ -249,7 +249,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
         return MessageResponse.builder().message("Thành công").build();
     }
 
-    public MessageResponse thanhToanLogin(CreateKhachRequest_not_login createKhachRequest_not_login, Principal principal) {
+    public UUID thanhToanLogin(CreateKhachRequest_not_login createKhachRequest_not_login, Principal principal) {
 
         Optional<Voucher> voucher = voucherRepository.findById(createKhachRequest_not_login.getIdGiamGia());
 
@@ -337,7 +337,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
             } else {
                 System.out.println("giỏ hàng chi tiết không tồn tại !");
-                return MessageResponse.builder().message("Thanh Toán thất bại").build();
+                return null;
             }
         }//End step 3
 
@@ -377,7 +377,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
         }//End step 6
 
-        return MessageResponse.builder().message("Thanh Toán Thành Công").build();
+        return hoaDon.getId();
 
     }
 

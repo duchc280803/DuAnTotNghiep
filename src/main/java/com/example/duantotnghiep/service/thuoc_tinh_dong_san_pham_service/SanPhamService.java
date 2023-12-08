@@ -37,6 +37,8 @@ public interface SanPhamService {
     SanPham createProduct(ProductRequest productRequest, String username)
             throws IOException, CsvValidationException, java.io.IOException;
 
+    MessageResponse updateProduct(ProductRequest productRequest, UUID id);
+
     List<SanPhamResponse> getNewProductbyId(UUID id);
 
     List<SanPhamResponse> getBestSellingProductsbyId(UUID id);
