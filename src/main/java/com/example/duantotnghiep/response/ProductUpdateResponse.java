@@ -13,15 +13,15 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ProductUpdateResponse {
 
-    private String ma;
+    private String maSanPham;
 
-    private String ten;
+    private String productName;
 
-    private String mota;
+    private String describe;
 
-    private Integer baoHanh;
+    private Integer baoHang;
 
-    private BigDecimal giaBan;
+    private BigDecimal price;
 
     private String tenXuatXu;
 

@@ -146,7 +146,7 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             trangThaiHoaDon.setHoaDon(hoaDon.get());
             trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
             trangThaiHoaDon.setThoiGian(timestamp);
-            trangThaiHoaDon.setUsername(hoaDon.get().getTaiKhoanNhanVien().getMaTaiKhoan());
+            trangThaiHoaDon.setUsername(taiKhoan.getUsername());
             trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
             trangThaiHoaDonRepository.save(trangThaiHoaDon);
 
