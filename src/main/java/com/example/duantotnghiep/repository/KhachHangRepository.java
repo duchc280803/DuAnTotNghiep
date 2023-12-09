@@ -21,7 +21,7 @@ public interface KhachHangRepository extends JpaRepository<TaiKhoan, UUID> {
     List<KhachHangResponse> findlistKhachHang();
 
     @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.name, tk.email, tk.soDienThoai, dc.diaChi, dc.xa, dc.huyen, dc.tinh) " +
-            "FROM TaiKhoan tk JOIN tk.diaChiList dc WHERE tk.name = :key OR tk.soDienThoai = :key OR tk.email = :key AND dc.trangThai = 1")
+            "FROM TaiKhoan tk JOIN tk.diaChiList dc WHERE (tk.name like %:key% OR tk.soDienThoai like %:key% OR tk.email like %:key%) AND dc.trangThai = 1")
     List<KhachHangResponse> findByKeyToKhachHang(@Param("key") String key);
 
     @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.name, tk.email, tk.soDienThoai, dc.diaChi, dc.xa, dc.huyen, dc.tinh) " +
