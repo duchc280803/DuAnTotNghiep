@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -40,6 +41,13 @@ public class ImageServiceImpl implements ImageService {
 
             boolean hasDefaultImage = findBySanPham.stream().anyMatch(Image::getIsDefault);
 
+            String folderName = "D:\\FE_DuAnTotNghiep\\assets\\ảnh giày"; // Tạo tên thư mục mới dựa trên UUID
+//
+//            File directory = new File(folderName);
+//            if (!directory.exists()) {
+//                directory.mkdirs(); // Tạo thư mục mới nếu chưa tồn tại
+//            }
+
             for (int i = 0; i < files.size(); i++) {
                 MultipartFile file = files.get(i);
                 Image image = new Image();
@@ -52,8 +60,9 @@ public class ImageServiceImpl implements ImageService {
                 } else {
                     image.setIsDefault(false);
                 }
+
                 String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-                Files.copy(file.getInputStream(), Paths.get("D:\\FE_DuAnTotNghiep\\assets\\ảnh giày", fileName), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(file.getInputStream(), Paths.get(folderName, fileName), StandardCopyOption.REPLACE_EXISTING);
                 image.setTenImage(fileName);
                 imageRepository.save(image);
             }

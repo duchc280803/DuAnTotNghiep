@@ -7,6 +7,7 @@ import com.example.duantotnghiep.service.hoa_don_service.impl.HoaDonChiTietServi
 import com.example.duantotnghiep.service.hoa_don_service.impl.TrangThaiHoaDonServiceImpl;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,21 +52,21 @@ public class HoaDonChiTietController {
     @PostMapping("confirm-order/{hoadonId}")
     public ResponseEntity<MessageResponse> confirmOrder(
             @PathVariable UUID hoadonId,
-            @RequestBody TrangThaiHoaDonRequest request, Principal principal) {
+            @Valid @RequestBody TrangThaiHoaDonRequest request, Principal principal) {
         return new ResponseEntity<>(trangThaiHoaDonService.confirmOrder(hoadonId, request, principal.getName(), true), HttpStatus.CREATED);
     }
 
     @PutMapping("confirm-order-client/{hoadonId}")
     public ResponseEntity<MessageResponse> confirmOrderClient(
             @PathVariable UUID hoadonId,
-            @RequestBody ConfirmOrderClientRequest request, Principal principal) throws IOException, CsvValidationException {
+            @Valid @RequestBody ConfirmOrderClientRequest request, Principal principal) throws IOException, CsvValidationException {
         return new ResponseEntity<>(trangThaiHoaDonService.confirmOrderClient(hoadonId, request, principal.getName()), HttpStatus.CREATED);
     }
 
     @PutMapping("confirm-order-deliver/{hoadonId}")
     public ResponseEntity<MessageResponse> confirmOrderDeliver(
             @PathVariable UUID hoadonId,
-            @RequestBody ConfirmOrderDeliver request) {
+            @Valid @RequestBody ConfirmOrderDeliver request) {
         return new ResponseEntity<>(trangThaiHoaDonService.confirmOrderDeliver(hoadonId, request), HttpStatus.CREATED);
     }
 
@@ -118,7 +119,7 @@ public class HoaDonChiTietController {
     public ResponseEntity<MessageResponse> createOrUpdate(
             @RequestParam("id") UUID id,
             @RequestParam("idhdct") UUID idhdct,
-            @RequestBody TraHangRequest traHangRequest,
+            @Valid @RequestBody TraHangRequest traHangRequest,
             Principal principal) throws IOException, CsvValidationException {
         MessageResponse response = hoaDonChiTietService.createOrUpdate(id, idhdct, traHangRequest, principal.getName());
         return new ResponseEntity<>(response, HttpStatus.OK);
