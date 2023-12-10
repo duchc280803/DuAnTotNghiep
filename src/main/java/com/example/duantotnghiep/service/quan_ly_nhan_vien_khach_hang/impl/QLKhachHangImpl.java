@@ -134,6 +134,13 @@ public class QLKhachHangImpl implements QLKhachHangService {
             taiKhoan.setTrangThai(createQLKhachHangRequest.getTrangThai());
             taiKhoan.setImage(fileName);
 
+            DiaChi diaChi = diaChiRepository.findByDiaChi(taiKhoan.getId());
+            diaChi.setDiaChi(createQLKhachHangRequest.getDiaChi());
+            diaChi.setTinh(createQLKhachHangRequest.getTinh());
+            diaChi.setXa(createQLKhachHangRequest.getPhuong());
+            diaChi.setHuyen(createQLKhachHangRequest.getHuyen());
+
+            diaChiRepository.save(diaChi);
             khachHangRepository.save(taiKhoan);
             return MessageResponse.builder().message("Cập Nhật Thành Công").build();
         } else {

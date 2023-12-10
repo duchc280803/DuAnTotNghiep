@@ -151,6 +151,13 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
             taiKhoan.setTrangThai(request.getTrangThai());
             taiKhoan.setImage(fileName);
 
+            DiaChi diaChi = diaChiRepository.findByDiaChi(taiKhoan.getId());
+            diaChi.setDiaChi(request.getDiaChi());
+            diaChi.setTinh(request.getTinh());
+            diaChi.setXa(request.getPhuong());
+            diaChi.setHuyen(request.getHuyen());
+
+            diaChiRepository.save(diaChi);
             khachHangRepository.save(taiKhoan);
             return MessageResponse.builder().message("Cập Nhật Thành Công").build();
         } else {
