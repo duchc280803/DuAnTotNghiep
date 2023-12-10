@@ -14,6 +14,8 @@ import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.NhanVienDTOReponse;
 import com.example.duantotnghiep.response.NhanVienOrderResponse;
 import com.example.duantotnghiep.service.account_service.NhanVienCustomService;
+import com.example.duantotnghiep.util.RemoveDiacritics;
+import com.example.duantotnghiep.util.SendConfirmationEmail;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.util.Arrays;
 import java.util.List;
@@ -81,6 +84,7 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
 
     @Override
     public MessageResponse create(MultipartFile file, NhanVienDTORequest request, boolean sendEmail) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
         List<NhanVienOrderResponse> taiKhoans = khachHangRepository.listNv();
         try {
@@ -89,14 +93,14 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
             throw new RuntimeException(e);
         }
 
-        String normalized = removeDiacritics(request.getTen());
+        String normalized = RemoveDiacritics.removeDiacritics(request.getFullName());
 
         String converted = normalized.toLowerCase().replaceAll("\\s", "");
 
         LoaiTaiKhoan loaiTaiKhoan = loaiTaiKhoanRepository.findByName(TypeAccountEnum.STAFF).get();
         TaiKhoan taiKhoan = new TaiKhoan();
         taiKhoan.setId(UUID.randomUUID());
-        taiKhoan.setName(request.getTen());
+        taiKhoan.setName(request.getFullName());
         taiKhoan.setEmail(request.getEmail());
         taiKhoan.setSoDienThoai(request.getSoDienThoai());
         taiKhoan.setImage(fileName);
@@ -107,6 +111,7 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
         taiKhoan.setUsername(converted + taiKhoans.size() + 1);
         taiKhoan.setMatKhau(passwordEncoder.encode(converted));
         taiKhoan.setLoaiTaiKhoan(loaiTaiKhoan);
+        taiKhoan.setNgayTao(timestamp);
         taiKhoanRepository.save(taiKhoan);
 
         DiaChi diaChi = new DiaChi();
@@ -119,42 +124,10 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
         diaChi.setTrangThai(1);
         diaChiRepository.save(diaChi);
         if (sendEmail) {
-            sendConfirmationEmail(taiKhoan.getEmail(), taiKhoan.getUsername(), converted);
+            SendConfirmationEmail.sendConfirmationEmailStatic(taiKhoan.getEmail(), taiKhoan.getUsername(), converted, javaMailSender);
             System.out.println("gửi mail");
         }
         return MessageResponse.builder().message("Thêm Thành Công").build();
-    }
-
-    private void sendConfirmationEmail(String email, String username, String password) {
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-
-        try {
-            helper.setTo(email);
-            helper.setSubject("Chào mừng bạn đến với Nice Shoe");
-
-            String htmlMsg = "<h1>Chào mừng bạn đến với <span style='color: #ff9900;'>NICE SHOE</span> của chúng tôi!</h1>\n" +
-                    "<p>Xin chân thành cảm ơn bạn đã đăng ký nhận <span style='color: #ff9900;'>NICE SHOE</span> của chúng tôi. Chúng tôi sẽ cung cấp cho bạn thông tin cập\n" +
-                    "    nhật về tin tức và ưu đãi mới nhất.</p>\n" +
-                    "<h3>Ưu điểm của <span style='color: #ff9900;'>NICE SHOE</span>:</h3>\n" +
-                    "<ul>\n" +
-                    "    <li>Thông tin mới nhất về sản phẩm và dịch vụ của chúng tôi</li>\n" +
-                    "    <li>Ưu đãi đặc biệt và khuyến mãi hấp dẫn</li>\n" +
-                    "</ul>\n" +
-                    "<p><strong>Đừng bỏ lỡ!</strong> Để nhận các thông tin và ưu đãi đặc biệt từ chúng tôi, hãy nhấp vào nút bên dưới để\n" +
-                    "    mua ngay sản phẩm:</p>\n" +
-                    "<a href='LINK_DEN_TRANG_DANG_KY'\n" +
-                    "    style='padding: 10px 20px; background-color: #ff9900; color: #ffffff; text-decoration: none; border-radius: 5px;'>Trang web</a>" +
-                    "<p><strong>Thông tin đăng nhập:</strong></p>" +
-                    "<p>Username: <strong>" + username + "</strong></p>" +
-                    "<p>Password: <strong>" + password + "</strong></p>";
-
-            helper.setText(htmlMsg, true);
-            javaMailSender.send(mimeMessage);
-        } catch (MessagingException e) {
-            // Xử lý ngoại lệ nếu gửi email thất bại
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -170,7 +143,7 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
         if (optionalTaiKhoan.isPresent()) {
             TaiKhoan taiKhoan = optionalTaiKhoan.get();
 
-            taiKhoan.setName(request.getTen());
+            taiKhoan.setName(request.getFullName());
             taiKhoan.setEmail(request.getEmail());
             taiKhoan.setSoDienThoai(request.getSoDienThoai());
             taiKhoan.setGioiTinh(request.getGioiTinh());
@@ -178,6 +151,13 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
             taiKhoan.setTrangThai(request.getTrangThai());
             taiKhoan.setImage(fileName);
 
+            DiaChi diaChi = diaChiRepository.findByDiaChi(taiKhoan.getId());
+            diaChi.setDiaChi(request.getDiaChi());
+            diaChi.setTinh(request.getTinh());
+            diaChi.setXa(request.getPhuong());
+            diaChi.setHuyen(request.getHuyen());
+
+            diaChiRepository.save(diaChi);
             khachHangRepository.save(taiKhoan);
             return MessageResponse.builder().message("Cập Nhật Thành Công").build();
         } else {
@@ -194,12 +174,6 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
         } else {
             return MessageResponse.builder().message("Không tìm thấy thương hiệu với ID: " + id).build();
         }
-    }
-
-    public static String removeDiacritics(String input) {
-        input = Normalizer.normalize(input, Normalizer.Form.NFD);
-        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-        return pattern.matcher(input).replaceAll("");
     }
 
 }
