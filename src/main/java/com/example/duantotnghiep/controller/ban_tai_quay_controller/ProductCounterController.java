@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.controller.ban_tai_quay_controller;
 
 import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
+import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.impl.ProductCounterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -67,6 +68,11 @@ public class ProductCounterController {
     @GetMapping("tien-cuoi-cung")
     public Long getGiaGiamCuoiCung(@RequestParam UUID id) {
         return chiTietSanPhamService.getGiaGiamCuoiCung(id);
+    }
+
+    @GetMapping("so-luong/{id}")
+    public Integer soLuong(@PathVariable(name = "id") UUID id) {
+        return chiTietSanPhamService.soLuong(id);
     }
 
 }
