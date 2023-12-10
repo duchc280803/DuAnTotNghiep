@@ -1,8 +1,6 @@
 package com.example.duantotnghiep.service.hoa_don_service;
 
-import com.example.duantotnghiep.entity.HoaDon;
-import com.example.duantotnghiep.entity.HoaDonChiTiet;
-import com.example.duantotnghiep.entity.TaiKhoan;
+import com.example.duantotnghiep.entity.*;
 import com.example.duantotnghiep.request.TraHangRequest;
 import com.example.duantotnghiep.request.TrangThaiHoaDonRequest;
 import com.example.duantotnghiep.request.TransactionRequest;
@@ -37,7 +35,7 @@ public interface HoaDonChiTietService {
 
     ProductDetailDTOResponse getDetailSanPham(UUID idhdct);
 
-    MessageResponse createOrUpdate(UUID idhdct, TraHangRequest traHangResponse, String username) throws IOException, CsvValidationException;
+    MessageResponse createOrUpdate(UUID id, UUID idhdct, TraHangRequest traHangResponse, String username) throws IOException, CsvValidationException;
 
     void deleteOrderDetail(UUID idHoaDon, UUID id, String username) throws IOException, CsvValidationException;
 
@@ -56,4 +54,10 @@ public interface HoaDonChiTietService {
     MessageResponse comfirmStatusHuyDon(UUID idHoaDon, TrangThaiHoaDonRequest request);
 
     MessageResponse rollBackOrder(UUID idHoaDon, TrangThaiHoaDonRequest request);
+
+    void savePaymentDetails(HoaDon hoaDon, BigDecimal tongTienSauTra);
+
+    void applyVoucherAndPayment(HoaDon hoaDon, Voucher voucher, BigDecimal ktVoucher);
+
+    void prepareOrderDetails(HoaDon hoaDon, TraHangRequest traHangRequest, HoaDonChiTiet hoaDonChiTiet, SanPhamChiTiet sanPhamChiTiet, int count);
 }

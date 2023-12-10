@@ -4,6 +4,7 @@ import com.example.duantotnghiep.request.ProductDetailRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.SanPhamChiTietResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.SanPhamChiTietServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -69,7 +70,7 @@ public class SanPhamChiTietController {
     @PostMapping("create/{idProduct}")
     public ResponseEntity<MessageResponse> createSanPham(
             @PathVariable(name = "idProduct") UUID idProduct,
-            @RequestBody ProductDetailRequest productDetailRequest
+            @Valid @RequestBody ProductDetailRequest productDetailRequest
     ) {
         return new ResponseEntity<>(sanPhamChiTietService.createProductDetail(idProduct, productDetailRequest), HttpStatus.CREATED);
     }

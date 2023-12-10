@@ -42,7 +42,7 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
     @Query("SELECT new com.example.duantotnghiep.response.HinhThucThanhToanResponse(lhttt.tenLoai, httt.codeTransaction, httt.tongSoTien, httt.ngayThanhToan, httt.phuongThucThanhToan,httt.ghiChu, nv.name) FROM HoaDon hd " +
             "JOIN hd.hinhThucThanhToanList httt " +
             "JOIN httt.loaiHinhThucThanhToan lhttt " +
-            "JOIN hd.taiKhoanNhanVien nv WHERE hd.id = :idHoaDon")
+            "LEFT JOIN hd.taiKhoanNhanVien nv WHERE hd.id = :idHoaDon ORDER BY httt.ngayThanhToan DESC ")
     List<HinhThucThanhToanResponse> getLichSuThanhToan(UUID idHoaDon);
 
     @Query("SELECT new com.example.duantotnghiep.response.TrangThaiHoaDonResponse(tthd.trangThai, tthd.thoiGian, tthd.username, tthd.ghiChu) " +

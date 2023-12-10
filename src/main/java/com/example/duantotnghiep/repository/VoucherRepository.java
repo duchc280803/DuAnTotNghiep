@@ -22,5 +22,8 @@ public interface VoucherRepository extends JpaRepository<Voucher, UUID> {
             "(v.id, v.maVoucher, v.tenVoucher, v.hinhThucGiam, v.soLuongMa, v.soLuongDung,v.giaTriGiam, v.giaTriToiThieuDonhang, v.ngayBatDau, v.ngayKetThuc) FROM Voucher v ")
     Page<VoucherCounterResponse> findAllVoucher(Pageable pageable);
 
+    @Query("SELECT v FROM Voucher v WHERE v.trangThai = 1")
+    List<Voucher> getAllVoucher();
+
     List<Voucher> findByTrangThai(Integer trangThai);
 }

@@ -202,11 +202,7 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "JOIN sp.kieuDe kd " +
             "JOIN sp.danhMuc dm " +
             "JOIN sp.xuatXu xx " +
-            "WHERE sp.trangThai = 1 " +
-            "AND th.trangThai = 1 " +
-            "AND kd.trangThai = 1 " +
-            "AND xx.trangThai = 1 " +
-            "AND sp.id = :id")
+            "WHERE sp.id = :id")
     ProductUpdateResponse findByProduct(@Param("id") UUID id);
 
     @Query(value = "SELECT new com.example.duantotnghiep.response.ProductDetailUpdateReponse" +

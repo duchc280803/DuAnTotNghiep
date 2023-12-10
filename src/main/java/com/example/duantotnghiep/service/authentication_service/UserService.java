@@ -8,6 +8,7 @@ import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.TokenResponse;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface UserService {
 
@@ -15,9 +16,11 @@ public interface UserService {
 
     MessageResponse register(RegisterRequest registerRequest);
 
-    MessageResponse forgotPassword(ForgotPassword forgotPassword);
+    MessageResponse forgotPassword(String email);
 
-    MessageResponse sendConfirmEmailForgotPassWord(String email);
+    MessageResponse datLaiMatKhau(UUID id, String password);
+
+    MessageResponse sendConfirmEmailForgotPassWord(String email, UUID id);
 
     RefreshToken createToken(String username);
 

@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 public class NhanVienDTORequest {
 
-    private String ten;
+    private String fullName;
 
     private String email;
 
