@@ -79,11 +79,11 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
     public String findByName(UUID id) {
         HoaDon hoaDon = hoaDonRepository.findById(id).orElse(null);
         if (hoaDon == null || hoaDon.getVoucher() == null) {
-            return "Voucher null";
+            return "Không áp dụng";
         }
         String name = hoaDon.getVoucher().getMaVoucher();
         if (name.isEmpty()) {
-            return "Voucher null";
+            return "Không áp dụng";
         }
         return name;
     }

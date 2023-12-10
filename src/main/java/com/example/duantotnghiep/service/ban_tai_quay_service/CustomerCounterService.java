@@ -11,11 +11,11 @@ import java.util.UUID;
 
 public interface CustomerCounterService {
 
-    List<KhachHangResponse> getKhachHang();
+    List<KhachHangResponse> getKhachHang(Integer pageNumber, Integer pageSize);
 
     List<KhachHangResponse> findByKeyToKhachHang(String key);
 
-    MessageResponse createKhachHang(CreateKhachRequest createKhachRequest);
+    MessageResponse createKhachHang(CreateKhachRequest createKhachRequest, boolean sendEmail);
 
     MessageResponse updateHoaDon(UUID id, UUID idHoaDon, UUID idGioHang, String username) throws IOException, CsvValidationException;
 

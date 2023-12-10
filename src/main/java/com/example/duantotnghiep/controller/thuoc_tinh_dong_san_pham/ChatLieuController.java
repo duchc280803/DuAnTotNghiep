@@ -9,6 +9,7 @@ import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.C
 import com.example.duantotnghiep.schedulingtasks.UserExcelExporter;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,19 +68,22 @@ public class ChatLieuController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<MessageResponse> createDanhMuc(@RequestBody ChatLieuRequest chatLieuRequest, Principal principal) throws IOException, CsvValidationException {
+    public ResponseEntity<MessageResponse> createDanhMuc(
+            @Valid @RequestBody ChatLieuRequest chatLieuRequest,
+            Principal principal) throws IOException, CsvValidationException {
         return new ResponseEntity<>(chatLieuService.create(chatLieuRequest, principal.getName()), HttpStatus.CREATED);
     }
 
     @PutMapping("update")
-    public ResponseEntity<MessageResponse> updateDanhMuc(@RequestParam UUID id, @RequestBody ChatLieuRequest chatLieuRequest,Principal principal) {
+    public ResponseEntity<MessageResponse> updateDanhMuc(@RequestParam UUID id, @Valid @RequestBody ChatLieuRequest chatLieuRequest, Principal principal) {
         try {
-            MessageResponse response = chatLieuService.update(id, chatLieuRequest,principal.getName());
+            MessageResponse response = chatLieuService.update(id, chatLieuRequest, principal.getName());
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PutMapping("delete")
     public ResponseEntity<MessageResponse> deleteDanhMuc(@RequestParam UUID id) {
         return new ResponseEntity<>(chatLieuService.delete(id), HttpStatus.OK);
