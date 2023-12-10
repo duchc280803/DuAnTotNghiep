@@ -15,6 +15,8 @@ public class KhachHangResponse {
 
     private UUID id;
 
+    private String ma;
+
     private String ten;
 
     private String email;
