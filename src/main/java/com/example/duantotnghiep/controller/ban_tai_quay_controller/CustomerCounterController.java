@@ -5,6 +5,7 @@ import com.example.duantotnghiep.response.KhachHangResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.impl.CustomerCounterServiceImpl;
 import com.opencsv.exceptions.CsvValidationException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,11 @@ public class CustomerCounterController {
     private CustomerCounterServiceImpl khachHangService;
 
     @GetMapping("hien-thi")
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok(khachHangService.getKhachHang());
+    public ResponseEntity<?> getAll(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
+    ) {
+        return ResponseEntity.ok(khachHangService.getKhachHang(pageNumber, pageSize));
     }
 
     @GetMapping("search")
@@ -39,8 +43,10 @@ public class CustomerCounterController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<MessageResponse> createKhachHang(@RequestBody CreateKhachRequest createKhachRequest) {
-        return new ResponseEntity<>(khachHangService.createKhachHang(createKhachRequest), HttpStatus.CREATED);
+    public ResponseEntity<MessageResponse> createKhachHang(
+            @Valid @RequestBody CreateKhachRequest createKhachRequest
+    ) {
+        return new ResponseEntity<>(khachHangService.createKhachHang(createKhachRequest, true), HttpStatus.CREATED);
     }
 
     @PutMapping("update-hoa-don")
