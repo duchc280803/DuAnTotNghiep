@@ -7,6 +7,7 @@ import com.example.duantotnghiep.request.SizeRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.MauSacServiceImpl;
 import com.opencsv.exceptions.CsvValidationException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,12 +46,12 @@ public class MauSacController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<MessageResponse> createSize(@RequestBody MauSacRequest mauSacRequest, Principal principal) throws IOException, CsvValidationException {
+    public ResponseEntity<MessageResponse> createSize(@Valid @RequestBody MauSacRequest mauSacRequest, Principal principal) throws IOException, CsvValidationException {
         return new ResponseEntity<>(mauSacService.create(mauSacRequest,principal.getName()), HttpStatus.CREATED);
     }
 
     @PutMapping("update")
-    public ResponseEntity<MessageResponse> updateSize(@RequestParam UUID id, @RequestBody MauSacRequest mauSacRequest,Principal principal) {
+    public ResponseEntity<MessageResponse> updateSize(@RequestParam UUID id,@Valid @RequestBody MauSacRequest mauSacRequest,Principal principal) {
         try {
             MessageResponse response = mauSacService.update(id, mauSacRequest,principal.getName());
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -58,6 +59,7 @@ public class MauSacController {
             return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PutMapping("delete")
     public ResponseEntity<MessageResponse> deleteSize(@RequestParam UUID id) {
         return new ResponseEntity<>(mauSacService.delete(id), HttpStatus.OK);

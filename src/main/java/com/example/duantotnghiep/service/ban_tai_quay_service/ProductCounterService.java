@@ -31,4 +31,6 @@ public interface ProductCounterService {
 
     List<ChiTietSanPhamCustom> filterColor(String name);
 
+    Integer soLuong(UUID id);
+
 }

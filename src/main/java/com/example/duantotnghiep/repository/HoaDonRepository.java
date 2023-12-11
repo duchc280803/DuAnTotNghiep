@@ -19,7 +19,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
 
     Optional<HoaDon> findByTaiKhoanKhachHang(TaiKhoan taiKhoan);
 
-    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonResponse(hd.id, hd.ma, tknv.name, hd.ngayTao, tkkh.name, ld.tenLoaiDon, hd.trangThai)" +
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonResponse(hd.id, hd.taiKhoanKhachHang.id,hd.ma, tknv.name, hd.ngayTao, tkkh.name, ld.tenLoaiDon, hd.trangThai)" +
             "FROM HoaDon hd " +
             "JOIN hd.loaiDon ld " +
             "JOIN hd.taiKhoanNhanVien tknv " +
@@ -28,7 +28,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
             "ORDER BY hd.ngayTao DESC")
     Page<HoaDonResponse> viewHoaDonTaiQuay(Pageable pageable);
 
-    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonResponse(hd.id, hd.ma, tknv.name, hd.ngayTao, tkkh.name, ld.tenLoaiDon, hd.trangThai)" +
+    @Query("SELECT NEW com.example.duantotnghiep.response.HoaDonResponse(hd.id, hd.taiKhoanKhachHang.id, hd.ma, tknv.name, hd.ngayTao, tkkh.name, ld.tenLoaiDon, hd.trangThai)" +
             " FROM HoaDon hd " +
             "JOIN hd.loaiDon ld " +
             "JOIN hd.taiKhoanNhanVien tknv " +

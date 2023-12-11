@@ -7,6 +7,7 @@ import com.example.duantotnghiep.request.MauSacRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.KieuDeServiceImpl;
 import com.opencsv.exceptions.CsvValidationException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,12 +46,12 @@ public class KieuDeController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<MessageResponse> createKieuDe(@RequestBody KieuDeRequest kieuDeRequest, Principal principal) throws IOException, CsvValidationException {
+    public ResponseEntity<MessageResponse> createKieuDe(@Valid @RequestBody KieuDeRequest kieuDeRequest, Principal principal) throws IOException, CsvValidationException {
         return new ResponseEntity<>(kieuDeService.create(kieuDeRequest, principal.getName()), HttpStatus.CREATED);
     }
 
     @PutMapping("update")
-    public ResponseEntity<MessageResponse> updateKieuDe(@RequestParam UUID id, @RequestBody KieuDeRequest kieuDeRequest,Principal principal) {
+    public ResponseEntity<MessageResponse> updateKieuDe(@RequestParam UUID id,@Valid @RequestBody KieuDeRequest kieuDeRequest,Principal principal) {
         try {
             MessageResponse response = kieuDeService.update(id, kieuDeRequest,principal.getName());
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -58,6 +59,7 @@ public class KieuDeController {
             return new ResponseEntity<>(MessageResponse.builder().message("Lỗi khi cập nhật").build(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @PutMapping("delete")
     public ResponseEntity<MessageResponse> deleteKieuDe(@RequestParam UUID id) {
         return new ResponseEntity<>(kieuDeService.delete(id), HttpStatus.OK);
