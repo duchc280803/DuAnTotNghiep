@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.repository;
 
+import com.example.duantotnghiep.entity.ChatLieu;
 import com.example.duantotnghiep.entity.MauSac;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,4 +22,7 @@ public interface MauSacRepository extends JpaRepository<MauSac, UUID> {
             "WHERE (:trangThai IS NULL OR th.trangThai = :trangThai) " +
             "AND (:tenMauSac IS NULL OR th.tenMauSac LIKE %:tenMauSac%) ORDER BY th.ngayTao DESC")
     Page<MauSac> getAllMauSac(@Param("trangThai") Integer trangThai, @Param("tenMauSac") String tenMauSac, Pageable pageable);
+
+    List<MauSac> findAllByTenMauSac(String mausac);
+
 }

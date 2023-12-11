@@ -2,6 +2,7 @@ package com.example.duantotnghiep.controller.thuoc_tinh_dong_san_pham;
 
 import com.example.duantotnghiep.entity.ChatLieu;
 import com.example.duantotnghiep.entity.DanhMuc;
+import com.example.duantotnghiep.entity.Size;
 import com.example.duantotnghiep.request.ChatLieuRequest;
 import com.example.duantotnghiep.request.DanhMucRequest;
 import com.example.duantotnghiep.response.MessageResponse;
@@ -87,5 +88,11 @@ public class ChatLieuController {
     @PutMapping("delete")
     public ResponseEntity<MessageResponse> deleteDanhMuc(@RequestParam UUID id) {
         return new ResponseEntity<>(chatLieuService.delete(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/find-by-chat-lieu")
+    public ResponseEntity<?> findchatlieu(@RequestParam("chatlieu") String chatlieu) {
+        List<ChatLieu> thuocTinhList = chatLieuService.findChatLieu(chatlieu);
+        return new ResponseEntity<>(thuocTinhList.size(), HttpStatus.OK);
     }
 }
