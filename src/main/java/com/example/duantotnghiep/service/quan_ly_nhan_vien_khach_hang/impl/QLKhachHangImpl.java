@@ -148,5 +148,14 @@ public class QLKhachHangImpl implements QLKhachHangService {
         }
     }
 
+    // Thêm method tìm khách hàng theo số điện thoại
+    public List<TaiKhoan> findKhachHangBySoDienThoai(String soDienThoai) {
+        return khachHangRepository.findBySoDienThoai(soDienThoai);
+    }
+
+    // Thêm method tìm khách hàng theo email
+    public List<TaiKhoan> findKhachHangByEmail(String email) {
+        return khachHangRepository.findByEmail(email);
+    }
 
 }
