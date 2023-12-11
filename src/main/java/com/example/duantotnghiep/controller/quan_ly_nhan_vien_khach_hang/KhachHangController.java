@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.controller.quan_ly_nhan_vien_khach_hang;
 
+import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.request.CreateQLKhachHangRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.QLKhachHangResponse;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @CrossOrigin
@@ -53,6 +55,18 @@ public class KhachHangController {
     @GetMapping("/detail")
     public ResponseEntity<QLKhachHangResponse> search(@RequestParam(name = "id") UUID id) {
         return new ResponseEntity<>(service.detailKhachHang(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/find-by-so-dien-thoai")
+    public ResponseEntity<?> findKhachHangBySoDienThoai(@RequestParam("soDienThoai") String soDienThoai) {
+        List<TaiKhoan> khachHangList = service.findKhachHangBySoDienThoai(soDienThoai);
+        return new ResponseEntity<>(khachHangList.size(), HttpStatus.OK);
+
+    }
+    @GetMapping("/find-by-email")
+    public ResponseEntity<?> findKhachHangByEmail(@RequestParam("email") String email) {
+        List<TaiKhoan> khachHangList = service.findKhachHangByEmail(email);
+        return new ResponseEntity<>(khachHangList.size(), HttpStatus.OK);
     }
 
 }
