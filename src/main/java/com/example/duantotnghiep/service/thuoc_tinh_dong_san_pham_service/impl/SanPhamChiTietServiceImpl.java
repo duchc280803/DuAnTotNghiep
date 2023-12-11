@@ -68,21 +68,27 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
         Optional<Size> size = sizeRepository.findById(productDetailRequest.getIdSize());
         Optional<ChatLieu> chatLieu = chatLieuRepository.findById(productDetailRequest.getIdChatLieu());
         Optional<MauSac> mauSac = mauSacRepository.findById(productDetailRequest.getIdMauSac());
-        SanPhamChiTiet sanPhamChiTiet = new SanPhamChiTiet();
-        sanPhamChiTiet.setId(UUID.randomUUID());
-        sanPhamChiTiet.setSoLuong(productDetailRequest.getSoLuong());
-        sanPhamChiTiet.setQrcode(UUID.randomUUID().toString());
-        sanPhamChiTiet.setTrangThai(1);
-        sanPhamChiTiet.setSanPham(sanPham.get());
-        sanPhamChiTiet.setMauSac(mauSac.get());
-        sanPhamChiTiet.setSize(size.get());
-        sanPhamChiTiet.setChatLieu(chatLieu.get());
-        chiTietSanPhamRepository.save(sanPhamChiTiet);
+        SanPhamChiTiet findByMauSacAndChatLieuAndSize = chiTietSanPhamRepository.findByMauSacAndChatLieuAndSize(mauSac.get(), chatLieu.get(), size.get());
+        if (findByMauSacAndChatLieuAndSize != null) {
+            findByMauSacAndChatLieuAndSize.setSoLuong(findByMauSacAndChatLieuAndSize.getSoLuong() + productDetailRequest.getSoLuong());
+            chiTietSanPhamRepository.save(findByMauSacAndChatLieuAndSize);
+        } else {
+            SanPhamChiTiet sanPhamChiTiet = new SanPhamChiTiet();
+            sanPhamChiTiet.setId(UUID.randomUUID());
+            sanPhamChiTiet.setSoLuong(productDetailRequest.getSoLuong());
+            sanPhamChiTiet.setQrcode(UUID.randomUUID().toString());
+            sanPhamChiTiet.setTrangThai(1);
+            sanPhamChiTiet.setSanPham(sanPham.get());
+            sanPhamChiTiet.setMauSac(mauSac.get());
+            sanPhamChiTiet.setSize(size.get());
+            sanPhamChiTiet.setChatLieu(chatLieu.get());
+            chiTietSanPhamRepository.save(sanPhamChiTiet);
+        }
         return MessageResponse.builder().message("Tạo thành công").build();
     }
 
     @Override
-    public MessageResponse  updateStatusHuy(UUID id) {
+    public MessageResponse updateStatusHuy(UUID id) {
         Optional<SanPhamChiTiet> sanPhamChiTiet = chiTietSanPhamRepository.findById(id);
         sanPhamChiTiet.get().setTrangThai(1);
         chiTietSanPhamRepository.save(sanPhamChiTiet.get());

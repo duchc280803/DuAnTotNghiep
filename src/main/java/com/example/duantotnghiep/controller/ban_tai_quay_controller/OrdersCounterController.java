@@ -9,6 +9,7 @@ import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.OrderCounterCartsResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.impl.OrderCounterServiceImpl;
 import com.opencsv.exceptions.CsvValidationException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,7 +67,7 @@ public class OrdersCounterController {
     @PostMapping("create-hoa-don-chi-tiet-giao")
     public ResponseEntity<MessageResponse> taoHoaDonGiao(
             @RequestParam("idHoaDon") UUID idHoaDon,
-            @RequestBody HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest,
+            @Valid @RequestBody HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest,
             Principal principal) throws IOException, CsvValidationException {
         return new ResponseEntity<>(hoaDonService.updateHoaDonGiaoTaiQuay(idHoaDon, hoaDonGiaoThanhToanRequest, principal.getName(), true), HttpStatus.CREATED);
     }

@@ -38,7 +38,7 @@ public class SanPhamController {
     @GetMapping("thuong-hieu")
     public ResponseEntity<List<ProductResponse>> findByThuongHieu(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
             @RequestParam(name = "value") String value) {
         return new ResponseEntity<>(sanPhamService.findByThuongHieu(pageNumber, pageSize, value), HttpStatus.OK);
     }
@@ -46,7 +46,7 @@ public class SanPhamController {
     @GetMapping("kieu-de")
     public ResponseEntity<List<ProductResponse>> findByKieuDe(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
             @RequestParam(name = "value") String value) {
         return new ResponseEntity<>(sanPhamService.findByKieuDe(pageNumber, pageSize, value), HttpStatus.OK);
     }
@@ -54,7 +54,7 @@ public class SanPhamController {
     @GetMapping("xuat-xu")
     public ResponseEntity<List<ProductResponse>> findByXuatXu(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
             @RequestParam(name = "value") String value) {
         return new ResponseEntity<>(sanPhamService.findByXuatXu(pageNumber, pageSize, value), HttpStatus.OK);
     }
@@ -62,7 +62,7 @@ public class SanPhamController {
     @GetMapping("danh-muc")
     public ResponseEntity<List<ProductResponse>> findByDanhMuc(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
             @RequestParam(name = "value") String value) {
         return new ResponseEntity<>(sanPhamService.findByDanhMuc(pageNumber, pageSize, value), HttpStatus.OK);
     }
@@ -70,7 +70,7 @@ public class SanPhamController {
     @GetMapping("name-code")
     public ResponseEntity<List<ProductResponse>> findByNameOrCode(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
             @RequestParam(name = "value") String value) {
         return new ResponseEntity<>(sanPhamService.findByNameOrCode(pageNumber, pageSize, value), HttpStatus.OK);
     }
@@ -78,7 +78,7 @@ public class SanPhamController {
     @GetMapping("status")
     public ResponseEntity<List<ProductResponse>> findByStatus(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
             @RequestParam(name = "status") Integer status) {
         return new ResponseEntity<>(sanPhamService.findByStatus(pageNumber, pageSize, status), HttpStatus.OK);
     }

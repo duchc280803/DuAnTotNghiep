@@ -1,6 +1,9 @@
 package com.example.duantotnghiep.repository;
 
+import com.example.duantotnghiep.entity.ChatLieu;
+import com.example.duantotnghiep.entity.MauSac;
 import com.example.duantotnghiep.entity.SanPhamChiTiet;
+import com.example.duantotnghiep.entity.Size;
 import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
 import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.mapper.GioHangCustom;
@@ -305,7 +308,8 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "JOIN spct.sanPham sp " +
             "JOIN spct.size s " +
             "JOIN spct.chatLieu cl " +
-            "JOIN spct.mauSac ms WHERE sp.id = :id AND spct.trangThai = 1 AND sp.trangThai = 1")
+            "JOIN spct.mauSac ms " +
+            "WHERE sp.id = :id AND spct.trangThai = 1 AND sp.trangThai = 1 AND cl.trangThai = 1 AND ms.trangThai = 1 AND s.trangThai = 1")
     Page<SanPhamChiTietResponse> getAllSanPhamChiTiet(@Param("id") UUID id, Pageable pageable);
 
     @Query("SELECT new com.example.duantotnghiep.response.SanPhamChiTietResponse" +
@@ -342,4 +346,6 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND sp.trangThai = 1 " +
             "AND s.size = :size")
     Page<SanPhamChiTietResponse> finBySize(@Param("id") UUID id, @Param("size") Integer size, Pageable pageable);
+
+    SanPhamChiTiet findByMauSacAndChatLieuAndSize(MauSac mauSac, ChatLieu chatLieu, Size size);
 }
