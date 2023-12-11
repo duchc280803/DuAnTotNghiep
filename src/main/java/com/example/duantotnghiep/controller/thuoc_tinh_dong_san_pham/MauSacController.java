@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.controller.thuoc_tinh_dong_san_pham;
 
+import com.example.duantotnghiep.entity.ChatLieu;
 import com.example.duantotnghiep.entity.MauSac;
 import com.example.duantotnghiep.entity.Size;
 import com.example.duantotnghiep.request.MauSacRequest;
@@ -63,5 +64,11 @@ public class MauSacController {
     @PutMapping("delete")
     public ResponseEntity<MessageResponse> deleteSize(@RequestParam UUID id) {
         return new ResponseEntity<>(mauSacService.delete(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/find-by-mau-sac")
+    public ResponseEntity<?> findmausac(@RequestParam("mausac") String mausac) {
+        List<MauSac> thuocTinhList = mauSacService.findMauSac(mausac);
+        return new ResponseEntity<>(thuocTinhList.size(), HttpStatus.OK);
     }
 }

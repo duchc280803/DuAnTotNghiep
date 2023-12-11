@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.controller.thuoc_tinh_dong_san_pham;
 
 import com.example.duantotnghiep.entity.Size;
+import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.request.SizeRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.SizeServiceImpl;
@@ -39,7 +40,7 @@ public class SizeController {
     }
 
     @GetMapping("detail")
-    public Size getSizeById(@PathVariable UUID id) {
+    public Size getSizeById(@RequestParam UUID id) {
         return sizeService.getById(id);
     }
 
@@ -63,4 +64,9 @@ public class SizeController {
         return new ResponseEntity<>(sizeService.delete(id), HttpStatus.OK);
     }
 
+    @GetMapping("/find-by-size")
+    public ResponseEntity<?> findKhachHangByEmail(@RequestParam("size") Integer size) {
+        List<Size> thuocTinhList = sizeService.findSize(size);
+        return new ResponseEntity<>(thuocTinhList.size(), HttpStatus.OK);
+    }
 }
