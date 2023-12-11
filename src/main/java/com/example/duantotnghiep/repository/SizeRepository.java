@@ -21,4 +21,6 @@ public interface SizeRepository extends JpaRepository<Size, UUID> {
             "WHERE (:trangThai IS NULL OR th.trangThai = :trangThai) " +
             "AND (:size IS NULL OR th.size = :size) ORDER BY th.ngayTao DESC")
     Page<Size> getAllSize(@Param("trangThai") Integer trangThai, @Param("size") Integer size, Pageable pageable);
+
+    List<Size> findAllBySize(Integer size);
 }

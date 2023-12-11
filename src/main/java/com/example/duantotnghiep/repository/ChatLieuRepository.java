@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.repository;
 
 import com.example.duantotnghiep.entity.ChatLieu;
+import com.example.duantotnghiep.entity.Size;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,4 +21,7 @@ public interface ChatLieuRepository extends JpaRepository<ChatLieu, UUID> {
             "WHERE (:trangThai IS NULL OR th.trangThai = :trangThai) " +
             "AND (:tenChatLieu IS NULL OR th.tenChatLieu LIKE %:tenChatLieu%) ORDER BY th.ngayTao DESC")
     Page<ChatLieu> getAllChatLieu(@Param("trangThai") Integer trangThai, @Param("tenChatLieu") String tenChatLieu, Pageable pageable);
+
+    List<ChatLieu> findAllByTenChatLieu(String chatlieu);
+
 }

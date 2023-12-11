@@ -130,7 +130,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         trangThaiHoaDon.setGhiChu("Nhân viên tạo đơn cho khách");
         trangThaiHoaDon.setHoaDon(hoaDon);
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
-        auditLogService.writeAuditLogHoadon(name, findByNhanVien.get().getEmail(), "Nhân viên tạo hóa đơn", hoaDon.getMa(),  "" , "",  "", "");
+        auditLogService.writeAuditLogHoadon(name, findByNhanVien.get().getEmail(), "Nhân viên tạo hóa đơn", hoaDon.getMa(), "", "", "", "");
         return hoaDon;
     }
 
@@ -155,7 +155,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
             if (spGiamGia.getGiaGiam() == null) {
                 return tongTienGiam;
             }
-            if (spGiamGia.getGiaGiam() != null){
+            if (spGiamGia.getGiaGiam() != null) {
                 tongTienGiam += spGiamGia.getGiaGiam().longValue();
             }
 
@@ -233,9 +233,9 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         hoaDon.get().setEmail(hoaDonGiaoThanhToanRequest.getEmail());
         hoaDon.get().setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
         auditLogService.writeAuditLogHoadon(username, findByNhanVien.get().getEmail(), "Cập nhật địa chỉ", hoaDon.get().getMa(),
-                "Tên người nhận: "+ hoaDonGiaoThanhToanRequest.getHoTen() ,
-                "SĐT: "+hoaDonGiaoThanhToanRequest.getSoDienThoai(),
-                "Địa chỉ: "+hoaDonGiaoThanhToanRequest.getDiaChi(), "Phí vận chuyển: "+hoaDonGiaoThanhToanRequest.getTienGiao());
+                "Tên người nhận: " + hoaDonGiaoThanhToanRequest.getHoTen(),
+                "SĐT: " + hoaDonGiaoThanhToanRequest.getSoDienThoai(),
+                "Địa chỉ: " + hoaDonGiaoThanhToanRequest.getDiaChi(), "Phí vận chuyển: " + hoaDonGiaoThanhToanRequest.getTienGiao());
         hoaDonRepository.save(hoaDon.get());
 
         for (UUID idGioHangChiTiet : hoaDonGiaoThanhToanRequest.getGioHangChiTietList()) {
@@ -319,23 +319,28 @@ public class OrderCounterServiceImpl implements OrderCounterService {
     }
 
     @Override
-    public void removeOrder(UUID id) {
-        IdGioHangResponse idGioHangResponse = hoaDonRepository.showIdGioHangCt(id);
-        GioHang gioHang = gioHangRepository.findById(idGioHangResponse.getId()).get();
-        gioHang.setTrangThai(2);
-        gioHangRepository.save(gioHang);
+    public MessageResponse removeOrder(UUID id) {
         HoaDon hoaDon = hoaDonRepository.findById(id).get();
-        for (TrangThaiHoaDon x : hoaDon.getTrangThaiHoaDonList()) {
-            if (x != null) {
-                trangThaiHoaDonRepository.deleteById(x.getId());
-            }
-        }
-        for (HinhThucThanhToan x : hoaDon.getHinhThucThanhToanList()) {
-            if (x != null) {
-                hinhThucThanhToanRepository.deleteById(x.getId());
-            }
-        }
-        hoaDonRepository.deleteById(id);
+//        IdGioHangResponse idGioHangResponse = hoaDonRepository.showIdGioHangCt(id);
+//        if (idGioHangResponse == null) {
+//            return MessageResponse.builder().message("Null").build();
+//        } else {
+//            GioHang gioHang = gioHangRepository.findById(idGioHangResponse.getId()).get();
+//            gioHang.setTrangThai(2);
+//            gioHangRepository.save(gioHang);
+//            List<GioHangChiTiet> gioHangChiTiet = gioHangChiTietRepository.findByGioHang_Id(gioHang.getId());
+//            for (GioHangChiTiet ghct : gioHangChiTiet) {
+//                if (ghct != null) {
+//                    SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(ghct.getSanPhamChiTiet().getId()).get();
+//                    sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + ghct.getSoLuong());
+//                    chiTietSanPhamRepository.save(sanPhamChiTiet);
+//                }
+//            }
+//        }
+
+        hoaDon.setTrangThai(6);
+        hoaDonRepository.save(hoaDon);
+        return MessageResponse.builder().message("Thành công").build();
     }
 
     private void sendEmailOrder(HoaDon hoaDon) {

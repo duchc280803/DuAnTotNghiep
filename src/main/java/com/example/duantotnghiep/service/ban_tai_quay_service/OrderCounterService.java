@@ -31,6 +31,6 @@ public interface OrderCounterService {
 
     IdGioHangResponse showIdGioHangCt(UUID id);
 
-    void removeOrder(UUID id);
+    MessageResponse removeOrder(UUID id);
 
 }

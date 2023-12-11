@@ -49,6 +49,4 @@ public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, 
 
     List<GioHangChiTiet> findByGioHang_Id(UUID id);
 
-
-
 }

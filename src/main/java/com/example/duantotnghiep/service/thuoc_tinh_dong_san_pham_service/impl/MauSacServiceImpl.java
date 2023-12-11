@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl;
 
+import com.example.duantotnghiep.entity.ChatLieu;
 import com.example.duantotnghiep.entity.MauSac;
 import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.repository.MauSacRepository;
@@ -101,5 +102,9 @@ public class MauSacServiceImpl implements MauSacService {
         } else {
             return MessageResponse.builder().message("Không tìm thấy thương hiệu với ID: " + id).build();
         }
+    }
+
+    public List<MauSac> findMauSac(String mausac) {
+        return mauSacRepository.findAllByTenMauSac(mausac);
     }
 }

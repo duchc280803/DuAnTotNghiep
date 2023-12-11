@@ -2,6 +2,7 @@ package com.example.duantotnghiep.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,7 @@ public class HoaDonGiaoThanhToanRequest {
     private String diaChi;
 
     @NotBlank(message = "Email không được để trống")
+    @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$", message = "Địa chỉ email không hợp lệ")
     private String email;
 
     @NotNull(message = "Tiền vận chuyển không được để trống")
