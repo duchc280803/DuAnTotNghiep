@@ -12,6 +12,8 @@ import com.example.duantotnghiep.response.OrderCounterCartsResponse;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.ban_tai_quay_service.OrderCounterService;
 import com.example.duantotnghiep.util.FormatNumber;
+import com.example.duantotnghiep.util.RemoveDiacritics;
+import com.example.duantotnghiep.util.SendConfirmationEmail;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -21,6 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,6 +73,18 @@ public class OrderCounterServiceImpl implements OrderCounterService {
 
     @Autowired
     private HinhThucThanhToanRepository hinhThucThanhToanRepository;
+
+    @Autowired
+    private LoaiTaiKhoanRepository loaiTaiKhoanRepository;
+
+    @Autowired
+    private DiaChiRepository diaChiRepository;
+
+    @Autowired
+    private KhachHangRepository khachHangRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -259,6 +274,36 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
         if (sendEmail) {
             sendEmailOrder(hoaDon.get());
+            System.out.println("gửi mail");
+        }
+        String normalized = RemoveDiacritics.removeDiacritics(hoaDonGiaoThanhToanRequest.getHoTen());
+
+        String converted = normalized.toLowerCase().replaceAll("\\s", "");
+        List<TaiKhoan> taiKhoans = khachHangRepository.listKhachHang();
+        LoaiTaiKhoan loaiTaiKhoan = loaiTaiKhoanRepository.findByName(TypeAccountEnum.USER).get();
+        TaiKhoan taiKhoan = new TaiKhoan();
+        taiKhoan.setId(UUID.randomUUID());
+        taiKhoan.setName(hoaDonGiaoThanhToanRequest.getHoTen());
+        taiKhoan.setEmail(hoaDonGiaoThanhToanRequest.getEmail());
+        taiKhoan.setSoDienThoai(hoaDonGiaoThanhToanRequest.getSoDienThoai());
+        taiKhoan.setTrangThai(1);
+        taiKhoan.setMaTaiKhoan(converted + taiKhoans.size() + 1);
+        taiKhoan.setUsername(converted + taiKhoans.size() + 1);
+        taiKhoan.setMatKhau(passwordEncoder.encode(converted));
+        taiKhoan.setLoaiTaiKhoan(loaiTaiKhoan);
+        khachHangRepository.save(taiKhoan);
+
+        DiaChi diaChi = new DiaChi();
+        diaChi.setId(UUID.randomUUID());
+        diaChi.setDiaChi(hoaDonGiaoThanhToanRequest.getDiaChi());
+        diaChi.setXa(hoaDonGiaoThanhToanRequest.getPhuong());
+        diaChi.setHuyen(hoaDonGiaoThanhToanRequest.getHuyen());
+        diaChi.setTinh(hoaDonGiaoThanhToanRequest.getTinh());
+        diaChi.setTaiKhoan(taiKhoan);
+        diaChi.setTrangThai(1);
+        diaChiRepository.save(diaChi);
+        if (sendEmail) {
+            SendConfirmationEmail.sendConfirmationEmailStatic(taiKhoan.getEmail(), taiKhoan.getUsername(), converted, javaMailSender);
             System.out.println("gửi mail");
         }
         return MessageResponse.builder().message("Thanh Toán Thành Công").build();
