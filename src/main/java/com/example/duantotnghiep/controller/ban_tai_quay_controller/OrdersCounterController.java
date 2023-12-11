@@ -72,10 +72,9 @@ public class OrdersCounterController {
         return new ResponseEntity<>(hoaDonService.updateHoaDonGiaoTaiQuay(idHoaDon, hoaDonGiaoThanhToanRequest, principal.getName(), true), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("remove")
-    public ResponseEntity<Void> removeOrder(@RequestParam("id") UUID id) {
-        hoaDonService.removeOrder(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PutMapping("remove")
+    public ResponseEntity<MessageResponse> removeOrder(@RequestParam("id") UUID id) {
+        return new ResponseEntity<>(hoaDonService.removeOrder(id),HttpStatus.OK);
     }
 
 }
