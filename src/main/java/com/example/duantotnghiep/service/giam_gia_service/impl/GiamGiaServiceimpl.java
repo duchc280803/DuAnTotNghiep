@@ -40,10 +40,15 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     private SpGiamGiaRepository spGiamGiaRepository;
 
     @Override
-    public List<GiamGiaResponse> getAll(Integer pageNumber, Integer pageSize)  {
+    public List<GiamGiaResponse> getAll(Integer pageNumber, Integer pageSize) {
+        return null;
+    }
+
+    @Override
+    public List<GiamGiaResponse> getAll(Integer trangThai, Integer size, Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<GiamGiaResponse> giamGiaResponses = Repository.listGiamGias(pageable);
-        return giamGiaResponses.getContent();
+        Page<GiamGiaResponse> pageList = Repository.listGiamGia(trangThai, size, pageable);
+        return pageList.getContent();
     }
 
     @Autowired
@@ -51,10 +56,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     @Autowired
     private TaiKhoanRepository taiKhoanRepository;
 
-    @Override
-    public Page<GiamGiaResponse> getAll(Pageable pageable) {
-        return Repository.listGiamGias(pageable);
-    }
+
 
     public Long getGiaGiamCuoiCung(UUID id) {
         long tongTienGiam = 0L;
@@ -207,8 +209,8 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     }
 
     @Override
-    public List<GiamGiaResponse> findbyValueDate(Date key1, Date key2) {
-        return Repository.findbyValueDate(key1, key2);
+    public List<GiamGiaResponse> findbyValueDate(Date key1) {
+        return Repository.findbyValueDate(key1);
     }
 
     @Override
