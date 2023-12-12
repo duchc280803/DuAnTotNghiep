@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.repository;
 
 import com.example.duantotnghiep.entity.GiamGia;
+import com.example.duantotnghiep.entity.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
@@ -32,7 +33,8 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
                         "JOIN spgg.sanPham sp " +
                         "WHERE gg.trangThai = 1 " +
                         "ORDER BY gg.ngayBatDau DESC ")
-        Page<GiamGiaResponse> listGiamGia(Pageable pageable);
+        Page<GiamGiaResponse> listGiamGia(@Param("trangThai") Integer trangThai, @Param("size") Integer size, Pageable pageable);
+
 
         @Query("SELECT DISTINCT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id,gg.maGiamGia,gg.tenGiamGia, gg.ngayBatDau, gg.ngayKetThuc, gg.hinhThucGiam, gg.trangThai, spgg.mucGiam) "
                         +
@@ -64,8 +66,8 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
                         "FROM GiamGia gg " +
                         "JOIN gg.spGiamGiaList spgg " +
                         " JOIN spgg.sanPham sp " +
-                        "WHERE  gg.ngayBatDau >=  :key1 and  gg.ngayKetThuc <= :key2")
-        List<GiamGiaResponse> findbyValueDate(@Param("key1") Date key1, @Param("key2") Date key2);
+                        "WHERE  gg.ngayBatDau =  :key1 ")
+        List<GiamGiaResponse> findbyValueDate(@Param("key1") Date key1);
 
         @Query("SELECT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id,gg.maGiamGia,gg.tenGiamGia,gg.ngayBatDau,gg.ngayKetThuc,gg.hinhThucGiam,gg.trangThai,spgg.mucGiam) "
                         +
