@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.service.giam_gia_service;
 
+import com.example.duantotnghiep.entity.Size;
 import com.example.duantotnghiep.request.GiamGiaRequest;
 import com.example.duantotnghiep.request.UpdateGiamGiaResquest;
 import com.example.duantotnghiep.response.*;
@@ -14,9 +15,8 @@ import java.util.UUID;
 
 public interface GiamGiaService {
 
-    List<GiamGiaResponse> getAll(Integer pageNumber, Integer pageSize) throws IOException, CsvValidationException;
-
-        Page<GiamGiaResponse> getAll(Pageable pageable);
+    List<GiamGiaResponse> getAll(Integer pageNumber, Integer pageSize) ;
+        List<GiamGiaResponse> getAll(Integer trangThai, Integer size, Integer pageNumber, Integer pageSize);
 
         List<ProductDetailResponse> getAllProduct(Integer pageNumber, Integer pageSize);
 
@@ -24,7 +24,7 @@ public interface GiamGiaService {
 
         List<ProductDetailResponse> findbyProduct(String key);
 
-        List<GiamGiaResponse> findbyValueDate(Date key1, Date key2);
+        List<GiamGiaResponse> findbyValueDate(Date key1);
 
         List<GiamGiaResponse> findbyValueStatus(Integer key);
 
