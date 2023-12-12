@@ -29,7 +29,7 @@ public class CartDetailCounterController {
     public ResponseEntity<List<GioHangCustom>> show(
             @RequestParam(name = "id") UUID id,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize) {
+            @RequestParam(name = "pageSize", defaultValue = "3") Integer pageSize) {
         return ResponseEntity.ok(gioHangChiTietService.loadGH(id, pageNumber, pageSize));
     }
 
@@ -38,9 +38,10 @@ public class CartDetailCounterController {
             @RequestParam(name = "idGioHang") UUID idGioHang,
             @RequestParam(name = "idSanPhamChiTiet") UUID idSanPhamChiTiet,
             @RequestParam(name = "soLuong") int soLuong,
+            @RequestParam(name = "id") UUID id,
             Principal principal) throws IOException, CsvValidationException {
         return new ResponseEntity<>(
-                gioHangChiTietService.themSanPhamVaoGioHangChiTiet(idGioHang, idSanPhamChiTiet, soLuong, principal.getName()),
+                gioHangChiTietService.themSanPhamVaoGioHangChiTiet(idGioHang, idSanPhamChiTiet, soLuong, id, principal.getName()),
                 HttpStatus.CREATED);
     }
 

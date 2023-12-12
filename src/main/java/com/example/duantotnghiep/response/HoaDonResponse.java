@@ -17,6 +17,8 @@ public class HoaDonResponse {
 
     private UUID id;
 
+    private UUID idKhachHang;
+
     private String maHoaDon;
 
     private String tenNhanVien;

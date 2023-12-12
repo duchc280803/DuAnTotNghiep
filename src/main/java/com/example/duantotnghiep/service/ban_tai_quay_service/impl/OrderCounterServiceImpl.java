@@ -5,13 +5,12 @@ import com.example.duantotnghiep.enums.*;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
-import com.example.duantotnghiep.response.HoaDonResponse;
-import com.example.duantotnghiep.response.IdGioHangResponse;
-import com.example.duantotnghiep.response.MessageResponse;
-import com.example.duantotnghiep.response.OrderCounterCartsResponse;
+import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.ban_tai_quay_service.OrderCounterService;
 import com.example.duantotnghiep.util.FormatNumber;
+import com.example.duantotnghiep.util.RemoveDiacritics;
+import com.example.duantotnghiep.util.SendConfirmationEmail;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -21,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,10 +71,22 @@ public class OrderCounterServiceImpl implements OrderCounterService {
     @Autowired
     private HinhThucThanhToanRepository hinhThucThanhToanRepository;
 
+    @Autowired
+    private LoaiTaiKhoanRepository loaiTaiKhoanRepository;
+
+    @Autowired
+    private DiaChiRepository diaChiRepository;
+
+    @Autowired
+    private KhachHangRepository khachHangRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     @Transactional
     // TODO Thêm hóa đơn tại quầy
-    public HoaDon taoHoaDon(String name) throws IOException, CsvValidationException {
+    public OrderCounterCResponse taoHoaDon(String name) throws IOException, CsvValidationException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<TaiKhoan> findByNhanVien = taiKhoanRepository.findByUsername(name);
 
@@ -115,8 +127,8 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         trangThaiHoaDon.setGhiChu("Nhân viên tạo đơn cho khách");
         trangThaiHoaDon.setHoaDon(hoaDon);
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
-        auditLogService.writeAuditLogHoadon(name, findByNhanVien.get().getEmail(), "Nhân viên tạo hóa đơn", hoaDon.getMa(),  "" , "",  "", "");
-        return hoaDon;
+        auditLogService.writeAuditLogHoadon(name, findByNhanVien.get().getEmail(), "Nhân viên tạo hóa đơn", hoaDon.getMa(), "", "", "", "");
+        return OrderCounterCResponse.builder().id(hoaDon.getId()).idKhach(taiKhoan.getId()).build();
     }
 
     @Override
@@ -140,7 +152,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
             if (spGiamGia.getGiaGiam() == null) {
                 return tongTienGiam;
             }
-            if (spGiamGia.getGiaGiam() != null){
+            if (spGiamGia.getGiaGiam() != null) {
                 tongTienGiam += spGiamGia.getGiaGiam().longValue();
             }
 
@@ -218,9 +230,9 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         hoaDon.get().setEmail(hoaDonGiaoThanhToanRequest.getEmail());
         hoaDon.get().setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
         auditLogService.writeAuditLogHoadon(username, findByNhanVien.get().getEmail(), "Cập nhật địa chỉ", hoaDon.get().getMa(),
-                "Tên người nhận: "+ hoaDonGiaoThanhToanRequest.getHoTen() ,
-                "SĐT: "+hoaDonGiaoThanhToanRequest.getSoDienThoai(),
-                "Địa chỉ: "+hoaDonGiaoThanhToanRequest.getDiaChi(), "Phí vận chuyển: "+hoaDonGiaoThanhToanRequest.getTienGiao());
+                "Tên người nhận: " + hoaDonGiaoThanhToanRequest.getHoTen(),
+                "SĐT: " + hoaDonGiaoThanhToanRequest.getSoDienThoai(),
+                "Địa chỉ: " + hoaDonGiaoThanhToanRequest.getDiaChi(), "Phí vận chuyển: " + hoaDonGiaoThanhToanRequest.getTienGiao());
         hoaDonRepository.save(hoaDon.get());
 
         for (UUID idGioHangChiTiet : hoaDonGiaoThanhToanRequest.getGioHangChiTietList()) {
@@ -261,6 +273,36 @@ public class OrderCounterServiceImpl implements OrderCounterService {
             sendEmailOrder(hoaDon.get());
             System.out.println("gửi mail");
         }
+        String normalized = RemoveDiacritics.removeDiacritics(hoaDonGiaoThanhToanRequest.getHoTen());
+
+        String converted = normalized.toLowerCase().replaceAll("\\s", "");
+        List<TaiKhoan> taiKhoans = khachHangRepository.listKhachHang();
+        LoaiTaiKhoan loaiTaiKhoan = loaiTaiKhoanRepository.findByName(TypeAccountEnum.USER).get();
+        TaiKhoan taiKhoan = new TaiKhoan();
+        taiKhoan.setId(UUID.randomUUID());
+        taiKhoan.setName(hoaDonGiaoThanhToanRequest.getHoTen());
+        taiKhoan.setEmail(hoaDonGiaoThanhToanRequest.getEmail());
+        taiKhoan.setSoDienThoai(hoaDonGiaoThanhToanRequest.getSoDienThoai());
+        taiKhoan.setTrangThai(1);
+        taiKhoan.setMaTaiKhoan(converted + taiKhoans.size() + 1);
+        taiKhoan.setUsername(converted + taiKhoans.size() + 1);
+        taiKhoan.setMatKhau(passwordEncoder.encode(converted));
+        taiKhoan.setLoaiTaiKhoan(loaiTaiKhoan);
+        khachHangRepository.save(taiKhoan);
+
+        DiaChi diaChi = new DiaChi();
+        diaChi.setId(UUID.randomUUID());
+        diaChi.setDiaChi(hoaDonGiaoThanhToanRequest.getDiaChi());
+        diaChi.setXa(hoaDonGiaoThanhToanRequest.getPhuong());
+        diaChi.setHuyen(hoaDonGiaoThanhToanRequest.getHuyen());
+        diaChi.setTinh(hoaDonGiaoThanhToanRequest.getTinh());
+        diaChi.setTaiKhoan(taiKhoan);
+        diaChi.setTrangThai(1);
+        diaChiRepository.save(diaChi);
+        if (sendEmail) {
+            SendConfirmationEmail.sendConfirmationEmailStatic(taiKhoan.getEmail(), taiKhoan.getUsername(), converted, javaMailSender);
+            System.out.println("gửi mail");
+        }
         return MessageResponse.builder().message("Thanh Toán Thành Công").build();
     }
 
@@ -274,23 +316,28 @@ public class OrderCounterServiceImpl implements OrderCounterService {
     }
 
     @Override
-    public void removeOrder(UUID id) {
-        IdGioHangResponse idGioHangResponse = hoaDonRepository.showIdGioHangCt(id);
-        GioHang gioHang = gioHangRepository.findById(idGioHangResponse.getId()).get();
-        gioHang.setTrangThai(2);
-        gioHangRepository.save(gioHang);
+    public MessageResponse removeOrder(UUID id) {
         HoaDon hoaDon = hoaDonRepository.findById(id).get();
-        for (TrangThaiHoaDon x : hoaDon.getTrangThaiHoaDonList()) {
-            if (x != null) {
-                trangThaiHoaDonRepository.deleteById(x.getId());
-            }
-        }
-        for (HinhThucThanhToan x : hoaDon.getHinhThucThanhToanList()) {
-            if (x != null) {
-                hinhThucThanhToanRepository.deleteById(x.getId());
-            }
-        }
-        hoaDonRepository.deleteById(id);
+//        IdGioHangResponse idGioHangResponse = hoaDonRepository.showIdGioHangCt(id);
+//        if (idGioHangResponse == null) {
+//            return MessageResponse.builder().message("Null").build();
+//        } else {
+//            GioHang gioHang = gioHangRepository.findById(idGioHangResponse.getId()).get();
+//            gioHang.setTrangThai(2);
+//            gioHangRepository.save(gioHang);
+//            List<GioHangChiTiet> gioHangChiTiet = gioHangChiTietRepository.findByGioHang_Id(gioHang.getId());
+//            for (GioHangChiTiet ghct : gioHangChiTiet) {
+//                if (ghct != null) {
+//                    SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(ghct.getSanPhamChiTiet().getId()).get();
+//                    sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + ghct.getSoLuong());
+//                    chiTietSanPhamRepository.save(sanPhamChiTiet);
+//                }
+//            }
+//        }
+
+        hoaDon.setTrangThai(6);
+        hoaDonRepository.save(hoaDon);
+        return MessageResponse.builder().message("Thành công").build();
     }
 
     private void sendEmailOrder(HoaDon hoaDon) {

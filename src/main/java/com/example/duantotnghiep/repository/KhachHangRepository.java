@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface KhachHangRepository extends JpaRepository<TaiKhoan, UUID> {
@@ -49,4 +50,9 @@ public interface KhachHangRepository extends JpaRepository<TaiKhoan, UUID> {
 
     @Query(value = "select taikhoan.id, taikhoan.fullname, taikhoan.mataikhoan from taikhoan where idloaitaikhoan = '8FBBB1DF-1A27-4378-8498-D547FF4EC072'\n", nativeQuery = true)
     List<NhanVienOrderResponse> listNv();
+
+    List<TaiKhoan> findBySoDienThoai(String soDienThoai);
+
+    List<TaiKhoan> findByEmail(String email);
+
 }

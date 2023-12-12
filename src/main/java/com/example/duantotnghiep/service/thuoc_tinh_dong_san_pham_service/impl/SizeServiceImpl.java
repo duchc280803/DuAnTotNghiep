@@ -100,4 +100,8 @@ public class SizeServiceImpl implements SizeService {
         }
     }
 
+    // Thêm method tìm khách hàng theo email
+    public List<Size> findSize(Integer size) {
+        return sizeRepository.findAllBySize(size);
+    }
 }

@@ -5,6 +5,7 @@ import com.example.duantotnghiep.request.XuatXuRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.XuatXuServiceImpl;
 import com.opencsv.exceptions.CsvValidationException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,12 +44,12 @@ public class XuatXuController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<MessageResponse> createXuatXu(@RequestBody XuatXuRequest xuatXuRequest, Principal principal) throws IOException, CsvValidationException {
+    public ResponseEntity<MessageResponse> createXuatXu(@Valid @RequestBody XuatXuRequest xuatXuRequest, Principal principal) throws IOException, CsvValidationException {
         return new ResponseEntity<>(xuatXuService.create(xuatXuRequest, principal.getName()), HttpStatus.CREATED);
     }
 
     @PutMapping("update")
-    public ResponseEntity<MessageResponse> updateXuatXu(@RequestParam UUID id, @RequestBody  XuatXuRequest xuatXuRequest,Principal principal) {
+    public ResponseEntity<MessageResponse> updateXuatXu(@RequestParam UUID id,@Valid @RequestBody XuatXuRequest xuatXuRequest,Principal principal) {
         try {
             MessageResponse response = xuatXuService.update(id, xuatXuRequest, principal.getName());
             return new ResponseEntity<>(response, HttpStatus.OK);

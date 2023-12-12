@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -52,7 +53,11 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
         Optional<HoaDon> optionalHoaDon = hoaDonRepository.findById(idHoaDon);
         Optional<Voucher> optionalVoucher = voucherRepository.findById(idVoucher);
 
-        if (optionalHoaDon.isPresent() && optionalVoucher.isPresent()) {
+        if (idVoucher == null) {
+            optionalHoaDon.get().setVoucher(null);
+            optionalHoaDon.get().setTienGiamGia(thanhTien);
+            hoaDonRepository.save(optionalHoaDon.get());
+        } else {
             HoaDon hoaDon = optionalHoaDon.get();
             Voucher voucher = optionalVoucher.get();
 
@@ -62,10 +67,10 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
                 BigDecimal phanTramGiam = new BigDecimal(voucher.getGiaTriGiam()).divide(new BigDecimal(100));
                 BigDecimal tienGiam = thanhTien.multiply(phanTramGiam);
                 hoaDon.setTienGiamGia(tienGiam);
-                auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Cập nhật voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + tienGiam , "", "");
+                auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Cập nhật voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + tienGiam, "", "");
             } else if (voucher.getHinhThucGiam() == 2) {
                 hoaDon.setTienGiamGia(new BigDecimal(voucher.getGiaTriGiam()));
-                auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Cập nhận voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + new BigDecimal(voucher.getGiaTriGiam()) , "", "");
+                auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Cập nhận voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + new BigDecimal(voucher.getGiaTriGiam()), "", "");
             }
 
             hoaDonRepository.save(hoaDon);
@@ -73,6 +78,15 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
         }
 
         return MessageResponse.builder().message("Không tìm thấy HoaDon hoặc Voucher").build();
+    }
+
+    @Override
+    public MessageResponse closeVoucherOrder(UUID idHoaDon, BigDecimal thanhTien) {
+        HoaDon hoaDon = hoaDonRepository.findById(idHoaDon).get();
+        hoaDon.setVoucher(null);
+        hoaDon.setTienGiamGia(thanhTien);
+        hoaDonRepository.save(hoaDon);
+        return MessageResponse.builder().message("Thành công").build();
     }
 
     @Override

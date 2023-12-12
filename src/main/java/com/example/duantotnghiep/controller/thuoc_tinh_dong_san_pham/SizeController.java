@@ -1,10 +1,12 @@
 package com.example.duantotnghiep.controller.thuoc_tinh_dong_san_pham;
 
 import com.example.duantotnghiep.entity.Size;
+import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.request.SizeRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.SizeServiceImpl;
 import com.opencsv.exceptions.CsvValidationException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,17 +40,17 @@ public class SizeController {
     }
 
     @GetMapping("detail")
-    public Size getSizeById(@PathVariable UUID id) {
+    public Size getSizeById(@RequestParam UUID id) {
         return sizeService.getById(id);
     }
 
     @PostMapping("create")
-    public ResponseEntity<MessageResponse> createSize(@RequestBody SizeRequest sizeRequest, Principal principal) throws IOException, CsvValidationException {
+    public ResponseEntity<MessageResponse> createSize(@Valid @RequestBody SizeRequest sizeRequest, Principal principal) throws IOException, CsvValidationException {
         return new ResponseEntity<>(sizeService.create(sizeRequest,principal.getName()), HttpStatus.CREATED);
     }
 
     @PutMapping("update")
-    public ResponseEntity<MessageResponse> updateSize(@RequestParam UUID id, @RequestBody SizeRequest sizeRequest,Principal principal) {
+    public ResponseEntity<MessageResponse> updateSize(@RequestParam UUID id,@Valid @RequestBody SizeRequest sizeRequest,Principal principal) {
         try {
             MessageResponse response = sizeService.update(id, sizeRequest,principal.getName());
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -62,4 +64,9 @@ public class SizeController {
         return new ResponseEntity<>(sizeService.delete(id), HttpStatus.OK);
     }
 
+    @GetMapping("/find-by-size")
+    public ResponseEntity<?> findKhachHangByEmail(@RequestParam("size") Integer size) {
+        List<Size> thuocTinhList = sizeService.findSize(size);
+        return new ResponseEntity<>(thuocTinhList.size(), HttpStatus.OK);
+    }
 }

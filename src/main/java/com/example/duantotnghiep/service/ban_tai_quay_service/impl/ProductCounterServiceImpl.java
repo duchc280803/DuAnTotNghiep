@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.service.ban_tai_quay_service.impl;
 
+import com.example.duantotnghiep.entity.SanPhamChiTiet;
 import com.example.duantotnghiep.entity.SpGiamGia;
 import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
 import com.example.duantotnghiep.repository.ChiTietSanPhamRepository;
@@ -311,6 +312,12 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
+    }
+
+    @Override
+    public Integer soLuong(UUID id) {
+        SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(id).get();
+        return sanPhamChiTiet.getSoLuong();
     }
 
 }

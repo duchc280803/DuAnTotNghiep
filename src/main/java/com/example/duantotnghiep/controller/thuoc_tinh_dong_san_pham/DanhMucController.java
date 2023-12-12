@@ -6,6 +6,7 @@ import com.example.duantotnghiep.request.DanhMucRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.DanhMucServiceImpl;
 import com.opencsv.exceptions.CsvValidationException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,12 +46,12 @@ public class DanhMucController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<MessageResponse> createDanhMuc(@RequestBody DanhMucRequest danhMucRequest, Principal principal) throws IOException, CsvValidationException {
+    public ResponseEntity<MessageResponse> createDanhMuc(@Valid @RequestBody DanhMucRequest danhMucRequest, Principal principal) throws IOException, CsvValidationException {
         return new ResponseEntity<>(danhMucService.create(danhMucRequest, principal.getName()), HttpStatus.CREATED);
     }
 
     @PutMapping("update")
-    public ResponseEntity<MessageResponse> updateDanhMuc(@RequestParam UUID id, @RequestBody DanhMucRequest danhMucRequest,Principal principal) {
+    public ResponseEntity<MessageResponse> updateDanhMuc(@RequestParam UUID id,@Valid @RequestBody DanhMucRequest danhMucRequest,Principal principal) {
         try {
             MessageResponse response = danhMucService.update(id, danhMucRequest, principal.getName());
             return new ResponseEntity<>(response, HttpStatus.OK);

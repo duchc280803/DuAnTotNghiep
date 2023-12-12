@@ -3,12 +3,10 @@ package com.example.duantotnghiep.controller.ban_tai_quay_controller;
 import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
-import com.example.duantotnghiep.response.HoaDonResponse;
-import com.example.duantotnghiep.response.IdGioHangResponse;
-import com.example.duantotnghiep.response.MessageResponse;
-import com.example.duantotnghiep.response.OrderCounterCartsResponse;
+import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.ban_tai_quay_service.impl.OrderCounterServiceImpl;
 import com.opencsv.exceptions.CsvValidationException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +50,7 @@ public class OrdersCounterController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<HoaDon> taoHoaDon(Principal principal) throws IOException, CsvValidationException {
+    public ResponseEntity<OrderCounterCResponse> taoHoaDon(Principal principal) throws IOException, CsvValidationException {
         return new ResponseEntity<>(hoaDonService.taoHoaDon(principal.getName()), HttpStatus.CREATED);
     }
 
@@ -66,15 +64,14 @@ public class OrdersCounterController {
     @PostMapping("create-hoa-don-chi-tiet-giao")
     public ResponseEntity<MessageResponse> taoHoaDonGiao(
             @RequestParam("idHoaDon") UUID idHoaDon,
-            @RequestBody HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest,
+            @Valid @RequestBody HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest,
             Principal principal) throws IOException, CsvValidationException {
         return new ResponseEntity<>(hoaDonService.updateHoaDonGiaoTaiQuay(idHoaDon, hoaDonGiaoThanhToanRequest, principal.getName(), true), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("remove")
-    public ResponseEntity<Void> removeOrder(@RequestParam("id") UUID id) {
-        hoaDonService.removeOrder(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PutMapping("remove")
+    public ResponseEntity<MessageResponse> removeOrder(@RequestParam("id") UUID id) {
+        return new ResponseEntity<>(hoaDonService.removeOrder(id),HttpStatus.OK);
     }
 
 }
