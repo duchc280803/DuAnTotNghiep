@@ -65,6 +65,9 @@ public class AccountController {
             DiaChi diaChi = new DiaChi();
             diaChi.setId(UUID.randomUUID());
             diaChi.setDiaChi(diaChiRequest.getDiaChi());
+            diaChi.setTinh(diaChiRequest.getTinh());
+            diaChi.setHuyen(diaChiRequest.getHuyen());
+            diaChi.setXa(diaChiRequest.getXa());
             diaChi.setTrangThai(2);
             diaChi.setTaiKhoan(taiKhoan.get());
 
@@ -93,8 +96,9 @@ public class AccountController {
             if (diaChi.getTaiKhoan().getUsername().equals(principal.getName())) {
                 // Cập nhật thông tin địa chỉ
                 diaChi.setDiaChi(diaChiRequest.getDiaChi());
-                diaChi.setTrangThai(2); // Cập nhật trạng thái nếu cần
-
+                diaChi.setTinh(diaChiRequest.getTinh());
+                diaChi.setHuyen(diaChiRequest.getHuyen());
+                diaChi.setXa(diaChiRequest.getXa());
                 // Lưu địa chỉ đã cập nhật vào cơ sở dữ liệu
                 diaChiRepository_not_login.save(diaChi);
 
