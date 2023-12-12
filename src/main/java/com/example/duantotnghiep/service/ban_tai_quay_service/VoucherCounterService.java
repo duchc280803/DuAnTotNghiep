@@ -16,5 +16,7 @@ public interface VoucherCounterService {
 
     MessageResponse addVoucherOrder(UUID idHoaDon, UUID idVoucher, BigDecimal thanhTien, String username) throws IOException, CsvValidationException;
 
+    MessageResponse closeVoucherOrder(UUID idHoaDon, BigDecimal thanhTien);
+
     String findByName(UUID id);
 }

@@ -43,6 +43,13 @@ public class VoucherCounterController {
         return new ResponseEntity<>(voucherCounterService.addVoucherOrder(idHoaDon, idVoucher, thanhTien, principal.getName()), HttpStatus.OK);
     }
 
+    @PutMapping("close")
+    public ResponseEntity<MessageResponse> updateHoaDon(
+            @RequestParam(name = "idHoaDon") UUID idHoaDon,
+            @RequestParam(name = "thanhTien") BigDecimal thanhTien) {
+        return new ResponseEntity<>(voucherCounterService.closeVoucherOrder(idHoaDon, thanhTien), HttpStatus.OK);
+    }
+
     @GetMapping("name")
     public ResponseEntity<Map<String, String>> findByName(@RequestParam(name = "id") UUID id) {
         Map<String, String> responseData = new HashMap<>();
