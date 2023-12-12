@@ -5,10 +5,7 @@ import com.example.duantotnghiep.enums.*;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
-import com.example.duantotnghiep.response.HoaDonResponse;
-import com.example.duantotnghiep.response.IdGioHangResponse;
-import com.example.duantotnghiep.response.MessageResponse;
-import com.example.duantotnghiep.response.OrderCounterCartsResponse;
+import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.ban_tai_quay_service.OrderCounterService;
 import com.example.duantotnghiep.util.FormatNumber;
@@ -89,7 +86,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
     @Override
     @Transactional
     // TODO Thêm hóa đơn tại quầy
-    public HoaDon taoHoaDon(String name) throws IOException, CsvValidationException {
+    public OrderCounterCResponse taoHoaDon(String name) throws IOException, CsvValidationException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<TaiKhoan> findByNhanVien = taiKhoanRepository.findByUsername(name);
 
@@ -131,7 +128,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         trangThaiHoaDon.setHoaDon(hoaDon);
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
         auditLogService.writeAuditLogHoadon(name, findByNhanVien.get().getEmail(), "Nhân viên tạo hóa đơn", hoaDon.getMa(), "", "", "", "");
-        return hoaDon;
+        return OrderCounterCResponse.builder().id(hoaDon.getId()).idKhach(taiKhoan.getId()).build();
     }
 
     @Override

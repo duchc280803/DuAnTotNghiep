@@ -3,10 +3,7 @@ package com.example.duantotnghiep.controller.ban_tai_quay_controller;
 import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.request.HoaDonGiaoThanhToanRequest;
 import com.example.duantotnghiep.request.HoaDonThanhToanRequest;
-import com.example.duantotnghiep.response.HoaDonResponse;
-import com.example.duantotnghiep.response.IdGioHangResponse;
-import com.example.duantotnghiep.response.MessageResponse;
-import com.example.duantotnghiep.response.OrderCounterCartsResponse;
+import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.ban_tai_quay_service.impl.OrderCounterServiceImpl;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.validation.Valid;
@@ -53,7 +50,7 @@ public class OrdersCounterController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<HoaDon> taoHoaDon(Principal principal) throws IOException, CsvValidationException {
+    public ResponseEntity<OrderCounterCResponse> taoHoaDon(Principal principal) throws IOException, CsvValidationException {
         return new ResponseEntity<>(hoaDonService.taoHoaDon(principal.getName()), HttpStatus.CREATED);
     }
 

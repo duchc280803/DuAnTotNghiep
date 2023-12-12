@@ -38,9 +38,10 @@ public class CartDetailCounterController {
             @RequestParam(name = "idGioHang") UUID idGioHang,
             @RequestParam(name = "idSanPhamChiTiet") UUID idSanPhamChiTiet,
             @RequestParam(name = "soLuong") int soLuong,
+            @RequestParam(name = "id") UUID id,
             Principal principal) throws IOException, CsvValidationException {
         return new ResponseEntity<>(
-                gioHangChiTietService.themSanPhamVaoGioHangChiTiet(idGioHang, idSanPhamChiTiet, soLuong, principal.getName()),
+                gioHangChiTietService.themSanPhamVaoGioHangChiTiet(idGioHang, idSanPhamChiTiet, soLuong, id, principal.getName()),
                 HttpStatus.CREATED);
     }
 
