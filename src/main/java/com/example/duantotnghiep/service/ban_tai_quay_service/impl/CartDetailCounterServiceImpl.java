@@ -299,6 +299,29 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         return FormatNumber.formatBigDecimal(tongTien);
     }
 
+    @Override
+    public List<GioHangCustom> loadGHTien(UUID id) {
+        List<GioHangCustom> resultList = new ArrayList<>();
+        List<Object[]> gioHangCustomPage = gioHangChiTietRepository.loadOnGioHangTien(id);
+        for (Object[] result : gioHangCustomPage) {
+            UUID idGh = (UUID) result[0];
+            String imgage = (String) result[1];
+            String tenSanPham = (String) result[2];
+            BigDecimal giaBan = (BigDecimal) result[3];
+            BigDecimal giaGiam = (BigDecimal) result[4];
+            Integer soLuong = (Integer) result[5];
+            Integer size = (Integer) result[6];
+            String mauSac = (String) result[7];
+            String chatLieu = (String) result[8];
+            BigDecimal tongTien = giaGiam.multiply(new BigDecimal(soLuong));
+
+            GioHangCustom chiTietSanPhamCustom = new GioHangCustom(
+                    idGh, imgage, tenSanPham, giaBan, giaGiam, soLuong, size, mauSac, chatLieu, tongTien);
+            resultList.add(chiTietSanPhamCustom);
+        }
+        return resultList;
+    }
+
     public void capNhatSoLuong(UUID idgiohangchitiet, int soLuongMoi, String username) throws IOException, CsvValidationException {
 
         Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findById(idgiohangchitiet);
