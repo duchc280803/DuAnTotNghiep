@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.controller.giam_gia_san_pham_controller;
 
+import com.example.duantotnghiep.entity.Size;
 import com.example.duantotnghiep.request.GiamGiaRequest;
 import com.example.duantotnghiep.request.UpdateGiamGiaResquest;
 import com.example.duantotnghiep.response.*;
@@ -33,13 +34,16 @@ public class GiamGiaController {
     )  {
         return new ResponseEntity<>(Service.getAll(pageNumber, pageSize), HttpStatus.OK);
     }
-
-    @GetMapping("showhh")
-    public ResponseEntity<Page<GiamGiaResponse>> getAllGiamGia(@RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Page<GiamGiaResponse> resultPage = Service.getAll(PageRequest.of(page, size));
-        return new ResponseEntity<>(resultPage, HttpStatus.OK);
+    @GetMapping("hien-thi")
+    public ResponseEntity<List<GiamGiaResponse>> getAllSize(
+            @RequestParam(name = "giamgia", required = false) Integer size,
+            @RequestParam(name = "trangThai", required = false) Integer trangThai,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
+    ) {
+        return new ResponseEntity<>(Service.getAll(trangThai, size, pageNumber, pageSize), HttpStatus.OK);
     }
+
 
     @PutMapping("update/{id}")
     public ResponseEntity<MessageResponse> updateGiamGia(@PathVariable UUID id,
@@ -82,10 +86,9 @@ public class GiamGiaController {
 
     @GetMapping("searchDatebykey")
     public ResponseEntity<List<GiamGiaResponse>> findByKhachHangB(
-            @RequestParam(name = "key1") @DateTimeFormat(pattern = "yyyy-MM-dd") Date key1,
-            @RequestParam(name = "key2") @DateTimeFormat(pattern = "yyyy-MM-dd") Date key2) {
+            @RequestParam(name = "key1") @DateTimeFormat(pattern = "yyyy-MM-dd") Date key1) {
 
-        List<GiamGiaResponse> result = Service.findbyValueDate(key1, key2);
+        List<GiamGiaResponse> result = Service.findbyValueDate(key1);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
