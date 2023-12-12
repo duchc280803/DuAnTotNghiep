@@ -33,7 +33,13 @@ public class CartDetailCounterController {
         return ResponseEntity.ok(gioHangChiTietService.loadGH(id, pageNumber, pageSize));
     }
 
-    @PostMapping("them-san-pham")
+    @GetMapping("hien-thi-tien")
+    public ResponseEntity<List<GioHangCustom>> showTien(
+            @RequestParam(name = "id") UUID id) {
+        return ResponseEntity.ok(gioHangChiTietService.loadGHTien(id));
+    }
+
+    @PostMapping("them-san-pham")   
     public ResponseEntity<MessageResponse> themSanPhamVaoGioHangChiTiet(
             @RequestParam(name = "idGioHang") UUID idGioHang,
             @RequestParam(name = "idSanPhamChiTiet") UUID idSanPhamChiTiet,
