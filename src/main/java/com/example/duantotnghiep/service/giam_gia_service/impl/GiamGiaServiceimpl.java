@@ -174,12 +174,10 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     @Override
     @Transactional
     public MessageResponse updateGiamGiaStaus(UUID id) {
-        // Kiểm tra xem đối tượng GiamGia có tồn tại không
         GiamGia existingGiamGia = Repository.findById(id).orElse(null);
 
         if (existingGiamGia != null) {
-
-            spggRepository.deleteByGiamGia(existingGiamGia);
+            existingGiamGia.setTrangThai(2);
             return MessageResponse.builder().message("Cập nhật Thành Công").build();
         } else {
             // Handle the case where the discount is not found
@@ -226,7 +224,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
         for (GiamGia giamGia : giamGiaList) {
             if (giamGia.getNgayKetThuc().before(currentDate)) {
                 // Nếu ngày kết thúc đã qua so với ngày hiện tại
-                if (giamGia.getTrangThai() == 1) {
+                if (giamGia.getTrangThai() != null && giamGia.getTrangThai() == 1) {
                     // Nếu trạng thái là 1 (đang hoạt động), thì cập nhật trạng thái thành 2 (đã kết
                     // thúc)
                     giamGia.setTrangThai(2);
