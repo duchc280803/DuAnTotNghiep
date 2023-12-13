@@ -11,6 +11,7 @@ import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.TransactionResponse;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.ban_tai_quay_service.TransactionCounterService;
+import com.example.duantotnghiep.util.FormatNumber;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,7 +65,7 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
         hinhThucThanhToan.setTrangThai(1);
         hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
-        auditLogService.writeAuditLogHoadon( username, nhanVien.get().getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(),  "Số tiền: " + transactionRequest.getSoTien(), "Thanh toán: Tiền mặt" , "", "");
+        auditLogService.writeAuditLogHoadon( nhanVien.get().getMaTaiKhoan(), nhanVien.get().getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(),  "Số tiền: " + FormatNumber.formatBigDecimal(transactionRequest.getSoTien()) + "đ", "Thanh toán: Tiền mặt" , "", "");
 
         return MessageResponse.builder().message("Thanh toán thành công").build();
     }
@@ -97,7 +98,7 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
         hinhThucThanhToan.setTrangThai(2);
         hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
-        auditLogService.writeAuditLogHoadon( username, nhanVien.get().getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(),  "Số tiền: " + vnpAmount, "Thanh toán: Chuyển khoản" , "", "");
+        auditLogService.writeAuditLogHoadon( nhanVien.get().getMaTaiKhoan(), nhanVien.get().getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(),  "Số tiền: " + FormatNumber.formatBigDecimal(vnpAmount) + "đ", "Thanh toán: Chuyển khoản" , "", "");
         return MessageResponse.builder().message("Thanh toán thành công").build();
     }
 

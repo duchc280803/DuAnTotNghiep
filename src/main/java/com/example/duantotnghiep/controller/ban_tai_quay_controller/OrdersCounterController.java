@@ -57,8 +57,9 @@ public class OrdersCounterController {
     @PostMapping("create-hoa-don-chi-tiet")
     public ResponseEntity<MessageResponse> taoHoaDonDetail(
             @RequestParam("idHoaDon") UUID idHoaDon,
-            @RequestBody HoaDonThanhToanRequest hoaDonThanhToanRequest) {
-        return new ResponseEntity<>(hoaDonService.updateHoaDon(idHoaDon, hoaDonThanhToanRequest), HttpStatus.CREATED);
+            @RequestBody HoaDonThanhToanRequest hoaDonThanhToanRequest,
+            Principal principal) throws IOException, CsvValidationException {
+        return new ResponseEntity<>(hoaDonService.updateHoaDon(idHoaDon, hoaDonThanhToanRequest, principal.getName()), HttpStatus.CREATED);
     }
 
     @PostMapping("create-hoa-don-chi-tiet-giao")
@@ -70,8 +71,8 @@ public class OrdersCounterController {
     }
 
     @PutMapping("remove")
-    public ResponseEntity<MessageResponse> removeOrder(@RequestParam("id") UUID id) {
-        return new ResponseEntity<>(hoaDonService.removeOrder(id),HttpStatus.OK);
+    public ResponseEntity<MessageResponse> removeOrder(@RequestParam("id") UUID id, Principal principal) throws IOException, CsvValidationException {
+        return new ResponseEntity<>(hoaDonService.removeOrder(id, principal.getName()),HttpStatus.OK);
     }
 
 }
