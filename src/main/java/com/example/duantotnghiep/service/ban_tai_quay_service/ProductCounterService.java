@@ -15,21 +15,21 @@ public interface ProductCounterService {
 
     ChiTietSanPhamCustom getOne(String name);
 
-    List<ChiTietSanPhamCustom> searchByName(String name);
+    List<ChiTietSanPhamCustom> searchByName(Integer pageNumber, Integer pageSize, String name);
 
-    List<ChiTietSanPhamCustom> filterBrand(String name);
+    List<ChiTietSanPhamCustom> filterBrand(Integer pageNumber, Integer pageSize, String name);
 
-    List<ChiTietSanPhamCustom> filterCategory(String name);
+    List<ChiTietSanPhamCustom> filterCategory(Integer pageNumber, Integer pageSize, String name);
 
-    List<ChiTietSanPhamCustom> filterSole(String name);
+    List<ChiTietSanPhamCustom> filterSole(Integer pageNumber, Integer pageSize, String name);
 
-    List<ChiTietSanPhamCustom> filterOrigin(String name);
+    List<ChiTietSanPhamCustom> filterOrigin(Integer pageNumber, Integer pageSize, String name);
 
-    List<ChiTietSanPhamCustom> filterSize(Integer size);
+    List<ChiTietSanPhamCustom> filterSize(Integer pageNumber, Integer pageSize, Integer size);
 
-    List<ChiTietSanPhamCustom> filterMaterial(String name);
+    List<ChiTietSanPhamCustom> filterMaterial(Integer pageNumber, Integer pageSize, String name);
 
-    List<ChiTietSanPhamCustom> filterColor(String name);
+    List<ChiTietSanPhamCustom> filterColor(Integer pageNumber, Integer pageSize, String name);
 
     Integer soLuong(UUID id);
 

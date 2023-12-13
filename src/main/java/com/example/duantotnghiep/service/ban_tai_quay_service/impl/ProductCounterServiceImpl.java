@@ -123,9 +123,10 @@ public class ProductCounterServiceImpl implements ProductCounterService {
     }
 
     @Override
-    public List<ChiTietSanPhamCustom> searchByName(String name) {
+    public List<ChiTietSanPhamCustom> searchByName(Integer pageNumber, Integer pageSize, String name) {
         List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
-        List<Object[]> queryResult = chiTietSanPhamRepository.searchByName(name);
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = chiTietSanPhamRepository.searchByName(pageable, name);
         for (Object[] result : queryResult) {
             UUID idSp = (UUID) result[0];
             UUID idCtsp = (UUID) result[1];
@@ -147,10 +148,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
     }
 
     @Override
-    public List<ChiTietSanPhamCustom> filterBrand(String name) {
+    public List<ChiTietSanPhamCustom> filterBrand(Integer pageNumber, Integer pageSize, String name) {
         List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
-        List<Object[]> queryResult = chiTietSanPhamRepository.filterBrand(name);
-        for (Object[] result : queryResult) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = chiTietSanPhamRepository.filterBrand(pageable, name);
+        for (Object[] result : queryResult.getContent()) {
             UUID idSp = (UUID) result[0];
             UUID idCtsp = (UUID) result[1];
             String imgage = (String) result[2];
@@ -171,10 +173,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
     }
 
     @Override
-    public List<ChiTietSanPhamCustom> filterCategory(String name) {
+    public List<ChiTietSanPhamCustom> filterCategory(Integer pageNumber, Integer pageSize, String name) {
         List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
-        List<Object[]> queryResult = chiTietSanPhamRepository.filterCategory(name);
-        for (Object[] result : queryResult) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = chiTietSanPhamRepository.filterCategory(pageable, name);
+        for (Object[] result : queryResult.getContent()) {
             UUID idSp = (UUID) result[0];
             UUID idCtsp = (UUID) result[1];
             String imgage = (String) result[2];
@@ -195,10 +198,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
     }
 
     @Override
-    public List<ChiTietSanPhamCustom> filterSole(String name) {
+    public List<ChiTietSanPhamCustom> filterSole(Integer pageNumber, Integer pageSize, String name) {
         List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
-        List<Object[]> queryResult = chiTietSanPhamRepository.filterSole(name);
-        for (Object[] result : queryResult) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = chiTietSanPhamRepository.filterSole(pageable, name);
+        for (Object[] result : queryResult.getContent()) {
             UUID idSp = (UUID) result[0];
             UUID idCtsp = (UUID) result[1];
             String imgage = (String) result[2];
@@ -219,10 +223,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
     }
 
     @Override
-    public List<ChiTietSanPhamCustom> filterOrigin(String name) {
+    public List<ChiTietSanPhamCustom> filterOrigin(Integer pageNumber, Integer pageSize, String name) {
         List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
-        List<Object[]> queryResult = chiTietSanPhamRepository.filterOrigin(name);
-        for (Object[] result : queryResult) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = chiTietSanPhamRepository.filterOrigin(pageable, name);
+        for (Object[] result : queryResult.getContent()) {
             UUID idSp = (UUID) result[0];
             UUID idCtsp = (UUID) result[1];
             String imgage = (String) result[2];
@@ -243,10 +248,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
     }
 
     @Override
-    public List<ChiTietSanPhamCustom> filterSize(Integer size) {
+    public List<ChiTietSanPhamCustom> filterSize(Integer pageNumber, Integer pageSize, Integer name) {
         List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
-        List<Object[]> queryResult = chiTietSanPhamRepository.filterSize(size);
-        for (Object[] result : queryResult) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = chiTietSanPhamRepository.filterSize(pageable, name);
+        for (Object[] result : queryResult.getContent()) {
             UUID idSp = (UUID) result[0];
             UUID idCtsp = (UUID) result[1];
             String imgage = (String) result[2];
@@ -267,10 +273,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
     }
 
     @Override
-    public List<ChiTietSanPhamCustom> filterMaterial(String name) {
+    public List<ChiTietSanPhamCustom> filterMaterial(Integer pageNumber, Integer pageSize, String name) {
         List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
-        List<Object[]> queryResult = chiTietSanPhamRepository.filterMaterial(name);
-        for (Object[] result : queryResult) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = chiTietSanPhamRepository.filterMaterial(pageable, name);
+        for (Object[] result : queryResult.getContent()) {
             UUID idSp = (UUID) result[0];
             UUID idCtsp = (UUID) result[1];
             String imgage = (String) result[2];
@@ -291,10 +298,11 @@ public class ProductCounterServiceImpl implements ProductCounterService {
     }
 
     @Override
-    public List<ChiTietSanPhamCustom> filterColor(String name) {
+    public List<ChiTietSanPhamCustom> filterColor(Integer pageNumber, Integer pageSize, String name) {
         List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
-        List<Object[]> queryResult = chiTietSanPhamRepository.filterColor(name);
-        for (Object[] result : queryResult) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = chiTietSanPhamRepository.filterColor(pageable, name);
+        for (Object[] result : queryResult.getContent()) {
             UUID idSp = (UUID) result[0];
             UUID idCtsp = (UUID) result[1];
             String imgage = (String) result[2];
