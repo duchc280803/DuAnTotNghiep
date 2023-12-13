@@ -37,17 +37,22 @@ public class ProductCounterController {
     public ResponseEntity<List<ChiTietSanPhamCustom>> filterBrand(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
-            @RequestParam String name)
-    {
-        return ResponseEntity.ok(chiTietSanPhamService.filterBrand(pageNumber, pageSize , name));
+            @RequestParam(name = "tenThuongHieu", required = false) String tenThuongHieu,
+            @RequestParam(name = "tenXuatXu", required = false) String tenXuatXu,
+            @RequestParam(name = "tenDanhMuc", required = false) String tenDanhMuc,
+            @RequestParam(name = "tenDe", required = false) String tenDe,
+            @RequestParam(name = "tenChatLieu", required = false) String tenChatLieu,
+            @RequestParam(name = "tenMauSac", required = false) String tenMauSac,
+            @RequestParam(name = "size", required = false) Integer size
+    ) {
+        return ResponseEntity.ok(chiTietSanPhamService.filterBrand(pageNumber, pageSize, tenThuongHieu, tenXuatXu, tenDanhMuc, tenDe, tenChatLieu, tenMauSac, size));
     }
 
     @GetMapping("filter-category")
     public ResponseEntity<List<ChiTietSanPhamCustom>> filterCategory(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
-            @RequestParam String name)
-    {
+            @RequestParam String name) {
         return ResponseEntity.ok(chiTietSanPhamService.filterCategory(pageNumber, pageSize, name));
     }
 
@@ -55,8 +60,7 @@ public class ProductCounterController {
     public ResponseEntity<List<ChiTietSanPhamCustom>> filterSole(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
-            @RequestParam String name)
-    {
+            @RequestParam String name) {
         return ResponseEntity.ok(chiTietSanPhamService.filterSole(pageNumber, pageSize, name));
     }
 
@@ -64,8 +68,7 @@ public class ProductCounterController {
     public ResponseEntity<List<ChiTietSanPhamCustom>> filterOrigin(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
-            @RequestParam String name)
-    {
+            @RequestParam String name) {
         return ResponseEntity.ok(chiTietSanPhamService.filterOrigin(pageNumber, pageSize, name));
     }
 
@@ -73,8 +76,7 @@ public class ProductCounterController {
     public ResponseEntity<List<ChiTietSanPhamCustom>> filterSize(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
-            @RequestParam Integer size)
-    {
+            @RequestParam Integer size) {
         return ResponseEntity.ok(chiTietSanPhamService.filterSize(pageNumber, pageSize, size));
     }
 
@@ -82,8 +84,7 @@ public class ProductCounterController {
     public ResponseEntity<List<ChiTietSanPhamCustom>> filterMaterial(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
-            @RequestParam String name)
-    {
+            @RequestParam String name) {
         return ResponseEntity.ok(chiTietSanPhamService.filterMaterial(pageNumber, pageSize, name));
     }
 
@@ -91,8 +92,7 @@ public class ProductCounterController {
     public ResponseEntity<List<ChiTietSanPhamCustom>> filterColor(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
-            @RequestParam String name)
-    {
+            @RequestParam String name) {
         return ResponseEntity.ok(chiTietSanPhamService.filterColor(pageNumber, pageSize, name));
     }
 
