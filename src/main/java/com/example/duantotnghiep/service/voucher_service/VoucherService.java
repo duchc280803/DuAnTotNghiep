@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public interface VoucherService {
     Page<Voucher> getAll(Integer pageNumber, Integer pageSize);
-
+    MessageResponse updateVoucherstaus(UUID id);
     MessageResponse createVoucher(VoucherRequest createVoucherRequest, String username)
             throws IOException, CsvValidationException;;
 

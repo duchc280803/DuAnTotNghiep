@@ -34,7 +34,12 @@ public class VoucherController {
             Principal principal) throws CsvValidationException, IOException {
         return new ResponseEntity<>(Service.createVoucher(createKhachRequest, principal.getName()), HttpStatus.CREATED);
     }
-
+    @GetMapping("updateStatus/{id}")
+    public ResponseEntity<MessageResponse> updateVoucherbyStaus(@PathVariable UUID id) {
+        Service.updateVoucherstaus(id);
+        return new ResponseEntity<>(MessageResponse.builder().message("Cập nhật voucher thành công.").build(),
+                HttpStatus.OK);
+    }
     // Thêm endpoint tìm kiếm theo tên hoặc mã voucher
     @GetMapping("search")
     public ResponseEntity<List<Voucher>> search(@RequestParam String keyword) {
