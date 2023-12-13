@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.controller.ban_tai_quay_controller;
 
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.response.LoadVoucherCounterResponse;
 import com.example.duantotnghiep.response.VoucherCounterResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.impl.VoucherCounterServiceImpl;
 import com.opencsv.exceptions.CsvValidationException;
@@ -57,5 +58,9 @@ public class VoucherCounterController {
         return ResponseEntity.ok(responseData);
     }
 
+    @GetMapping("voucher")
+    public ResponseEntity<LoadVoucherCounterResponse> voucherResponse(@RequestParam(name = "id") UUID id) {
+        return new ResponseEntity<>(voucherCounterService.voucherResponse(id), HttpStatus.OK);
+    }
 
 }

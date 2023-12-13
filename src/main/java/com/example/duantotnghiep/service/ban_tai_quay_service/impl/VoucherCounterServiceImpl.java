@@ -7,6 +7,7 @@ import com.example.duantotnghiep.repository.HoaDonRepository;
 import com.example.duantotnghiep.repository.TaiKhoanRepository;
 import com.example.duantotnghiep.repository.VoucherRepository;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.response.LoadVoucherCounterResponse;
 import com.example.duantotnghiep.response.VoucherCounterResponse;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.ban_tai_quay_service.VoucherCounterService;
@@ -16,7 +17,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -45,7 +45,6 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
         Page<VoucherCounterResponse> voucherCounterResponses = voucherRepository.findAllVoucher(pageable);
         return voucherCounterResponses.getContent();
     }
-
 
     @Override
     public MessageResponse addVoucherOrder(UUID idHoaDon, UUID idVoucher, BigDecimal thanhTien, String username) throws IOException, CsvValidationException {
@@ -100,6 +99,16 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
             return "Không áp dụng";
         }
         return name;
+    }
+
+    @Override
+    public LoadVoucherCounterResponse voucherResponse(UUID idHoaDon) {
+        HoaDon hoaDon = hoaDonRepository.findById(idHoaDon).get();
+        if (hoaDon.getVoucher() == null) {
+            return LoadVoucherCounterResponse.builder().id(null).tienGiam(BigDecimal.ZERO).build();
+        }else {
+            return LoadVoucherCounterResponse.builder().id(hoaDon.getVoucher().getId()).tienGiam(hoaDon.getTienGiamGia()).build();
+        }
     }
 
 }
