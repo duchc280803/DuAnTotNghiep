@@ -22,4 +22,6 @@ public interface CartDetailCounterService {
     List<GioHangChiTiet>  getIdCartDetail(UUID idCart);
 
     String tongTienHang(UUID id);
+
+    List<GioHangCustom> loadGHTien(UUID id);
 }
