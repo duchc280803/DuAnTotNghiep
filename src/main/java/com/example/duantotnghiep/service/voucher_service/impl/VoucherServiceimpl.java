@@ -39,6 +39,19 @@ public class VoucherServiceimpl implements VoucherService {
     }
 
     @Override
+    public MessageResponse updateVoucherstaus(UUID id) {
+        Voucher existingGiamGia = Repository.findById(id).orElse(null);
+
+        if (existingGiamGia != null) {
+            existingGiamGia.setTrangThai(2);
+            return MessageResponse.builder().message("Cập nhật Thành Công").build();
+        } else {
+            // Handle the case where the discount is not found
+            return MessageResponse.builder().message("Không tìm thấy voucher").build();
+        }
+    }
+
+    @Override
     public MessageResponse createVoucher(VoucherRequest createVoucherRequest, String username)
             throws IOException, CsvValidationException {
         TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
