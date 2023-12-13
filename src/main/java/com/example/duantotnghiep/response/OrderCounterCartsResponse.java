@@ -31,4 +31,10 @@ public class OrderCounterCartsResponse {
 
     private String soDienThoai;
 
+    private String tinh;
+
+    private String huyen;
+
+    private String phuong;
+
 }
