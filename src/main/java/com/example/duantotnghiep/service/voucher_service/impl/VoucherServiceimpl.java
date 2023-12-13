@@ -1,5 +1,6 @@
 package com.example.duantotnghiep.service.voucher_service.impl;
 
+import com.example.duantotnghiep.entity.GiamGia;
 import com.example.duantotnghiep.entity.TaiKhoan;
 import com.example.duantotnghiep.entity.Voucher;
 import com.example.duantotnghiep.repository.TaiKhoanRepository;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -94,6 +96,26 @@ public class VoucherServiceimpl implements VoucherService {
             return MessageResponse.builder().message("Không tìm thấy giảm giá").build();
         }
     }
+
+    @Override
+    public MessageResponse checkAndSetStatus() {
+        List<Voucher> voucherList = Repository.findAll();
+        Date currentDate = new Date(); // Ngày hiện tại
+
+        for (Voucher voucher : voucherList) {
+            if (voucher.getNgayKetThuc().before(currentDate)) {
+                // Nếu ngày kết thúc đã qua so với ngày hiện tại
+                if (voucher.getTrangThai() != null && voucher.getTrangThai() == 1) {
+                    // Nếu trạng thái là 1 (đang hoạt động), thì cập nhật trạng thái thành 2 (đã kết
+                    // thúc)
+                    voucher.setTrangThai(2);
+                    Repository.save(voucher);
+                }
+            }
+        }
+        return MessageResponse.builder().message("Ok").build();
+    }
+
 
     @Override
     public Voucher findById(UUID id) {
