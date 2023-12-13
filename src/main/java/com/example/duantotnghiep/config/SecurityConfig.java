@@ -60,11 +60,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/chat-lieu/**").hasAnyAuthority(TypeAccountEnum.ADMIN.name(), TypeAccountEnum.STAFF.name())
                         .requestMatchers("/api/v1/san-pham-giam-gia/**").permitAll()
                         .requestMatchers("/api/v1/transaction/**").hasAnyAuthority(TypeAccountEnum.ADMIN.name(), TypeAccountEnum.STAFF.name())
-                        .requestMatchers("/api/v1/giam-gia/**").permitAll()
+                        .requestMatchers("/api/v1/giam-gia/**").hasAnyAuthority(TypeAccountEnum.ADMIN.name(), TypeAccountEnum.STAFF.name())
                         .requestMatchers("/api/v1/invoice/**").permitAll()
                         .requestMatchers("/api/v1/chat-lieu/**").hasAnyAuthority(TypeAccountEnum.ADMIN.name(), TypeAccountEnum.STAFF.name())
                         .requestMatchers("/api/v1/payment/**").permitAll()
-                        .requestMatchers("/api/v1/voucher/**").permitAll()
+                        .requestMatchers("/api/v1/voucher/**").hasAnyAuthority(TypeAccountEnum.ADMIN.name(), TypeAccountEnum.STAFF.name())
                         .requestMatchers("/api/v1/voucher-counter/**").hasAnyAuthority(TypeAccountEnum.ADMIN.name(), TypeAccountEnum.STAFF.name())
                         .requestMatchers("/api/v1/san-pham-chi-tiet/**").permitAll()
                         .requestMatchers("/api/v1/account/**").permitAll()
@@ -76,7 +76,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/pdf/**").hasAnyAuthority(TypeAccountEnum.ADMIN.name(), TypeAccountEnum.STAFF.name())
                         .requestMatchers("/api/qrcode/**").hasAnyAuthority(TypeAccountEnum.ADMIN.name(), TypeAccountEnum.STAFF.name())
                         .requestMatchers("/api/thong-ke/**").hasAnyAuthority(TypeAccountEnum.ADMIN.name())
-
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(
