@@ -129,7 +129,7 @@ public class CustomerCounterServiceImpl implements CustomerCounterService {
         gioHang.setTaiKhoan(khachHang.get());
         gioHangRepository.save(gioHang);
 
-        auditLogService.writeAuditLogHoadon(username, findByNhanVien.get().getEmail(), "Cập nhật khách hàng", hoaDon.get().getMa(),  "Mã khách hàng: " +khachHang.get().getMaTaiKhoan() , "Tên khách hàng: "+ khachHang.get().getName(),  "", "");
+        auditLogService.writeAuditLogHoadon(findByNhanVien.get().getMaTaiKhoan(), findByNhanVien.get().getEmail(), "Cập nhật khách hàng", hoaDon.get().getMa(),  "Mã khách hàng: " +khachHang.get().getMaTaiKhoan() , "Tên khách hàng: "+ khachHang.get().getName(),  "", "");
 
         return MessageResponse.builder().message("Update Thành Công").build();
     }

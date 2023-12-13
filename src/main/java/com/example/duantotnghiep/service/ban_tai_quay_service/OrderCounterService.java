@@ -20,7 +20,7 @@ public interface OrderCounterService {
 
     List<HoaDonResponse> findByCodeOrder(String ma);
 
-    MessageResponse updateHoaDon(UUID idHoaDon, HoaDonThanhToanRequest hoaDonThanhToanRequest);
+    MessageResponse updateHoaDon(UUID idHoaDon, HoaDonThanhToanRequest hoaDonThanhToanRequest, String username) throws IOException, CsvValidationException;
 
     MessageResponse updateHoaDonGiaoTaiQuay(UUID idHoaDon, HoaDonGiaoThanhToanRequest hoaDonGiaoThanhToanRequest, String username, boolean sendEmail) throws IOException, CsvValidationException;
 
@@ -28,6 +28,6 @@ public interface OrderCounterService {
 
     IdGioHangResponse showIdGioHangCt(UUID id);
 
-    MessageResponse removeOrder(UUID id);
+    MessageResponse removeOrder(UUID id, String username) throws IOException, CsvValidationException;
 
 }

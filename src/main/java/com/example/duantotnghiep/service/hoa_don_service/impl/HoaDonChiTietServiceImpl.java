@@ -373,6 +373,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                 tongTienSauKhiDaTraHang = tongTienSauKhiDaTraHang.add(sanPham.getDonGiaSauGiam().multiply(BigDecimal.valueOf(sanPham.getSoLuong())));
             }
         }
+
         // Save lại voucher
         applyVoucherAndPayment(hoaDon, voucher, tongTienSauKhiDaTraHang);
         System.out.println("Đầu tiên" + hoaDon.getThanhTien());
