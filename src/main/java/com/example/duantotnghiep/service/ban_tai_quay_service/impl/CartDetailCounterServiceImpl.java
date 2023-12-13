@@ -85,37 +85,35 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         chiTietSanPhamRepository.save(sanPhamChiTiet);
         gioHangChiTietRepository.save(ghct);
 
-//        BigDecimal tongTien = BigDecimal.ZERO;
-//        for (GioHangChiTiet x: gioHang.getGioHangChiTietList()) {
-//            tongTien = tongTien.add(x.getDonGiaKhiGiam());
-//        }
-//        System.out.println(tongTien);
-//        Long maxDiscount = 0L;
-//        Voucher selectedVoucher = null;
-//        Double giaTriGiamPhanTram = 0.0;
-//
-//        for (Voucher v : voucherRepository.getAllVoucher()) {
-//            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
-//                if (selectedVoucher != null && v.getHinhThucGiam() == 1) {
-//                    Long giaTriGiam = selectedVoucher.getGiaTriGiam();
-//                    giaTriGiamPhanTram = giaTriGiam / 100.0;
-//                }
-//
-//                if (v.getHinhThucGiam() == 2) {
-//                    if (giaTriGiamPhanTram > v.getGiaTriGiam()) {
-//                        maxDiscount = giaTriGiamPhanTram.longValue();
-//                    } else {
-//                        maxDiscount = v.getGiaTriGiam();
-//                    }
-//                }
-//
-//                maxDiscount = v.getGiaTriGiam();
-//                selectedVoucher = v;
-//            }
-//        }
-//        hoaDon.get().setVoucher(selectedVoucher);
-//        hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
-//        hoaDonRepository.save(hoaDon.get());
+        BigDecimal tongTien = BigDecimal.ZERO;
+        for (GioHangChiTiet x: gioHang.getGioHangChiTietList()) {
+            tongTien = tongTien.add(x.getDonGiaKhiGiam());
+        }
+        System.out.println(tongTien);
+        Long maxDiscount = 0L;
+        Voucher selectedVoucher = null;
+        Double giaTriGiamPhanTram = 0.0;
+
+        for (Voucher v : voucherRepository.getAllVoucher()) {
+            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
+                if (selectedVoucher != null && v.getHinhThucGiam() == 1) {
+                    Long giaTriGiam = selectedVoucher.getGiaTriGiam();
+                    giaTriGiamPhanTram = giaTriGiam / 100.0;
+                }
+
+                if (v.getHinhThucGiam() == 2) {
+                    if (giaTriGiamPhanTram > v.getGiaTriGiam()) {
+                        maxDiscount = giaTriGiamPhanTram.longValue();
+                    } else {
+                        maxDiscount = v.getGiaTriGiam();
+                    }
+                }
+
+            }
+        }
+        hoaDon.get().setVoucher(selectedVoucher);
+        hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
+        hoaDonRepository.save(hoaDon.get());
         return MessageResponse.builder().message("Thêm thành công").build();
     }
 
@@ -166,14 +164,14 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
             if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
-                if (selectedVoucher != null && v.getHinhThucGiam() == 1) {
+                if (v.getHinhThucGiam() == 1) {
                     Long giaTriGiam = selectedVoucher.getGiaTriGiam();
                     giaTriGiamPhanTram = giaTriGiam / 100.0;
                 }
 
                 if (v.getHinhThucGiam() == 2) {
-                    if (giaTriGiamPhanTram > v.getGiaTriGiam()) {
-                        maxDiscount = giaTriGiamPhanTram.longValue();
+                    if (tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue() > v.getGiaTriGiam()) {
+                        maxDiscount = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
                     } else {
                         maxDiscount = v.getGiaTriGiam();
                     }
@@ -258,14 +256,14 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
             if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
-                if (selectedVoucher != null && v.getHinhThucGiam() == 1) {
+                if (v.getHinhThucGiam() == 1) {
                     Long giaTriGiam = selectedVoucher.getGiaTriGiam();
                     giaTriGiamPhanTram = giaTriGiam / 100.0;
                 }
 
                 if (v.getHinhThucGiam() == 2) {
-                    if (giaTriGiamPhanTram > v.getGiaTriGiam()) {
-                        maxDiscount = giaTriGiamPhanTram.longValue();
+                    if (tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue() > v.getGiaTriGiam()) {
+                        maxDiscount = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
                     } else {
                         maxDiscount = v.getGiaTriGiam();
                     }
@@ -349,14 +347,14 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
             if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
-                if (selectedVoucher != null && v.getHinhThucGiam() == 1) {
+                if (v.getHinhThucGiam() == 1) {
                     Long giaTriGiam = selectedVoucher.getGiaTriGiam();
                     giaTriGiamPhanTram = giaTriGiam / 100.0;
                 }
 
                 if (v.getHinhThucGiam() == 2) {
-                    if (giaTriGiamPhanTram > v.getGiaTriGiam()) {
-                        maxDiscount = giaTriGiamPhanTram.longValue();
+                    if (tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue() > v.getGiaTriGiam()) {
+                        maxDiscount = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
                     } else {
                         maxDiscount = v.getGiaTriGiam();
                     }
