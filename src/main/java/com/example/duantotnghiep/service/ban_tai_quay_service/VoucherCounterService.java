@@ -1,7 +1,7 @@
 package com.example.duantotnghiep.service.ban_tai_quay_service;
 
-import com.example.duantotnghiep.entity.Voucher;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.response.LoadVoucherCounterResponse;
 import com.example.duantotnghiep.response.VoucherCounterResponse;
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -19,4 +19,6 @@ public interface VoucherCounterService {
     MessageResponse closeVoucherOrder(UUID idHoaDon, BigDecimal thanhTien);
 
     String findByName(UUID id);
+
+    LoadVoucherCounterResponse voucherResponse(UUID idHoaDon);
 }
