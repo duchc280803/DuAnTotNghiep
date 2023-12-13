@@ -27,13 +27,7 @@ public class GiamGiaController {
     @Autowired
     private GiamGiaServiceimpl Service;
 
-    @GetMapping("show")
-    public ResponseEntity<List<GiamGiaResponse>> getAllGiamGia(
-            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
-    )  {
-        return new ResponseEntity<>(Service.getAll(pageNumber, pageSize), HttpStatus.OK);
-    }
+
     @GetMapping("hien-thi")
     public ResponseEntity<List<GiamGiaResponse>> getAllSize(
             @RequestParam(name = "giamgia", required = false) Integer size,

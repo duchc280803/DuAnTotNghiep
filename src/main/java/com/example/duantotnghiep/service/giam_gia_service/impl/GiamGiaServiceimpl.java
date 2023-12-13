@@ -39,10 +39,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     @Autowired
     private SpGiamGiaRepository spGiamGiaRepository;
 
-    @Override
-    public List<GiamGiaResponse> getAll(Integer pageNumber, Integer pageSize) {
-        return null;
-    }
+
 
     @Override
     public List<GiamGiaResponse> getAll(Integer trangThai, Integer size, Integer pageNumber, Integer pageSize) {

@@ -29,8 +29,8 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
         @Query("SELECT DISTINCT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id,  gg.maGiamGia,gg.tenGiamGia, gg.ngayBatDau, gg.ngayKetThuc, gg.hinhThucGiam, gg.trangThai, spgg.mucGiam) "
                         +
                         "FROM GiamGia gg " +
-                        "JOIN gg.spGiamGiaList spgg " +
-                        "JOIN spgg.sanPham sp " +
+                        "LEFT  JOIN gg.spGiamGiaList spgg " +
+                        "LEFT JOIN spgg.sanPham sp " +
                         "WHERE gg.trangThai = 1 " +
                         "ORDER BY gg.ngayBatDau DESC ")
         Page<GiamGiaResponse> listGiamGia(@Param("trangThai") Integer trangThai, @Param("size") Integer size, Pageable pageable);

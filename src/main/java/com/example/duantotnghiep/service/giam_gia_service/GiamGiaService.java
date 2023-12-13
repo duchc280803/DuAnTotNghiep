@@ -15,7 +15,6 @@ import java.util.UUID;
 
 public interface GiamGiaService {
 
-    List<GiamGiaResponse> getAll(Integer pageNumber, Integer pageSize) ;
         List<GiamGiaResponse> getAll(Integer trangThai, Integer size, Integer pageNumber, Integer pageSize);
 
         List<ProductDetailResponse> getAllProduct(Integer pageNumber, Integer pageSize);
