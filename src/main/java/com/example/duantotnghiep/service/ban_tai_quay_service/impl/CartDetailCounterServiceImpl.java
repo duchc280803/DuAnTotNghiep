@@ -362,7 +362,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
 
                 selectedVoucher = v;
             }
-        }
+        }   
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
         hoaDonRepository.save(hoaDon.get());
