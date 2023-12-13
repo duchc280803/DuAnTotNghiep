@@ -11,6 +11,7 @@ import com.example.duantotnghiep.response.LoadVoucherCounterResponse;
 import com.example.duantotnghiep.response.VoucherCounterResponse;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.ban_tai_quay_service.VoucherCounterService;
+import com.example.duantotnghiep.util.FormatNumber;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -66,10 +67,10 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
                 BigDecimal phanTramGiam = new BigDecimal(voucher.getGiaTriGiam()).divide(new BigDecimal(100));
                 BigDecimal tienGiam = thanhTien.multiply(phanTramGiam);
                 hoaDon.setTienGiamGia(tienGiam);
-                auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Cập nhật voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + tienGiam, "", "");
+                auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Cập nhật voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + FormatNumber.formatBigDecimal(tienGiam) + "đ", "", "");
             } else if (voucher.getHinhThucGiam() == 2) {
                 hoaDon.setTienGiamGia(new BigDecimal(voucher.getGiaTriGiam()));
-                auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Cập nhận voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + new BigDecimal(voucher.getGiaTriGiam()), "", "");
+                auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Cập nhận voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + FormatNumber.formatBigDecimal(new BigDecimal(voucher.getGiaTriGiam())) + "đ", "", "");
             }
 
             hoaDonRepository.save(hoaDon);

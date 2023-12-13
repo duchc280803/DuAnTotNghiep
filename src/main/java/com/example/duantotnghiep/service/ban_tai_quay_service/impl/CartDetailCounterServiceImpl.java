@@ -63,7 +63,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         if (ghct != null) {
             ghct.setSoLuong(ghct.getSoLuong() + soLuong);
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
-            auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
+            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
                     "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
                     "Số lượng: " + soLuong, "");
         } else {
@@ -75,7 +75,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
             sanPhamChiTiet.setId(idSanPhamChiTiet);
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
             ghct.setSanPhamChiTiet(sanPhamChiTiet);
-            auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
+            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
                     "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
                     "Số lượng: " + soLuong, "");
 
@@ -132,7 +132,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         if (ghct != null) {
             ghct.setSoLuong(ghct.getSoLuong() + 1);
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - 1);
-            auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
+            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
                     "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
                     "Số lượng: 1", "");
         } else {
@@ -145,7 +145,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - 1);
             ghct.setSanPhamChiTiet(sanPhamChiTiet);
             ghct.setSoLuong(1);
-            auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
+            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
                     "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
                     "Số lượng: 1", "");
         }
@@ -242,7 +242,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + gioHangChiTiet.getSoLuong());
         chiTietSanPhamRepository.save(sanPhamChiTiet);
         gioHangChiTietRepository.deleteById(id);
-        auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Xóa sản phẩm", hoaDon.get().getMa(),
+        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Xóa sản phẩm", hoaDon.get().getMa(),
                 "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
                 "", "");
         BigDecimal tongTien = BigDecimal.ZERO;
@@ -330,7 +330,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         if (optionalGioHangChiTiet.isPresent()) {
             optionalGioHangChiTiet.get().setSoLuong(soLuongMoi);
             gioHangChiTietRepository.save(optionalGioHangChiTiet.get());
-            auditLogService.writeAuditLogHoadon(username, taiKhoan.get().getEmail(), "Cập nhật số lượng", hoaDon.get().getMa(),
+            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Cập nhật số lượng", hoaDon.get().getMa(),
                     "Mã sản phẩm: " + sanPhamChiTiet.get().getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.get().getSanPham().getTenSanPham(),
                     "Số lượng: " + soLuongMoi, "");
 
