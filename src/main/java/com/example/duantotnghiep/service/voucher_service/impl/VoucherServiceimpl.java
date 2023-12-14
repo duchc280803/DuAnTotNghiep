@@ -7,6 +7,7 @@ import com.example.duantotnghiep.repository.TaiKhoanRepository;
 import com.example.duantotnghiep.repository.VoucherRepository;
 import com.example.duantotnghiep.request.VoucherRequest;
 import com.example.duantotnghiep.response.MessageResponse;
+import com.example.duantotnghiep.response.ProductDetailResponse;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.voucher_service.VoucherService;
 import com.opencsv.exceptions.CsvValidationException;
@@ -15,8 +16,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -32,13 +37,17 @@ public class VoucherServiceimpl implements VoucherService {
 
     @Autowired
     private TaiKhoanRepository taiKhoanRepository;
-    @Override
-    public Page<Voucher> getAll(Integer pageNumber, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return Repository.findAll(pageable);
-    }
+
 
     @Override
+    public List<Voucher> listVoucher(String maGiamGia, String tenGiamGia, Integer trangThai, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Voucher> result = Repository.listVoucher(maGiamGia, tenGiamGia, trangThai, pageable);
+        return result.getContent();
+}
+
+    @Override
+    @Transactional
     public MessageResponse updateVoucherstaus(UUID id) {
         Voucher existingGiamGia = Repository.findById(id).orElse(null);
 
@@ -66,7 +75,7 @@ public class VoucherServiceimpl implements VoucherService {
         voucher.setNgayBatDau(createVoucherRequest.getNgayBatDau());
         voucher.setNgayKetThuc(createVoucherRequest.getNgayKetThuc());
         voucher.setHinhThucGiam(createVoucherRequest.getHinhThucGiam());
-        voucher.setTrangThai(createVoucherRequest.getTrangThai());
+        voucher.setTrangThai(1);
         Repository.save(voucher);
         auditLogService.writeAuditLogVoucher("Tạo Voucher", username, taiKhoanUser.getEmail(), null,
                 "Mã : " + createVoucherRequest.getMaVoucher() + "," + "Tên :" + createVoucherRequest.getTenVoucher()
@@ -93,7 +102,6 @@ public class VoucherServiceimpl implements VoucherService {
             voucher.setNgayBatDau(createVoucherRequest.getNgayBatDau());
             voucher.setNgayKetThuc(createVoucherRequest.getNgayKetThuc());
             voucher.setHinhThucGiam(createVoucherRequest.getHinhThucGiam());
-            voucher.setTrangThai(createVoucherRequest.getTrangThai());
             Repository.save(voucher);
             auditLogService.writeAuditLogVoucher("Cập Nhật Voucher", username, taiKhoanUser.getEmail(), null,
                     "Mã : " + createVoucherRequest.getMaVoucher() + "," + "Tên :" + createVoucherRequest.getTenVoucher()

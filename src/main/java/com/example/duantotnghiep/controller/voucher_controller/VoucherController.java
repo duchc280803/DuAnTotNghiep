@@ -2,16 +2,19 @@ package com.example.duantotnghiep.controller.voucher_controller;
 
 import com.example.duantotnghiep.entity.Voucher;
 import com.example.duantotnghiep.request.VoucherRequest;
+import com.example.duantotnghiep.response.GiamGiaResponse;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.voucher_service.impl.VoucherServiceimpl;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,11 +25,16 @@ public class VoucherController {
     @Autowired
     private VoucherServiceimpl Service;
 
-    @GetMapping("show")
-    public ResponseEntity<List<Voucher>> getAll(
+
+    @GetMapping("hien-thi")
+    public ResponseEntity<List<Voucher>> getAllSize(
+            @RequestParam(name = "maVoucher", required = false) String maGiamGia,
+            @RequestParam(name = "tenVoucher", required = false) String tenGiamGia,
+            @RequestParam(name = "trangThai", required = false) Integer trangThai,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize) {
-        return new ResponseEntity<>(Service.getAll(pageNumber, pageSize).getContent(), HttpStatus.OK);
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
+    ) {
+        return new ResponseEntity<>(Service.listVoucher(maGiamGia, tenGiamGia,trangThai, pageNumber, pageSize), HttpStatus.OK);
     }
 
     @PostMapping("create")
