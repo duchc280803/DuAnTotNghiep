@@ -206,13 +206,13 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                     Long giaTriGiam = v.getGiaTriGiam();
                     giaTriGiamPhanTram = giaTriGiam / 100.0;
                     maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
+                    selectedVoucher = v;
                 }
 
                 if (v.getHinhThucGiam() == 2) {
                     maxDiscount2 = v.getGiaTriGiam();
+                    selectedVoucher = v;
                 }
-
-                selectedVoucher = v;
             }
         }
         if (maxDiscount1 > maxDiscount2) {
@@ -282,13 +282,13 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                     Long giaTriGiam = v.getGiaTriGiam();
                     giaTriGiamPhanTram = giaTriGiam / 100.0;
                     maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
+                    selectedVoucher = v;
                 }
 
                 if (v.getHinhThucGiam() == 2) {
                     maxDiscount2 = v.getGiaTriGiam();
+                    selectedVoucher = v;
                 }
-
-                selectedVoucher = v;
             }
         }
         if (maxDiscount1 > maxDiscount2) {
@@ -701,13 +701,13 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                     Long giaTriGiam = v.getGiaTriGiam();
                     giaTriGiamPhanTram = giaTriGiam / 100.0;
                     maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
+                    selectedVoucher = v;
                 }
 
                 if (v.getHinhThucGiam() == 2) {
                     maxDiscount2 = v.getGiaTriGiam();
+                    selectedVoucher = v;
                 }
-
-                selectedVoucher = v;
             }
         }
         if (maxDiscount1 > maxDiscount2) {
