@@ -95,12 +95,6 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
             diaChi.setQuocGia("VietNam");
 
-            diaChi.setTinh(createKhachRequest_not_login.getThanhPho());
-
-            diaChi.setHuyen(createKhachRequest_not_login.getQuanHuyen());
-
-            diaChi.setXa(createKhachRequest_not_login.getPhuongXa());
-
             diaChi.setTaiKhoan(khachHang);
 
             diaChiRepository.save(diaChi);
@@ -124,7 +118,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
         hoaDon.setNgayTao(timestamp);
 
         hoaDon.setTrangThai(StatusOrderEnums.CHO_XAC_NHAN.getValue());
-        hoaDon.setDiaChi(createKhachRequest_not_login.getDiaChi()+" "+createKhachRequest_not_login.getPhuongXa()+" "+createKhachRequest_not_login.getQuanHuyen()+" "+createKhachRequest_not_login.getThanhPho());
+        hoaDon.setDiaChi(createKhachRequest_not_login.getDiaChi());
         hoaDon.setSdtNguoiNhan(createKhachRequest_not_login.getSoDienThoai());
         hoaDon.setTenNguoiNhan(createKhachRequest_not_login.getHoTen());
         hoaDon.setTaiKhoanKhachHang(khachHang);
@@ -274,7 +268,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
         hoaDon.setNgayTao(timestamp);
 
         hoaDon.setTrangThai(StatusOrderEnums.CHO_XAC_NHAN.getValue());
-        hoaDon.setDiaChi(createKhachRequest_not_login.getDiaChi()+" "+createKhachRequest_not_login.getPhuongXa()+" "+createKhachRequest_not_login.getQuanHuyen()+" "+createKhachRequest_not_login.getThanhPho());
+        hoaDon.setDiaChi(createKhachRequest_not_login.getDiaChi());
         hoaDon.setSdtNguoiNhan(createKhachRequest_not_login.getSoDienThoai());
         hoaDon.setTenNguoiNhan(createKhachRequest_not_login.getHoTen());
         hoaDon.setTaiKhoanKhachHang(khachHang);
