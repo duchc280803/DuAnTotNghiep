@@ -5,10 +5,7 @@ import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.GiamGiaRequest;
 import com.example.duantotnghiep.request.UpdateGiamGiaResquest;
-import com.example.duantotnghiep.response.GiamGiaDetailResponse;
-import com.example.duantotnghiep.response.GiamGiaResponse;
-import com.example.duantotnghiep.response.MessageResponse;
-import com.example.duantotnghiep.response.ProductDetailResponse;
+import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.giam_gia_service.GiamGiaService;
 import com.opencsv.exceptions.CsvValidationException;
@@ -22,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -40,14 +38,10 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     private SpGiamGiaRepository spGiamGiaRepository;
 
     @Override
-    public List<GiamGiaResponse> getAll(Integer pageNumber, Integer pageSize) {
-        return null;
-    }
-
-    @Override
-    public List<GiamGiaResponse> getAll(Integer trangThai, Integer size, Integer pageNumber, Integer pageSize) {
+    public List<GiamGiaResponse> getAll(Integer trangThai, String maGiamGia, String tenGiamGia, LocalDate startDate,
+            Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<GiamGiaResponse> pageList = Repository.listGiamGia(trangThai, size, pageable);
+        Page<GiamGiaResponse> pageList = Repository.listGiamGia(maGiamGia, tenGiamGia, trangThai, startDate, pageable);
         return pageList.getContent();
     }
 
@@ -55,8 +49,6 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     private AuditLogService auditLogService;
     @Autowired
     private TaiKhoanRepository taiKhoanRepository;
-
-
 
     public Long getGiaGiamCuoiCung(UUID id) {
         long tongTienGiam = 0L;
@@ -82,19 +74,27 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     }
 
     @Override
-    public List<ProductDetailResponse> getAllProduct(Integer pageNumber, Integer pageSize) {
-        List<ProductDetailResponse> resultList = new ArrayList<>();
+    public List<ProductDetailResponse> getAllProduct(String tenGiamGia, Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Object[]> queryResult = Repository.listProductResponse(pageable);
+        Page<Object[]> queryResult = Repository.listProductResponse(tenGiamGia, pageable);
+
+        List<ProductDetailResponse> resultList = new ArrayList<>();
         for (Object[] result : queryResult.getContent()) {
             UUID id = (UUID) result[0];
             String image = (String) result[1];
             String tenSanPham = (String) result[2];
             BigDecimal giaBan = (BigDecimal) result[3];
-            ProductDetailResponse productDetailResponse = new ProductDetailResponse(id, image, tenSanPham, giaBan,
-                    countQuantity(id), new BigDecimal(getGiaGiamCuoiCung(id)));
+
+            // Bổ sung tính toán giảm giá
+            BigDecimal giaGiamCuoiCung = new BigDecimal(getGiaGiamCuoiCung(id));
+            BigDecimal giaBanSauGiamGia = giaBan.subtract(giaGiamCuoiCung);
+
+            ProductDetailResponse productDetailResponse = new ProductDetailResponse(
+                    id, image, tenSanPham, giaBanSauGiamGia, countQuantity(id), giaGiamCuoiCung);
+
             resultList.add(productDetailResponse);
         }
+
         return resultList;
     }
 
@@ -268,8 +268,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
         giamGia.setNgayBatDau(createKhachRequest.getNgayBatDau());
         giamGia.setNgayKetThuc(createKhachRequest.getNgayKetThuc());
         giamGia.setHinhThucGiam(createKhachRequest.getHinhThucGiam());
-        giamGia.setTrangThai(createKhachRequest.getTrangThai());
-        Repository.save(giamGia);
+        giamGia.setTrangThai(1);
 
         for (UUID sanPhamId : createKhachRequest.getIdsanpham()) {
             SanPham sanPham = spRepository.findById(sanPhamId).orElse(null);
@@ -302,6 +301,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                     // sanpham.giaban =
                     spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
                 }
+                Repository.save(giamGia);
                 spggRepository.save(spGiamGia);
                 spRepository.save(sanPham);
             } else {
@@ -345,7 +345,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                     spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
                     sanPham.setGiaBan(donGiaKhiGiam);
                 }
-
+                Repository.save(giamGia);
                 spggRepository.save(spGiamGia);
                 spRepository.save(sanPham);
             } else {
