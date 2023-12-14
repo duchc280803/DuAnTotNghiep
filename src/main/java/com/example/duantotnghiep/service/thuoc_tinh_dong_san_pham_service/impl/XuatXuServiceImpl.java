@@ -50,7 +50,7 @@ public class XuatXuServiceImpl implements XuatXuService {
     }
 
     @Override
-    public MessageResponse create(XuatXuRequest request,String username) throws IOException, CsvValidationException {
+    public MessageResponse create(XuatXuRequest request, String username) throws IOException, CsvValidationException {
         TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         XuatXu xuatXu = new XuatXu();
         xuatXu.setId(UUID.randomUUID());
@@ -59,16 +59,15 @@ public class XuatXuServiceImpl implements XuatXuService {
         xuatXu.setNgayTao(timestamp);
         xuatSuRepository.save(xuatXu);
         auditLogService.writeAuditLogXuatxu("Thêm Mới xuất xứ", username, taiKhoanUser.getEmail(), null,
-                "Tên Xuất xứ : " + request.getTenXuatXu() + "," + "Trạng Thái: " + request.getTrangThai() ,null,null,
+                "Tên Xuất xứ : " + request.getTenXuatXu() + "," + "Trạng Thái: " + request.getTrangThai(), null, null,
                 null);
-
         return MessageResponse.builder().message("Thêm thành công").build();
     }
 
     @Override
-    public MessageResponse update(UUID id, XuatXuRequest request,String username) throws IOException, CsvValidationException {
+    public MessageResponse update(UUID id, XuatXuRequest request, String username) throws IOException, CsvValidationException {
         TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
-        Optional<XuatXu> optionalXuatXu= xuatSuRepository.findById(id);
+        Optional<XuatXu> optionalXuatXu = xuatSuRepository.findById(id);
         if (optionalXuatXu.isPresent()) {
             XuatXu xuatXu = optionalXuatXu.get();
             xuatXu.setTenXuatXu(request.getTenXuatXu());
@@ -76,7 +75,7 @@ public class XuatXuServiceImpl implements XuatXuService {
             xuatXu.setNgayCapNhat(timestamp);
             xuatSuRepository.save(xuatXu);
             auditLogService.writeAuditLogXuatxu("Thêm Mới xuất xứ", username, taiKhoanUser.getEmail(), null,
-                    "Tên Xuất xứ : " + request.getTenXuatXu() + "," + "Trạng Thái: " + request.getTrangThai() ,null,null,
+                    "Tên Xuất xứ : " + request.getTenXuatXu() + "," + "Trạng Thái: " + request.getTrangThai(), null, null,
                     null);
             return MessageResponse.builder().message("Cập nhật thành công").build();
         } else {
@@ -86,7 +85,7 @@ public class XuatXuServiceImpl implements XuatXuService {
 
     @Override
     public MessageResponse delete(UUID id) {
-        Optional<XuatXu> optionalXuatXu= xuatSuRepository.findById(id);
+        Optional<XuatXu> optionalXuatXu = xuatSuRepository.findById(id);
         if (optionalXuatXu.isPresent()) {
             XuatXu xuatXu = optionalXuatXu.get();
             xuatXu.setTrangThai(2);
@@ -96,5 +95,11 @@ public class XuatXuServiceImpl implements XuatXuService {
         } else {
             return MessageResponse.builder().message("Không tìm thấy thương hiệu với ID: " + id).build();
         }
+    }
+
+    @Override
+    public List<XuatXu> findByTenXuatXu(String name) {
+        List<XuatXu> xuatXus = xuatSuRepository.findByTenXuatXu(name);
+        return xuatXus;
     }
 }

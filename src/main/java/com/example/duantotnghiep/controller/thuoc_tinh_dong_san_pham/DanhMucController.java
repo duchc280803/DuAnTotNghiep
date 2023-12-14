@@ -1,10 +1,13 @@
 package com.example.duantotnghiep.controller.thuoc_tinh_dong_san_pham;
 
 import com.example.duantotnghiep.entity.DanhMuc;
+import com.example.duantotnghiep.entity.ThuongHieu;
 import com.example.duantotnghiep.entity.TrangThaiHoaDon;
 import com.example.duantotnghiep.request.DanhMucRequest;
+import com.example.duantotnghiep.request.ThuongHieuRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.DanhMucServiceImpl;
+import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.ThuongHieuServiceImpl;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,4 +66,6 @@ public class DanhMucController {
     public ResponseEntity<MessageResponse> deleteDanhMuc(@RequestParam UUID id) {
         return new ResponseEntity<>(danhMucService.delete(id), HttpStatus.OK);
     }
+
+
 }

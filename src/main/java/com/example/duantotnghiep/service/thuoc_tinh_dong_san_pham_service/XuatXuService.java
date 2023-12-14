@@ -23,4 +23,6 @@ public interface XuatXuService {
     MessageResponse update(UUID id, XuatXuRequest xuatXuRequest,String username) throws IOException, CsvValidationException;
 
     MessageResponse delete(UUID id);
+
+    List<XuatXu> findByTenXuatXu(String name);
 }

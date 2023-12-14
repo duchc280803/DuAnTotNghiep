@@ -297,9 +297,6 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         DiaChi diaChi = new DiaChi();
         diaChi.setId(UUID.randomUUID());
         diaChi.setDiaChi(hoaDonGiaoThanhToanRequest.getDiaChi());
-        diaChi.setXa(hoaDonGiaoThanhToanRequest.getPhuong());
-        diaChi.setHuyen(hoaDonGiaoThanhToanRequest.getHuyen());
-        diaChi.setTinh(hoaDonGiaoThanhToanRequest.getTinh());
         diaChi.setTaiKhoan(taiKhoan);
         diaChi.setTrangThai(1);
         diaChiRepository.save(diaChi);

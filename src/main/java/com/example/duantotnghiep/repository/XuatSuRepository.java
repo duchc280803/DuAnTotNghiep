@@ -16,6 +16,8 @@ public interface XuatSuRepository extends JpaRepository<XuatXu, UUID> {
 
     List<XuatXu> findByTrangThai(Integer trangThai);
 
+    List<XuatXu> findByTenXuatXu(String name);
+
     @Query("SELECT NEW com.example.duantotnghiep.entity.XuatXu(th.id, th.tenXuatXu, th.trangThai, th.ngayTao, th.ngayCapNhat)\n" +
             "FROM XuatXu th\n" +
             "WHERE (:trangThai IS NULL OR th.trangThai = :trangThai) " +
