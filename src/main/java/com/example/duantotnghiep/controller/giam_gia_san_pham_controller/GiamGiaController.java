@@ -34,7 +34,7 @@ public class GiamGiaController {
             @RequestParam(name = "trangThai", required = false) Integer trangThai,
             @RequestParam(name = "maGiamGia", required = false) String maGiamGia,
             @RequestParam(name = "tenGiamGia", required = false) String tenGiamGia,
-            @RequestParam(name = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(name = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
     ) {

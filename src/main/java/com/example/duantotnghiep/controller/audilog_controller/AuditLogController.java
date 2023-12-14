@@ -98,9 +98,9 @@ public class AuditLogController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) String searchUsername,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate specificDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd")  LocalDate specificDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd")LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         try {
             return auditLogService.readAuditLogKhuyenmai(page, size, searchUsername, specificDate, startDate, endDate);
         } catch (IOException | CsvValidationException e) {
@@ -284,9 +284,9 @@ public class AuditLogController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) String searchUsername,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate specificDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate specificDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate startDate,
+            @RequestParam(required = false)@DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate endDate) {
         try {
             return auditLogService.readAuditLogKhachHang(page, size, searchUsername, specificDate, startDate, endDate);
         } catch (IOException | CsvValidationException e) {
@@ -327,21 +327,19 @@ public class AuditLogController {
     // return null;
     // }
     // }
-    // @GetMapping("/khuyenmaiseach")
-    // public List<AuditLog> getAuditLogkhuyenmais(
-    // @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate startDate,
-    // @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate endDate) {
-    // try {
-    // LocalDateTime startTime = startDate.atStartOfDay();
-    // LocalDateTime endTime = endDate.atTime(LocalTime.MAX);
-    // return auditLogService.readAuditLogByTimeRange(AUDIT_LOG_KHUYENMAI_FILE_PATH,
-    // startTime, endTime);
-    // } catch (IOException | CsvValidationException e) {
-    // e.printStackTrace();
-    // Handle errors, possibly return a ResponseEntity to inform the client about
-    // the error
-    // return null;
-    // }
+//     @GetMapping("/khuyenmaiseach")
+//     public List<AuditLog> getAuditLogkhuyenmais(
+//     @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate startDate,
+//     @RequestParam @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate endDate) {
+//     try {
+//     LocalDateTime startTime = startDate.atStartOfDay();
+//     LocalDateTime endTime = endDate.atTime(LocalTime.MAX);
+//     return auditLogService.readAuditLogByTimeRange(AUDIT_LOG_KHUYENMAI_FILE_PATH,
+//     startTime, endTime);
+//     } catch (IOException | CsvValidationException e) {
+//     e.printStackTrace();
+//     return null;
+//     }
     // }
     // @GetMapping("/chatlieusearch")
     // public List<AuditLog> getAuditLogChatLieus(
