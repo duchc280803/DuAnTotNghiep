@@ -71,11 +71,11 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
                 maxDiscount1 = thanhTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
                 hoaDon.setTienGiamGia(new BigDecimal(maxDiscount1));
                 hoaDon.setVoucher(voucher);
-                auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Cập nhật voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount1)) + "đ", "", "");
+                auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), optionalHoaDon.get().getMa(), "Cập nhật voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount1)) + "đ", "", "");
             } else if (voucher.getHinhThucGiam() == 2) {
                 hoaDon.setTienGiamGia(new BigDecimal(voucher.getGiaTriGiam()));
                 hoaDon.setVoucher(voucher);
-                auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Cập nhận voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + FormatNumber.formatBigDecimal(new BigDecimal(voucher.getGiaTriGiam())) + "đ", "", "");
+                auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), optionalHoaDon.get().getMa(), "Cập nhận voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + FormatNumber.formatBigDecimal(new BigDecimal(voucher.getGiaTriGiam())) + "đ", "", "");
             }
 
             hoaDonRepository.save(hoaDon);
