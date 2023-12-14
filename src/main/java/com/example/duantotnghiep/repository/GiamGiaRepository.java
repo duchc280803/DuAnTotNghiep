@@ -30,13 +30,13 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
                 "WHERE (:maGiamGia is null or gg.maGiamGia LIKE %:maGiamGia%) " +
                 "AND (:tenGiamGia is null or gg.tenGiamGia LIKE %:tenGiamGia%) " +
                 "AND (:trangThai is null or gg.trangThai = :trangThai) " +
-                "AND (:startDate is null or gg.ngayBatDau >= :startDate) " +
+                "AND (:startDate is null or gg.ngayBatDau = :startDate) " +
                 "ORDER BY gg.trangThai ASC , gg.ngayBatDau DESC")
         Page<GiamGiaResponse> listGiamGia(
                 @Param("maGiamGia") String maGiamGia,
                 @Param("tenGiamGia") String tenGiamGia,
                 @Param("trangThai") Integer trangThai,
-                @Param("startDate") LocalDate startDate,
+                @Param("startDate") Date startDate,
                 Pageable pageable);
 
         @Query("SELECT DISTINCT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id,gg.maGiamGia,gg.tenGiamGia, gg.ngayBatDau, gg.ngayKetThuc, gg.hinhThucGiam, gg.trangThai, spgg.mucGiam) "
