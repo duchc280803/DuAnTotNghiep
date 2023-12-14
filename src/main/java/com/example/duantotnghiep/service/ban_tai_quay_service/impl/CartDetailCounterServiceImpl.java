@@ -86,30 +86,34 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         gioHangChiTietRepository.save(ghct);
 
         BigDecimal tongTien = BigDecimal.ZERO;
-        for (GioHangChiTiet x: gioHang.getGioHangChiTietList()) {
-            tongTien = tongTien.add(x.getDonGiaKhiGiam());
+        for (GioHangChiTiet x : gioHang.getGioHangChiTietList()) {
+            tongTien = tongTien.add(x.getDonGiaKhiGiam().multiply(new BigDecimal(x.getSoLuong())));
         }
-        System.out.println(tongTien);
         Long maxDiscount = 0L;
+        Long maxDiscount1 = 0L;
+        Long maxDiscount2 = 0L;
         Voucher selectedVoucher = null;
         Double giaTriGiamPhanTram = 0.0;
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
             if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
-                if (selectedVoucher != null && v.getHinhThucGiam() == 1) {
-                    Long giaTriGiam = selectedVoucher.getGiaTriGiam();
+                if (v.getHinhThucGiam() == 1) {
+                    Long giaTriGiam = v.getGiaTriGiam();
                     giaTriGiamPhanTram = giaTriGiam / 100.0;
+                    maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
                 }
 
                 if (v.getHinhThucGiam() == 2) {
-                    if (giaTriGiamPhanTram > v.getGiaTriGiam()) {
-                        maxDiscount = giaTriGiamPhanTram.longValue();
-                    } else {
-                        maxDiscount = v.getGiaTriGiam();
-                    }
+                    maxDiscount2 = v.getGiaTriGiam();
                 }
 
+                selectedVoucher = v;
             }
+        }
+        if (maxDiscount1 > maxDiscount2) {
+            maxDiscount = maxDiscount1;
+        } else {
+            maxDiscount = maxDiscount2;
         }
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
@@ -155,30 +159,33 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
 
         BigDecimal tongTien = BigDecimal.ZERO;
         for (GioHangChiTiet x : gioHang.getGioHangChiTietList()) {
-            tongTien = tongTien.add(x.getDonGiaKhiGiam()).multiply(new BigDecimal(x.getSoLuong()));
+            tongTien = tongTien.add(x.getDonGiaKhiGiam().multiply(new BigDecimal(x.getSoLuong())));
         }
-        System.out.println(tongTien);
         Long maxDiscount = 0L;
+        Long maxDiscount1 = 0L;
+        Long maxDiscount2 = 0L;
         Voucher selectedVoucher = null;
         Double giaTriGiamPhanTram = 0.0;
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
             if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
                 if (v.getHinhThucGiam() == 1) {
-                    Long giaTriGiam = selectedVoucher.getGiaTriGiam();
+                    Long giaTriGiam = v.getGiaTriGiam();
                     giaTriGiamPhanTram = giaTriGiam / 100.0;
+                    maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
                 }
 
                 if (v.getHinhThucGiam() == 2) {
-                    if (tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue() > v.getGiaTriGiam()) {
-                        maxDiscount = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
-                    } else {
-                        maxDiscount = v.getGiaTriGiam();
-                    }
+                    maxDiscount2 = v.getGiaTriGiam();
                 }
 
                 selectedVoucher = v;
             }
+        }
+        if (maxDiscount1 > maxDiscount2) {
+            maxDiscount = maxDiscount1;
+        } else {
+            maxDiscount = maxDiscount2;
         }
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
@@ -247,30 +254,33 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
                 "", "");
         BigDecimal tongTien = BigDecimal.ZERO;
         for (GioHangChiTiet x : gioHang.getGioHangChiTietList()) {
-            tongTien = tongTien.add(x.getDonGiaKhiGiam()).multiply(new BigDecimal(x.getSoLuong()));
+            tongTien = tongTien.add(x.getDonGiaKhiGiam().multiply(new BigDecimal(x.getSoLuong())));
         }
-        System.out.println(tongTien);
         Long maxDiscount = 0L;
+        Long maxDiscount1 = 0L;
+        Long maxDiscount2 = 0L;
         Voucher selectedVoucher = null;
         Double giaTriGiamPhanTram = 0.0;
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
             if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
                 if (v.getHinhThucGiam() == 1) {
-                    Long giaTriGiam = selectedVoucher.getGiaTriGiam();
+                    Long giaTriGiam = v.getGiaTriGiam();
                     giaTriGiamPhanTram = giaTriGiam / 100.0;
+                    maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
                 }
 
                 if (v.getHinhThucGiam() == 2) {
-                    if (tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue() > v.getGiaTriGiam()) {
-                        maxDiscount = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
-                    } else {
-                        maxDiscount = v.getGiaTriGiam();
-                    }
+                    maxDiscount2 = v.getGiaTriGiam();
                 }
 
                 selectedVoucher = v;
             }
+        }
+        if (maxDiscount1 > maxDiscount2) {
+            maxDiscount = maxDiscount1;
+        } else {
+            maxDiscount = maxDiscount2;
         }
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
@@ -317,6 +327,16 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         return resultList;
     }
 
+    @Override
+    public BigDecimal tongTienSpHoaDon(UUID id) {
+        BigDecimal tongTien = BigDecimal.ZERO;
+        GioHang gioHang = gioHangRepository.findByGioHang(id);
+        for (GioHangChiTiet x : gioHang.getGioHangChiTietList()) {
+            tongTien = tongTien.add(x.getDonGiaKhiGiam().multiply(new BigDecimal(x.getSoLuong())));
+        }
+        return tongTien;
+    }
+
     public void capNhatSoLuong(UUID idgiohangchitiet, int soLuongMoi, String username) throws IOException, CsvValidationException {
 
         Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findById(idgiohangchitiet);
@@ -339,30 +359,34 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         }
         BigDecimal tongTien = BigDecimal.ZERO;
         for (GioHangChiTiet x : gioHang.getGioHangChiTietList()) {
-            tongTien = tongTien.add(x.getDonGiaKhiGiam()).multiply(new BigDecimal(x.getSoLuong()));
+            tongTien = tongTien.add(x.getDonGiaKhiGiam().multiply(new BigDecimal(x.getSoLuong())));
         }
         Long maxDiscount = 0L;
+        Long maxDiscount1 = 0L;
+        Long maxDiscount2 = 0L;
         Voucher selectedVoucher = null;
         Double giaTriGiamPhanTram = 0.0;
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
             if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
                 if (v.getHinhThucGiam() == 1) {
-                    Long giaTriGiam = selectedVoucher.getGiaTriGiam();
+                    Long giaTriGiam = v.getGiaTriGiam();
                     giaTriGiamPhanTram = giaTriGiam / 100.0;
+                    maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
                 }
 
                 if (v.getHinhThucGiam() == 2) {
-                    if (tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue() > v.getGiaTriGiam()) {
-                        maxDiscount = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
-                    } else {
-                        maxDiscount = v.getGiaTriGiam();
-                    }
+                    maxDiscount2 = v.getGiaTriGiam();
                 }
 
                 selectedVoucher = v;
             }
-        }   
+        }
+        if (maxDiscount1 > maxDiscount2) {
+            maxDiscount = maxDiscount1;
+        } else {
+            maxDiscount = maxDiscount2;
+        }
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
         hoaDonRepository.save(hoaDon.get());

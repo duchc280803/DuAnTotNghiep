@@ -148,10 +148,17 @@ public class ProductCounterServiceImpl implements ProductCounterService {
     }
 
     @Override
-    public List<ChiTietSanPhamCustom> filterBrand(Integer pageNumber, Integer pageSize, String name) {
+    public List<ChiTietSanPhamCustom> filterBrand(Integer pageNumber, Integer pageSize,
+                                                  String tenThuongHieu,
+                                                  String tenXuatXu,
+                                                  String tenDanhMuc,
+                                                  String tenDe,
+                                                  String tenChatLieu,
+                                                  String tenMauSac,
+                                                  Integer size) {
         List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Object[]> queryResult = chiTietSanPhamRepository.filterBrand(pageable, name);
+        Page<Object[]> queryResult = chiTietSanPhamRepository.filterBrand(pageable, tenThuongHieu, tenXuatXu, tenDanhMuc, tenDe, tenChatLieu, tenMauSac, size);
         for (Object[] result : queryResult.getContent()) {
             UUID idSp = (UUID) result[0];
             UUID idCtsp = (UUID) result[1];
@@ -160,13 +167,13 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaBan = (BigDecimal) result[4];
             Integer soLuong = (Integer) result[5];
             String mauSac = (String) result[6];
-            Integer size = (Integer) result[7];
+            Integer sizes = (Integer) result[7];
             String chatLieu = (String) result[8];
             UUID idThuongHieu = (UUID) result[9];
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, sizes, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
