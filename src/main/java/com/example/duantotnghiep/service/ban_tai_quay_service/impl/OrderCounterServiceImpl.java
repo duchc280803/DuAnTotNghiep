@@ -227,14 +227,14 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         hoaDon.get().setTienKhachTra(hoaDonGiaoThanhToanRequest.getTienKhachTra());
         hoaDon.get().setTienThua(hoaDonGiaoThanhToanRequest.getTienThua());
         hoaDon.get().setThanhTien(hoaDonGiaoThanhToanRequest.getTongTien());
-        hoaDon.get().setTenNguoiNhan(hoaDonGiaoThanhToanRequest.getHoTen());
+        hoaDon.get().setTenNguoiNhan(hoaDonGiaoThanhToanRequest.getTenKhach());
         hoaDon.get().setSdtNguoiNhan(hoaDonGiaoThanhToanRequest.getSoDienThoai());
         hoaDon.get().setDiaChi(hoaDonGiaoThanhToanRequest.getDiaChi());
         hoaDon.get().setTienShip(hoaDonGiaoThanhToanRequest.getTienGiao());
         hoaDon.get().setEmail(hoaDonGiaoThanhToanRequest.getEmail());
         hoaDon.get().setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
         auditLogService.writeAuditLogHoadon(findByNhanVien.get().getMaTaiKhoan(), findByNhanVien.get().getEmail(), "Xác nhận thanh toán hóa đơn giao", hoaDon.get().getMa(),
-                "Tên người nhận: " + hoaDonGiaoThanhToanRequest.getHoTen(),
+                "Tên người nhận: " + hoaDonGiaoThanhToanRequest.getTenKhach(),
                 "SĐT: " + hoaDonGiaoThanhToanRequest.getSoDienThoai(),
                 "Địa chỉ: " + hoaDonGiaoThanhToanRequest.getDiaChi(), "Phí vận chuyển: " + FormatNumber.formatBigDecimal(hoaDonGiaoThanhToanRequest.getTienGiao()) + "đ - Tổng tiền: " + FormatNumber.formatBigDecimal(hoaDonGiaoThanhToanRequest.getTongTien()) + "đ");
         hoaDonRepository.save(hoaDon.get());
@@ -277,14 +277,14 @@ public class OrderCounterServiceImpl implements OrderCounterService {
             SendEmailOrder.sendEmailOrder(hoaDon.get(), javaMailSender);
             System.out.println("gửi mail");
         }
-        String normalized = RemoveDiacritics.removeDiacritics(hoaDonGiaoThanhToanRequest.getHoTen());
+        String normalized = RemoveDiacritics.removeDiacritics(hoaDonGiaoThanhToanRequest.getTenKhach());
 
         String converted = normalized.toLowerCase().replaceAll("\\s", "");
         List<TaiKhoan> taiKhoans = khachHangRepository.listKhachHang();
         LoaiTaiKhoan loaiTaiKhoan = loaiTaiKhoanRepository.findByName(TypeAccountEnum.USER).get();
         TaiKhoan taiKhoan = new TaiKhoan();
         taiKhoan.setId(UUID.randomUUID());
-        taiKhoan.setName(hoaDonGiaoThanhToanRequest.getHoTen());
+        taiKhoan.setName(hoaDonGiaoThanhToanRequest.getTenKhach());
         taiKhoan.setEmail(hoaDonGiaoThanhToanRequest.getEmail());
         taiKhoan.setSoDienThoai(hoaDonGiaoThanhToanRequest.getSoDienThoai());
         taiKhoan.setTrangThai(1);

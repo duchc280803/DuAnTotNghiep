@@ -131,8 +131,8 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
             return MessageResponse.builder().message("Giỏ Hàng Null").build();
         }
 
-        GioHangChiTiet ghct = gioHangChiTietRepository.findByGioHang(gioHang);
         SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findByQrcode(qrCode);
+        GioHangChiTiet ghct = gioHangChiTietRepository.findByGioHangAndSanPhamChiTiet_Id(gioHang, sanPhamChiTiet.getId());
         if (ghct != null) {
             ghct.setSoLuong(ghct.getSoLuong() + 1);
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - 1);
