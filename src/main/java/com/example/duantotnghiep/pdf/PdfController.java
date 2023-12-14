@@ -1,22 +1,14 @@
 package com.example.duantotnghiep.pdf;
 
-import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.service.pdf.impl.PDFGeneratorServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController

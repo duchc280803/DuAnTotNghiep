@@ -163,6 +163,30 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
                                @Param("tenMauSac") String tenMauSac,
                                @Param("size") Integer size);
 
+    @Query("SELECT sp.id, spct.id, i.tenImage, sp.tenSanPham, sp.giaBan, spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
+            "FROM SanPham sp " +
+            "JOIN sp.listImage i " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "JOIN sp.listSanPhamChiTiet spct " +
+            "JOIN spct.size s " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.mauSac ms " +
+            "WHERE i.isDefault = TRUE " +
+            "AND kd.trangThai = 1 " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND dm.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "AND spct.trangThai = 1 " +
+            "AND s.trangThai = 1 " +
+            "AND cl.trangThai = 1 " +
+            "AND ms.trangThai = 1 " +
+            "AND th.id = :id ")
+    Page<Object[]> filterBrandId(Pageable pageable, @Param("id") UUID id);
+
     //TODO: Lọc theo tên danh mục
     @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +
@@ -237,6 +261,30 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND kd.tenDe = :name")
     Page<Object[]> filterSole(Pageable pageable, @Param("name") String name);
 
+    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
+            "FROM SanPham sp " +
+            "JOIN sp.listImage i " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "JOIN sp.listSanPhamChiTiet spct " +
+            "JOIN spct.size s " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.mauSac ms " +
+            "WHERE i.isDefault = TRUE " +
+            "AND kd.trangThai = 1 " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND dm.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "AND spct.trangThai = 1 " +
+            "AND s.trangThai = 1 " +
+            "AND cl.trangThai = 1 " +
+            "AND ms.trangThai = 1 " +
+            "AND kd.id = :id")
+    Page<Object[]> filterSoleId(Pageable pageable, @Param("id") UUID id);
+
     //TODO: Lọc theo tên xuất xứ
     @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +
@@ -261,6 +309,30 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND ms.trangThai = 1 " +
             "AND xx.tenXuatXu = :name")
     Page<Object[]> filterOrigin(Pageable pageable, @Param("name") String name);
+
+    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
+            "FROM SanPham sp " +
+            "JOIN sp.listImage i " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "JOIN sp.listSanPhamChiTiet spct " +
+            "JOIN spct.size s " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.mauSac ms " +
+            "WHERE i.isDefault = TRUE " +
+            "AND kd.trangThai = 1 " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND dm.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "AND spct.trangThai = 1 " +
+            "AND s.trangThai = 1 " +
+            "AND cl.trangThai = 1 " +
+            "AND ms.trangThai = 1 " +
+            "AND xx.id = :id")
+    Page<Object[]> filterOriginId(Pageable pageable, @Param("id") UUID id);
 
     //TODO: Lọc theo size
     @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +

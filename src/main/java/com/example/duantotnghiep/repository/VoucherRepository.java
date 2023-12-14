@@ -14,13 +14,13 @@ import java.util.UUID;
 
 public interface VoucherRepository extends JpaRepository<Voucher, UUID> {
 
-    Optional<Voucher> findById(UUID id);
+    Optional<Voucher> findByIdAndTrangThai(UUID id, Integer trangThai);
 
     List<Voucher> findByTenVoucherContainingIgnoreCaseOrMaVoucherContainingIgnoreCase(String tenVoucher,
             String maVoucher);
 
     @Query("SELECT new com.example.duantotnghiep.response.VoucherCounterResponse" +
-            "(v.id, v.maVoucher, v.tenVoucher, v.hinhThucGiam, v.soLuongMa, v.soLuongDung,v.giaTriGiam, v.giaTriToiThieuDonhang, v.ngayBatDau, v.ngayKetThuc) FROM Voucher v ")
+            "(v.id, v.maVoucher, v.tenVoucher, v.hinhThucGiam, v.soLuongMa, v.soLuongDung,v.giaTriGiam, v.giaTriToiThieuDonhang, v.ngayBatDau, v.ngayKetThuc) FROM Voucher v WHERE v.trangThai = 1")
     Page<VoucherCounterResponse> findAllVoucher(Pageable pageable);
 
     @Query("SELECT v FROM Voucher v WHERE v.trangThai = 1")

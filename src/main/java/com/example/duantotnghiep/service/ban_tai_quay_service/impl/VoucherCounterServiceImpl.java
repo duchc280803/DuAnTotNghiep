@@ -1,8 +1,7 @@
 package com.example.duantotnghiep.service.ban_tai_quay_service.impl;
 
-import com.example.duantotnghiep.entity.HoaDon;
-import com.example.duantotnghiep.entity.TaiKhoan;
-import com.example.duantotnghiep.entity.Voucher;
+import com.example.duantotnghiep.entity.*;
+import com.example.duantotnghiep.repository.GioHangRepository;
 import com.example.duantotnghiep.repository.HoaDonRepository;
 import com.example.duantotnghiep.repository.TaiKhoanRepository;
 import com.example.duantotnghiep.repository.VoucherRepository;
@@ -40,6 +39,9 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
     @Autowired
     private AuditLogService auditLogService;
 
+    @Autowired
+    private GioHangRepository gioHangRepository;
+
     @Override
     public List<VoucherCounterResponse> findAll(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
@@ -51,7 +53,7 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
     public MessageResponse addVoucherOrder(UUID idHoaDon, UUID idVoucher, BigDecimal thanhTien, String username) throws IOException, CsvValidationException {
         Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByUsername(username);
         Optional<HoaDon> optionalHoaDon = hoaDonRepository.findById(idHoaDon);
-        Optional<Voucher> optionalVoucher = voucherRepository.findById(idVoucher);
+        Optional<Voucher> optionalVoucher = voucherRepository.findByIdAndTrangThai(idVoucher, 1);
 
         if (idVoucher == null) {
             optionalHoaDon.get().setVoucher(null);
@@ -61,15 +63,18 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
             HoaDon hoaDon = optionalHoaDon.get();
             Voucher voucher = optionalVoucher.get();
 
-            hoaDon.setVoucher(voucher);
-
+            Double giaTriGiamPhanTram = 0.0;
+            Long maxDiscount1 = 0L;
             if (voucher.getHinhThucGiam() == 1) {
-                BigDecimal phanTramGiam = new BigDecimal(voucher.getGiaTriGiam()).divide(new BigDecimal(100));
-                BigDecimal tienGiam = thanhTien.multiply(phanTramGiam);
-                hoaDon.setTienGiamGia(tienGiam);
-                auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Cập nhật voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + FormatNumber.formatBigDecimal(tienGiam) + "đ", "", "");
+                Long giaTriGiam = voucher.getGiaTriGiam();
+                giaTriGiamPhanTram = giaTriGiam / 100.0;
+                maxDiscount1 = thanhTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
+                hoaDon.setTienGiamGia(new BigDecimal(maxDiscount1));
+                hoaDon.setVoucher(voucher);
+                auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Cập nhật voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount1)) + "đ", "", "");
             } else if (voucher.getHinhThucGiam() == 2) {
                 hoaDon.setTienGiamGia(new BigDecimal(voucher.getGiaTriGiam()));
+                hoaDon.setVoucher(voucher);
                 auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Cập nhận voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + FormatNumber.formatBigDecimal(new BigDecimal(voucher.getGiaTriGiam())) + "đ", "", "");
             }
 
