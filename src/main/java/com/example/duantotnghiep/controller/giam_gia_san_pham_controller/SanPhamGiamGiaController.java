@@ -125,16 +125,24 @@ public class SanPhamGiamGiaController {
     public ResponseEntity<List<ChiTietSanPhamCustom>> filterSole(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "12") Integer pageSize,
-            @RequestParam String name) {
-        return ResponseEntity.ok(chiTietSanPhamService.filterSole(pageNumber, pageSize, name));
+            @RequestParam(name = "id") UUID id) {
+        return ResponseEntity.ok(chiTietSanPhamService.filterSoleId(pageNumber, pageSize, id));
     }
 
     @GetMapping("filter-origin")
     public ResponseEntity<List<ChiTietSanPhamCustom>> filterOrigin(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "12") Integer pageSize,
-            @RequestParam String name) {
-        return ResponseEntity.ok(chiTietSanPhamService.filterOrigin(pageNumber, pageSize, name));
+            @RequestParam(name = "id") UUID id) {
+        return ResponseEntity.ok(chiTietSanPhamService.filterOriginId(pageNumber, pageSize, id));
+    }
+
+    @GetMapping("filter-brand")
+    public ResponseEntity<List<ChiTietSanPhamCustom>> filterBrand(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
+            @RequestParam(name = "id") UUID id) {
+        return ResponseEntity.ok(chiTietSanPhamService.filterBrandId(pageNumber, pageSize, id));
     }
 
 
