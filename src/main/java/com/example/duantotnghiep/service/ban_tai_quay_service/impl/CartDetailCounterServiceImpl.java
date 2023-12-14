@@ -63,7 +63,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         if (ghct != null) {
             ghct.setSoLuong(ghct.getSoLuong() + soLuong);
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
-            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
+            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Thêm sản phẩm", hoaDon.get().getMa(),
                     "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
                     "Số lượng: " + soLuong, "");
         } else {
@@ -75,7 +75,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
             sanPhamChiTiet.setId(idSanPhamChiTiet);
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
             ghct.setSanPhamChiTiet(sanPhamChiTiet);
-            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
+            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Thêm sản phẩm", hoaDon.get().getMa(),
                     "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
                     "Số lượng: " + soLuong, "");
 
@@ -118,6 +118,8 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
         hoaDonRepository.save(hoaDon.get());
+        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(),  selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
+                selectedVoucher == null ? "" : "Giá trị giảm: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount)) + "đ", "", "");
         return MessageResponse.builder().message("Thêm thành công").build();
     }
 
@@ -136,7 +138,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         if (ghct != null) {
             ghct.setSoLuong(ghct.getSoLuong() + 1);
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - 1);
-            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
+            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Thêm sản phẩm", hoaDon.get().getMa(),
                     "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
                     "Số lượng: 1", "");
         } else {
@@ -149,7 +151,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - 1);
             ghct.setSanPhamChiTiet(sanPhamChiTiet);
             ghct.setSoLuong(1);
-            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Thêm sản phẩm", hoaDon.get().getMa(),
+            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Thêm sản phẩm", hoaDon.get().getMa(),
                     "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
                     "Số lượng: 1", "");
         }
@@ -190,6 +192,8 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
         hoaDonRepository.save(hoaDon.get());
+        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(),  selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
+                selectedVoucher == null ? "" : "Giá trị giảm: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount)) + "đ", "", "");
 
         return MessageResponse.builder().message("Thêm thành công").build();
     }
@@ -249,7 +253,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + gioHangChiTiet.getSoLuong());
         chiTietSanPhamRepository.save(sanPhamChiTiet);
         gioHangChiTietRepository.deleteById(id);
-        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Xóa sản phẩm", hoaDon.get().getMa(),
+        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Xóa sản phẩm", hoaDon.get().getMa(),
                 "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
                 "", "");
         BigDecimal tongTien = BigDecimal.ZERO;
@@ -284,6 +288,8 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         }
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
+        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(),  selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
+                selectedVoucher == null ? "" : "Giá trị giảm: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount)) + "đ", "", "");
         hoaDonRepository.save(hoaDon.get());
         auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), selectedVoucher == null ? "Không có voucher" : selectedVoucher.getMaVoucher(), hoaDon.get().getMa(),
                 "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
@@ -353,7 +359,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         if (optionalGioHangChiTiet.isPresent()) {
             optionalGioHangChiTiet.get().setSoLuong(soLuongMoi);
             gioHangChiTietRepository.save(optionalGioHangChiTiet.get());
-            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), "Cập nhật số lượng", hoaDon.get().getMa(),
+            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật số lượng", hoaDon.get().getMa(),
                     "Mã sản phẩm: " + sanPhamChiTiet.get().getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.get().getSanPham().getTenSanPham(),
                     "Số lượng: " + soLuongMoi, "");
 
@@ -393,5 +399,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
         hoaDonRepository.save(hoaDon.get());
+        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(),  selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
+                selectedVoucher == null ? "" : "Giá trị giảm: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount)) + "đ", "", "");
     }
 }
