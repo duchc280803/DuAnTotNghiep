@@ -53,7 +53,7 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
     public MessageResponse addVoucherOrder(UUID idHoaDon, UUID idVoucher, BigDecimal thanhTien, String username) throws IOException, CsvValidationException {
         Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByUsername(username);
         Optional<HoaDon> optionalHoaDon = hoaDonRepository.findById(idHoaDon);
-        Optional<Voucher> optionalVoucher = voucherRepository.findById(idVoucher);
+        Optional<Voucher> optionalVoucher = voucherRepository.findByIdAndTrangThai(idVoucher, 1);
 
         if (idVoucher == null) {
             optionalHoaDon.get().setVoucher(null);
