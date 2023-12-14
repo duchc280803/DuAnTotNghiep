@@ -9,18 +9,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 public interface GiamGiaService {
 
-    List<GiamGiaResponse> getAll(Integer pageNumber, Integer pageSize) ;
-        List<GiamGiaResponse> getAll(Integer trangThai, Integer size, Integer pageNumber, Integer pageSize);
+        List<GiamGiaResponse> getAll(Integer trangThai, String maGiamGia, String tenGiamGia, LocalDate startDate, Integer pageNumber, Integer pageSize) ;
 
-        List<ProductDetailResponse> getAllProduct(Integer pageNumber, Integer pageSize);
-
-        List<GiamGiaResponse> findbyValueString(String key);
+        List<ProductDetailResponse> getAllProduct( String tenGiamGia, Integer pageNumber, Integer pageSize) ;
+    List<GiamGiaResponse> findbyValueString(String key);
 
         List<ProductDetailResponse> findbyProduct(String key);
 

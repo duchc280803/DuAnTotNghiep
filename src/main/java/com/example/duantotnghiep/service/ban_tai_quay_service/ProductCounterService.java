@@ -3,6 +3,7 @@ package com.example.duantotnghiep.service.ban_tai_quay_service;
 import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
 import com.example.duantotnghiep.response.DetailQuantityToSizeReponse;
 import com.example.duantotnghiep.response.SanPhamGetAllResponse;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,21 +16,28 @@ public interface ProductCounterService {
 
     ChiTietSanPhamCustom getOne(String name);
 
-    List<ChiTietSanPhamCustom> searchByName(String name);
+    List<ChiTietSanPhamCustom> searchByName(Integer pageNumber, Integer pageSize, String name);
 
-    List<ChiTietSanPhamCustom> filterBrand(String name);
+    List<ChiTietSanPhamCustom> filterBrand(Integer pageNumber, Integer pageSize,
+                                           String tenThuongHieu,
+                                           String tenXuatXu,
+                                           String tenDanhMuc,
+                                           String tenDe,
+                                           String tenChatLieu,
+                                           String tenMauSac,
+                                           Integer size);
 
-    List<ChiTietSanPhamCustom> filterCategory(String name);
+    List<ChiTietSanPhamCustom> filterCategory(Integer pageNumber, Integer pageSize, String name);
 
-    List<ChiTietSanPhamCustom> filterSole(String name);
+    List<ChiTietSanPhamCustom> filterSole(Integer pageNumber, Integer pageSize, String name);
 
-    List<ChiTietSanPhamCustom> filterOrigin(String name);
+    List<ChiTietSanPhamCustom> filterOrigin(Integer pageNumber, Integer pageSize, String name);
 
-    List<ChiTietSanPhamCustom> filterSize(Integer size);
+    List<ChiTietSanPhamCustom> filterSize(Integer pageNumber, Integer pageSize, Integer size);
 
-    List<ChiTietSanPhamCustom> filterMaterial(String name);
+    List<ChiTietSanPhamCustom> filterMaterial(Integer pageNumber, Integer pageSize, String name);
 
-    List<ChiTietSanPhamCustom> filterColor(String name);
+    List<ChiTietSanPhamCustom> filterColor(Integer pageNumber, Integer pageSize, String name);
 
     Integer soLuong(UUID id);
 

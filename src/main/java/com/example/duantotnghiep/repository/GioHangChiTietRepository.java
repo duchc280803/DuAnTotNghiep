@@ -42,7 +42,6 @@ public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, 
             "WHERE i.isDefault = true AND gh.trangThai = 1 AND tk.id = :id")
     List<Object[]> loadOnGioHangTien(@Param("id") UUID id);
 
-
     @Query("SELECT ghct.donGiaKhiGiam, ghct.soLuong " +
             "FROM SanPhamChiTiet spct " +
             "JOIN spct.sanPham sp " +

@@ -26,43 +26,74 @@ public class ProductCounterController {
     }
 
     @GetMapping("search-name")
-    public ResponseEntity<List<ChiTietSanPhamCustom>> searchByName(@RequestParam String name) {
-        return ResponseEntity.ok(chiTietSanPhamService.searchByName(name));
+    public ResponseEntity<List<ChiTietSanPhamCustom>> searchByName(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
+            @RequestParam String name) {
+        return ResponseEntity.ok(chiTietSanPhamService.searchByName(pageNumber, pageSize, name));
     }
 
     @GetMapping("filter-brand")
-    public ResponseEntity<List<ChiTietSanPhamCustom>> filterBrand(@RequestParam String name) {
-        return ResponseEntity.ok(chiTietSanPhamService.filterBrand(name));
+    public ResponseEntity<List<ChiTietSanPhamCustom>> filterBrand(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
+            @RequestParam(name = "tenThuongHieu", required = false) String tenThuongHieu,
+            @RequestParam(name = "tenXuatXu", required = false) String tenXuatXu,
+            @RequestParam(name = "tenDanhMuc", required = false) String tenDanhMuc,
+            @RequestParam(name = "tenDe", required = false) String tenDe,
+            @RequestParam(name = "tenChatLieu", required = false) String tenChatLieu,
+            @RequestParam(name = "tenMauSac", required = false) String tenMauSac,
+            @RequestParam(name = "size", required = false) Integer size
+    ) {
+        return ResponseEntity.ok(chiTietSanPhamService.filterBrand(pageNumber, pageSize, tenThuongHieu, tenXuatXu, tenDanhMuc, tenDe, tenChatLieu, tenMauSac, size));
     }
 
     @GetMapping("filter-category")
-    public ResponseEntity<List<ChiTietSanPhamCustom>> filterCategory(@RequestParam String name) {
-        return ResponseEntity.ok(chiTietSanPhamService.filterCategory(name));
+    public ResponseEntity<List<ChiTietSanPhamCustom>> filterCategory(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
+            @RequestParam String name) {
+        return ResponseEntity.ok(chiTietSanPhamService.filterCategory(pageNumber, pageSize, name));
     }
 
     @GetMapping("filter-sole")
-    public ResponseEntity<List<ChiTietSanPhamCustom>> filterSole(@RequestParam String name) {
-        return ResponseEntity.ok(chiTietSanPhamService.filterSole(name));
+    public ResponseEntity<List<ChiTietSanPhamCustom>> filterSole(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
+            @RequestParam String name) {
+        return ResponseEntity.ok(chiTietSanPhamService.filterSole(pageNumber, pageSize, name));
     }
 
     @GetMapping("filter-origin")
-    public ResponseEntity<List<ChiTietSanPhamCustom>> filterOrigin(@RequestParam String name) {
-        return ResponseEntity.ok(chiTietSanPhamService.filterOrigin(name));
+    public ResponseEntity<List<ChiTietSanPhamCustom>> filterOrigin(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
+            @RequestParam String name) {
+        return ResponseEntity.ok(chiTietSanPhamService.filterOrigin(pageNumber, pageSize, name));
     }
 
     @GetMapping("filter-size")
-    public ResponseEntity<List<ChiTietSanPhamCustom>> filterSize(@RequestParam Integer size) {
-        return ResponseEntity.ok(chiTietSanPhamService.filterSize(size));
+    public ResponseEntity<List<ChiTietSanPhamCustom>> filterSize(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
+            @RequestParam Integer size) {
+        return ResponseEntity.ok(chiTietSanPhamService.filterSize(pageNumber, pageSize, size));
     }
 
     @GetMapping("filter-material")
-    public ResponseEntity<List<ChiTietSanPhamCustom>> filterMaterial(@RequestParam String name) {
-        return ResponseEntity.ok(chiTietSanPhamService.filterMaterial(name));
+    public ResponseEntity<List<ChiTietSanPhamCustom>> filterMaterial(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
+            @RequestParam String name) {
+        return ResponseEntity.ok(chiTietSanPhamService.filterMaterial(pageNumber, pageSize, name));
     }
 
     @GetMapping("filter-color")
-    public ResponseEntity<List<ChiTietSanPhamCustom>> filterColor(@RequestParam String name) {
-        return ResponseEntity.ok(chiTietSanPhamService.filterColor(name));
+    public ResponseEntity<List<ChiTietSanPhamCustom>> filterColor(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
+            @RequestParam String name) {
+        return ResponseEntity.ok(chiTietSanPhamService.filterColor(pageNumber, pageSize, name));
     }
 
     @GetMapping("tien-cuoi-cung")

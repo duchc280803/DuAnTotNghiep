@@ -33,12 +33,12 @@ public interface HoaDonRepository extends JpaRepository<HoaDon, UUID> {
             "JOIN hd.loaiDon ld " +
             "JOIN hd.taiKhoanNhanVien tknv " +
             "LEFT JOIN hd.taiKhoanKhachHang tkkh " +
-            "WHERE hd.trangThai = 1 AND ld.trangThai = 2 AND hd.ma = :ma " +
+            "WHERE hd.trangThai = 1 AND ld.trangThai = 2 AND hd.ma like %:ma% " +
             "ORDER BY hd.ngayTao DESC")
     List<HoaDonResponse> findByCodeOrder(@Param("ma") String ma);
 
     @Query("SELECT NEW com.example.duantotnghiep.response.OrderCounterCartsResponse" +
-            "(tkkh.id, hd.ma, hd.tienGiamGia,tkkh.name, hd.ngayTao, dc.diaChi, tkkh.email, tkkh.soDienThoai)" +
+            "(tkkh.id, hd.ma, hd.tienGiamGia,tkkh.name, hd.ngayTao, dc.diaChi, tkkh.email, tkkh.soDienThoai, dc.tinh, dc.huyen, dc.xa)" +
             "FROM HoaDon hd " +
             "JOIN hd.taiKhoanKhachHang tkkh " +
             "LEFT JOIN tkkh.diaChiList dc WHERE hd.id = :id")

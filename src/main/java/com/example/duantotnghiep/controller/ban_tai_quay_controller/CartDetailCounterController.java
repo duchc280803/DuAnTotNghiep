@@ -108,4 +108,9 @@ public class CartDetailCounterController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("total-price-order")
+    public BigDecimal tongTienHoaDon(@RequestParam(name = "id") UUID id) {
+        return gioHangChiTietService.tongTienSpHoaDon(id);
+    }
+
 }

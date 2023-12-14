@@ -13,13 +13,13 @@ import java.util.UUID;
 
 public interface VoucherService {
     Page<Voucher> getAll(Integer pageNumber, Integer pageSize);
-
+    MessageResponse updateVoucherstaus(UUID id);
     MessageResponse createVoucher(VoucherRequest createVoucherRequest, String username)
             throws IOException, CsvValidationException;;
 
     MessageResponse updateVoucher(UUID id, VoucherRequest createVoucherRequest, String username)
             throws IOException, CsvValidationException;
-
+    MessageResponse checkAndSetStatus();
     public Voucher findById(UUID id);
 
     List<Voucher> searchByTrangThai(Integer trangThai);

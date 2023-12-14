@@ -122,11 +122,11 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND s.trangThai = 1 " +
             "AND cl.trangThai = 1 " +
             "AND ms.trangThai = 1 " +
-            "AND sp.tenSanPham = :name")
-    List<Object[]> searchByName(@Param("name") String name);
+            "AND sp.tenSanPham like %:name%")
+    Page<Object[]> searchByName(Pageable pageable, @Param("name") String name);
 
     //TODO: Lọc theo tên thương hiệu
-    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
+    @Query("SELECT sp.id, spct.id, i.tenImage, sp.tenSanPham, sp.giaBan, spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +
             "JOIN sp.listImage i " +
             "JOIN sp.kieuDe kd " +
@@ -147,8 +147,21 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND s.trangThai = 1 " +
             "AND cl.trangThai = 1 " +
             "AND ms.trangThai = 1 " +
-            "AND th.tenThuongHieu = :name")
-    List<Object[]> filterBrand(@Param("name") String name);
+            "AND (:tenThuongHieu is null OR th.tenThuongHieu = :tenThuongHieu) " +
+            "AND (:tenXuatXu is null OR xx.tenXuatXu = :tenXuatXu) " +
+            "AND (:tenDanhMuc is null OR dm.tenDanhMuc = :tenDanhMuc) " +
+            "AND (:tenDe is null OR kd.tenDe = :tenDe) " +
+            "AND (:tenMauSac is null OR ms.tenMauSac = :tenMauSac) " +
+            "AND (:tenChatLieu is null OR cl.tenChatLieu = :tenChatLieu) " +
+            "AND (:size is null OR s.size = :size) ")
+    Page<Object[]> filterBrand(Pageable pageable,
+                               @Param("tenThuongHieu") String tenThuongHieu,
+                               @Param("tenXuatXu") String tenXuatXu,
+                               @Param("tenDanhMuc") String tenDanhMuc,
+                               @Param("tenDe") String tenDe,
+                               @Param("tenChatLieu") String tenChatLieu,
+                               @Param("tenMauSac") String tenMauSac,
+                               @Param("size") Integer size);
 
     //TODO: Lọc theo tên danh mục
     @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
@@ -173,7 +186,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND cl.trangThai = 1 " +
             "AND ms.trangThai = 1 " +
             "AND dm.tenDanhMuc = :name")
-    List<Object[]> filterCategory(@Param("name") String name);
+    Page<Object[]> filterCategory(Pageable pageable, @Param("name") String name);
 
     //TODO: Lọc theo tên đế
     @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
@@ -198,7 +211,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND cl.trangThai = 1 " +
             "AND ms.trangThai = 1 " +
             "AND kd.tenDe = :name")
-    List<Object[]> filterSole(@Param("name") String name);
+    Page<Object[]> filterSole(Pageable pageable, @Param("name") String name);
 
     //TODO: Lọc theo tên xuất xứ
     @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
@@ -223,7 +236,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND cl.trangThai = 1 " +
             "AND ms.trangThai = 1 " +
             "AND xx.tenXuatXu = :name")
-    List<Object[]> filterOrigin(@Param("name") String name);
+    Page<Object[]> filterOrigin(Pageable pageable, @Param("name") String name);
 
     //TODO: Lọc theo size
     @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
@@ -248,7 +261,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND cl.trangThai = 1 " +
             "AND ms.trangThai = 1 " +
             "AND s.size = :size")
-    List<Object[]> filterSize(@Param("size") Integer size);
+    Page<Object[]> filterSize(Pageable pageable, @Param("size") Integer size);
 
     //TODO: Lọc theo tên chất liệu
     @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
@@ -273,7 +286,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND cl.trangThai = 1 " +
             "AND ms.trangThai = 1 " +
             "AND cl.tenChatLieu = :name")
-    List<Object[]> filterMaterial(@Param("name") String name);
+    Page<Object[]> filterMaterial(Pageable pageable, @Param("name") String name);
 
     //TODO: Lọc theo tên màu sắc
     @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
@@ -298,7 +311,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND cl.trangThai = 1 " +
             "AND ms.trangThai = 1 " +
             "AND ms.tenMauSac = :name")
-    List<Object[]> filterColor(@Param("name") String name);
+    Page<Object[]> filterColor(Pageable pageable, @Param("name") String name);
 
     SanPhamChiTiet findByQrcode(String qrCode);
 

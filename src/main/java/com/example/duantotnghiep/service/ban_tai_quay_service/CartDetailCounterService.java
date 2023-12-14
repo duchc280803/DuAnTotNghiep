@@ -24,4 +24,6 @@ public interface CartDetailCounterService {
     String tongTienHang(UUID id);
 
     List<GioHangCustom> loadGHTien(UUID id);
+
+    BigDecimal tongTienSpHoaDon(UUID id);
 }
