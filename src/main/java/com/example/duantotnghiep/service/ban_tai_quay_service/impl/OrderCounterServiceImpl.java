@@ -233,7 +233,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         hoaDon.get().setTienShip(hoaDonGiaoThanhToanRequest.getTienGiao());
         hoaDon.get().setEmail(hoaDonGiaoThanhToanRequest.getEmail());
         hoaDon.get().setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
-        auditLogService.writeAuditLogHoadon(findByNhanVien.get().getMaTaiKhoan(), findByNhanVien.get().getEmail(), "Xác nhận thanh toán hóa đơn giao", hoaDon.get().getMa(),
+        auditLogService.writeAuditLogHoadon(findByNhanVien.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Xác nhận thanh toán hóa đơn giao", hoaDon.get().getMa(),
                 "Tên người nhận: " + hoaDonGiaoThanhToanRequest.getTenKhach(),
                 "SĐT: " + hoaDonGiaoThanhToanRequest.getSoDienThoai(),
                 "Địa chỉ: " + hoaDonGiaoThanhToanRequest.getDiaChi(), "Phí vận chuyển: " + FormatNumber.formatBigDecimal(hoaDonGiaoThanhToanRequest.getTienGiao()) + "đ - Tổng tiền: " + FormatNumber.formatBigDecimal(hoaDonGiaoThanhToanRequest.getTongTien()) + "đ");
