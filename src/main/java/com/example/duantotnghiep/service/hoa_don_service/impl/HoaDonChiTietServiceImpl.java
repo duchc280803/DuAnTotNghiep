@@ -11,6 +11,7 @@ import com.example.duantotnghiep.request.XacNhanThanhToanRequest;
 import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.hoa_don_service.HoaDonChiTietService;
+import com.example.duantotnghiep.util.FormatNumber;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -139,7 +140,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() + soLuong);
             hoaDonChiTiet.setDonGiaSauGiam(sanPhamChiTiet.getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId()))));
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
-            auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Thêm sản phẩm", findByHoaDon.get().getMa(),
+            auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(), findByHoaDon.get().getMa(), "Thêm sản phẩm", findByHoaDon.get().getMa(),
                     "Mã sản phẩm: " + hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getMaSanPham(),
                     "Tên sản phẩm: " + hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getTenSanPham(),
                     "Số lượng: " + soLuong, "");
@@ -152,7 +153,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             hoaDonChiTiet.setDonGia(sanPhamChiTiet.getSanPham().getGiaBan());
             hoaDonChiTiet.setDonGiaSauGiam(sanPhamChiTiet.getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId()))));
             hoaDonChiTiet.setTrangThai(1);
-            auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Thêm sản phẩm", findByHoaDon.get().getMa(),
+            auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(), findByHoaDon.get().getMa(), "Thêm sản phẩm", findByHoaDon.get().getMa(),
                     "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(),
                     "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
                     "Số lượng: " + soLuong + "", "");
@@ -206,13 +207,13 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                     Long giaTriGiam = v.getGiaTriGiam();
                     giaTriGiamPhanTram = giaTriGiam / 100.0;
                     maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
+                    selectedVoucher = v;
                 }
 
                 if (v.getHinhThucGiam() == 2) {
                     maxDiscount2 = v.getGiaTriGiam();
+                    selectedVoucher = v;
                 }
-
-                selectedVoucher = v;
             }
         }
         if (maxDiscount1 > maxDiscount2) {
@@ -223,6 +224,8 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         findByHoaDon.get().setVoucher(selectedVoucher);
         findByHoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
         hoaDonRepository.save(findByHoaDon.get());
+        auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(), findByHoaDon.get().getMa(), "Cập nhật voucher", findByHoaDon.get().getMa(), selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
+                selectedVoucher == null ? "" : "Giá trị giảm: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount)) + "đ", "", "");
         return MessageResponse.builder().message("Thêm thành công").build();
     }
 
@@ -282,13 +285,13 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                     Long giaTriGiam = v.getGiaTriGiam();
                     giaTriGiamPhanTram = giaTriGiam / 100.0;
                     maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
+                    selectedVoucher = v;
                 }
 
                 if (v.getHinhThucGiam() == 2) {
                     maxDiscount2 = v.getGiaTriGiam();
+                    selectedVoucher = v;
                 }
-
-                selectedVoucher = v;
             }
         }
         if (maxDiscount1 > maxDiscount2) {
@@ -299,10 +302,13 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
         hoaDonRepository.save(hoaDon.get());
-        auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Cập nhật số lượng", hoaDon.get().getMa(),
+        auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật số lượng", hoaDon.get().getMa(),
                 "Mã sản phẩm: " + hoaDonChiTietOptional.get().getSanPhamChiTiet().getSanPham().getMaSanPham(),
                 "Tên sản phẩm: " + hoaDonChiTietOptional.get().getSanPhamChiTiet().getSanPham().getTenSanPham(),
                 +soLuongMoi + "", "");
+        auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(), selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
+                selectedVoucher == null ? "" : "Giá trị giảm: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount)) + "đ", "", "");
+
 
     }
 
@@ -332,7 +338,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
 
-        auditLogService.writeAuditLogHoadon(username, taiKhoanUser.getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(), "Số tiền: " + transactionRequest.getSoTien(), "Thanh toán: " + (transactionRequest.getTrangThai() == 1 ? "Tiền mặt" : "Chuyển khoản"), "", "");
+        auditLogService.writeAuditLogHoadon(taiKhoanUser.getMaTaiKhoan(),  hoaDon.get().getMa(), "Xác nhận thanh toán", hoaDon.get().getMa(), "Số tiền: " + transactionRequest.getSoTien(), "Thanh toán: " + (transactionRequest.getTrangThai() == 1 ? "Tiền mặt" : "Chuyển khoản"), "", "");
 
         return MessageResponse.builder().message("Thanh toán thành công").build();
     }
@@ -469,12 +475,13 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hoaDon.setThanhTien(tongTienSauKhiDaTraHang.add(hoaDon.getTienShip()).subtract(hoaDon.getTienGiamGia()));
         loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
-        auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Trả hàng", hoaDon.getMa(), "Mã sản phẩm: " + sanPhamHoaDon.getMaSanPham(), "Tên sản phẩm: " + sanPhamHoaDon.getTenSanPham(), "Số lượng trả: " + traHangRequest.getSoLuong().toString(), "");
+        auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(),  hoaDon.getMa(), "Trả hàng", hoaDon.getMa(), "Mã sản phẩm: " + sanPhamHoaDon.getMaSanPham(), "Tên sản phẩm: " + sanPhamHoaDon.getTenSanPham(), "Số lượng trả: " + traHangRequest.getSoLuong().toString(), "");
         return MessageResponse.builder().message("Trả hàng thành công").build();
     }
 
     /**
      * Trả hàng
+     *
      * @param hoaDon
      * @param traHangRequest
      * @param hoaDonChiTiet
@@ -572,8 +579,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                             maxDiscount = v.getGiaTriGiam(); // Cập nhật maxDiscount nếu giá trị mới lớn hơn
                             selectedVoucher = v; // Lưu trữ voucher có giá trị giảm giá lớn nhất
                         }
-                    }
-                    else {
+                    } else {
                         hoaDon.setVoucher(null);
 //                        hoaDon.setThanhTien(new BigDecimal(0));
                         hoaDon.setTienGiamGia(BigDecimal.ZERO);
@@ -604,8 +610,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                         maxDiscount = v.getGiaTriGiam(); // Cập nhật maxDiscount nếu giá trị mới lớn hơn
                         selectedVoucher = v; // Lưu trữ voucher có giá trị giảm giá lớn nhất
                     }
-                }
-                else {
+                } else {
                     hoaDon.setVoucher(null);
 //                    hoaDon.setThanhTien(new BigDecimal(0));
                     hoaDon.setTienGiamGia(BigDecimal.ZERO);
@@ -650,7 +655,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findById(id).orElse(null);
         TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).orElse(null);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
-        auditLogService.writeAuditLogHoadon(username, taiKhoan.getEmail(), "Xóa sản phẩm", hoaDon.get().getMa(), "Mã sản phẩm: " + hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getMaSanPham(), "Tên sản phẩm: " + hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getTenSanPham(), "", "");
+        auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(), hoaDon.get().getMa(), "Xóa sản phẩm", hoaDon.get().getMa(), "Mã sản phẩm: " + hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getMaSanPham(), "Tên sản phẩm: " + hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getTenSanPham(), "", "");
         hoaDonChiTietRepository.deleteById(id);
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
@@ -701,13 +706,13 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                     Long giaTriGiam = v.getGiaTriGiam();
                     giaTriGiamPhanTram = giaTriGiam / 100.0;
                     maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
+                    selectedVoucher = v;
                 }
 
                 if (v.getHinhThucGiam() == 2) {
                     maxDiscount2 = v.getGiaTriGiam();
+                    selectedVoucher = v;
                 }
-
-                selectedVoucher = v;
             }
         }
         if (maxDiscount1 > maxDiscount2) {
@@ -719,6 +724,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
         hoaDonRepository.save(hoaDon.get());
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
+        auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(),  hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(), selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
+                selectedVoucher == null ? "" : "Giá trị giảm: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount)) + "đ", "", "");
+
     }
 
     @Override
