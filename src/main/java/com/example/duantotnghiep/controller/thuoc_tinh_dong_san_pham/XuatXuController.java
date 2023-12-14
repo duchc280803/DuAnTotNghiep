@@ -61,4 +61,9 @@ public class XuatXuController {
     public ResponseEntity<MessageResponse> deleteXuatXu(@RequestParam UUID id) {
         return new ResponseEntity<>(xuatXuService.delete(id), HttpStatus.OK);
     }
+
+    @GetMapping("check")
+    public ResponseEntity<List<XuatXu>> findByTenXuatXu(@RequestParam String name) {
+        return new ResponseEntity<>(xuatXuService.findByTenXuatXu(name), HttpStatus.OK);
+    }
 }
