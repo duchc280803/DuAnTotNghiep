@@ -26,15 +26,6 @@ public class HoaDonGiaoThanhToanRequest {
     @NotBlank(message = "Số điện thoại không được để trống")
     private String soDienThoai;
 
-    @NotBlank(message = "Tỉnh không được để trống")
-    private String tinh;
-
-    @NotBlank(message = "Huyện không được để trống")
-    private String huyen;
-
-    @NotBlank(message = "Phường không được để trống")
-    private String phuong;
-
     @NotBlank(message = "Địa chỉ không được để trống")
     private String diaChi;
 

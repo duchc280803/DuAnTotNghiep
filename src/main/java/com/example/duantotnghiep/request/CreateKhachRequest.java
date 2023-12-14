@@ -32,15 +32,6 @@ public class CreateKhachRequest {
     @NotBlank(message = "Không được để trống địa chỉ")
     private String diaChi;
 
-    @NotBlank(message = "Không được để trống tỉnh")
-    private String tinh;
-
-    @NotBlank(message = "Không được để trống huyện")
-    private String huyen;
-
-    @NotBlank(message = "Không được để trống phường")
-    private String phuong;
-
     @NotNull(message = "Không được để trống ngày sinh")
     private Date ngaySinh;
 }

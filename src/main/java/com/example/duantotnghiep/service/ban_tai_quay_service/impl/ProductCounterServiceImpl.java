@@ -204,6 +204,30 @@ public class ProductCounterServiceImpl implements ProductCounterService {
         return resultList;
     }
 
+    public List<ChiTietSanPhamCustom> filterCategoryId(Integer pageNumber, Integer pageSize, UUID id) {
+        List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = chiTietSanPhamRepository.filterCategoryId(pageable, id);
+        for (Object[] result : queryResult.getContent()) {
+            UUID idSp = (UUID) result[0];
+            UUID idCtsp = (UUID) result[1];
+            String imgage = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Integer soLuong = (Integer) result[5];
+            String mauSac = (String) result[6];
+            Integer size = (Integer) result[7];
+            String chatLieu = (String) result[8];
+            UUID idThuongHieu = (UUID) result[9];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
+                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
+            resultList.add(chiTietSanPhamCustom);
+        }
+        return resultList;
+    }
+
     @Override
     public List<ChiTietSanPhamCustom> filterSole(Integer pageNumber, Integer pageSize, String name) {
         List<ChiTietSanPhamCustom> resultList = new ArrayList<>();
