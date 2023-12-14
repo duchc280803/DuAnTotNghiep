@@ -291,9 +291,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(),  selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
                 selectedVoucher == null ? "" : "Giá trị giảm: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount)) + "đ", "", "");
         hoaDonRepository.save(hoaDon.get());
-        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), taiKhoan.get().getEmail(), selectedVoucher == null ? "Không có voucher" : selectedVoucher.getMaVoucher(), hoaDon.get().getMa(),
-                "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
-                "", "");
+
     }
 
     @Override
