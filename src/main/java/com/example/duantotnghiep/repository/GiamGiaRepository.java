@@ -2,14 +2,11 @@ package com.example.duantotnghiep.repository;
 
 import com.example.duantotnghiep.entity.GiamGia;
 import com.example.duantotnghiep.entity.Size;
+import com.example.duantotnghiep.response.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
-import com.example.duantotnghiep.response.GiamGiaDetailResponse;
-import com.example.duantotnghiep.response.GiamGiaResponse;
-import com.example.duantotnghiep.response.KhachHangResponse;
-import com.example.duantotnghiep.response.ProductDetailResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,6 +15,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -25,16 +23,21 @@ import java.util.UUID;
 
 @Repository
 public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
-
-        @Query("SELECT DISTINCT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id,  gg.maGiamGia,gg.tenGiamGia, gg.ngayBatDau, gg.ngayKetThuc, gg.hinhThucGiam, gg.trangThai, spgg.mucGiam) "
-                        +
-                        "FROM GiamGia gg " +
-                        "JOIN gg.spGiamGiaList spgg " +
-                        "JOIN spgg.sanPham sp " +
-                        "WHERE gg.trangThai = 1 " +
-                        "ORDER BY gg.ngayBatDau DESC ")
-        Page<GiamGiaResponse> listGiamGia(@Param("trangThai") Integer trangThai, @Param("size") Integer size, Pageable pageable);
-
+        @Query("SELECT DISTINCT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id, gg.maGiamGia, gg.tenGiamGia, gg.ngayBatDau, gg.ngayKetThuc, gg.hinhThucGiam, gg.trangThai, spgg.mucGiam) " +
+                "FROM GiamGia gg " +
+                "LEFT JOIN gg.spGiamGiaList spgg " +
+                "LEFT JOIN spgg.sanPham sp " +
+                "WHERE (:maGiamGia is null or gg.maGiamGia LIKE %:maGiamGia%) " +
+                "AND (:tenGiamGia is null or gg.tenGiamGia LIKE %:tenGiamGia%) " +
+                "AND (:trangThai is null or gg.trangThai = :trangThai) " +
+                "AND (:startDate is null or gg.ngayBatDau >= :startDate) " +
+                "ORDER BY gg.trangThai ASC , gg.ngayBatDau DESC")
+        Page<GiamGiaResponse> listGiamGia(
+                @Param("maGiamGia") String maGiamGia,
+                @Param("tenGiamGia") String tenGiamGia,
+                @Param("trangThai") Integer trangThai,
+                @Param("startDate") LocalDate startDate,
+                Pageable pageable);
 
         @Query("SELECT DISTINCT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id,gg.maGiamGia,gg.tenGiamGia, gg.ngayBatDau, gg.ngayKetThuc, gg.hinhThucGiam, gg.trangThai, spgg.mucGiam) "
                         +
@@ -81,8 +84,12 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
         @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan FROM SanPham sp JOIN sp.listImage i WHERE i.isDefault = TRUE AND sp.tenSanPham LIKE :key ")
         List<Object[]> ProductDetailResponse(@Param("key") String key);
 
-        @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan FROM SanPham sp JOIN sp.listImage i WHERE i.isDefault = TRUE")
-        Page<Object[]> listProductResponse(Pageable pageable);
+//        @Query("SELECT sp.id, i.tenImage as ten, sp.tenSanPham, sp.giaBan FROM SanPham sp JOIN sp.listImage i WHERE i.isDefault = TRUE AND (:tenSanPham is null or sp.tenSanPham LIKE %:tenSanPham%) ")
+
+        @Query("SELECT sp.id, i.tenImage as ten, sp.tenSanPham, sp.giaBan FROM SanPham sp JOIN sp.listImage i WHERE i.isDefault = TRUE AND (:tenSanPham is null or sp.tenSanPham LIKE %:tenSanPham%) ")
+        Page<Object[]> listProductResponse(
+                @Param("tenSanPham") String tenSanPham,
+                Pageable pageable);
 
         @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan FROM SanPham sp " +
                 "JOIN sp.listImage i " +
