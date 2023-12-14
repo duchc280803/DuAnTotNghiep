@@ -188,6 +188,30 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND dm.tenDanhMuc = :name")
     Page<Object[]> filterCategory(Pageable pageable, @Param("name") String name);
 
+    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
+            "FROM SanPham sp " +
+            "JOIN sp.listImage i " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "JOIN sp.listSanPhamChiTiet spct " +
+            "JOIN spct.size s " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.mauSac ms " +
+            "WHERE i.isDefault = TRUE " +
+            "AND kd.trangThai = 1 " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND dm.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "AND spct.trangThai = 1 " +
+            "AND s.trangThai = 1 " +
+            "AND cl.trangThai = 1 " +
+            "AND ms.trangThai = 1 " +
+            "AND dm.id = :id")
+    Page<Object[]> filterCategoryId(Pageable pageable, @Param("id") UUID id);
+
     //TODO: Lọc theo tên đế
     @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +

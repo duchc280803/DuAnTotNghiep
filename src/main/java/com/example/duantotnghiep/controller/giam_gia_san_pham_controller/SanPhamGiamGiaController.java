@@ -21,6 +21,9 @@ import java.util.UUID;
 public class SanPhamGiamGiaController {
 
     @Autowired
+    private ProductCounterServiceImpl chiTietSanPhamService;
+
+    @Autowired
     private SpGiamGiaRepository spGiamGiaRepository;
 
     @Autowired
@@ -109,4 +112,30 @@ public class SanPhamGiamGiaController {
         List<loadsanpham_not_login> result = spGiamGiaRepository.getAllSpGiamGiabyTien(key1, key2);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @GetMapping("filter-category")
+    public ResponseEntity<List<ChiTietSanPhamCustom>> filterCategory(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "12") Integer pageSize,
+            @RequestParam(name = "id") UUID id) {
+        return ResponseEntity.ok(chiTietSanPhamService.filterCategoryId(pageNumber, pageSize, id));
+    }
+
+    @GetMapping("filter-sole")
+    public ResponseEntity<List<ChiTietSanPhamCustom>> filterSole(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "12") Integer pageSize,
+            @RequestParam String name) {
+        return ResponseEntity.ok(chiTietSanPhamService.filterSole(pageNumber, pageSize, name));
+    }
+
+    @GetMapping("filter-origin")
+    public ResponseEntity<List<ChiTietSanPhamCustom>> filterOrigin(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "12") Integer pageSize,
+            @RequestParam String name) {
+        return ResponseEntity.ok(chiTietSanPhamService.filterOrigin(pageNumber, pageSize, name));
+    }
+
+
 }

@@ -73,6 +73,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/don-hang-khach-hang-chi-tiet/**").permitAll()
                         .requestMatchers("/api/v1/voucher-login/**").permitAll()
                         .requestMatchers("/api/v1/audilog/**").permitAll()
+                        .requestMatchers("/api/v1/thuoc-tinh/**").permitAll()
                         .requestMatchers("/api/v1/pdf/**").hasAnyAuthority(TypeAccountEnum.ADMIN.name(), TypeAccountEnum.STAFF.name())
                         .requestMatchers("/api/qrcode/**").hasAnyAuthority(TypeAccountEnum.ADMIN.name(), TypeAccountEnum.STAFF.name())
                         .requestMatchers("/api/thong-ke/**").hasAnyAuthority(TypeAccountEnum.ADMIN.name())
