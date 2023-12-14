@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -30,12 +31,14 @@ public class GiamGiaController {
 
     @GetMapping("hien-thi")
     public ResponseEntity<List<GiamGiaResponse>> getAllSize(
-            @RequestParam(name = "giamgia", required = false) Integer size,
             @RequestParam(name = "trangThai", required = false) Integer trangThai,
+            @RequestParam(name = "maGiamGia", required = false) String maGiamGia,
+            @RequestParam(name = "tenGiamGia", required = false) String tenGiamGia,
+            @RequestParam(name = "startDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
     ) {
-        return new ResponseEntity<>(Service.getAll(trangThai, size, pageNumber, pageSize), HttpStatus.OK);
+        return new ResponseEntity<>(Service.getAll(trangThai, maGiamGia, tenGiamGia, startDate, pageNumber, pageSize), HttpStatus.OK);
     }
 
 
@@ -63,10 +66,13 @@ public class GiamGiaController {
 
     @GetMapping("showproduct")
     public ResponseEntity<List<ProductDetailResponse>> getAllProduct(
+            @RequestParam(name = "tenSanPham", required = false) String tenGiamGia,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
-            @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-        return new ResponseEntity<>(Service.getAllProduct(pageNumber, pageSize), HttpStatus.OK);
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
+    ) {
+        return new ResponseEntity<>(Service.getAllProduct( tenGiamGia, pageNumber, pageSize), HttpStatus.OK);
     }
+
 
     @GetMapping("detail")
     public ResponseEntity<List<ProductDetailResponse>> search(@RequestParam(name = "id") UUID id) {
