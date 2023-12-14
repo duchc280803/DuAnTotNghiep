@@ -38,7 +38,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     private SpGiamGiaRepository spGiamGiaRepository;
 
     @Override
-    public List<GiamGiaResponse> getAll(Integer trangThai, String maGiamGia, String tenGiamGia, LocalDate startDate,
+    public List<GiamGiaResponse> getAll(Integer trangThai, String maGiamGia, String tenGiamGia, Date startDate,
             Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<GiamGiaResponse> pageList = Repository.listGiamGia(maGiamGia, tenGiamGia, trangThai, startDate, pageable);
