@@ -65,7 +65,7 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
         hinhThucThanhToan.setTrangThai(1);
         hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
-        auditLogService.writeAuditLogHoadon( nhanVien.get().getMaTaiKhoan(), nhanVien.get().getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(),  "Số tiền: " + FormatNumber.formatBigDecimal(transactionRequest.getSoTien()) + "đ", "Thanh toán: Tiền mặt" , "", "");
+        auditLogService.writeAuditLogHoadon( nhanVien.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Xác nhận thanh toán", hoaDon.get().getMa(),  "Số tiền: " + FormatNumber.formatBigDecimal(transactionRequest.getSoTien()) + "đ", "Thanh toán: Tiền mặt" , "", "");
 
         return MessageResponse.builder().message("Thanh toán thành công").build();
     }
@@ -98,7 +98,7 @@ public class TransactionCounterServiceImpl implements TransactionCounterService 
         hinhThucThanhToan.setTrangThai(2);
         hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
-        auditLogService.writeAuditLogHoadon( nhanVien.get().getMaTaiKhoan(), nhanVien.get().getEmail(), "Xác nhận thanh toán", hoaDon.get().getMa(),  "Số tiền: " + FormatNumber.formatBigDecimal(vnpAmount) + "đ", "Thanh toán: Chuyển khoản" , "", "");
+        auditLogService.writeAuditLogHoadon( nhanVien.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Xác nhận thanh toán", hoaDon.get().getMa(),  "Số tiền: " + FormatNumber.formatBigDecimal(vnpAmount) + "đ", "Thanh toán: Chuyển khoản" , "", "");
         return MessageResponse.builder().message("Thanh toán thành công").build();
     }
 
