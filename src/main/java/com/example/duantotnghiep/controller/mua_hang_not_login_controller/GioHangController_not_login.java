@@ -3,10 +3,12 @@ package com.example.duantotnghiep.controller.mua_hang_not_login_controller;
 import com.example.duantotnghiep.service.mua_hang_not_login_impl.GioHangServiceImpl_not_login;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.UUID;
 
 @RestController
@@ -25,5 +27,22 @@ public class GioHangController_not_login {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }
+    }
+
+    @PostMapping("/tao-gio-hang-login")
+    public ResponseEntity<UUID> taoGioHangLogin(Principal principal) {
+        try {
+            UUID gioHangId = gioHangService.taoGioHangLogin(principal);
+            return ResponseEntity.ok(gioHangId);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @GetMapping("/get-gio-hang-login")
+    public ResponseEntity<UUID> getGioHangLogin(Principal principal) {
+            UUID gioHangId = gioHangService.getGioHangLogin(principal);
+            return ResponseEntity.ok(gioHangId);
+
     }
 }
