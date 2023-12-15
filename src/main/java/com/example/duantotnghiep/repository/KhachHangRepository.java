@@ -17,19 +17,19 @@ import java.util.UUID;
 
 public interface KhachHangRepository extends JpaRepository<TaiKhoan, UUID> {
 
-    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.maTaiKhoan, tk.name, tk.email, tk.soDienThoai, dc.diaChi, dc.xa, dc.huyen, dc.tinh) " +
+    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.maTaiKhoan, tk.name, tk.email, tk.soDienThoai, dc.diaChi) " +
             "FROM TaiKhoan tk JOIN tk.diaChiList dc WHERE tk.loaiTaiKhoan.name = 'USER' AND dc.trangThai = 1 AND tk.trangThai = 1 ORDER BY tk.ngayTao DESC")
     Page<KhachHangResponse> findlistKhachHang(Pageable pageable);
 
-    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.maTaiKhoan, tk.name, tk.email, tk.soDienThoai, dc.diaChi, dc.xa, dc.huyen, dc.tinh) " +
+    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.maTaiKhoan, tk.name, tk.email, tk.soDienThoai, dc.diaChi) " +
             "FROM TaiKhoan tk JOIN tk.diaChiList dc WHERE tk.loaiTaiKhoan.name = 'USER' AND (tk.name like %:key% OR tk.soDienThoai like %:key% OR tk.email like %:key%) AND dc.trangThai = 1 AND tk.trangThai = 1")
     List<KhachHangResponse> findByKeyToKhachHang(@Param("key") String key);
 
-    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.maTaiKhoan, tk.name, tk.email, tk.soDienThoai, dc.diaChi, dc.xa, dc.huyen, dc.tinh) " +
+    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.maTaiKhoan, tk.name, tk.email, tk.soDienThoai, dc.diaChi) " +
             "FROM TaiKhoan tk JOIN tk.diaChiList dc JOIN tk.hoaDonKhachHangList hd WHERE hd.id = :id")
     KhachHangResponse findByKhachHangByIdHoaDon(@Param("id") UUID id);
 
-    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.maTaiKhoan, tk.name, tk.email, tk.soDienThoai, dc.diaChi, dc.xa, dc.huyen, dc.tinh) " +
+    @Query("SELECT new com.example.duantotnghiep.response.KhachHangResponse(tk.id, tk.maTaiKhoan, tk.name, tk.email, tk.soDienThoai, dc.diaChi) " +
             "FROM TaiKhoan tk JOIN tk.diaChiList dc WHERE tk.id = :id AND dc.trangThai = 1")
     KhachHangResponse detailKhachHang(@Param("id") UUID id);
 

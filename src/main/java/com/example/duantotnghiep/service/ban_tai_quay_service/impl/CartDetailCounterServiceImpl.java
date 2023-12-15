@@ -89,36 +89,20 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         for (GioHangChiTiet x : gioHang.getGioHangChiTietList()) {
             tongTien = tongTien.add(x.getDonGiaKhiGiam().multiply(new BigDecimal(x.getSoLuong())));
         }
-        Long maxDiscount = 0L;
-        Long maxDiscount1 = 0L;
-        Long maxDiscount2 = 0L;
+        Double maxDiscount = 0.0;
         Voucher selectedVoucher = null;
-        Double giaTriGiamPhanTram = 0.0;
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
             if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
-                if (v.getHinhThucGiam() == 1) {
-                    Long giaTriGiam = v.getGiaTriGiam();
-                    giaTriGiamPhanTram = giaTriGiam / 100.0;
-                    maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
-                    selectedVoucher = v;
-                }
-
-                if (v.getHinhThucGiam() == 2) {
-                    maxDiscount2 = v.getGiaTriGiam();
-                    selectedVoucher = v;
-                }
+                maxDiscount = v.getHinhThucGiam() == 1 ? (tongTien.longValue() * v.getGiaTriGiam()) / 100.0 : v.getGiaTriGiam();
+                selectedVoucher = v;
             }
         }
-        if (maxDiscount1 > maxDiscount2) {
-            maxDiscount = maxDiscount1;
-        } else {
-            maxDiscount = maxDiscount2;
-        }
+
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
         hoaDonRepository.save(hoaDon.get());
-        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(),  selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
+        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(), selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
                 selectedVoucher == null ? "" : "Giá trị giảm: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount)) + "đ", "", "");
         return MessageResponse.builder().message("Thêm thành công").build();
     }
@@ -163,36 +147,20 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         for (GioHangChiTiet x : gioHang.getGioHangChiTietList()) {
             tongTien = tongTien.add(x.getDonGiaKhiGiam().multiply(new BigDecimal(x.getSoLuong())));
         }
-        Long maxDiscount = 0L;
-        Long maxDiscount1 = 0L;
-        Long maxDiscount2 = 0L;
+        Double maxDiscount = 0.0;
         Voucher selectedVoucher = null;
-        Double giaTriGiamPhanTram = 0.0;
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
             if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
-                if (v.getHinhThucGiam() == 1) {
-                    Long giaTriGiam = v.getGiaTriGiam();
-                    giaTriGiamPhanTram = giaTriGiam / 100.0;
-                    maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
-                    selectedVoucher = v;
-                }
-
-                if (v.getHinhThucGiam() == 2) {
-                    maxDiscount2 = v.getGiaTriGiam();
-                    selectedVoucher = v;
-                }
+                maxDiscount = v.getHinhThucGiam() == 1 ? (tongTien.longValue() * v.getGiaTriGiam()) / 100.0 : v.getGiaTriGiam();
+                selectedVoucher = v;
             }
         }
-        if (maxDiscount1 > maxDiscount2) {
-            maxDiscount = maxDiscount1;
-        } else {
-            maxDiscount = maxDiscount2;
-        }
+
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
         hoaDonRepository.save(hoaDon.get());
-        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(),  selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
+        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(), selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
                 selectedVoucher == null ? "" : "Giá trị giảm: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount)) + "đ", "", "");
 
         return MessageResponse.builder().message("Thêm thành công").build();
@@ -260,35 +228,20 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         for (GioHangChiTiet x : gioHang.getGioHangChiTietList()) {
             tongTien = tongTien.add(x.getDonGiaKhiGiam().multiply(new BigDecimal(x.getSoLuong())));
         }
-        Long maxDiscount = 0L;
-        Long maxDiscount1 = 0L;
-        Long maxDiscount2 = 0L;
+        Double maxDiscount = 0.0;
         Voucher selectedVoucher = null;
-        Double giaTriGiamPhanTram = 0.0;
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
             if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
-                if (v.getHinhThucGiam() == 1) {
-                    Long giaTriGiam = v.getGiaTriGiam();
-                    giaTriGiamPhanTram = giaTriGiam / 100.0;
-                    maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
-                    selectedVoucher = v;
-                }
-
-                if (v.getHinhThucGiam() == 2) {
-                    maxDiscount2 = v.getGiaTriGiam();
-                    selectedVoucher = v;
-                }
+                maxDiscount = v.getHinhThucGiam() == 1 ? (tongTien.longValue() * v.getGiaTriGiam()) / 100.0 : v.getGiaTriGiam();
+                selectedVoucher = v;
             }
         }
-        if (maxDiscount1 > maxDiscount2) {
-            maxDiscount = maxDiscount1;
-        } else {
-            maxDiscount = maxDiscount2;
-        }
+
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
-        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(),  selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
+        hoaDonRepository.save(hoaDon.get());
+        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(), selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
                 selectedVoucher == null ? "" : "Giá trị giảm: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount)) + "đ", "", "");
         hoaDonRepository.save(hoaDon.get());
 
@@ -368,36 +321,20 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         for (GioHangChiTiet x : gioHang.getGioHangChiTietList()) {
             tongTien = tongTien.add(x.getDonGiaKhiGiam().multiply(new BigDecimal(x.getSoLuong())));
         }
-        Long maxDiscount = 0L;
-        Long maxDiscount1 = 0L;
-        Long maxDiscount2 = 0L;
+        Double maxDiscount = 0.0;
         Voucher selectedVoucher = null;
-        Double giaTriGiamPhanTram = 0.0;
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
             if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
-                if (v.getHinhThucGiam() == 1) {
-                    Long giaTriGiam = v.getGiaTriGiam();
-                    giaTriGiamPhanTram = giaTriGiam / 100.0;
-                    maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
-                    selectedVoucher = v;
-                }
-
-                if (v.getHinhThucGiam() == 2) {
-                    maxDiscount2 = v.getGiaTriGiam();
-                    selectedVoucher = v;
-                }
+                maxDiscount = v.getHinhThucGiam() == 1 ? (tongTien.longValue() * v.getGiaTriGiam()) / 100.0 : v.getGiaTriGiam();
+                selectedVoucher = v;
             }
         }
-        if (maxDiscount1 > maxDiscount2) {
-            maxDiscount = maxDiscount1;
-        } else {
-            maxDiscount = maxDiscount2;
-        }
+
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
         hoaDonRepository.save(hoaDon.get());
-        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(),  selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
+        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(), selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
                 selectedVoucher == null ? "" : "Giá trị giảm: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount)) + "đ", "", "");
     }
 }

@@ -117,9 +117,6 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
         DiaChi diaChi = new DiaChi();
         diaChi.setId(UUID.randomUUID());
         diaChi.setDiaChi(request.getDiaChi());
-        diaChi.setXa(request.getPhuong());
-        diaChi.setHuyen(request.getHuyen());
-        diaChi.setTinh(request.getTinh());
         diaChi.setTaiKhoan(taiKhoan);
         diaChi.setTrangThai(1);
         diaChiRepository.save(diaChi);
@@ -153,9 +150,6 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
 
             DiaChi diaChi = diaChiRepository.findByDiaChi(taiKhoan.getId());
             diaChi.setDiaChi(request.getDiaChi());
-            diaChi.setTinh(request.getTinh());
-            diaChi.setXa(request.getPhuong());
-            diaChi.setHuyen(request.getHuyen());
 
             diaChiRepository.save(diaChi);
             khachHangRepository.save(taiKhoan);
