@@ -5,10 +5,8 @@ import com.example.duantotnghiep.mapper.don_hang_khach_hang.ThongTinDonHangKhach
 import com.example.duantotnghiep.mapper.don_hang_khach_hang.ThongTinSanPhamKhachHangMap;
 import com.example.duantotnghiep.repository.don_hang_khach_hang_repo.DonHangKhachHangChiTietRepository;
 import com.example.duantotnghiep.repository.don_hang_khach_hang_repo.DonHangKhachHangRepository;
-import com.example.duantotnghiep.response.MoneyResponse;
-import com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse;
-import com.example.duantotnghiep.response.ThongTinDonHang;
-import com.example.duantotnghiep.response.TrangThaiHoaDonResponse;
+import com.example.duantotnghiep.response.*;
+import com.example.duantotnghiep.service.hoa_don_service.impl.HoaDonChiTietServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +19,10 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/don-hang-khach-hang-chi-tiet/")
 public class DonHangChiTietKhachHangController {
+
+
+    @Autowired
+    private HoaDonChiTietServiceImpl hoaDonChiTietService;
 
     @Autowired
     private DonHangKhachHangChiTietRepository donHangKhachHangChiTietRepository;
@@ -44,4 +46,14 @@ public class DonHangChiTietKhachHangController {
     public ResponseEntity<MoneyResponse> getAllMoneyByHoaDon(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
         return new ResponseEntity<>(donHangKhachHangChiTietRepository.getAllMoneyByHoaDon(idHoaDon), HttpStatus.OK);
     }
+
+//    @GetMapping("hien-thi-lich-su/{idHoaDon}")
+//    public ResponseEntity<List<HinhThucThanhToanResponse>> getLichSuThanhToan(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
+//        return new ResponseEntity<>(hoaDonChiTietService.getLichSuThanhToan(idHoaDon), HttpStatus.OK);
+//    }
+//
+//    @GetMapping("hien-thi-don/{idHoaDon}")
+//    public ResponseEntity<ThongTinDonHang> viewThongTinDonHang(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
+//        return new ResponseEntity<>(hoaDonChiTietService.getThongTinDonHang(idHoaDon), HttpStatus.OK);
+//    }
 }
