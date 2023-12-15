@@ -36,13 +36,13 @@ public class GioHangServiceImpl_not_login implements GioHangService_not_login {
         return gioHangMoi.getId();
     }
 
-    public UUID taoGioHangLogin(Principal principal) {
+    public UUID taoGioHangLogin(String name) {
         GioHang gioHang = new GioHang();
         gioHang.setId(UUID.randomUUID());
         gioHang.setNgayTao(new Date(System.currentTimeMillis()));
         gioHang.setTrangThai(1);
 
-        Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByUsername(principal.getName());
+        Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByUsername(name);
 
         gioHang.setTaiKhoan(taiKhoan.get());
         GioHang gioHangMoi = gioHangRepository.save(gioHang);
