@@ -1,9 +1,6 @@
 package com.example.duantotnghiep.request;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +15,7 @@ import java.util.Date;
 public class CreateKhachRequest {
 
     @NotBlank(message = "Không được để trống họ tên")
+    @Pattern(regexp = "^[A-Za-z\\p{L}\\s]+$", message = "Họ tên chỉ chứa chữ cái, dấu cách và các ký tự tiếng Việt")
     private String hoTen;
 
     @NotBlank(message = "Không được để trống số điện thoại")
@@ -33,5 +31,6 @@ public class CreateKhachRequest {
     private String diaChi;
 
     @NotNull(message = "Không được để trống ngày sinh")
+    @Past(message = "Ngày sinh phải trước ngày hiện tại")
     private Date ngaySinh;
 }

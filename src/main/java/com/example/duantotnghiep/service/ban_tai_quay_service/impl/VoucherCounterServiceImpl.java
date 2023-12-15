@@ -62,22 +62,17 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
         } else {
             HoaDon hoaDon = optionalHoaDon.get();
             Voucher voucher = optionalVoucher.get();
-
-            Double giaTriGiamPhanTram = 0.0;
-            Long maxDiscount1 = 0L;
+            Double maxDiscount = 0.0;
             if (voucher.getHinhThucGiam() == 1) {
-                Long giaTriGiam = voucher.getGiaTriGiam();
-                giaTriGiamPhanTram = giaTriGiam / 100.0;
-                maxDiscount1 = thanhTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
-                hoaDon.setTienGiamGia(new BigDecimal(maxDiscount1));
+                maxDiscount = voucher.getGiaTriGiam() / 100.0;
                 hoaDon.setVoucher(voucher);
-                auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), optionalHoaDon.get().getMa(), "Cập nhật voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount1)) + "đ", "", "");
-            } else if (voucher.getHinhThucGiam() == 2) {
-                hoaDon.setTienGiamGia(new BigDecimal(voucher.getGiaTriGiam()));
-                hoaDon.setVoucher(voucher);
-                auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), optionalHoaDon.get().getMa(), "Cập nhận voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + FormatNumber.formatBigDecimal(new BigDecimal(voucher.getGiaTriGiam())) + "đ", "", "");
+                hoaDon.setTienGiamGia(thanhTien.multiply(new BigDecimal(maxDiscount)));
             }
-
+            if (voucher.getHinhThucGiam() == 2) {
+                hoaDon.setVoucher(voucher);
+                hoaDon.setTienGiamGia(new BigDecimal(voucher.getGiaTriGiam()));
+            }
+            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), optionalHoaDon.get().getMa(), "Cập nhận voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + FormatNumber.formatBigDecimal(new BigDecimal(voucher.getGiaTriGiam())) + "đ", "", "");
             hoaDonRepository.save(hoaDon);
             return MessageResponse.builder().message("Cập nhật thành công").build();
         }
@@ -112,7 +107,7 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
         HoaDon hoaDon = hoaDonRepository.findById(idHoaDon).get();
         if (hoaDon.getVoucher() == null) {
             return LoadVoucherCounterResponse.builder().id(null).tienGiam(BigDecimal.ZERO).build();
-        }else {
+        } else {
             return LoadVoucherCounterResponse.builder().id(hoaDon.getVoucher().getId()).tienGiam(hoaDon.getTienGiamGia()).build();
         }
     }
