@@ -94,9 +94,6 @@ public class QLKhachHangImpl implements QLKhachHangService {
         DiaChi diaChi = new DiaChi();
         diaChi.setId(UUID.randomUUID());
         diaChi.setDiaChi(createQLKhachHangRequest.getDiaChi());
-        diaChi.setXa(createQLKhachHangRequest.getPhuong());
-        diaChi.setHuyen(createQLKhachHangRequest.getHuyen());
-        diaChi.setTinh(createQLKhachHangRequest.getTinh());
         diaChi.setTaiKhoan(taiKhoan);
         diaChi.setTrangThai(1);
         diaChiRepository.save(diaChi);
@@ -136,10 +133,6 @@ public class QLKhachHangImpl implements QLKhachHangService {
 
             DiaChi diaChi = diaChiRepository.findByDiaChi(taiKhoan.getId());
             diaChi.setDiaChi(createQLKhachHangRequest.getDiaChi());
-            diaChi.setTinh(createQLKhachHangRequest.getTinh());
-            diaChi.setXa(createQLKhachHangRequest.getPhuong());
-            diaChi.setHuyen(createQLKhachHangRequest.getHuyen());
-
             diaChiRepository.save(diaChi);
             khachHangRepository.save(taiKhoan);
             return MessageResponse.builder().message("Cập Nhật Thành Công").build();
