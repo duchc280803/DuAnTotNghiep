@@ -31,12 +31,9 @@ public class GioHangController_not_login {
 
     @PostMapping("/tao-gio-hang-login")
     public ResponseEntity<UUID> taoGioHangLogin(Principal principal) {
-        try {
-            UUID gioHangId = gioHangService.taoGioHangLogin(principal);
+
+            UUID gioHangId = gioHangService.taoGioHangLogin(principal.getName());
             return ResponseEntity.ok(gioHangId);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
     }
 
     @GetMapping("/get-gio-hang-login")
