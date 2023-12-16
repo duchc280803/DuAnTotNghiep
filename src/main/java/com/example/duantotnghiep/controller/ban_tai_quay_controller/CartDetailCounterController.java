@@ -113,4 +113,9 @@ public class CartDetailCounterController {
         return gioHangChiTietService.tongTienSpHoaDon(id);
     }
 
+    @GetMapping("so-luong-san-pham")
+    public Integer soLuong(@RequestParam(name = "id") UUID id) {
+        return gioHangChiTietService.soLuong(id);
+    }
+
 }
