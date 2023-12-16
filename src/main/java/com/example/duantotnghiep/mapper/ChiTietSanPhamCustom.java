@@ -33,4 +33,6 @@ public class ChiTietSanPhamCustom {
     private String chatLieu;
 
     private UUID idThuongHieu;
+
+
 }

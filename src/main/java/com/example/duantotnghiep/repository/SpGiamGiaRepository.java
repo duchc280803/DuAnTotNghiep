@@ -230,6 +230,117 @@ public interface SpGiamGiaRepository extends JpaRepository<SpGiamGia, UUID> {
                         ")", nativeQuery = true)
         List<loadsanpham_not_login> getAllSpGiamGiabyDanhMuc(@Param("id") UUID id);
 
+        @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, th.id " +
+                "FROM SanPham sp " +
+                "JOIN sp.listImage i " +
+                "JOIN sp.kieuDe kd " +
+                "JOIN sp.thuongHieu th " +
+                "JOIN sp.danhMuc dm " +
+                "JOIN sp.xuatXu xx " +
+                "WHERE i.isDefault = TRUE " +
+                "AND kd.trangThai = 1 " +
+                "AND sp.trangThai = 1 " +
+                "AND th.trangThai = 1 " +
+                "AND dm.trangThai = 1 " +
+                "AND xx.trangThai = 1 " +
+                "ORDER BY sp.ngayTao DESC")
+        Page<Object[]> getAllShop(Pageable pageable);
+
+        @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, th.id " +
+                "FROM SanPham sp " +
+                "JOIN sp.listImage i " +
+                "JOIN sp.kieuDe kd " +
+                "JOIN sp.thuongHieu th " +
+                "JOIN sp.danhMuc dm " +
+                "JOIN sp.xuatXu xx " +
+                "WHERE i.isDefault = TRUE " +
+                "AND kd.trangThai = 1 " +
+                "AND sp.trangThai = 1 " +
+                "AND th.trangThai = 1 " +
+                "AND dm.trangThai = 1 " +
+                "AND xx.trangThai = 1 AND sp.tenSanPham like %:name%" +
+                "ORDER BY sp.ngayTao DESC")
+        Page<Object[]> findByShopName(Pageable pageable,@Param("name") String name);
+
+        @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, th.id " +
+                "FROM SanPham sp " +
+                "JOIN sp.listImage i " +
+                "JOIN sp.kieuDe kd " +
+                "JOIN sp.thuongHieu th " +
+                "JOIN sp.danhMuc dm " +
+                "JOIN sp.xuatXu xx " +
+                "WHERE i.isDefault = TRUE " +
+                "AND kd.trangThai = 1 " +
+                "AND sp.trangThai = 1 " +
+                "AND th.trangThai = 1 " +
+                "AND dm.trangThai = 1 " +
+                "AND xx.trangThai = 1 AND sp.giaBan BETWEEN :key1 AND :key2 " +
+                "ORDER BY sp.ngayTao DESC")
+        Page<Object[]> findByGia(Pageable pageable,@Param("key1") BigDecimal key1,@Param("key2") BigDecimal key2);
+
+        @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, th.id " +
+                "FROM SanPham sp " +
+                "JOIN sp.listImage i " +
+                "JOIN sp.kieuDe kd " +
+                "JOIN sp.thuongHieu th " +
+                "JOIN sp.danhMuc dm " +
+                "JOIN sp.xuatXu xx " +
+                "WHERE i.isDefault = TRUE " +
+                "AND kd.trangThai = 1 " +
+                "AND sp.trangThai = 1 " +
+                "AND th.trangThai = 1 " +
+                "AND dm.trangThai = 1 " +
+                "AND xx.trangThai = 1 AND dm.id = :id " +
+                "ORDER BY sp.ngayTao DESC")
+        Page<Object[]> filterCategoryShop(Pageable pageable,@Param("id") UUID id);
+
+        @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, th.id " +
+                "FROM SanPham sp " +
+                "JOIN sp.listImage i " +
+                "JOIN sp.kieuDe kd " +
+                "JOIN sp.thuongHieu th " +
+                "JOIN sp.danhMuc dm " +
+                "JOIN sp.xuatXu xx " +
+                "WHERE i.isDefault = TRUE " +
+                "AND kd.trangThai = 1 " +
+                "AND sp.trangThai = 1 " +
+                "AND th.trangThai = 1 " +
+                "AND dm.trangThai = 1 " +
+                "AND xx.trangThai = 1 AND th.id = :id " +
+                "ORDER BY sp.ngayTao DESC")
+        Page<Object[]> filterBrandShop(Pageable pageable,@Param("id") UUID id);
+
+        @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, th.id " +
+                "FROM SanPham sp " +
+                "JOIN sp.listImage i " +
+                "JOIN sp.kieuDe kd " +
+                "JOIN sp.thuongHieu th " +
+                "JOIN sp.danhMuc dm " +
+                "JOIN sp.xuatXu xx " +
+                "WHERE i.isDefault = TRUE " +
+                "AND kd.trangThai = 1 " +
+                "AND sp.trangThai = 1 " +
+                "AND th.trangThai = 1 " +
+                "AND dm.trangThai = 1 " +
+                "AND xx.trangThai = 1 AND kd.id = :id " +
+                "ORDER BY sp.ngayTao DESC")
+        Page<Object[]> filterSoleShop(Pageable pageable,@Param("id") UUID id);
+
+        @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, th.id " +
+                "FROM SanPham sp " +
+                "JOIN sp.listImage i " +
+                "JOIN sp.kieuDe kd " +
+                "JOIN sp.thuongHieu th " +
+                "JOIN sp.danhMuc dm " +
+                "JOIN sp.xuatXu xx " +
+                "WHERE i.isDefault = TRUE " +
+                "AND kd.trangThai = 1 " +
+                "AND sp.trangThai = 1 " +
+                "AND th.trangThai = 1 " +
+                "AND dm.trangThai = 1 " +
+                "AND xx.trangThai = 1 AND xx.id = :id " +
+                "ORDER BY sp.ngayTao DESC")
+        Page<Object[]> filterXuatXuShop(Pageable pageable,@Param("id") UUID id);
 
         @Query(value = "SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam, spgg.mucGiam, sp.idThuongHieu "
                 +
