@@ -21,7 +21,7 @@ public class HoaDonGiaoThanhToanRequest {
     private UUID idHoaDon;
 
     @NotBlank(message = "Họ và tên không được để trống")
-    private String tenKhach;
+    private String hoTen;
 
     @NotBlank(message = "Số điện thoại không được để trống")
     private String soDienThoai;

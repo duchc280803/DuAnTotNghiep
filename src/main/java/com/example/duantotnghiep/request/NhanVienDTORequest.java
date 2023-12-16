@@ -26,12 +26,6 @@ public class NhanVienDTORequest {
 
     private Integer trangThai;
 
-    private String tinh;
-
-    private String huyen;
-
-    private String phuong;
-
     private String diaChi;
 
 }

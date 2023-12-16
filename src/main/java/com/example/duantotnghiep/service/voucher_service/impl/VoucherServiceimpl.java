@@ -75,7 +75,13 @@ public class VoucherServiceimpl implements VoucherService {
         voucher.setNgayBatDau(createVoucherRequest.getNgayBatDau());
         voucher.setNgayKetThuc(createVoucherRequest.getNgayKetThuc());
         voucher.setHinhThucGiam(createVoucherRequest.getHinhThucGiam());
-        voucher.setTrangThai(1);
+        Date currentDate = new Date();
+        voucher.setNgayTao(currentDate);
+        if (createVoucherRequest.getNgayBatDau().after(currentDate)) {
+            voucher.setTrangThai(3);
+        } else {
+            voucher.setTrangThai(1);
+        }
         Repository.save(voucher);
         auditLogService.writeAuditLogVoucher("Tạo Voucher", username, taiKhoanUser.getEmail(), null,
                 "Mã : " + createVoucherRequest.getMaVoucher() + "," + "Tên :" + createVoucherRequest.getTenVoucher()
@@ -102,6 +108,13 @@ public class VoucherServiceimpl implements VoucherService {
             voucher.setNgayBatDau(createVoucherRequest.getNgayBatDau());
             voucher.setNgayKetThuc(createVoucherRequest.getNgayKetThuc());
             voucher.setHinhThucGiam(createVoucherRequest.getHinhThucGiam());
+            Date currentDate = new Date();
+            voucher.setNgayCapNhap(currentDate);
+            if (createVoucherRequest.getNgayBatDau().after(currentDate)) {
+                voucher.setTrangThai(3);
+            } else {
+                voucher.setTrangThai(1);
+            }
             Repository.save(voucher);
             auditLogService.writeAuditLogVoucher("Cập Nhật Voucher", username, taiKhoanUser.getEmail(), null,
                     "Mã : " + createVoucherRequest.getMaVoucher() + "," + "Tên :" + createVoucherRequest.getTenVoucher()
