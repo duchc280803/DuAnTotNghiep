@@ -101,7 +101,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
     List<Object[]> getOne(@Param("name") String name);
 
     //TODO: Tìm kiếm sản phẩm theo tên
-    @Query("SELECT sp.id, spct.id,i.tenImage, sp.tenSanPham, sp.giaBan,spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
+    @Query("SELECT sp.id, spct.id, i.tenImage, sp.tenSanPham, sp.giaBan, spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +
             "JOIN sp.listImage i " +
             "JOIN sp.kieuDe kd " +
