@@ -89,13 +89,23 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         for (GioHangChiTiet x : gioHang.getGioHangChiTietList()) {
             tongTien = tongTien.add(x.getDonGiaKhiGiam().multiply(new BigDecimal(x.getSoLuong())));
         }
-        Double maxDiscount = 0.0;
         Voucher selectedVoucher = null;
+        double maxDiscount = 0.0;
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
-            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
-                maxDiscount = v.getHinhThucGiam() == 1 ? (tongTien.longValue() * v.getGiaTriGiam()) / 100.0 : v.getGiaTriGiam();
-                selectedVoucher = v;
+            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang()) {
+                double discount = 0.0;
+
+                if (v.getHinhThucGiam() == 1) {
+                    discount = (tongTien.longValue() * v.getGiaTriGiam()) / 100.0;
+                } else if (v.getHinhThucGiam() == 2) {
+                    discount = v.getGiaTriGiam(); // Giảm giá cố định
+                }
+
+                if (discount > maxDiscount) {
+                    maxDiscount = discount;
+                    selectedVoucher = v;
+                }
             }
         }
 
@@ -147,13 +157,23 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         for (GioHangChiTiet x : gioHang.getGioHangChiTietList()) {
             tongTien = tongTien.add(x.getDonGiaKhiGiam().multiply(new BigDecimal(x.getSoLuong())));
         }
-        Double maxDiscount = 0.0;
         Voucher selectedVoucher = null;
+        double maxDiscount = 0.0;
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
-            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
-                maxDiscount = v.getHinhThucGiam() == 1 ? (tongTien.longValue() * v.getGiaTriGiam()) / 100.0 : v.getGiaTriGiam();
-                selectedVoucher = v;
+            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang()) {
+                double discount = 0.0;
+
+                if (v.getHinhThucGiam() == 1) {
+                    discount = (tongTien.longValue() * v.getGiaTriGiam()) / 100.0;
+                } else if (v.getHinhThucGiam() == 2) {
+                    discount = v.getGiaTriGiam(); // Giảm giá cố định
+                }
+
+                if (discount > maxDiscount) {
+                    maxDiscount = discount;
+                    selectedVoucher = v;
+                }
             }
         }
 
@@ -191,18 +211,19 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         Page<Object[]> gioHangCustomPage = gioHangChiTietRepository.loadOnGioHang(id, pageable);
         for (Object[] result : gioHangCustomPage.getContent()) {
             UUID idGh = (UUID) result[0];
-            String imgage = (String) result[1];
-            String tenSanPham = (String) result[2];
-            BigDecimal giaBan = (BigDecimal) result[3];
-            BigDecimal giaGiam = (BigDecimal) result[4];
-            Integer soLuong = (Integer) result[5];
-            Integer size = (Integer) result[6];
-            String mauSac = (String) result[7];
-            String chatLieu = (String) result[8];
+            UUID idsp = (UUID) result[1];
+            String imgage = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            BigDecimal giaGiam = (BigDecimal) result[5];
+            Integer soLuong = (Integer) result[6];
+            Integer size = (Integer) result[7];
+            String mauSac = (String) result[8];
+            String chatLieu = (String) result[9];
             BigDecimal tongTien = giaGiam.multiply(new BigDecimal(soLuong));
 
             GioHangCustom chiTietSanPhamCustom = new GioHangCustom(
-                    idGh, imgage, tenSanPham, giaBan, giaGiam, soLuong, size, mauSac, chatLieu, tongTien);
+                    idGh, idsp, imgage, tenSanPham, giaBan, giaGiam, soLuong, size, mauSac, chatLieu, tongTien);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -228,16 +249,25 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         for (GioHangChiTiet x : gioHang.getGioHangChiTietList()) {
             tongTien = tongTien.add(x.getDonGiaKhiGiam().multiply(new BigDecimal(x.getSoLuong())));
         }
-        Double maxDiscount = 0.0;
         Voucher selectedVoucher = null;
+        double maxDiscount = 0.0;
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
-            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
-                maxDiscount = v.getHinhThucGiam() == 1 ? (tongTien.longValue() * v.getGiaTriGiam()) / 100.0 : v.getGiaTriGiam();
-                selectedVoucher = v;
+            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang()) {
+                double discount = 0.0;
+
+                if (v.getHinhThucGiam() == 1) {
+                    discount = (tongTien.longValue() * v.getGiaTriGiam()) / 100.0;
+                } else if (v.getHinhThucGiam() == 2) {
+                    discount = v.getGiaTriGiam(); // Giảm giá cố định
+                }
+
+                if (discount > maxDiscount) {
+                    maxDiscount = discount;
+                    selectedVoucher = v;
+                }
             }
         }
-
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
         hoaDonRepository.save(hoaDon.get());
@@ -297,6 +327,12 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         return tongTien;
     }
 
+    @Override
+    public Integer soLuong(UUID idSanPhamChiTiet) {
+        SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(idSanPhamChiTiet).get();
+        return sanPhamChiTiet.getSoLuong();
+    }
+
     public void capNhatSoLuong(UUID idgiohangchitiet, int soLuongMoi, String username) throws IOException, CsvValidationException {
 
         Optional<GioHangChiTiet> optionalGioHangChiTiet = gioHangChiTietRepository.findById(idgiohangchitiet);
@@ -309,6 +345,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
 
         if (optionalGioHangChiTiet.isPresent()) {
             optionalGioHangChiTiet.get().setSoLuong(soLuongMoi);
+            sanPhamChiTiet.get().setSoLuong(sanPhamChiTiet.get().getSoLuong() - 1);
             gioHangChiTietRepository.save(optionalGioHangChiTiet.get());
             auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật số lượng", hoaDon.get().getMa(),
                     "Mã sản phẩm: " + sanPhamChiTiet.get().getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.get().getSanPham().getTenSanPham(),
@@ -317,17 +354,28 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         } else {
             System.out.println("ID sản phẩm chi tiết không tồn tại");
         }
+        
         BigDecimal tongTien = BigDecimal.ZERO;
         for (GioHangChiTiet x : gioHang.getGioHangChiTietList()) {
             tongTien = tongTien.add(x.getDonGiaKhiGiam().multiply(new BigDecimal(x.getSoLuong())));
         }
-        Double maxDiscount = 0.0;
         Voucher selectedVoucher = null;
+        double maxDiscount = 0.0;
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
-            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
-                maxDiscount = v.getHinhThucGiam() == 1 ? (tongTien.longValue() * v.getGiaTriGiam()) / 100.0 : v.getGiaTriGiam();
-                selectedVoucher = v;
+            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang()) {
+                double discount = 0.0;
+
+                if (v.getHinhThucGiam() == 1) {
+                    discount = (tongTien.longValue() * v.getGiaTriGiam()) / 100.0;
+                } else if (v.getHinhThucGiam() == 2) {
+                    discount = v.getGiaTriGiam(); // Giảm giá cố định
+                }
+
+                if (discount > maxDiscount) {
+                    maxDiscount = discount;
+                    selectedVoucher = v;
+                }
             }
         }
 
