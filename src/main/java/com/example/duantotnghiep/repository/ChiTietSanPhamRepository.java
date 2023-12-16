@@ -54,6 +54,23 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND ms.trangThai = 1 ORDER BY sp.ngayTao DESC")
     Page<Object[]> getAll(Pageable pageable);
 
+    // TODO: Load sản phẩm ở quầy
+    @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan, th.id " +
+            "FROM SanPham sp " +
+            "JOIN sp.listImage i " +
+            "JOIN sp.kieuDe kd " +
+            "JOIN sp.thuongHieu th " +
+            "JOIN sp.danhMuc dm " +
+            "JOIN sp.xuatXu xx " +
+            "WHERE i.isDefault = TRUE " +
+            "AND kd.trangThai = 1 " +
+            "AND sp.trangThai = 1 " +
+            "AND th.trangThai = 1 " +
+            "AND dm.trangThai = 1 " +
+            "AND xx.trangThai = 1 " +
+            "ORDER BY sp.ngayTao DESC")
+    Page<Object[]> getAllShop(Pageable pageable);
+
     @Query("SELECT sp.id, spct.id, i.tenImage, sp.tenSanPham, sp.giaBan, spct.soLuong, ms.tenMauSac, s.size, cl.tenChatLieu, th.id " +
             "FROM SanPham sp " +
             "JOIN sp.listImage i " +
