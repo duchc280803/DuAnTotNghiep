@@ -2,6 +2,7 @@ package com.example.duantotnghiep.controller.giam_gia_san_pham_controller;
 
 import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
 import com.example.duantotnghiep.response.GiamGiaResponse;
+import com.example.duantotnghiep.response.ProductShopResponse;
 import com.example.duantotnghiep.response.SanPhamResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.impl.ProductCounterServiceImpl;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl.SanPhamServiceImpl;
@@ -30,11 +31,11 @@ public class HomeController {
     private ProductCounterServiceImpl chiTietSanPhamService;
 
     @GetMapping("home")
-    public ResponseEntity<List<ChiTietSanPhamCustom>> getAll(
+    public ResponseEntity<List<ProductShopResponse>> getAll(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "8") Integer pageSize
     ) {
-        return new ResponseEntity<>(chiTietSanPhamService.getAll(pageNumber, pageSize), HttpStatus.OK);
+        return new ResponseEntity<>(chiTietSanPhamService.getAllShop(pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("list")
