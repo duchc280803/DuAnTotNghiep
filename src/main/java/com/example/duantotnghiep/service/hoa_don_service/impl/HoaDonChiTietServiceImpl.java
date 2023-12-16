@@ -463,10 +463,8 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hinhThucThanhToan.setId(UUID.randomUUID());
         hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
         hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
-        System.out.println("Thứ 3 " + hoaDon.getThanhTien());
         hinhThucThanhToan.setTongSoTien(hoaDon.getThanhTien().subtract(tienSauKhiTra));
-        System.out.println("Thứ 4 " + hoaDon.getThanhTien());
-        hinhThucThanhToan.setGhiChu("");
+        hinhThucThanhToan.setGhiChu("Nhân viên hoàn tiền cho khách");
         hinhThucThanhToan.setPhuongThucThanhToan(1);
         hinhThucThanhToan.setCodeTransaction(VnPayConfigTaiQuay.getRandomNumber(8));
         hinhThucThanhToan.setHoaDon(hoaDon);
