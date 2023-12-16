@@ -354,7 +354,7 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         } else {
             System.out.println("ID sản phẩm chi tiết không tồn tại");
         }
-        
+
         BigDecimal tongTien = BigDecimal.ZERO;
         for (GioHangChiTiet x : gioHang.getGioHangChiTietList()) {
             tongTien = tongTien.add(x.getDonGiaKhiGiam().multiply(new BigDecimal(x.getSoLuong())));
