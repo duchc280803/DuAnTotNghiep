@@ -114,7 +114,8 @@ public class GiamGiaServiceimpl implements GiamGiaService {
             existingGiamGia.setNgayKetThuc(updateGiamGiaRequest.getNgayKetThuc());
             existingGiamGia.setHinhThucGiam(updateGiamGiaRequest.getHinhThucGiam());
             existingGiamGia.setTrangThai(updateGiamGiaRequest.getTrangThai());
-
+            Date currentDate = new Date();
+            existingGiamGia.setNgayCapNhap(currentDate);
             // Lưu cập nhật vào Repository
             Repository.save(existingGiamGia);
             // Xóa tất cả các liên kết giảm giá của sản phẩm với đối tượng giảm giá cũ
@@ -268,6 +269,8 @@ public class GiamGiaServiceimpl implements GiamGiaService {
         giamGia.setNgayBatDau(createKhachRequest.getNgayBatDau());
         giamGia.setNgayKetThuc(createKhachRequest.getNgayKetThuc());
         giamGia.setHinhThucGiam(createKhachRequest.getHinhThucGiam());
+        Date currentDate = new Date();
+        giamGia.setNgayTao(currentDate);
         giamGia.setTrangThai(1);
 
         for (UUID sanPhamId : createKhachRequest.getIdsanpham()) {
