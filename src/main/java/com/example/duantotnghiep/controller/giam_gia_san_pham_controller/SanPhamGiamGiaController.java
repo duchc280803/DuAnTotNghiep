@@ -5,6 +5,7 @@ import com.example.duantotnghiep.mapper.not_login.*;
 import com.example.duantotnghiep.repository.SpGiamGiaRepository;
 import com.example.duantotnghiep.response.GiamGiaResponse;
 
+import com.example.duantotnghiep.response.ProductShopResponse;
 import com.example.duantotnghiep.response.SanPhamResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.impl.ProductCounterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,10 @@ public class SanPhamGiamGiaController {
     private ProductCounterServiceImpl productCounterService;
 
     @GetMapping("show")
-    public ResponseEntity<List<ChiTietSanPhamCustom>> show(
+    public ResponseEntity<List<ProductShopResponse>> show(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize) {
-        return ResponseEntity.ok(productCounterService.getAll(pageNumber, pageSize));
+        return ResponseEntity.ok(productCounterService.getAllShop(pageNumber, pageSize));
     }
 
     @GetMapping("detailList")
@@ -41,10 +42,21 @@ public class SanPhamGiamGiaController {
         return new ResponseEntity<>(spGiamGiaRepository.getAllSpGiamGiabyDanhMuc(id), HttpStatus.OK);
     }
 
+    @GetMapping("searchMoneybykey")
+    public ResponseEntity<List<ProductShopResponse>> findByKhachHangB(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
+            @RequestParam(name = "key1") BigDecimal key1,
+            @RequestParam(name = "key2") BigDecimal key2) {
+        return ResponseEntity.ok(productCounterService.findByGia(pageNumber, pageSize, key1, key2));
+    }
+
     @GetMapping("searchString_bykey")
-    public ResponseEntity<List<loadsanpham_not_login>> findByKhachHangByIdHoaDon(@RequestParam(name = "key") String
-                                                                                         key) {
-        return new ResponseEntity<>(spGiamGiaRepository.getAllSpGiamGiabyKey(key), HttpStatus.OK);
+    public ResponseEntity<List<ProductShopResponse>> findByKhachHangByIdHoaDon(
+            @RequestParam(name = "key") String key,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize) {
+        return new ResponseEntity<>(productCounterService.findByShopName(pageNumber, pageSize, key), HttpStatus.OK);
     }
 
     @GetMapping("show-sp-lien-quan")
@@ -104,45 +116,36 @@ public class SanPhamGiamGiaController {
                 HttpStatus.OK);
     }
 
-    @GetMapping("searchMoneybykey")
-    public ResponseEntity<List<loadsanpham_not_login>> findByKhachHangB(
-            @RequestParam(name = "key1") BigDecimal key1,
-            @RequestParam(name = "key2") BigDecimal key2) {
-
-        List<loadsanpham_not_login> result = spGiamGiaRepository.getAllSpGiamGiabyTien(key1, key2);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
     @GetMapping("filter-category")
-    public ResponseEntity<List<ChiTietSanPhamCustom>> filterCategory(
+    public ResponseEntity<List<ProductShopResponse>> filterCategory(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "12") Integer pageSize,
             @RequestParam(name = "id") UUID id) {
-        return ResponseEntity.ok(chiTietSanPhamService.filterCategoryId(pageNumber, pageSize, id));
+        return ResponseEntity.ok(chiTietSanPhamService.filterCategoryShop(pageNumber, pageSize, id));
     }
 
     @GetMapping("filter-sole")
-    public ResponseEntity<List<ChiTietSanPhamCustom>> filterSole(
+    public ResponseEntity<List<ProductShopResponse>> filterSole(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "12") Integer pageSize,
             @RequestParam(name = "id") UUID id) {
-        return ResponseEntity.ok(chiTietSanPhamService.filterSoleId(pageNumber, pageSize, id));
+        return ResponseEntity.ok(chiTietSanPhamService.filterSoleShop(pageNumber, pageSize, id));
     }
 
     @GetMapping("filter-origin")
-    public ResponseEntity<List<ChiTietSanPhamCustom>> filterOrigin(
+    public ResponseEntity<List<ProductShopResponse>> filterOrigin(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "12") Integer pageSize,
             @RequestParam(name = "id") UUID id) {
-        return ResponseEntity.ok(chiTietSanPhamService.filterOriginId(pageNumber, pageSize, id));
+        return ResponseEntity.ok(chiTietSanPhamService.filterXuatXuShop(pageNumber, pageSize, id));
     }
 
     @GetMapping("filter-brand")
-    public ResponseEntity<List<ChiTietSanPhamCustom>> filterBrand(
+    public ResponseEntity<List<ProductShopResponse>> filterBrand(
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
             @RequestParam(name = "id") UUID id) {
-        return ResponseEntity.ok(chiTietSanPhamService.filterBrandId(pageNumber, pageSize, id));
+        return ResponseEntity.ok(chiTietSanPhamService.filterBrandShop(pageNumber, pageSize, id));
     }
 
 

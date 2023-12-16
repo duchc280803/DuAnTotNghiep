@@ -28,7 +28,6 @@ public class GiamGiaController {
     @Autowired
     private GiamGiaServiceimpl Service;
 
-
     @GetMapping("hien-thi")
     public ResponseEntity<List<GiamGiaResponse>> getAllSize(
             @RequestParam(name = "trangThai", required = false) Integer trangThai,
