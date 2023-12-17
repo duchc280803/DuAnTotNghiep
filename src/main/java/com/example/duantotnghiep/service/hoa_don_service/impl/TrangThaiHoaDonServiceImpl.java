@@ -130,14 +130,14 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             hoaDon.get().setEmail(request.getEmail());
             hoaDon.get().setNgayCapNhap(timestamp);
 
-            BigDecimal tongTien = BigDecimal.ZERO;
-            for (HoaDonChiTiet hdct : hoaDon.get().getHoaDonChiTietList()) {
-                BigDecimal donGiaSauGiam = hdct.getDonGiaSauGiam() != null ? hdct.getDonGiaSauGiam() : BigDecimal.ZERO;
-                Integer soLuong = hdct.getSoLuong() != null ? hdct.getSoLuong() : 0;
-                tongTien = tongTien.add(donGiaSauGiam.multiply(new BigDecimal(soLuong))).subtract(hoaDon.get().getTienGiamGia());
-            }
+//            BigDecimal tongTien = BigDecimal.ZERO;
+//            for (HoaDonChiTiet hdct : hoaDon.get().getHoaDonChiTietList()) {
+//                BigDecimal donGiaSauGiam = hdct.getDonGiaSauGiam() != null ? hdct.getDonGiaSauGiam() : BigDecimal.ZERO;
+//                Integer soLuong = hdct.getSoLuong() != null ? hdct.getSoLuong() : 0;
+//                tongTien = tongTien.add(donGiaSauGiam.multiply(new BigDecimal(soLuong))).subtract(hoaDon.get().getTienGiamGia());
+//            }
 
-            hoaDon.get().setThanhTien(tongTien.add(request.getTienShip()));
+            hoaDon.get().setThanhTien(hoaDon.get().getThanhTien().subtract(request.getTienShip()));
 
             hoaDonRepository.save(hoaDon.get());
 

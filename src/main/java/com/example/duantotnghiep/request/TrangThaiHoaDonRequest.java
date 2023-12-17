@@ -13,6 +13,7 @@ import lombok.Setter;
 @Getter
 public class TrangThaiHoaDonRequest {
 
+    @NotNull(message = "Vui lòng chọn trạng thái")
     private Integer newTrangThai;
 
     @NotBlank(message = "Không được để trống ghi chú")
