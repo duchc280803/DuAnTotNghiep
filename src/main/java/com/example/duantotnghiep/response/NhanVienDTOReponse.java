@@ -32,12 +32,6 @@ public class NhanVienDTOReponse {
 
     private String image;
 
-    private String tinh;
-
-    private String huyen;
-
-    private String phuong;
-
     private String diaChi;
 
 }

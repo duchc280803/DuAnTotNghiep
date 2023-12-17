@@ -49,6 +49,12 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
         return voucherCounterResponses.getContent();
     }
 
+    public List<VoucherCounterResponse> searchVoucher(Integer pageNumber, Integer pageSize, String key) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<VoucherCounterResponse> voucherCounterResponses = voucherRepository.searchVoucher(pageable, key);
+        return voucherCounterResponses.getContent();
+    }
+
     @Override
     public MessageResponse addVoucherOrder(UUID idHoaDon, UUID idVoucher, BigDecimal thanhTien, String username) throws IOException, CsvValidationException {
         Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByUsername(username);

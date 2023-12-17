@@ -46,13 +46,13 @@ public class DonHangChiTietKhachHangController {
         return new ResponseEntity<>(donHangKhachHangChiTietRepository.getAllMoneyByHoaDon(idHoaDon), HttpStatus.OK);
     }
 
-//    @GetMapping("hien-thi-lich-su/{idHoaDon}")
-//    public ResponseEntity<List<HinhThucThanhToanResponse>> getLichSuThanhToan(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
-//        return new ResponseEntity<>(hoaDonChiTietService.getLichSuThanhToan(idHoaDon), HttpStatus.OK);
-//    }
-//
-//    @GetMapping("hien-thi-don/{idHoaDon}")
-//    public ResponseEntity<ThongTinDonHang> viewThongTinDonHang(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
-//        return new ResponseEntity<>(hoaDonChiTietService.getThongTinDonHang(idHoaDon), HttpStatus.OK);
-//    }
+    @GetMapping("hien-thi-lich-su/{idHoaDon}")
+    public ResponseEntity<List<HinhThucThanhToanResponse>> getLichSuThanhToan(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
+        return new ResponseEntity<>(hoaDonChiTietService.getLichSuThanhToan(idHoaDon), HttpStatus.OK);
+    }
+
+    @GetMapping("hien-thi-don-hang/{idHoaDon}")
+    public ResponseEntity<ThongTinDonHang> viewThongTinDonHang(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
+        return new ResponseEntity<>(hoaDonChiTietService.getThongTinDonHang(idHoaDon), HttpStatus.OK);
+    }
 }
