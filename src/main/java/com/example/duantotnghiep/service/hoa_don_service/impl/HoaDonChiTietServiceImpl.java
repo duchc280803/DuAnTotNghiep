@@ -438,7 +438,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         // Save lại voucher
         applyVoucherAndPayment(hoaDon, voucher, tongTienSauKhiDaTraHang);
 
-        BigDecimal tienSauKhiTra = tongTienSauKhiDaTraHang.add(hoaDon.getTienShip()).subtract(hoaDon.getTienGiamGia());
+        BigDecimal tienSauKhiTra = tongTienSauKhiDaTraHang.subtract(hoaDon.getTienGiamGia());
         // Hoàn tiền
         LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
         loaiHinhThucThanhToan.setId(UUID.randomUUID());
@@ -456,7 +456,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hinhThucThanhToan.setTrangThai(1);
         hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
 
-        Long thanhTien = (tongTienSauKhiDaTraHang.longValue() - hoaDon.getTienGiamGia().longValue()) + hoaDon.getTienShip().longValue();
+        Long thanhTien = (tongTienSauKhiDaTraHang.longValue() - hoaDon.getTienGiamGia().longValue());
         hoaDon.setThanhTien(new BigDecimal(thanhTien));
         loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);

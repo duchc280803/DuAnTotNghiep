@@ -26,7 +26,7 @@ public class HoaDonChiTietController {
     @Autowired
     private HoaDonChiTietServiceImpl hoaDonChiTietService;
 
-    @Autowired
+     @Autowired
     private TrangThaiHoaDonServiceImpl trangThaiHoaDonService;
 
     @GetMapping("hien-thi-don/{idHoaDon}")
