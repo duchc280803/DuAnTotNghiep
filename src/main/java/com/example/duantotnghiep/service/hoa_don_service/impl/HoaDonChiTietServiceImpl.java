@@ -331,7 +331,8 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public MessageResponse comfirmStatusHuyDon(UUID idHoaDon, TrangThaiHoaDonRequest request) {
+    public MessageResponse comfirmStatusHuyDon(UUID idHoaDon, TrangThaiHoaDonRequest request, String username) {
+        TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).get();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         HoaDon hoaDon = hoaDonRepository.findById(idHoaDon).get();
         hoaDon.setNgayCapNhap(timestamp);
@@ -343,7 +344,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setTrangThai(request.getNewTrangThai());
         trangThaiHoaDon.setThoiGian(timestamp);
         trangThaiHoaDon.setHoaDon(hoaDon);
-        trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
+        trangThaiHoaDon.setUsername(taiKhoan.getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu(request.getGhiChu());
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
 

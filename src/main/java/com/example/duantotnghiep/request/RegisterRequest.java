@@ -21,6 +21,7 @@ public class RegisterRequest {
     @NotBlank(message = "Vui lòng điền password")
     private String password;
 
+    @NotBlank(message = "Vui lòng điền email")
     @Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$", message = "Địa chỉ email không hợp lệ")
     private String email;
 
