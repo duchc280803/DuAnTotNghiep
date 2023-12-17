@@ -18,7 +18,7 @@ public interface VoucherService {
 
     MessageResponse updateVoucherstaus(UUID id);
     MessageResponse createVoucher(VoucherRequest createVoucherRequest, String username)
-            throws IOException, CsvValidationException;;
+            throws IOException, CsvValidationException;
 
     MessageResponse updateVoucher(UUID id, VoucherRequest createVoucherRequest, String username)
             throws IOException, CsvValidationException;
