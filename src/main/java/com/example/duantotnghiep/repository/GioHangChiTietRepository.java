@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,6 +42,19 @@ public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, 
             "JOIN gh.taiKhoan tk " +
             "WHERE i.isDefault = true AND gh.trangThai = 1 AND tk.id = :id")
     List<Object[]> loadOnGioHangTien(@Param("id") UUID id);
+
+    @Query("SELECT ghct.donGiaKhiGiam, ghct.soLuong " +
+            "FROM SanPhamChiTiet spct " +
+            "JOIN spct.sanPham sp " +
+            "JOIN sp.listImage i " +
+            "JOIN spct.size s " +
+            "JOIN spct.mauSac ms " +
+            "JOIN spct.chatLieu cl " +
+            "JOIN spct.gioHangChiTietList ghct " +
+            "JOIN ghct.gioHang gh " +
+            "JOIN gh.taiKhoan tk " +
+            "WHERE i.isDefault = true AND gh.trangThai = 1 AND tk.id = :id")
+    List<Object[]> tienThieu(@Param("id") UUID id);
 
     @Query("SELECT ghct.donGiaKhiGiam, ghct.soLuong " +
             "FROM SanPhamChiTiet spct " +

@@ -113,6 +113,11 @@ public class CartDetailCounterController {
         return gioHangChiTietService.tongTienSpHoaDon(id);
     }
 
+    @GetMapping("tien-thieu")
+    public BigDecimal tienThieu(@RequestParam(name = "id") UUID id, @RequestParam(name = "idKhach") UUID idKhach) {
+        return gioHangChiTietService.tienThieu(id, idKhach);
+    }
+
     @GetMapping("so-luong-san-pham")
     public Integer soLuong(@RequestParam(name = "id") UUID id) {
         return gioHangChiTietService.soLuong(id);
