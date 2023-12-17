@@ -330,6 +330,18 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         return tongTien;
     }
 
+    public BigDecimal tienThieu(UUID id, UUID idKhach) {
+        HoaDon hoaDon = hoaDonRepository.findById(id).get();
+        BigDecimal tongTien = BigDecimal.ZERO;
+        List<Object[]> gioHangCustomPage = gioHangChiTietRepository.tongTien(idKhach);
+        for (Object[] result : gioHangCustomPage) {
+            BigDecimal giaGiam = (BigDecimal) result[0];
+            Integer soLuong = (Integer) result[1];
+            tongTien = tongTien.add(giaGiam.multiply(new BigDecimal(soLuong)));
+        }
+        return tongTien.subtract(hoaDon.getTienGiamGia()).add(hoaDon.getTienShip() == null ? BigDecimal.ZERO : hoaDon.getTienShip());
+    }
+
     @Override
     public Integer soLuong(UUID idSanPhamChiTiet) {
         SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(idSanPhamChiTiet).get();
