@@ -55,8 +55,6 @@ public interface HoaDonChiTietService {
 
     MessageResponse rollBackOrder(UUID idHoaDon, TrangThaiHoaDonRequest request);
 
-    void savePaymentDetails(HoaDon hoaDon, BigDecimal tongTienSauTra);
-
     void applyVoucherAndPayment(HoaDon hoaDon, Voucher voucher, BigDecimal ktVoucher);
 
     void prepareOrderDetails(HoaDon hoaDon, TraHangRequest traHangRequest, HoaDonChiTiet hoaDonChiTiet, SanPhamChiTiet sanPhamChiTiet, int count);

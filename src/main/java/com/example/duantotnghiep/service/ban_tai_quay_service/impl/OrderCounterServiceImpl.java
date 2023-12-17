@@ -81,6 +81,8 @@ public class OrderCounterServiceImpl implements OrderCounterService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private VoucherRepository voucherRepository;
 
     @Override
     @Transactional
@@ -174,6 +176,11 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         hoaDon.get().setSdtNguoiNhan(hoaDonThanhToanRequest.getSoDienThoai());
         hoaDon.get().setDiaChi(hoaDonThanhToanRequest.getDiaChi());
         hoaDon.get().setTrangThai(5);
+        Voucher voucher = voucherRepository.findById(hoaDon.get().getVoucher().getId()).get();
+        if (voucher != null) {
+            voucher.setSoLuongDung(voucher.getSoLuongDung() + 1);
+            voucherRepository.save(voucher);
+        }
         hoaDonRepository.save(hoaDon.get());
 
         auditLogService.writeAuditLogHoadon(findByNhanVien.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Xác nhận thanh toán hóa đơn tại quầy", hoaDon.get().getMa(),
@@ -237,6 +244,11 @@ public class OrderCounterServiceImpl implements OrderCounterService {
                 "Tên người nhận: " + hoaDonGiaoThanhToanRequest.getHoTen(),
                 "SĐT: " + hoaDonGiaoThanhToanRequest.getSoDienThoai(),
                 "Địa chỉ: " + hoaDonGiaoThanhToanRequest.getDiaChi(), "Phí vận chuyển: " + FormatNumber.formatBigDecimal(hoaDonGiaoThanhToanRequest.getTienGiao()) + "đ - Tổng tiền: " + FormatNumber.formatBigDecimal(hoaDonGiaoThanhToanRequest.getTongTien()) + "đ");
+        Voucher voucher = voucherRepository.findById(hoaDon.get().getVoucher().getId()).get();
+        if (voucher != null) {
+            voucher.setSoLuongDung(voucher.getSoLuongDung() + 1);
+            voucherRepository.save(voucher);
+        }
         hoaDonRepository.save(hoaDon.get());
 
         for (UUID idGioHangChiTiet : hoaDonGiaoThanhToanRequest.getGioHangChiTietList()) {
