@@ -15,6 +15,11 @@ public class SendEmailOrder {
     public static void sendEmailOrder(HoaDon hoaDon, JavaMailSender javaMailSender) {
         String productList = ""; // Chuỗi để lưu thông tin về sản phẩm
 
+        String trangThai = hoaDon.getTrangThai() == 1 ? "Chờ Xác Nhận" :
+                           hoaDon.getTrangThai() == 2 ? "Xác nhận" :
+                           hoaDon.getTrangThai() == 3 ? "Chờ giao hàng" :
+                           hoaDon.getTrangThai() == 4 ? "Đang giao hàng" : "Thành công";
+
         List<HoaDonChiTiet> danhSachSanPham = hoaDon.getHoaDonChiTietList();// Giả sử danhSachSanPham lưu danh sách sản phẩm
         int stt = 1; // Biến để đánh số thứ tự
 
@@ -59,7 +64,7 @@ public class SendEmailOrder {
                     "                <h6 style=\"color: black; font-size: 13px;\">Số điện thoại: " + hoaDon.getSdtNguoiNhan() + "</h6>\n" +
                     "            </td>\n" +
                     "            <td style=\"border: 1px solid #ddd; padding: 8px; text-align: left;\">\n" +
-                    "                <h6 style=\"color: black; font-size: 13px;\">Tình trạng: " + hoaDon.getTrangThai() + "</h6>\n" +
+                    "                <h6 style=\"color: black; font-size: 13px;\">Tình trạng: " + trangThai + "</h6>\n" +
                     "            </td>\n" +
                     "        </tr>\n" +
                     "    </table>\n" +
