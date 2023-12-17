@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/giam-gia/")
@@ -40,7 +38,15 @@ public class GiamGiaController {
         return new ResponseEntity<>(Service.getAll(trangThai, maGiamGia, tenGiamGia, startDate, pageNumber, pageSize), HttpStatus.OK);
     }
 
+    @GetMapping("/check-ten-giam-gia")
+    public ResponseEntity<?> checkTenGiamGial(@RequestParam String tenGiamGia) {
+        boolean isExisted = Service.isTenGiamGiaExisted(tenGiamGia);
+        Map<String, Object> response = new HashMap<>();
+        response.put("tenGiamGia", tenGiamGia);
+        response.put("existed", isExisted);
 
+        return ResponseEntity.ok(response);
+    }
     @PutMapping("update/{id}")
     public ResponseEntity<MessageResponse> updateGiamGia(@PathVariable UUID id,
             @RequestBody UpdateGiamGiaResquest updateGiamGiaRequest, Principal principal)
