@@ -126,7 +126,7 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
                         @Param("ngayKetThuc") Date ngayKetThuc,
                         @Param("hinhThucGiam") Integer hinhThucGiam,
                         @Param("trangThai") Integer trangThai);
-
+        boolean existsByTenGiamGia(String tenGiamGia);
         // @Query("SELECT new com.example.duantotnghiep.response.GiamGiaResponse(gg.id,
         // gg.maGiamGia,gg.tenGiamGia, gg.ngayBatDau, gg.ngayKetThuc, gg.hinhThucGiam,
         // gg.trangThai, spgg.mucGiam, sp.tenSanPham, sp.giaBan, spgg.donGiaKhiGiam) " +
