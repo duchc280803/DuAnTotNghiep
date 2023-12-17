@@ -51,7 +51,7 @@ public interface HoaDonChiTietService {
 
     MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest, String username) throws CsvValidationException, IOException;
 
-    MessageResponse comfirmStatusHuyDon(UUID idHoaDon, TrangThaiHoaDonRequest request, String username);
+    MessageResponse comfirmStatusHuyDon(UUID idHoaDon, TrangThaiHoaDonRequest request, String username) throws IOException, CsvValidationException;
 
     MessageResponse rollBackOrder(UUID idHoaDon, TrangThaiHoaDonRequest request);
 
