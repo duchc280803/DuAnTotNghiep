@@ -88,10 +88,10 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
             // Bổ sung tính toán giảm giá
             BigDecimal giaGiamCuoiCung = new BigDecimal(getGiaGiamCuoiCung(id));
-            BigDecimal giaBanSauGiamGia = giaBan.subtract(giaGiamCuoiCung);
+//            BigDecimal giaBanSauGiamGia = giaBan.subtract(giaGiamCuoiCung);
 
             ProductDetailResponse productDetailResponse = new ProductDetailResponse(
-                    id, image, tenSanPham, giaBanSauGiamGia, countQuantity(id), giaGiamCuoiCung);
+                    id, image, tenSanPham, giaBan , countQuantity(id), giaGiamCuoiCung);
 
             resultList.add(productDetailResponse);
         }
@@ -386,8 +386,12 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
     @Override
     public boolean isTenGiamGiaExists(String tenGiamGia) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isTenGiamGiaExists'");
+        return Repository.existsByGiamGia_TenGiamGia(tenGiamGia);
+    }
+
+    @Override
+    public boolean isTenGiamGiaExisted(String tenGiamGia) {
+        return Repository.existsByTenGiamGia(tenGiamGia);
     }
 
 }

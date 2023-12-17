@@ -37,7 +37,7 @@ public interface GiamGiaService {
                         throws IOException, CsvValidationException;
 
         boolean isTenGiamGiaExists(String tenGiamGia);
-
+     boolean isTenGiamGiaExisted(String tenGiamGia) ;
         boolean checkProductRecordCount(UUID productId);
 
         MessageResponse updateGiamGia(UUID id, UpdateGiamGiaResquest updateGiamGiaRequest, String username)
