@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -176,13 +177,24 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     @Transactional
     public MessageResponse updateGiamGiaStaus(UUID id) {
         GiamGia existingGiamGia = Repository.findById(id).orElse(null);
-
         if (existingGiamGia != null) {
-            existingGiamGia.setTrangThai(2);
-            return MessageResponse.builder().message("Cập nhật Thành Công").build();
+            if (existingGiamGia.getTrangThai() == 2) {
+                // TrangThai = 2: Đang kích hoạt, cập nhật thành TrangThai = 1 và setNgayKetthuc
+                // = ngày hôm nay
+                existingGiamGia.setTrangThai(1);
+                Date currentDate = new Date();
+                if (existingGiamGia.getNgayKetThuc() != null && existingGiamGia.getNgayKetThuc().before(currentDate)) {
+                    existingGiamGia.setNgayKetThuc(currentDate);
+                }
+                return MessageResponse.builder().message("Cập nhật Thành Công").build();
+            } else {
+                existingGiamGia.setTrangThai(2);
+                // TrangThai không phải là 2, có thể xử lý thêm theo nhu cầu của bạn
+                return MessageResponse.builder().message("Trạng thái không hợp lệ hoặc đã được cập nhật trước đó")
+                        .build();
+            }
         } else {
-            // Handle the case where the discount is not found
-            return MessageResponse.builder().message("Không tìm thấy giảm giá").build();
+            return MessageResponse.builder().message("Không tìm thấy khuyến mãi").build();
         }
     }
 
