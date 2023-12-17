@@ -7,12 +7,15 @@ import com.example.duantotnghiep.enums.TypeAccountEnum;
 import com.example.duantotnghiep.repository.DiaChiRepository;
 import com.example.duantotnghiep.repository.KhachHangRepository;
 import com.example.duantotnghiep.repository.LoaiTaiKhoanRepository;
+import com.example.duantotnghiep.repository.TaiKhoanRepository;
 import com.example.duantotnghiep.request.CreateQLKhachHangRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.QLKhachHangResponse;
+import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.quan_ly_nhan_vien_khach_hang.QLKhachHangService;
 import com.example.duantotnghiep.util.RemoveDiacritics;
 import com.example.duantotnghiep.util.SendConfirmationEmail;
+import com.opencsv.exceptions.CsvValidationException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +56,11 @@ public class QLKhachHangImpl implements QLKhachHangService {
 
     @Autowired
     private DiaChiRepository diaChiRepository;
+    @Autowired
+    private AuditLogService auditLogService;
+    @Autowired
+    private TaiKhoanRepository taiKhoanRepository;
+
 
     @Override
     public List<QLKhachHangResponse> getQLKhachHang(Integer trangThai, String name, String soDienThoai, String maTaiKhoan, Integer pageNumber, Integer pageSize) {
@@ -62,7 +70,8 @@ public class QLKhachHangImpl implements QLKhachHangService {
     }
 
     @Override
-    public MessageResponse createKhachHang(MultipartFile file, CreateQLKhachHangRequest createQLKhachHangRequest, boolean sendEmail) {
+    public MessageResponse createKhachHang(MultipartFile file, CreateQLKhachHangRequest createQLKhachHangRequest, boolean sendEmail,String username) throws IOException, CsvValidationException {
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
         List<TaiKhoan> taiKhoans = khachHangRepository.listKhachHang();
         try {
@@ -101,6 +110,8 @@ public class QLKhachHangImpl implements QLKhachHangService {
             SendConfirmationEmail.sendConfirmationEmailStatic(taiKhoan.getEmail(), taiKhoan.getUsername(), converted, javaMailSender);
             System.out.println("gửi mail");
         }
+        auditLogService.writeAuditLogKhachhang("Tạo Khách hàng", username, taiKhoanUser.getEmail(), null,"Họ tên:" +createQLKhachHangRequest.getTen()+","+"Ngày sinh:"+createQLKhachHangRequest.getNgaySinh()+","+"Giới tính:" +createQLKhachHangRequest.getGioiTinh()+","+createQLKhachHangRequest.getSoDienThoai()+"," + "email:"+createQLKhachHangRequest.getEmail()+","+"Địa chỉ :" +createQLKhachHangRequest.getDiaChi() +","+"Trạng thái :" +createQLKhachHangRequest.getTrangThai()  ,null,null,null);
+
         return MessageResponse.builder().message("Thêm Thành Công").build();
     }
 
@@ -111,8 +122,9 @@ public class QLKhachHangImpl implements QLKhachHangService {
     }
 
     @Override
-    public MessageResponse updateKhachHang(MultipartFile file, UUID khachHangId, CreateQLKhachHangRequest createQLKhachHangRequest) {
+    public MessageResponse updateKhachHang(MultipartFile file, UUID khachHangId, CreateQLKhachHangRequest createQLKhachHangRequest,String username) throws IOException, CsvValidationException {
         String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         Optional<TaiKhoan> optionalTaiKhoan = khachHangRepository.findById(khachHangId);
         try {
             Files.copy(file.getInputStream(), Paths.get("D:\\FE_DuAnTotNghiep\\assets\\ảnh giày", fileName), StandardCopyOption.REPLACE_EXISTING);
@@ -135,6 +147,8 @@ public class QLKhachHangImpl implements QLKhachHangService {
             diaChi.setDiaChi(createQLKhachHangRequest.getDiaChi());
             diaChiRepository.save(diaChi);
             khachHangRepository.save(taiKhoan);
+            auditLogService.writeAuditLogKhachhang("Cập nhật khách hàng", username, taiKhoanUser.getEmail(), null,"Họ tên:" +createQLKhachHangRequest.getTen()+","+"Ngày sinh:"+createQLKhachHangRequest.getNgaySinh()+","+"Giới tính:" +createQLKhachHangRequest.getGioiTinh()+","+createQLKhachHangRequest.getSoDienThoai()+"," + "email:"+createQLKhachHangRequest.getEmail()+","+"Địa chỉ :" +createQLKhachHangRequest.getDiaChi() +","+"Trạng thái :" +createQLKhachHangRequest.getTrangThai()  ,null,null,null);
+
             return MessageResponse.builder().message("Cập Nhật Thành Công").build();
         } else {
             return MessageResponse.builder().message("Không Tìm Thấy Khách Hàng").build();

@@ -14,8 +14,10 @@ import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.NhanVienDTOReponse;
 import com.example.duantotnghiep.response.NhanVienOrderResponse;
 import com.example.duantotnghiep.service.account_service.NhanVienCustomService;
+import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.util.RemoveDiacritics;
 import com.example.duantotnghiep.util.SendConfirmationEmail;
+import com.opencsv.exceptions.CsvValidationException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -63,6 +65,10 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
 
     @Autowired
     private DiaChiRepository diaChiRepository;
+    @Autowired
+    private AuditLogService auditLogService;
+
+
 
     @Override
     public List<NhanVienDTOReponse> getAllNhanVien(String maTaiKhoan, String name, String soDienThoai, Integer trangThai, Integer pageNumber, Integer pageSize) {
@@ -83,8 +89,9 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
     }
 
     @Override
-    public MessageResponse create(MultipartFile file, NhanVienDTORequest request, boolean sendEmail) {
+    public MessageResponse create(MultipartFile file, NhanVienDTORequest request, boolean sendEmail,String username) throws IOException, CsvValidationException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
         List<NhanVienOrderResponse> taiKhoans = khachHangRepository.listNv();
         try {
@@ -124,13 +131,16 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
             SendConfirmationEmail.sendConfirmationEmailStatic(taiKhoan.getEmail(), taiKhoan.getUsername(), converted, javaMailSender);
             System.out.println("gửi mail");
         }
+        auditLogService.writeAuditLogNhanvien("Tạo Nhân viên", username, taiKhoanUser.getEmail(), null, "Họ tên:" +request.getFullName()+","+"Ngày sinh:" +request.getNgaySinh()+","+"Số điện thoại"+ request.getSoDienThoai()+","+"Giới tính"+request.getGioiTinh()+","+"Email:"+request.getEmail()+","+"Địa chỉ:" +request.getDiaChi()+","+"Trạng thái:"+request.getTrangThai(),
+                null, null, null);
         return MessageResponse.builder().message("Thêm Thành Công").build();
     }
 
     @Override
-    public MessageResponse update(MultipartFile file, UUID id, NhanVienDTORequest request) {
+    public MessageResponse update(MultipartFile file, UUID id, NhanVienDTORequest request,String username) throws IOException, CsvValidationException {
         String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
         Optional<TaiKhoan> optionalTaiKhoan = khachHangRepository.findById(id);
+        TaiKhoan taiKhoanUser = taiKhoanRepository.findByUsername(username).orElse(null);
         try {
             Files.copy(file.getInputStream(), Paths.get("D:\\FE_DuAnTotNghiep\\assets\\ảnh giày", fileName), StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
@@ -153,6 +163,8 @@ public class NhanVienServiceImpl implements NhanVienCustomService {
 
             diaChiRepository.save(diaChi);
             khachHangRepository.save(taiKhoan);
+            auditLogService.writeAuditLogNhanvien("Cập nhật nhân viên", username, taiKhoanUser.getEmail(), null, "Họ tên:" +request.getFullName()+","+"Ngày sinh:" +request.getNgaySinh()+","+"Số điện thoại"+ request.getSoDienThoai()+","+"Giới tính"+request.getGioiTinh()+","+"Email:"+request.getEmail()+","+"Địa chỉ:" +request.getDiaChi()+","+"Trạng thái:"+request.getTrangThai(),
+                    null, null, null);
             return MessageResponse.builder().message("Cập Nhật Thành Công").build();
         } else {
             return MessageResponse.builder().message("Không Tìm Thấy Khách Hàng").build();

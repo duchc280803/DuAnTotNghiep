@@ -5,12 +5,15 @@ import com.example.duantotnghiep.request.CreateQLKhachHangRequest;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.response.QLKhachHangResponse;
 import com.example.duantotnghiep.service.quan_ly_nhan_vien_khach_hang.impl.QLKhachHangImpl;
+import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,16 +42,16 @@ public class KhachHangController {
     @PostMapping("/create")
     public ResponseEntity<MessageResponse> createKhachHang(
             @RequestParam("file") MultipartFile file,
-            @ModelAttribute CreateQLKhachHangRequest createQLKhachHangRequest) {
-        return new ResponseEntity<>(service.createKhachHang(file, createQLKhachHangRequest, true), HttpStatus.CREATED);
+            @ModelAttribute CreateQLKhachHangRequest createQLKhachHangRequest,Principal principal) throws IOException, CsvValidationException {
+        return new ResponseEntity<>(service.createKhachHang(file, createQLKhachHangRequest, true, principal.getName()), HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
     public ResponseEntity<MessageResponse> updateKhachHang(
             @RequestParam("file") MultipartFile file,
             @RequestParam("khachHangId") UUID khachHangId,
-            @ModelAttribute CreateQLKhachHangRequest createQLKhachHangRequest) {
-        MessageResponse response = service.updateKhachHang(file, khachHangId, createQLKhachHangRequest);
+            @ModelAttribute CreateQLKhachHangRequest createQLKhachHangRequest, Principal principal) throws IOException, CsvValidationException {
+        MessageResponse response = service.updateKhachHang(file, khachHangId, createQLKhachHangRequest,principal.getName());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

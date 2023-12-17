@@ -35,6 +35,17 @@ public class VoucherCounterController {
         return new ResponseEntity<>(voucherCounterService.findAll(pageNumber, pageSize), HttpStatus.OK);
     }
 
+    @GetMapping("search-name")
+    public ResponseEntity<List<VoucherCounterResponse>> searchVoucher(
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize,
+            @RequestParam(name = "key") String key) {
+        if (pageNumber <= 0) {
+            pageNumber = 0;
+        }
+        return new ResponseEntity<>(voucherCounterService.searchVoucher(pageNumber, pageSize, key), HttpStatus.OK);
+    }
+
     @PutMapping("update")
     public ResponseEntity<MessageResponse> updateHoaDon(
             @RequestParam(name = "idHoaDon") UUID idHoaDon,

@@ -8,8 +8,10 @@ import com.example.duantotnghiep.repository.mua_hang_not_login_repo.*;
 import com.example.duantotnghiep.request.not_login.CreateKhachRequest_not_login;
 import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.mua_hang_not_login_service.HoaDonService_not_login;
+import com.example.duantotnghiep.util.SendEmailOrder;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 
@@ -61,6 +63,9 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
 
     @Autowired
     private HinhThucThanhToanRepository hinhThucThanhToanRepository;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     @Override
     public MessageResponse thanhToanKhongDangNhap(CreateKhachRequest_not_login createKhachRequest_not_login) {
@@ -223,6 +228,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
             }
 
         }//End step 6
+        SendEmailOrder.sendEmailOrder(hoaDon, javaMailSender);
         return MessageResponse.builder().message("Thanh Toán Thành Công").build();
 
     }
@@ -370,9 +376,8 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
             }
 
         }//End step 6
-
+        SendEmailOrder.sendEmailOrder(hoaDon, javaMailSender);
         return hoaDon.getId();
-
     }
 
     public Long getGiaGiamCuoiCung(UUID id) {
