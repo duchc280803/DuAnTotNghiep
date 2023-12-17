@@ -128,6 +128,9 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         }
 
         SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findByQrcode(qrCode);
+        if (sanPhamChiTiet == null) {
+            return MessageResponse.builder().message("QR Code không tồn tại").build();
+        }
         GioHangChiTiet ghct = gioHangChiTietRepository.findByGioHangAndSanPhamChiTiet_Id(gioHang, sanPhamChiTiet.getId());
         if (ghct != null) {
             ghct.setSoLuong(ghct.getSoLuong() + 1);

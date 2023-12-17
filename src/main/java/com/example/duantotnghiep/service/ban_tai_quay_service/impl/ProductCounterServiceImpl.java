@@ -6,6 +6,7 @@ import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
 import com.example.duantotnghiep.repository.ChiTietSanPhamRepository;
 import com.example.duantotnghiep.repository.SpGiamGiaRepository;
 import com.example.duantotnghiep.response.DetailQuantityToSizeReponse;
+import com.example.duantotnghiep.response.ProductShopResponse;
 import com.example.duantotnghiep.response.SanPhamGetAllResponse;
 import com.example.duantotnghiep.service.ban_tai_quay_service.ProductCounterService;
 import com.example.duantotnghiep.util.FormatNumber;
@@ -68,6 +69,125 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
                     idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
+        }
+        return resultList;
+    }
+
+    public List<ProductShopResponse> getAllShop(Integer pageNumber, Integer pageSize) {
+        List<ProductShopResponse> resultList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = spGiamGiaRepository.getAllShop(pageable);
+        for (Object[] result : queryResult.getContent()) {
+            UUID idSp = (UUID) result[0];
+            String imgage = (String) result[1];
+            String tenSanPham = (String) result[2];
+            BigDecimal giaBan = (BigDecimal) result[3];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ProductShopResponse productShopResponse = new ProductShopResponse(idSp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam));
+            resultList.add(productShopResponse);
+        }
+        return resultList;
+    }
+
+    public List<ProductShopResponse> findByShopName(Integer pageNumber, Integer pageSize, String name) {
+        List<ProductShopResponse> resultList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = spGiamGiaRepository.findByShopName(pageable, name);
+        for (Object[] result : queryResult.getContent()) {
+            UUID idSp = (UUID) result[0];
+            String imgage = (String) result[1];
+            String tenSanPham = (String) result[2];
+            BigDecimal giaBan = (BigDecimal) result[3];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ProductShopResponse productShopResponse = new ProductShopResponse(idSp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam));
+            resultList.add(productShopResponse);
+        }
+        return resultList;
+    }
+
+    public List<ProductShopResponse> findByGia(Integer pageNumber, Integer pageSize, BigDecimal key1, BigDecimal key2) {
+        List<ProductShopResponse> resultList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = spGiamGiaRepository.findByGia(pageable, key1, key2);
+        for (Object[] result : queryResult.getContent()) {
+            UUID idSp = (UUID) result[0];
+            String imgage = (String) result[1];
+            String tenSanPham = (String) result[2];
+            BigDecimal giaBan = (BigDecimal) result[3];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ProductShopResponse productShopResponse = new ProductShopResponse(idSp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam));
+            resultList.add(productShopResponse);
+        }
+        return resultList;
+    }
+
+    public List<ProductShopResponse> filterCategoryShop(Integer pageNumber, Integer pageSize, UUID id) {
+        List<ProductShopResponse> resultList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = spGiamGiaRepository.filterCategoryShop(pageable, id);
+        for (Object[] result : queryResult.getContent()) {
+            UUID idSp = (UUID) result[0];
+            String imgage = (String) result[1];
+            String tenSanPham = (String) result[2];
+            BigDecimal giaBan = (BigDecimal) result[3];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ProductShopResponse productShopResponse = new ProductShopResponse(idSp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam));
+            resultList.add(productShopResponse);
+        }
+        return resultList;
+    }
+
+    public List<ProductShopResponse> filterBrandShop(Integer pageNumber, Integer pageSize, UUID id) {
+        List<ProductShopResponse> resultList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = spGiamGiaRepository.filterBrandShop(pageable, id);
+        for (Object[] result : queryResult.getContent()) {
+            UUID idSp = (UUID) result[0];
+            String imgage = (String) result[1];
+            String tenSanPham = (String) result[2];
+            BigDecimal giaBan = (BigDecimal) result[3];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ProductShopResponse productShopResponse = new ProductShopResponse(idSp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam));
+            resultList.add(productShopResponse);
+        }
+        return resultList;
+    }
+
+    public List<ProductShopResponse> filterSoleShop(Integer pageNumber, Integer pageSize, UUID id) {
+        List<ProductShopResponse> resultList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = spGiamGiaRepository.filterSoleShop(pageable, id);
+        for (Object[] result : queryResult.getContent()) {
+            UUID idSp = (UUID) result[0];
+            String imgage = (String) result[1];
+            String tenSanPham = (String) result[2];
+            BigDecimal giaBan = (BigDecimal) result[3];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ProductShopResponse productShopResponse = new ProductShopResponse(idSp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam));
+            resultList.add(productShopResponse);
+        }
+        return resultList;
+    }
+
+    public List<ProductShopResponse> filterXuatXuShop(Integer pageNumber, Integer pageSize, UUID id) {
+        List<ProductShopResponse> resultList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Object[]> queryResult = spGiamGiaRepository.filterXuatXuShop(pageable, id);
+        for (Object[] result : queryResult.getContent()) {
+            UUID idSp = (UUID) result[0];
+            String imgage = (String) result[1];
+            String tenSanPham = (String) result[2];
+            BigDecimal giaBan = (BigDecimal) result[3];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ProductShopResponse productShopResponse = new ProductShopResponse(idSp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam));
+            resultList.add(productShopResponse);
         }
         return resultList;
     }

@@ -195,32 +195,26 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         for (HoaDonChiTiet x : findByHoaDon.get().getHoaDonChiTietList()) {
             tongTien = tongTien.add(x.getDonGiaSauGiam().multiply(new BigDecimal(x.getSoLuong())));
         }
-        Long maxDiscount = 0L;
-        Long maxDiscount1 = 0L;
-        Long maxDiscount2 = 0L;
         Voucher selectedVoucher = null;
-        Double giaTriGiamPhanTram = 0.0;
+        double maxDiscount = 0.0;
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
-            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
+            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang()) {
+                double discount = 0.0;
+
                 if (v.getHinhThucGiam() == 1) {
-                    Long giaTriGiam = v.getGiaTriGiam();
-                    giaTriGiamPhanTram = giaTriGiam / 100.0;
-                    maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
-                    selectedVoucher = v;
+                    discount = (tongTien.longValue() * v.getGiaTriGiam()) / 100.0;
+                } else if (v.getHinhThucGiam() == 2) {
+                    discount = v.getGiaTriGiam(); // Giảm giá cố định
                 }
 
-                if (v.getHinhThucGiam() == 2) {
-                    maxDiscount2 = v.getGiaTriGiam();
+                if (discount > maxDiscount) {
+                    maxDiscount = discount;
                     selectedVoucher = v;
                 }
             }
         }
-        if (maxDiscount1 > maxDiscount2) {
-            maxDiscount = maxDiscount1;
-        } else {
-            maxDiscount = maxDiscount2;
-        }
+
         findByHoaDon.get().setVoucher(selectedVoucher);
         findByHoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
         hoaDonRepository.save(findByHoaDon.get());
@@ -273,31 +267,24 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         for (HoaDonChiTiet x : hoaDon.get().getHoaDonChiTietList()) {
             tongTien = tongTien.add(x.getDonGiaSauGiam().multiply(new BigDecimal(x.getSoLuong())));
         }
-        Long maxDiscount = 0L;
-        Long maxDiscount1 = 0L;
-        Long maxDiscount2 = 0L;
         Voucher selectedVoucher = null;
-        Double giaTriGiamPhanTram = 0.0;
+        double maxDiscount = 0.0;
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
-            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
+            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang()) {
+                double discount = 0.0;
+
                 if (v.getHinhThucGiam() == 1) {
-                    Long giaTriGiam = v.getGiaTriGiam();
-                    giaTriGiamPhanTram = giaTriGiam / 100.0;
-                    maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
-                    selectedVoucher = v;
+                    discount = (tongTien.longValue() * v.getGiaTriGiam()) / 100.0;
+                } else if (v.getHinhThucGiam() == 2) {
+                    discount = v.getGiaTriGiam(); // Giảm giá cố định
                 }
 
-                if (v.getHinhThucGiam() == 2) {
-                    maxDiscount2 = v.getGiaTriGiam();
+                if (discount > maxDiscount) {
+                    maxDiscount = discount;
                     selectedVoucher = v;
                 }
             }
-        }
-        if (maxDiscount1 > maxDiscount2) {
-            maxDiscount = maxDiscount1;
-        } else {
-            maxDiscount = maxDiscount2;
         }
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
@@ -450,10 +437,8 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
         // Save lại voucher
         applyVoucherAndPayment(hoaDon, voucher, tongTienSauKhiDaTraHang);
-        System.out.println("Đầu tiên" + hoaDon.getThanhTien());
 
         BigDecimal tienSauKhiTra = tongTienSauKhiDaTraHang.add(hoaDon.getTienShip()).subtract(hoaDon.getTienGiamGia());
-        System.out.println("Thứ 2 " + hoaDon.getThanhTien());
         // Hoàn tiền
         LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
         loaiHinhThucThanhToan.setId(UUID.randomUUID());
@@ -470,7 +455,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hinhThucThanhToan.setHoaDon(hoaDon);
         hinhThucThanhToan.setTrangThai(1);
         hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
-        hoaDon.setThanhTien(tongTienSauKhiDaTraHang.add(hoaDon.getTienShip()).subtract(hoaDon.getTienGiamGia()));
+
+        Long thanhTien = (tongTienSauKhiDaTraHang.longValue() - hoaDon.getTienGiamGia().longValue()) + hoaDon.getTienShip().longValue();
+        hoaDon.setThanhTien(new BigDecimal(thanhTien));
         loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
         auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(),  hoaDon.getMa(), "Trả hàng", hoaDon.getMa(), "Mã sản phẩm: " + sanPhamHoaDon.getMaSanPham(), "Tên sản phẩm: " + sanPhamHoaDon.getTenSanPham(), "Số lượng trả: " + traHangRequest.getSoLuong().toString(), "");
@@ -561,72 +548,33 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
      * Tính lại app voucher
      *
      * @param hoaDon
-     * @param voucher
+     * @param selectedVoucher
      * @param ktVoucher
      */
     @Override
-    public void applyVoucherAndPayment(HoaDon hoaDon, Voucher voucher, BigDecimal ktVoucher) {
-        if (voucher != null) {
-            if (ktVoucher.longValue() < voucher.getGiaTriToiThieuDonhang()) {
-                List<Voucher> voucherList = voucherRepository.getAllVoucher();
-                Long maxDiscount = 0L; // Khởi tạo giá trị giảm giá lớn nhất ban đầu là 0
-                Voucher selectedVoucher = null; // Biến để lưu trữ voucher được chọn
-                for (Voucher v : voucherList) {
-                    if (ktVoucher.longValue() >= v.getGiaTriToiThieuDonhang()) {
-                        if (v.getGiaTriGiam().compareTo(maxDiscount) > 0) { // So sánh giá trị giảm giá với maxDiscount
-                            maxDiscount = v.getGiaTriGiam(); // Cập nhật maxDiscount nếu giá trị mới lớn hơn
-                            selectedVoucher = v; // Lưu trữ voucher có giá trị giảm giá lớn nhất
-                        }
-                    } else {
-                        hoaDon.setVoucher(null);
-//                        hoaDon.setThanhTien(new BigDecimal(0));
-                        hoaDon.setTienGiamGia(BigDecimal.ZERO);
-                    }
-                }
-                if (selectedVoucher != null) {
-                    hoaDon.setVoucher(selectedVoucher); // Áp dụng voucher có giảm giá lớn nhất cho hoaDon
-                    if (selectedVoucher.getHinhThucGiam() == 1) {
-                        Long giaTriGiam = selectedVoucher.getGiaTriGiam(); // Lấy giá trị giảm giá từ selectedVoucher
-                        double giaTriGiamDouble = giaTriGiam.doubleValue() / 100.0; // Nhân giá trị giảm giá với 100
+    public void applyVoucherAndPayment(HoaDon hoaDon, Voucher selectedVoucher, BigDecimal ktVoucher) {
+        selectedVoucher = null;
+        double maxDiscount = 0.0;
 
-                        hoaDon.setTienGiamGia(new BigDecimal(giaTriGiamDouble).multiply(ktVoucher));
-                    }
-                    if (selectedVoucher.getHinhThucGiam() == 2) {
-                        hoaDon.setTienGiamGia(new BigDecimal(selectedVoucher.getGiaTriGiam()));
-                    }
+        for (Voucher v : voucherRepository.getAllVoucher()) {
+            if (ktVoucher.longValue() >= v.getGiaTriToiThieuDonhang()) {
+                double discount = 0.0;
+
+                if (v.getHinhThucGiam() == 1) {
+                    discount = (ktVoucher.longValue() * v.getGiaTriGiam()) / 100.0;
+                } else if (v.getHinhThucGiam() == 2) {
+                    discount = v.getGiaTriGiam(); // Giảm giá cố định
+                }
+
+                if (discount > maxDiscount) {
+                    maxDiscount = discount;
+                    selectedVoucher = v;
                 }
             }
         }
+        hoaDon.setVoucher(selectedVoucher);
+        hoaDon.setTienGiamGia(new BigDecimal(maxDiscount));
 
-        if (voucher == null) {
-            List<Voucher> voucherList = voucherRepository.getAllVoucher();
-            Long maxDiscount = 0L; // Khởi tạo giá trị giảm giá lớn nhất ban đầu là 0
-            Voucher selectedVoucher = null; // Biến để lưu trữ voucher được chọn
-            for (Voucher v : voucherList) {
-                if (ktVoucher.longValue() >= v.getGiaTriToiThieuDonhang()) {
-                    if (v.getGiaTriGiam().compareTo(maxDiscount) > 0) { // So sánh giá trị giảm giá với maxDiscount
-                        maxDiscount = v.getGiaTriGiam(); // Cập nhật maxDiscount nếu giá trị mới lớn hơn
-                        selectedVoucher = v; // Lưu trữ voucher có giá trị giảm giá lớn nhất
-                    }
-                } else {
-                    hoaDon.setVoucher(null);
-//                    hoaDon.setThanhTien(new BigDecimal(0));
-                    hoaDon.setTienGiamGia(BigDecimal.ZERO);
-                }
-            }
-            if (selectedVoucher != null) {
-                hoaDon.setVoucher(selectedVoucher); // Áp dụng voucher có giảm giá lớn nhất cho hoaDon
-                if (selectedVoucher.getHinhThucGiam() == 1) {
-                    Long giaTriGiam = selectedVoucher.getGiaTriGiam(); // Lấy giá trị giảm giá từ selectedVoucher
-                    double giaTriGiamDouble = giaTriGiam.doubleValue() / 100.0; // Nhân giá trị giảm giá với 100
-
-                    hoaDon.setTienGiamGia(new BigDecimal(giaTriGiamDouble).multiply(ktVoucher));
-                }
-                if (selectedVoucher.getHinhThucGiam() == 2) {
-                    hoaDon.setTienGiamGia(new BigDecimal(selectedVoucher.getGiaTriGiam()));
-                }
-            }
-        }
     }
 
     /**
@@ -679,7 +627,6 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         }
         hoaDonRepository.save(hoaDon.get());
 
-
         TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
         trangThaiHoaDon.setId(UUID.randomUUID());
         trangThaiHoaDon.setHoaDon(hoaDon.get());
@@ -692,31 +639,24 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         for (HoaDonChiTiet x : hoaDon.get().getHoaDonChiTietList()) {
             tongTien = tongTien.add(x.getDonGiaSauGiam().multiply(new BigDecimal(x.getSoLuong())));
         }
-        Long maxDiscount = 0L;
-        Long maxDiscount1 = 0L;
-        Long maxDiscount2 = 0L;
         Voucher selectedVoucher = null;
-        Double giaTriGiamPhanTram = 0.0;
+        double maxDiscount = 0.0;
 
         for (Voucher v : voucherRepository.getAllVoucher()) {
-            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang() && v.getGiaTriGiam() > maxDiscount) {
+            if (tongTien.longValue() >= v.getGiaTriToiThieuDonhang()) {
+                double discount = 0.0;
+
                 if (v.getHinhThucGiam() == 1) {
-                    Long giaTriGiam = v.getGiaTriGiam();
-                    giaTriGiamPhanTram = giaTriGiam / 100.0;
-                    maxDiscount1 = tongTien.multiply(new BigDecimal(giaTriGiamPhanTram)).longValue();
-                    selectedVoucher = v;
+                    discount = (tongTien.longValue() * v.getGiaTriGiam()) / 100.0;
+                } else if (v.getHinhThucGiam() == 2) {
+                    discount = v.getGiaTriGiam(); // Giảm giá cố định
                 }
 
-                if (v.getHinhThucGiam() == 2) {
-                    maxDiscount2 = v.getGiaTriGiam();
+                if (discount > maxDiscount) {
+                    maxDiscount = discount;
                     selectedVoucher = v;
                 }
             }
-        }
-        if (maxDiscount1 > maxDiscount2) {
-            maxDiscount = maxDiscount1;
-        } else {
-            maxDiscount = maxDiscount2;
         }
         hoaDon.get().setVoucher(selectedVoucher);
         hoaDon.get().setTienGiamGia(new BigDecimal(maxDiscount));
