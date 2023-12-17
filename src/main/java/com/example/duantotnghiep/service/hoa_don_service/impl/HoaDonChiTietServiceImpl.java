@@ -185,7 +185,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setHoaDon(findByHoaDon.get());
         trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
         trangThaiHoaDon.setThoiGian(timestamp);
-        trangThaiHoaDon.setUsername(findByHoaDon.get().getTaiKhoanNhanVien().getMaTaiKhoan());
+        trangThaiHoaDon.setUsername(taiKhoan.getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
 
@@ -260,7 +260,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setHoaDon(hoaDon.get());
         trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
         trangThaiHoaDon.setThoiGian(timestamp);
-        trangThaiHoaDon.setUsername(hoaDonChiTietOptional.get().getHoaDon().getTaiKhoanNhanVien().getMaTaiKhoan());
+        trangThaiHoaDon.setUsername(taiKhoan.getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
         BigDecimal tongTien = BigDecimal.ZERO;
@@ -331,7 +331,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public MessageResponse comfirmStatusHuyDon(UUID idHoaDon, TrangThaiHoaDonRequest request, String username) {
+    public MessageResponse comfirmStatusHuyDon(UUID idHoaDon, TrangThaiHoaDonRequest request, String username) throws IOException, CsvValidationException {
         TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).get();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         HoaDon hoaDon = hoaDonRepository.findById(idHoaDon).get();
@@ -347,7 +347,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setUsername(taiKhoan.getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu(request.getGhiChu());
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
-
+        auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(),  hoaDon.getMa(), "Nhân viên hủy hóa đơn", hoaDon.getMa(), "","", "", "");
         for (HoaDonChiTiet x : hoaDon.getHoaDonChiTietList()) {
             SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(x.getSanPhamChiTiet().getId()).get();
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + x.getSoLuong());
@@ -634,7 +634,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setHoaDon(hoaDon.get());
         trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
         trangThaiHoaDon.setThoiGian(timestamp);
-        trangThaiHoaDon.setUsername(hoaDon.get().getTaiKhoanNhanVien().getMaTaiKhoan());
+        trangThaiHoaDon.setUsername(taiKhoan.getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
 
         BigDecimal tongTien = BigDecimal.ZERO;
