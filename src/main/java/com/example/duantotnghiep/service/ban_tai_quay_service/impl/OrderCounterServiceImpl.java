@@ -334,13 +334,16 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         HoaDon hoaDon = hoaDonRepository.findById(id).get();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<TaiKhoan> findByNhanVien = taiKhoanRepository.findByUsername(username);
+
         TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
         trangThaiHoaDon.setId(UUID.randomUUID());
-        trangThaiHoaDon.setTrangThai(StatusOrderDetailEnums.XAC_NHAN.getValue());
+        trangThaiHoaDon.setTrangThai(StatusOrderDetailEnums.DA_HUY.getValue());
         trangThaiHoaDon.setThoiGian(timestamp);
         trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu("Nhân viên hủy đơn hàng");
         trangThaiHoaDon.setHoaDon(hoaDon);
+        trangThaiHoaDonRepository.save(trangThaiHoaDon);
+
         auditLogService.writeAuditLogHoadon(findByNhanVien.get().getMaTaiKhoan(), hoaDon.getMa(), "Nhân viên hủy hóa đơn", hoaDon.getMa(), "", "", "", "");
         IdGioHangResponse idGioHangResponse = hoaDonRepository.showIdGioHangCt(id);
         if (idGioHangResponse == null) {
