@@ -673,7 +673,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByUsername(username);
         hoaDon.get().setTaiKhoanNhanVien(nhanVien.get());
         hoaDonRepository.save(hoaDon.get());
-        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật nhân viên cho hóa đơn", hoaDon.get().getMa(), "",
+        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật nhân viên cho hóa đơn", hoaDon.get().getMa(), "Mã nhân viên: " + nhanVien.get().getMaTaiKhoan(),
                 "", "", "");
         return MessageResponse.builder().message("Update thành công").build();
     }
