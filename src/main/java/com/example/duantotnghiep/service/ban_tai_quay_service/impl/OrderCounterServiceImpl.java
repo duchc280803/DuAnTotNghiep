@@ -177,10 +177,12 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         hoaDon.get().setSdtNguoiNhan(hoaDonThanhToanRequest.getSoDienThoai());
         hoaDon.get().setDiaChi(hoaDonThanhToanRequest.getDiaChi());
         hoaDon.get().setTrangThai(5);
-        Voucher voucher = voucherRepository.findById(hoaDon.get().getVoucher().getId()).get();
-        if (voucher != null) {
-            voucher.setSoLuongDung(voucher.getSoLuongDung() + 1);
-            voucherRepository.save(voucher);
+        if (hoaDon.get().getVoucher() != null) {
+            Voucher voucher = voucherRepository.findById(hoaDon.get().getVoucher().getId()).get();
+            if (voucher != null) {
+                voucher.setSoLuongDung(voucher.getSoLuongDung() + 1);
+                voucherRepository.save(voucher);
+            }
         }
         hoaDonRepository.save(hoaDon.get());
 
@@ -245,10 +247,12 @@ public class OrderCounterServiceImpl implements OrderCounterService {
                 "Tên người nhận: " + hoaDonGiaoThanhToanRequest.getTenKhach(),
                 "SĐT: " + hoaDonGiaoThanhToanRequest.getSoDienThoai(),
                 "Địa chỉ: " + hoaDonGiaoThanhToanRequest.getDiaChi(), "Phí vận chuyển: " + FormatNumber.formatBigDecimal(hoaDonGiaoThanhToanRequest.getTienGiao()) + "đ - Tổng tiền: " + FormatNumber.formatBigDecimal(hoaDonGiaoThanhToanRequest.getTongTien()) + "đ");
-        Voucher voucher = voucherRepository.findById(hoaDon.get().getVoucher().getId()).get();
-        if (voucher != null) {
-            voucher.setSoLuongDung(voucher.getSoLuongDung() + 1);
-            voucherRepository.save(voucher);
+        if (hoaDon.get().getVoucher() != null) {
+            Voucher voucher = voucherRepository.findById(hoaDon.get().getVoucher().getId()).get();
+            if (voucher != null) {
+                voucher.setSoLuongDung(voucher.getSoLuongDung() + 1);
+                voucherRepository.save(voucher);
+            }
         }
         hoaDonRepository.save(hoaDon.get());
 
