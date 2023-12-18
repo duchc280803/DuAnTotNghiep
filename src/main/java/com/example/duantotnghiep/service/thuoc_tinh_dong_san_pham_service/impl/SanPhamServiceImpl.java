@@ -1,11 +1,13 @@
 package com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.impl;
 
 import com.example.duantotnghiep.entity.*;
+import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
 import com.example.duantotnghiep.repository.*;
 import com.example.duantotnghiep.request.ProductRequest;
 import com.example.duantotnghiep.response.*;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.thuoc_tinh_dong_san_pham_service.SanPhamService;
+import com.example.duantotnghiep.util.FormatNumber;
 import com.opencsv.exceptions.CsvValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +19,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class SanPhamServiceImpl implements SanPhamService {
@@ -38,10 +38,15 @@ public class SanPhamServiceImpl implements SanPhamService {
 
     @Autowired
     private KieuDeRepository kieuDeRepository;
+
     @Autowired
     private AuditLogService auditLogService;
+
     @Autowired
     private TaiKhoanRepository taiKhoanRepository;
+
+    @Autowired
+    private SpGiamGiaRepository spGiamGiaRepository;
 
     @Override
     public List<SanPhamResponse> getNewProduct() {
@@ -55,51 +60,172 @@ public class SanPhamServiceImpl implements SanPhamService {
 
     @Override
     public List<ProductResponse> findByThuongHieu(Integer pageNumber, Integer pageSize, String value) {
+        List<ProductResponse> resultList = new ArrayList<>();
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<ProductResponse> pageList = sanPhamRepository.findByThuongHieu(pageable, value);
-        return pageList.getContent();
+        Page<Object[]> pageList =  sanPhamRepository.findByThuongHieu(pageable, value);
+        for (Object[] result : pageList.getContent()) {
+            UUID idSp = (UUID) result[0];
+            String imgage = (String) result[1];
+            String maSp = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Date ngayTao = (Date) result[5];
+            Integer trangThai = (Integer) result[6];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ProductResponse productResponse = new ProductResponse(idSp, imgage, maSp, tenSanPham, giaBan, ngayTao, trangThai, giaBan.subtract(giaGiam));
+            resultList.add(productResponse);
+        }
+        return resultList;
     }
 
     @Override
     public List<ProductResponse> findByKieuDe(Integer pageNumber, Integer pageSize, String value) {
+        List<ProductResponse> resultList = new ArrayList<>();
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<ProductResponse> pageList = sanPhamRepository.findByKieuDe(pageable, value);
-        return pageList.getContent();
+        Page<Object[]> pageList =  sanPhamRepository.findByKieuDe(pageable, value);
+        for (Object[] result : pageList.getContent()) {
+            UUID idSp = (UUID) result[0];
+            String imgage = (String) result[1];
+            String maSp = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Date ngayTao = (Date) result[5];
+            Integer trangThai = (Integer) result[6];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ProductResponse productResponse = new ProductResponse(idSp, imgage, maSp, tenSanPham, giaBan, ngayTao, trangThai, giaBan.subtract(giaGiam));
+            resultList.add(productResponse);
+        }
+        return resultList;
     }
 
     @Override
     public List<ProductResponse> findByXuatXu(Integer pageNumber, Integer pageSize, String value) {
+        List<ProductResponse> resultList = new ArrayList<>();
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<ProductResponse> pageList = sanPhamRepository.findByXuatXu(pageable, value);
-        return pageList.getContent();
+        Page<Object[]> pageList = sanPhamRepository.findByXuatXu(pageable, value);
+        for (Object[] result : pageList.getContent()) {
+            UUID idSp = (UUID) result[0];
+            String imgage = (String) result[1];
+            String maSp = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Date ngayTao = (Date) result[5];
+            Integer trangThai = (Integer) result[6];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ProductResponse productResponse = new ProductResponse(idSp, imgage, maSp, tenSanPham, giaBan, ngayTao, trangThai, giaBan.subtract(giaGiam));
+            resultList.add(productResponse);
+        }
+        return resultList;
     }
 
     @Override
     public List<ProductResponse> findByDanhMuc(Integer pageNumber, Integer pageSize, String value) {
+        List<ProductResponse> resultList = new ArrayList<>();
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<ProductResponse> pageList = sanPhamRepository.findByDanhMuc(pageable, value);
-        return pageList.getContent();
+        Page<Object[]> pageList = sanPhamRepository.findByDanhMuc(pageable, value);
+        for (Object[] result : pageList.getContent()) {
+            UUID idSp = (UUID) result[0];
+            String imgage = (String) result[1];
+            String maSp = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Date ngayTao = (Date) result[5];
+            Integer trangThai = (Integer) result[6];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ProductResponse productResponse = new ProductResponse(idSp, imgage, maSp, tenSanPham, giaBan, ngayTao, trangThai, giaBan.subtract(giaGiam));
+            resultList.add(productResponse);
+        }
+        return resultList;
     }
 
     @Override
     public List<ProductResponse> findByNameOrCode(Integer pageNumber, Integer pageSize, String value) {
+        List<ProductResponse> resultList = new ArrayList<>();
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<ProductResponse> pageList = sanPhamRepository.findByNameOrCode(pageable, value);
-        return pageList.getContent();
+        Page<Object[]> pageList = sanPhamRepository.findByNameOrCode(pageable, value);
+        for (Object[] result : pageList.getContent()) {
+            UUID idSp = (UUID) result[0];
+            String imgage = (String) result[1];
+            String maSp = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Date ngayTao = (Date) result[5];
+            Integer trangThai = (Integer) result[6];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ProductResponse productResponse = new ProductResponse(idSp, imgage, maSp, tenSanPham, giaBan, ngayTao, trangThai, giaBan.subtract(giaGiam));
+            resultList.add(productResponse);
+        }
+        return resultList;
     }
 
     @Override
     public List<ProductResponse> getHoaDonByFilter(Integer pageNumber, Integer pageSize) {
+        List<ProductResponse> resultList = new ArrayList<>();
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<ProductResponse> pageList = sanPhamRepository.getAllSanPham(pageable);
-        return pageList.getContent();
+        Page<Object[]> pageList = sanPhamRepository.getAllSanPham(pageable);
+        for (Object[] result : pageList.getContent()) {
+            UUID idSp = (UUID) result[0];
+            String imgage = (String) result[1];
+            String maSp = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Date ngayTao = (Date) result[5];
+            Integer trangThai = (Integer) result[6];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ProductResponse productResponse = new ProductResponse(idSp, imgage, maSp, tenSanPham, giaBan, ngayTao, trangThai, giaBan.subtract(giaGiam));
+            resultList.add(productResponse);
+        }
+        return resultList;
+    }
+
+    public Long getGiaGiamCuoiCung(UUID id) {
+        long tongTienGiam = 0L;
+        List<SpGiamGia> spGiamGiaList = spGiamGiaRepository.findBySanPham_Id(id);
+
+        for (SpGiamGia spGiamGia : spGiamGiaList) {
+            // Cập nhật tổng tiền giảm đúng cách, không khai báo lại biến tongTienGiam
+            if (spGiamGia.getGiaGiam() == null) {
+                return tongTienGiam;
+            }
+            if (spGiamGia.getGiaGiam() != null) {
+                tongTienGiam += spGiamGia.getGiaGiam().longValue();
+            }
+
+        }
+
+        return tongTienGiam;
+    }
+
+    public BigDecimal tienGiam(UUID id) {
+        Long tienGiam = getGiaGiamCuoiCung(id);
+        return new BigDecimal(tienGiam);
     }
 
     @Override
     public List<ProductResponse> findByStatus(Integer pageNumber, Integer pageSize, Integer status) {
+        List<ProductResponse> resultList = new ArrayList<>();
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<ProductResponse> pageList = sanPhamRepository.findByStatus(pageable, status);
-        return pageList.getContent();
+        Page<Object[]> pageList =  sanPhamRepository.findByStatus(pageable, status);
+        for (Object[] result : pageList.getContent()) {
+            UUID idSp = (UUID) result[0];
+            String imgage = (String) result[1];
+            String maSp = (String) result[2];
+            String tenSanPham = (String) result[3];
+            BigDecimal giaBan = (BigDecimal) result[4];
+            Date ngayTao = (Date) result[5];
+            Integer trangThai = (Integer) result[6];
+            BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
+
+            ProductResponse productResponse = new ProductResponse(idSp, imgage, maSp, tenSanPham, giaBan, ngayTao, trangThai, giaBan.subtract(giaGiam));
+            resultList.add(productResponse);
+        }
+        return resultList;
     }
 
     public SanPham findByName(String name) {
