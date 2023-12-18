@@ -405,12 +405,12 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         List<SanPhamHoaDonChiTietResponse> productInHoaDon = hoaDonChiTietRepository.getSanPhamHDCT(hoaDonChiTiet.getHoaDon().getId());
         int count = 0;
 
-
         for (SanPhamHoaDonChiTietResponse sanPham : productInHoaDon) {
             if (sanPham.getTrangThai() == 5) {
                 count++;
             }
         }
+
         // trả hàng
         prepareOrderDetails(hoaDon, traHangRequest, hoaDonChiTiet, sanPhamChiTiet, count);
 
