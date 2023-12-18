@@ -90,7 +90,6 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
             // Bổ sung tính toán giảm giá
             BigDecimal giaGiamCuoiCung = new BigDecimal(getGiaGiamCuoiCung(id));
-//            BigDecimal giaBanSauGiamGia = giaBan.subtract(giaGiamCuoiCung);
 
             ProductDetailResponse productDetailResponse = new ProductDetailResponse(
                     id, image, tenSanPham, giaBan , countQuantity(id), giaGiamCuoiCung);
@@ -310,7 +309,11 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                     spGiamGia.setGiaGiam(dongia);
                     // donGiaKhiGiam = gia ban - dongia
                     BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
-                    spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
+                    if (donGiaKhiGiam.compareTo(BigDecimal.ZERO) < 0) {
+                        spGiamGia.setDonGiaKhiGiam(BigDecimal.ZERO);
+                    }else {
+                        spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
+                    }
                 } else if (createKhachRequest.getHinhThucGiam() == 2) {
                     // HinhThucGiam = 2
                     // dongia = gia ban x (muc giam / 100)
@@ -322,7 +325,11 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                     spGiamGia.setGiaGiam(dongia);
                     BigDecimal donGiaKhiGiam = sanPham.getGiaBan().subtract(dongia);
                     // sanpham.giaban =
-                    spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
+                    if (donGiaKhiGiam.compareTo(BigDecimal.ZERO) < 0) {
+                        spGiamGia.setDonGiaKhiGiam(BigDecimal.ZERO);
+                    }else {
+                        spGiamGia.setDonGiaKhiGiam(donGiaKhiGiam);
+                    }
                 }
                 Repository.save(giamGia);
                 spggRepository.save(spGiamGia);

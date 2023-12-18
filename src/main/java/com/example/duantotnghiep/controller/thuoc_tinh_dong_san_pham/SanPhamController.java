@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
@@ -33,6 +34,13 @@ public class SanPhamController {
             @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
     ) {
         return new ResponseEntity<>(sanPhamService.getHoaDonByFilter(pageNumber, pageSize), HttpStatus.OK);
+    }
+
+    @GetMapping("tien-giam")
+    public BigDecimal tienGiam(
+            @RequestParam(name = "id") UUID id
+    ) {
+        return sanPhamService.tienGiam(id);
     }
 
     @GetMapping("thuong-hieu")

@@ -28,4 +28,6 @@ public class ProductResponse {
     private Date ngayTao;
 
     private Integer trangThai;
+
+    private BigDecimal giaGiam;
 }

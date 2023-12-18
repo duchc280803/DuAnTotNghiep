@@ -52,11 +52,7 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "ORDER BY sp.ngaytao DESC", nativeQuery = true)
     List<SanPhamResponse> getNewProductbyMoney(@Param("key1") BigDecimal key1, @Param("key2") BigDecimal key2);
 
-
-
-
-    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
-            "(sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai) " +
+    @Query("SELECT sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai " +
             "FROM SanPham sp " +
             "JOIN sp.thuongHieu th " +
             "JOIN sp.kieuDe kd " +
@@ -69,10 +65,9 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "AND kd.trangThai = 1 " +
             "AND dm.trangThai = 1 " +
             "AND xx.trangThai = 1 ORDER BY sp.ngayTao DESC")
-    Page<ProductResponse> getAllSanPham(Pageable pageable);
+    Page<Object[]> getAllSanPham(Pageable pageable);
 
-    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
-            "(sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai)" +
+    @Query("SELECT sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai " +
             "FROM SanPham sp " +
             "JOIN sp.thuongHieu th " +
             "JOIN sp.kieuDe kd " +
@@ -86,10 +81,9 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "AND xx.trangThai = 1 " +
             "AND dm.trangThai = 1 " +
             "AND th.tenThuongHieu = :value")
-    Page<ProductResponse> findByThuongHieu(Pageable pageable,@Param("value") String value);
+    Page<Object[]>  findByThuongHieu(Pageable pageable,@Param("value") String value);
 
-    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
-            "(sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai)" +
+    @Query("SELECT sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai " +
             "FROM SanPham sp " +
             "JOIN sp.thuongHieu th " +
             "JOIN sp.kieuDe kd " +
@@ -102,10 +96,9 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "AND kd.trangThai = 1 " +
             "AND xx.trangThai = 1 " +
             "AND kd.tenDe = :value")
-    Page<ProductResponse> findByKieuDe(Pageable pageable,@Param("value") String value);
+    Page<Object[]>  findByKieuDe(Pageable pageable,@Param("value") String value);
 
-    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
-            "(sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai)" +
+    @Query("SELECT sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai " +
             "FROM SanPham sp " +
             "JOIN sp.thuongHieu th " +
             "JOIN sp.kieuDe kd " +
@@ -119,10 +112,9 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "AND xx.trangThai = 1 " +
             "AND dm.trangThai = 1 " +
             "AND xx.tenXuatXu = :value")
-    Page<ProductResponse> findByXuatXu(Pageable pageable,@Param("value") String value);
+    Page<Object[]> findByXuatXu(Pageable pageable,@Param("value") String value);
 
-    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
-            "(sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai)" +
+    @Query("SELECT sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai " +
             "FROM SanPham sp " +
             "JOIN sp.thuongHieu th " +
             "JOIN sp.kieuDe kd " +
@@ -136,10 +128,9 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "AND xx.trangThai = 1 " +
             "AND dm.trangThai = 1 " +
             "AND dm.tenDanhMuc = :value")
-    Page<ProductResponse> findByDanhMuc(Pageable pageable,@Param("value") String value);
+    Page<Object[]>  findByDanhMuc(Pageable pageable,@Param("value") String value);
 
-    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
-            "(sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai)" +
+    @Query("SELECT sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai " +
             "FROM SanPham sp " +
             "JOIN sp.thuongHieu th " +
             "JOIN sp.kieuDe kd " +
@@ -153,11 +144,10 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "AND xx.trangThai = 1 " +
             "AND dm.trangThai = 1 " +
             "AND sp.tenSanPham = :value OR sp.maSanPham = : value")
-    Page<ProductResponse> findByNameOrCode(Pageable pageable,@Param("value") String value);
+    Page<Object[]> findByNameOrCode(Pageable pageable,@Param("value") String value);
 
 
-    @Query(value = "SELECT new com.example.duantotnghiep.response.ProductResponse" +
-            "(sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai) " +
+    @Query("SELECT sp.id, i.tenImage, sp.maSanPham, sp.tenSanPham, sp.giaBan, sp.ngayTao, sp.trangThai " +
             "FROM SanPham sp " +
             "JOIN sp.thuongHieu th " +
             "JOIN sp.kieuDe kd " +
@@ -170,7 +160,7 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "AND kd.trangThai = 1 " +
             "AND xx.trangThai = 1 " +
             "AND sp.trangThai = :status")
-    Page<ProductResponse> findByStatus(Pageable pageable, @Param("status") Integer status);
+    Page<Object[]>  findByStatus(Pageable pageable, @Param("status") Integer status);
 
     SanPham findByTenSanPham(String name);
 
