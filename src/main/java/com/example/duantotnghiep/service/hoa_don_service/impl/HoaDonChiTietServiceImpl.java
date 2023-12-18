@@ -313,7 +313,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public MessageResponse comfirmStatusHuyDon(UUID idHoaDon, TrangThaiHoaDonRequest request, String username) {
+    public MessageResponse comfirmStatusHuyDon(UUID idHoaDon, TrangThaiHoaDonRequest request, String username) throws IOException, CsvValidationException {
         TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).get();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         HoaDon hoaDon = hoaDonRepository.findById(idHoaDon).get();
@@ -329,7 +329,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setUsername(taiKhoan.getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu(request.getGhiChu());
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
-
+        auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(),  hoaDon.getMa(), "Nhân viên hủy hóa đơn", hoaDon.getMa(), "","", "", "");
         for (HoaDonChiTiet x : hoaDon.getHoaDonChiTietList()) {
             SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(x.getSanPhamChiTiet().getId()).get();
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + x.getSoLuong());

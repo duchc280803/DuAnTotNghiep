@@ -166,7 +166,7 @@ public class HoaDonChiTietController {
             @PathVariable("id") UUID id,
             @RequestBody TrangThaiHoaDonRequest trangThaiHoaDonRequest,
             Principal principal
-    ) {
+    ) throws IOException, CsvValidationException {
         return new ResponseEntity<>(hoaDonChiTietService.comfirmStatusHuyDon(id, trangThaiHoaDonRequest, principal.getName()), HttpStatus.OK);
     }
 
