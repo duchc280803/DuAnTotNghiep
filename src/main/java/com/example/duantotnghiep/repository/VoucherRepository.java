@@ -22,7 +22,7 @@ public interface VoucherRepository extends JpaRepository<Voucher, UUID> {
 
         @Query("SELECT v FROM Voucher v " +
                         "WHERE (:maVoucher is null or v.maVoucher = :maVoucher) " +
-                        "AND (:tenVoucher is null or v.tenVoucher LIKE %:tenVoucher%) " +
+                        "AND (:tenVoucher is null or v.tenVoucher LIKE :tenVoucher%) " +
                         "AND (:trangThai is null or v.trangThai = :trangThai) " +
                         "ORDER BY  v.ngayTao DESC")
         Page<Voucher> listVoucher(@Param("maVoucher") String maVoucher, @Param("tenVoucher") String tenVoucher,

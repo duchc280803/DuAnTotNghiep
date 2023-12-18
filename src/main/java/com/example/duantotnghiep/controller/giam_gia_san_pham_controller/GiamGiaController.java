@@ -31,11 +31,12 @@ public class GiamGiaController {
             @RequestParam(name = "trangThai", required = false) Integer trangThai,
             @RequestParam(name = "maGiamGia", required = false) String maGiamGia,
             @RequestParam(name = "tenGiamGia", required = false) String tenGiamGia,
+            @RequestParam(name = "tenSanPham", required = false) String tenSanPham,
             @RequestParam(name = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
             @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
             @RequestParam(name = "pageSize", defaultValue = "20") Integer pageSize
     ) {
-        return new ResponseEntity<>(Service.getAll(trangThai, maGiamGia, tenGiamGia, startDate, pageNumber, pageSize), HttpStatus.OK);
+        return new ResponseEntity<>(Service.getAll(trangThai, maGiamGia, tenGiamGia,tenSanPham, startDate, pageNumber, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/check-ten-giam-gia")
@@ -56,17 +57,15 @@ public class GiamGiaController {
                 MessageResponse.builder().message("Cập nhật thông tin giảm giá thành công.").build(), HttpStatus.OK);
     }
 
-    @GetMapping("updateStatus/{id}")
-    public ResponseEntity<MessageResponse> updateGiamGiabyStaus(@PathVariable UUID id) {
-        Service.updateGiamGiaStaus(id);
-        return new ResponseEntity<>(MessageResponse.builder().message("Cập nhật giảm giá thành công.").build(),
-                HttpStatus.OK);
+    @GetMapping("updateStatus")
+    public ResponseEntity<MessageResponse> updateVoucherStatus() {
+        return new ResponseEntity<>(Service.checkAndSetStatus(), HttpStatus.OK);
     }
 
     // search by
     @GetMapping("searchString_bykey")
     public ResponseEntity<List<GiamGiaResponse>> findByKhachHangByIdHoaDon(@RequestParam(name = "key") String key) {
-        return new ResponseEntity<>(Service.findbyValueString(key), HttpStatus.OK);
+        return null;
     }
 
     @GetMapping("showproduct")
@@ -101,7 +100,12 @@ public class GiamGiaController {
     public ResponseEntity<List<ProductDetailResponse>> findProduct(@RequestParam(name = "key") String key) {
         return new ResponseEntity<>(Service.findbyProduct(key), HttpStatus.OK);
     }
-
+    @GetMapping("updateStatus/{id}")
+    public ResponseEntity<MessageResponse> updateVoucherbyStaus(@PathVariable UUID id) {
+        Service.updateGiamGiaStaus(id);
+        return new ResponseEntity<>(MessageResponse.builder().message("Cập nhật voucher thành công.").build(),
+                HttpStatus.OK);
+    }
     @GetMapping("searchStatus_bykey")
     public ResponseEntity<List<GiamGiaResponse>> findByKha(@RequestParam(name = "key") Integer key) {
         return new ResponseEntity<>(Service.findbyValueStatus(key), HttpStatus.OK);
@@ -116,13 +120,13 @@ public class GiamGiaController {
     @GetMapping("checkTenGiamGia")
     public ResponseEntity<Boolean> checkTenGiamGia(@RequestParam(name = "tenGiamGia") String tenGiamGia) {
         boolean exists = Service.isTenGiamGiaExists(tenGiamGia);
-        return new ResponseEntity<>(exists, HttpStatus.OK);
+        return null;
     }
 
     @GetMapping("check-product-record-count")
     public ResponseEntity<Boolean> checkProductRecordCount(@RequestParam(name = "idsanpham") UUID productId) {
         boolean result = Service.checkProductRecordCount(productId);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return null;
     }
 
     @GetMapping("gia")

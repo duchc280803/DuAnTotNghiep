@@ -29,12 +29,14 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
                 "LEFT JOIN spgg.sanPham sp " +
                 "WHERE (:maGiamGia is null or gg.maGiamGia LIKE %:maGiamGia%) " +
                 "AND (:tenGiamGia is null or gg.tenGiamGia LIKE %:tenGiamGia%) " +
+                "AND (:tenSanPham is null or sp.tenSanPham LIKE %:tenSanPham%) " +
                 "AND (:trangThai is null or gg.trangThai = :trangThai) " +
                 "AND (:startDate is null or gg.ngayBatDau = :startDate) " +
                 "ORDER BY gg.trangThai ASC , gg.ngayBatDau DESC")
         Page<GiamGiaResponse> listGiamGia(
                 @Param("maGiamGia") String maGiamGia,
                 @Param("tenGiamGia") String tenGiamGia,
+                @Param("tenSanPham") String tenSanPham,
                 @Param("trangThai") Integer trangThai,
                 @Param("startDate") Date startDate,
                 Pageable pageable);
