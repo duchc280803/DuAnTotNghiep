@@ -285,7 +285,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật số lượng", hoaDon.get().getMa(),
                 "Mã sản phẩm: " + hoaDonChiTietOptional.get().getSanPhamChiTiet().getSanPham().getMaSanPham(),
                 "Tên sản phẩm: " + hoaDonChiTietOptional.get().getSanPhamChiTiet().getSanPham().getTenSanPham(),
-                "Số lượng: " + soLuongMoi + "", "");
+                "Số lượng: "+ soLuongMoi + "", "");
         auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật voucher", hoaDon.get().getMa(), selectedVoucher == null ? "Không áp dụng" : "Mã voucher:  " + selectedVoucher.getMaVoucher(),
                 selectedVoucher == null ? "" : "Giá trị giảm: " + FormatNumber.formatBigDecimal(new BigDecimal(maxDiscount)) + "đ", "", "");
     }
@@ -432,7 +432,6 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         applyVoucherAndPayment(hoaDon, voucher, tongTienSauKhiDaTraHang);
 
         BigDecimal tienSauKhiTra = tongTienSauKhiDaTraHang.subtract(hoaDon.getTienGiamGia());
-        BigDecimal thanhTien1 = hoaDon.getThanhTien().subtract(hoaDon.getThanhTien());
         // Hoàn tiền
         LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
         loaiHinhThucThanhToan.setId(UUID.randomUUID());
@@ -442,7 +441,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hinhThucThanhToan.setId(UUID.randomUUID());
         hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
         hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
-        hinhThucThanhToan.setTongSoTien(thanhTien1.subtract(tienSauKhiTra));
+        hinhThucThanhToan.setTongSoTien(hoaDon.getThanhTien().subtract(tienSauKhiTra));
         hinhThucThanhToan.setGhiChu("Nhân viên hoàn tiền cho khách");
         hinhThucThanhToan.setPhuongThucThanhToan(1);
         hinhThucThanhToan.setCodeTransaction(VnPayConfigTaiQuay.getRandomNumber(8));
