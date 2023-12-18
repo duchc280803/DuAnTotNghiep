@@ -102,6 +102,11 @@ public class SanPhamServiceImpl implements SanPhamService {
         return pageList.getContent();
     }
 
+    public SanPham findByName(String name) {
+        SanPham sanPham = sanPhamRepository.findByTenSanPham(name);
+        return sanPham;
+    }
+
     @Override
     public SanPham createProduct(ProductRequest productRequest, String username)
             throws CsvValidationException, IOException {
@@ -118,7 +123,6 @@ public class SanPhamServiceImpl implements SanPhamService {
         sanPham.setTenSanPham(productRequest.getProductName());
         sanPham.setMoTa(productRequest.getDescribe());
         sanPham.setGiaBan(productRequest.getPrice());
-        sanPham.setBaoHanh(productRequest.getBaoHang());
         sanPham.setDanhMuc(danhMuc.get());
         sanPham.setThuongHieu(thuongHieu.get());
         sanPham.setKieuDe(kieuDe.get());
@@ -133,13 +137,10 @@ public class SanPhamServiceImpl implements SanPhamService {
         auditLogService.writeAuditLogSanPham("Thêm Mới sản phẩm", username, taiKhoanUser.getEmail(), null,
                 "Mã : " + productRequest.getMaSanPham() + "," + "Tên :" + productRequest.getProductName()
                         + "," + "Giá bán : " + productRequest.getPrice() + ","
-                        + "Bảo Hành : " + productRequest.getBaoHang() + "," + "Mô Tả : "
-                        + productRequest.getDescribe() + "," + "Thương Hiệu: " + thuongHieuInfo
+                        + "Mô Tả : " + productRequest.getDescribe() + "," + "Thương Hiệu: " + thuongHieuInfo
                         + "," + "Danh Mục: " + danhMucInfo + "," + "Kiểu Đế: " + kieuDeInfo
                         + "," + "Xuất Xứ: " + xuatXuInfo,
                 null, null, null);
-
-
         return sanPham;
     }
 
@@ -156,7 +157,6 @@ public class SanPhamServiceImpl implements SanPhamService {
         sanPham.setTenSanPham(productRequest.getProductName());
         sanPham.setMoTa(productRequest.getDescribe());
         sanPham.setGiaBan(productRequest.getPrice());
-        sanPham.setBaoHanh(productRequest.getBaoHang());
         sanPham.setDanhMuc(danhMuc.get());
         sanPham.setThuongHieu(thuongHieu.get());
         sanPham.setKieuDe(kieuDe.get());

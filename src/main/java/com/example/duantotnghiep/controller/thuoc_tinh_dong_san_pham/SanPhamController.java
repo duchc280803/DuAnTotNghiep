@@ -109,4 +109,9 @@ public class SanPhamController {
         return new ResponseEntity<>(sanPhamService.updateProduct(productRequest, id), HttpStatus.CREATED);
     }
 
+    @GetMapping("findbyname/{name}")
+    public ResponseEntity<SanPham> findByName(@PathVariable("name") String name) {
+        return new ResponseEntity<>(sanPhamService.findByName(name), HttpStatus.OK);
+    }
+
 }
