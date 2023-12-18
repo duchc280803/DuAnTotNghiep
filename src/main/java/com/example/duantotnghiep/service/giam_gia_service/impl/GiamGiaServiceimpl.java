@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -39,10 +41,10 @@ public class GiamGiaServiceimpl implements GiamGiaService {
     private SpGiamGiaRepository spGiamGiaRepository;
 
     @Override
-    public List<GiamGiaResponse> getAll(Integer trangThai, String maGiamGia, String tenGiamGia, Date startDate,
+    public List<GiamGiaResponse> getAll(Integer trangThai, String maGiamGia, String tenGiamGia, String tenSanPham, Date startDate,
             Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<GiamGiaResponse> pageList = Repository.listGiamGia(maGiamGia, tenGiamGia, trangThai, startDate, pageable);
+        Page<GiamGiaResponse> pageList = Repository.listGiamGia(maGiamGia, tenGiamGia, tenSanPham,trangThai, startDate, pageable);
         return pageList.getContent();
     }
 
@@ -166,10 +168,10 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                             + updateGiamGiaRequest.getNgayKetThuc() + "," + "sản phẩm :"
                             + updateGiamGiaRequest.getIdsanpham(),
                     null, null, null);
-            return MessageResponse.builder().message("Cập nhật Thành Công").build();
+            return null;
         } else {
             // Handle the case where the discount is not found
-            return MessageResponse.builder().message("Không tìm thấy giảm giá").build();
+            return null;
         }
     }
 
@@ -183,18 +185,24 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                 // = ngày hôm nay
                 existingGiamGia.setTrangThai(1);
                 Date currentDate = new Date();
+                LocalDate tomorrow = LocalDate.now().plusDays(1);
+
+                // Set giờ, phút, giây là 00:00:00
+                LocalDateTime midnight = tomorrow.atStartOfDay();
+
+                // Chuyển đổi thành kiểu Date
+                Date midnightDate = Date.from(midnight.atZone(ZoneId.systemDefault()).toInstant());
                 if (existingGiamGia.getNgayKetThuc() != null && existingGiamGia.getNgayKetThuc().before(currentDate)) {
-                    existingGiamGia.setNgayKetThuc(currentDate);
+                    existingGiamGia.setNgayKetThuc(midnightDate);
                 }
-                return MessageResponse.builder().message("Cập nhật Thành Công").build();
+                return null;
             } else {
                 existingGiamGia.setTrangThai(2);
                 // TrangThai không phải là 2, có thể xử lý thêm theo nhu cầu của bạn
-                return MessageResponse.builder().message("Trạng thái không hợp lệ hoặc đã được cập nhật trước đó")
-                        .build();
+                return null;
             }
         } else {
-            return MessageResponse.builder().message("Không tìm thấy khuyến mãi").build();
+            return null;
         }
     }
 
@@ -245,7 +253,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                 }
             }
         }
-        return MessageResponse.builder().message("Ok").build();
+        return null;
     }
 
     @Override
@@ -375,7 +383,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
                         + createKhachRequest.getNgayKetThuc() + "," + "sản phẩm :" + createKhachRequest.getIdsanpham(),
                 null, null, null);
         // Trả về thông báo thành công
-        return MessageResponse.builder().message("Thêm Thành Công").build();
+        return null;
     }
 
     @Override

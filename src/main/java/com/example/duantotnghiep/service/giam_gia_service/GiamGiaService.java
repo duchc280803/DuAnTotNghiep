@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public interface GiamGiaService {
 
-        List<GiamGiaResponse> getAll(Integer trangThai, String maGiamGia, String tenGiamGia, Date startDate, Integer pageNumber, Integer pageSize) ;
+        List<GiamGiaResponse> getAll(Integer trangThai, String maGiamGia, String tenGiamGia, String tenSanPham,Date startDate, Integer pageNumber, Integer pageSize) ;
 
         List<ProductDetailResponse> getAllProduct( String tenGiamGia, Integer pageNumber, Integer pageSize) ;
     List<GiamGiaResponse> findbyValueString(String key);
