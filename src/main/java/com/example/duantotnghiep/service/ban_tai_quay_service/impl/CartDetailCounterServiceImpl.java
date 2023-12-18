@@ -1,6 +1,7 @@
 package com.example.duantotnghiep.service.ban_tai_quay_service.impl;
 
 import com.example.duantotnghiep.entity.*;
+import com.example.duantotnghiep.enums.StatusOrderEnums;
 import com.example.duantotnghiep.mapper.ChiTietSanPhamCustom;
 import com.example.duantotnghiep.mapper.GioHangCustom;
 import com.example.duantotnghiep.repository.*;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -49,11 +51,24 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
     @Autowired
     private AuditLogService auditLogService;
 
+    @Autowired
+    private TrangThaiHoaDonRepository trangThaiHoaDonRepository;
+
     @Override
     public MessageResponse themSanPhamVaoGioHangChiTiet(UUID idGioHang, UUID idSanPhamChiTiet, int soLuong, UUID idHoaDon, String username) throws IOException, CsvValidationException {
         Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByUsername(username);
         GioHang gioHang = gioHangRepository.findByGioHang(idGioHang);
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
+
+        TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        trangThaiHoaDon.setId(UUID.randomUUID());
+        trangThaiHoaDon.setHoaDon(hoaDon.get());
+        trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
+        trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setUsername(taiKhoan.get().getMaTaiKhoan());
+        trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
+        trangThaiHoaDonRepository.save(trangThaiHoaDon);
 
         if (gioHang == null) {
             return MessageResponse.builder().message("Giỏ Hàng Null").build();
@@ -123,6 +138,17 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         GioHang gioHang = gioHangRepository.findByGioHang(idGioHang);
         Optional<TaiKhoan> taiKhoanHoaDon = taiKhoanRepository.findById(gioHang.getTaiKhoan().getId());
         Optional<HoaDon> hoaDon = hoaDonRepository.findByTaiKhoanKhachHang(taiKhoanHoaDon.get());
+
+        TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        trangThaiHoaDon.setId(UUID.randomUUID());
+        trangThaiHoaDon.setHoaDon(hoaDon.get());
+        trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
+        trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setUsername(taiKhoan.get().getMaTaiKhoan());
+        trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
+        trangThaiHoaDonRepository.save(trangThaiHoaDon);
+
         if (gioHang == null) {
             return MessageResponse.builder().message("Giỏ Hàng Null").build();
         }
@@ -242,6 +268,16 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         Optional<TaiKhoan> khachHang = taiKhoanRepository.findById(gioHang.getTaiKhoan().getId());
         Optional<HoaDon> hoaDon = hoaDonRepository.findByTaiKhoanKhachHang(khachHang.get());
 
+        TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        trangThaiHoaDon.setId(UUID.randomUUID());
+        trangThaiHoaDon.setHoaDon(hoaDon.get());
+        trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
+        trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setUsername(taiKhoan.get().getMaTaiKhoan());
+        trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
+        trangThaiHoaDonRepository.save(trangThaiHoaDon);
+
         sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + gioHangChiTiet.getSoLuong());
         chiTietSanPhamRepository.save(sanPhamChiTiet);
         gioHangChiTietRepository.deleteById(id);
@@ -357,6 +393,16 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         Optional<TaiKhoan> taiKhoanHoaDon = taiKhoanRepository.findById(gioHang.getTaiKhoan().getId());
         Optional<HoaDon> hoaDon = hoaDonRepository.findByTaiKhoanKhachHang(taiKhoanHoaDon.get());
         Optional<SanPhamChiTiet> sanPhamChiTiet = chiTietSanPhamRepository.findById(optionalGioHangChiTiet.get().getSanPhamChiTiet().getId());
+
+        TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        trangThaiHoaDon.setId(UUID.randomUUID());
+        trangThaiHoaDon.setHoaDon(hoaDon.get());
+        trangThaiHoaDon.setTrangThai(StatusOrderEnums.CHINH_SUA_DON_HANG.getValue());
+        trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setUsername(taiKhoan.get().getMaTaiKhoan());
+        trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
+        trangThaiHoaDonRepository.save(trangThaiHoaDon);
 
         if (optionalGioHangChiTiet.isPresent()) {
             optionalGioHangChiTiet.get().setSoLuong(soLuongMoi);
