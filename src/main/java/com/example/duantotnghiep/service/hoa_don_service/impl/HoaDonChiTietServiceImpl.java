@@ -667,11 +667,14 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public MessageResponse updateNhanVien(UUID idHoaDon, UUID idNhanVien) {
+    public MessageResponse updateNhanVien(UUID idHoaDon, UUID idNhanVien, String username) throws IOException, CsvValidationException {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(idHoaDon);
         Optional<TaiKhoan> nhanVien = khachHangRepository.findById(idNhanVien);
+        Optional<TaiKhoan> taiKhoan = taiKhoanRepository.findByUsername(username);
         hoaDon.get().setTaiKhoanNhanVien(nhanVien.get());
         hoaDonRepository.save(hoaDon.get());
+        auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật nhân viên cho hóa đơn", hoaDon.get().getMa(), "",
+                "", "", "");
         return MessageResponse.builder().message("Update thành công").build();
     }
 

@@ -45,7 +45,7 @@ public interface HoaDonChiTietService {
 
     List<NhanVienOrderResponse> taiKhoanList();
 
-    MessageResponse updateNhanVien(UUID idHoaDon, UUID idNhanVien);
+    MessageResponse updateNhanVien(UUID idHoaDon, UUID idNhanVien, String username) throws CsvValidationException, IOException;
 
     BigDecimal tongTienHang(UUID id);
 
