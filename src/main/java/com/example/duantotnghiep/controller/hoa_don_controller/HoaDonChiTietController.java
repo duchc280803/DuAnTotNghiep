@@ -164,16 +164,10 @@ public class HoaDonChiTietController {
     @PutMapping("huy-don/{id}")
     public ResponseEntity<MessageResponse> comfirmStatusHuyDon(
             @PathVariable("id") UUID id,
-            @RequestBody TrangThaiHoaDonRequest trangThaiHoaDonRequest
-    ) {
-        return new ResponseEntity<>(hoaDonChiTietService.comfirmStatusHuyDon(id, trangThaiHoaDonRequest), HttpStatus.OK);
+            @RequestBody TrangThaiHoaDonRequest trangThaiHoaDonRequest,
+            Principal principal
+    ) throws IOException, CsvValidationException {
+        return new ResponseEntity<>(hoaDonChiTietService.comfirmStatusHuyDon(id, trangThaiHoaDonRequest, principal.getName()), HttpStatus.OK);
     }
 
-    @PutMapping("roll-back/{id}")
-    public ResponseEntity<MessageResponse> rollBackOrder(
-            @PathVariable("id") UUID id,
-            @RequestBody TrangThaiHoaDonRequest trangThaiHoaDonRequest
-    ) {
-        return new ResponseEntity<>(hoaDonChiTietService.comfirmStatusHuyDon(id, trangThaiHoaDonRequest), HttpStatus.OK);
-    }
 }

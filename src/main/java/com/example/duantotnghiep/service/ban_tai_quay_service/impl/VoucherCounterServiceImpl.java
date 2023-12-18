@@ -78,6 +78,7 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
                 hoaDon.setVoucher(voucher);
                 hoaDon.setTienGiamGia(new BigDecimal(voucher.getGiaTriGiam()));
             }
+            voucher.setSoLuongDung(voucher.getSoLuongDung() + 1);
             auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), optionalHoaDon.get().getMa(), "Cập nhận voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + FormatNumber.formatBigDecimal(new BigDecimal(voucher.getGiaTriGiam())) + "đ", "", "");
             hoaDonRepository.save(hoaDon);
             return MessageResponse.builder().message("Cập nhật thành công").build();

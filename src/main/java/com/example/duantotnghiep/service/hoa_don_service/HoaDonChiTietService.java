@@ -51,11 +51,9 @@ public interface HoaDonChiTietService {
 
     MessageResponse createTransaction(UUID idHoaDon, UUID id, TransactionRequest transactionRequest, String username) throws CsvValidationException, IOException;
 
-    MessageResponse comfirmStatusHuyDon(UUID idHoaDon, TrangThaiHoaDonRequest request);
+    MessageResponse comfirmStatusHuyDon(UUID idHoaDon, TrangThaiHoaDonRequest request, String username) throws IOException, CsvValidationException;
 
     MessageResponse rollBackOrder(UUID idHoaDon, TrangThaiHoaDonRequest request);
-
-    void savePaymentDetails(HoaDon hoaDon, BigDecimal tongTienSauTra);
 
     void applyVoucherAndPayment(HoaDon hoaDon, Voucher voucher, BigDecimal ktVoucher);
 

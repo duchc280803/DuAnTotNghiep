@@ -81,6 +81,8 @@ public class OrderCounterServiceImpl implements OrderCounterService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private VoucherRepository voucherRepository;
 
     @Override
     @Transactional
@@ -125,6 +127,7 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         trangThaiHoaDon.setThoiGian(timestamp);
         trangThaiHoaDon.setGhiChu("Nhân viên tạo đơn cho khách");
         trangThaiHoaDon.setHoaDon(hoaDon);
+        trangThaiHoaDon.setUsername(findByNhanVien.get().getUsername());
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
         auditLogService.writeAuditLogHoadon(findByNhanVien.get().getMaTaiKhoan(), hoaDon.getMa(), "Nhân viên tạo hóa đơn", hoaDon.getMa(), "", "", "", "");
         return OrderCounterCResponse.builder().id(hoaDon.getId()).idKhach(taiKhoan.getId()).build();
@@ -174,6 +177,11 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         hoaDon.get().setSdtNguoiNhan(hoaDonThanhToanRequest.getSoDienThoai());
         hoaDon.get().setDiaChi(hoaDonThanhToanRequest.getDiaChi());
         hoaDon.get().setTrangThai(5);
+        Voucher voucher = voucherRepository.findById(hoaDon.get().getVoucher().getId()).get();
+        if (voucher != null) {
+            voucher.setSoLuongDung(voucher.getSoLuongDung() + 1);
+            voucherRepository.save(voucher);
+        }
         hoaDonRepository.save(hoaDon.get());
 
         auditLogService.writeAuditLogHoadon(findByNhanVien.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Xác nhận thanh toán hóa đơn tại quầy", hoaDon.get().getMa(),
@@ -237,6 +245,11 @@ public class OrderCounterServiceImpl implements OrderCounterService {
                 "Tên người nhận: " + hoaDonGiaoThanhToanRequest.getHoTen(),
                 "SĐT: " + hoaDonGiaoThanhToanRequest.getSoDienThoai(),
                 "Địa chỉ: " + hoaDonGiaoThanhToanRequest.getDiaChi(), "Phí vận chuyển: " + FormatNumber.formatBigDecimal(hoaDonGiaoThanhToanRequest.getTienGiao()) + "đ - Tổng tiền: " + FormatNumber.formatBigDecimal(hoaDonGiaoThanhToanRequest.getTongTien()) + "đ");
+        Voucher voucher = voucherRepository.findById(hoaDon.get().getVoucher().getId()).get();
+        if (voucher != null) {
+            voucher.setSoLuongDung(voucher.getSoLuongDung() + 1);
+            voucherRepository.save(voucher);
+        }
         hoaDonRepository.save(hoaDon.get());
 
         for (UUID idGioHangChiTiet : hoaDonGiaoThanhToanRequest.getGioHangChiTietList()) {
@@ -300,10 +313,10 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         diaChi.setTaiKhoan(taiKhoan);
         diaChi.setTrangThai(1);
         diaChiRepository.save(diaChi);
-        if (sendEmail) {
-            SendConfirmationEmail.sendConfirmationEmailStatic(taiKhoan.getEmail(), taiKhoan.getUsername(), converted, javaMailSender);
-            System.out.println("gửi mail");
-        }
+//        if (sendEmail) {
+//            SendConfirmationEmail.sendConfirmationEmailStatic(taiKhoan.getEmail(), taiKhoan.getUsername(), converted, javaMailSender);
+//            System.out.println("gửi mail");
+//        }
         return MessageResponse.builder().message("Thanh Toán Thành Công").build();
     }
 
@@ -319,7 +332,18 @@ public class OrderCounterServiceImpl implements OrderCounterService {
     @Override
     public MessageResponse removeOrder(UUID id, String username) throws IOException, CsvValidationException {
         HoaDon hoaDon = hoaDonRepository.findById(id).get();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<TaiKhoan> findByNhanVien = taiKhoanRepository.findByUsername(username);
+
+        TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
+        trangThaiHoaDon.setId(UUID.randomUUID());
+        trangThaiHoaDon.setTrangThai(StatusOrderDetailEnums.DA_HUY.getValue());
+        trangThaiHoaDon.setThoiGian(timestamp);
+        trangThaiHoaDon.setUsername(hoaDon.getTaiKhoanNhanVien().getMaTaiKhoan());
+        trangThaiHoaDon.setGhiChu("Nhân viên hủy đơn hàng");
+        trangThaiHoaDon.setHoaDon(hoaDon);
+        trangThaiHoaDonRepository.save(trangThaiHoaDon);
+
         auditLogService.writeAuditLogHoadon(findByNhanVien.get().getMaTaiKhoan(), hoaDon.getMa(), "Nhân viên hủy hóa đơn", hoaDon.getMa(), "", "", "", "");
         IdGioHangResponse idGioHangResponse = hoaDonRepository.showIdGioHangCt(id);
         if (idGioHangResponse == null) {
