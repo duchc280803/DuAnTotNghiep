@@ -152,8 +152,9 @@ public class HoaDonChiTietController {
     @PutMapping("update-nhan-vien")
     public ResponseEntity<MessageResponse> updateNhanVien(
             @RequestParam(name = "idHoaDon") UUID idHoaDon,
-            @RequestParam(name = "idNhanVien") UUID idNhanVien) {
-        return new ResponseEntity<>(hoaDonChiTietService.updateNhanVien(idHoaDon, idNhanVien), HttpStatus.OK);
+            @RequestParam(name = "idNhanVien") UUID idNhanVien,
+            Principal principal) throws IOException, CsvValidationException {
+        return new ResponseEntity<>(hoaDonChiTietService.updateNhanVien(idHoaDon, idNhanVien, principal.getName()), HttpStatus.OK);
     }
 
     @GetMapping("tong-tien-don-hang/{id}")
