@@ -312,10 +312,10 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         diaChi.setTaiKhoan(taiKhoan);
         diaChi.setTrangThai(1);
         diaChiRepository.save(diaChi);
-        if (sendEmail) {
-            SendConfirmationEmail.sendConfirmationEmailStatic(taiKhoan.getEmail(), taiKhoan.getUsername(), converted, javaMailSender);
-            System.out.println("gửi mail");
-        }
+//        if (sendEmail) {
+//            SendConfirmationEmail.sendConfirmationEmailStatic(taiKhoan.getEmail(), taiKhoan.getUsername(), converted, javaMailSender);
+//            System.out.println("gửi mail");
+//        }
         return MessageResponse.builder().message("Thanh Toán Thành Công").build();
     }
 
