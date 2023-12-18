@@ -31,10 +31,6 @@ public class ProductRequest {
     @DecimalMin(value = "0.1", inclusive = false, message = "Giá sản phẩm phải lớn hơn 0")
     private BigDecimal price;
 
-    @NotNull(message = "Bảo hành không được để trống")
-    @Min(value = 0, message = "Bảo hành không được âm")
-    private Integer baoHang;
-
     @NotNull(message = "Vui lòng chọn kiểu đế")
     private UUID idKieuDe;
 

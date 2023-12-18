@@ -172,6 +172,8 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
             "AND sp.trangThai = :status")
     Page<ProductResponse> findByStatus(Pageable pageable, @Param("status") Integer status);
 
+    SanPham findByTenSanPham(String name);
+
     @Query(value = "SELECT TOP 8 sp.id, sp.tensanpham, im.tenimage, sp.giaban " +
             "FROM sanpham sp " +
             "JOIN sanphamchitiet spct ON sp.id = spct.idsanpham " +
