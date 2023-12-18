@@ -228,7 +228,7 @@ public class HoaDonServiceImpl_not_login implements HoaDonService_not_login {
             }
 
         }//End step 6
-        SendEmailOrder.sendEmailOrder(hoaDon, javaMailSender);
+//        SendEmailOrder.sendEmailOrder(hoaDon, javaMailSender);
         return MessageResponse.builder().message("Thanh Toán Thành Công").build();
 
     }
