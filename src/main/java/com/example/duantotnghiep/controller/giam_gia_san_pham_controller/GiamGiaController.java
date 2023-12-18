@@ -66,7 +66,7 @@ public class GiamGiaController {
     // search by
     @GetMapping("searchString_bykey")
     public ResponseEntity<List<GiamGiaResponse>> findByKhachHangByIdHoaDon(@RequestParam(name = "key") String key) {
-        return new ResponseEntity<>(Service.findbyValueString(key), HttpStatus.OK);
+        return null;
     }
 
     @GetMapping("showproduct")
@@ -116,13 +116,13 @@ public class GiamGiaController {
     @GetMapping("checkTenGiamGia")
     public ResponseEntity<Boolean> checkTenGiamGia(@RequestParam(name = "tenGiamGia") String tenGiamGia) {
         boolean exists = Service.isTenGiamGiaExists(tenGiamGia);
-        return new ResponseEntity<>(exists, HttpStatus.OK);
+        return null;
     }
 
     @GetMapping("check-product-record-count")
     public ResponseEntity<Boolean> checkProductRecordCount(@RequestParam(name = "idsanpham") UUID productId) {
         boolean result = Service.checkProductRecordCount(productId);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return null;
     }
 
     @GetMapping("gia")

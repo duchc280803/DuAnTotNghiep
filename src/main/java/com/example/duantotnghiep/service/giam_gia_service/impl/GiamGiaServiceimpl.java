@@ -200,7 +200,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
     @Override
     public List<GiamGiaResponse> findbyValueString(String key) {
-        return Repository.findbyValueString(key);
+        return null;
     }
 
     @Override
@@ -221,12 +221,12 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
     @Override
     public List<GiamGiaResponse> findbyValueDate(Date key1) {
-        return Repository.findbyValueDate(key1);
+        return null;
     }
 
     @Override
     public List<GiamGiaResponse> findbyValueStatus(Integer key) {
-        return Repository.findbyValueStatus(key);
+        return null;
     }
 
     @Override
@@ -386,7 +386,7 @@ public class GiamGiaServiceimpl implements GiamGiaService {
 
     @Override
     public boolean isTenGiamGiaExists(String tenGiamGia) {
-        return Repository.existsByGiamGia_TenGiamGia(tenGiamGia);
+        return false;
     }
 
     @Override
