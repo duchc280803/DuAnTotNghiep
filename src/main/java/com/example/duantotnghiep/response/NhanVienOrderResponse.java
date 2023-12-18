@@ -1,12 +1,21 @@
 package com.example.duantotnghiep.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.UUID;
 
-public interface NhanVienOrderResponse {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class NhanVienOrderResponse {
 
-    UUID getId();
+    UUID id;
 
-    String getFullName();
+    String fullName;
 
-    String getMaTaiKhoan();
+    String maTaiKhoan;
 }

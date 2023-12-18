@@ -48,7 +48,10 @@ public interface KhachHangRepository extends JpaRepository<TaiKhoan, UUID> {
     @Query("SELECT tk FROM TaiKhoan tk WHERE tk.loaiTaiKhoan.name = ('USER') ")
     List<TaiKhoan> listKhachHang();
 
-    @Query(value = "select taikhoan.id, taikhoan.fullname, taikhoan.mataikhoan from taikhoan where idloaitaikhoan = '8FBBB1DF-1A27-4378-8498-D547FF4EC072'\n", nativeQuery = true)
+//    @Query(value = "select taikhoan.id, taikhoan.fullname, taikhoan.mataikhoan from taikhoan where idloaitaikhoan = '8FBBB1DF-1A27-4378-8498-D547FF4EC072'\n", nativeQuery = true)
+
+    @Query("SELECT new com.example.duantotnghiep.response.NhanVienOrderResponse(tk.id, tk.name, tk.maTaiKhoan) " +
+            "FROM TaiKhoan tk WHERE tk.loaiTaiKhoan.name = ('STAFF') AND tk.trangThai = 1")
     List<NhanVienOrderResponse> listNv();
 
     List<TaiKhoan> findBySoDienThoai(String soDienThoai);
