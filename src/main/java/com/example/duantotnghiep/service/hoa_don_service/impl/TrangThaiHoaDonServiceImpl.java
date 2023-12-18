@@ -148,7 +148,6 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
         Optional<HoaDon> hoaDon = hoaDonRepository.findById(hoadonId);
 
         if (hoaDon.isPresent()) {
-            hoaDon.get().setTienShip(request.getTienShip());
             hoaDon.get().setDiaChi(request.getDiaChi());
             hoaDon.get().setSdtNguoiNhan(request.getSdtClient());
             hoaDon.get().setTenNguoiNhan(request.getHoVatenClient());
@@ -162,8 +161,14 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
 //                tongTien = tongTien.add(donGiaSauGiam.multiply(new BigDecimal(soLuong))).subtract(hoaDon.get().getTienGiamGia());
 //            }
 
-            hoaDon.get().setThanhTien(hoaDon.get().getThanhTien().subtract(request.getTienShip()));
-
+            if (hoaDon.get().getTienShip() == null) {
+                hoaDon.get().setThanhTien(hoaDon.get().getThanhTien().add(request.getTienShip()));
+            }
+            if (hoaDon.get().getTienShip() != null) {
+                BigDecimal tongTien = hoaDon.get().getThanhTien().subtract(hoaDon.get().getTienShip());
+                hoaDon.get().setThanhTien(tongTien.add(request.getTienShip()));
+            }
+            hoaDon.get().setTienShip(request.getTienShip());
             hoaDonRepository.save(hoaDon.get());
 
             TrangThaiHoaDon trangThaiHoaDon = new TrangThaiHoaDon();
