@@ -132,9 +132,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         }
         SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(idSanPhamChiTiet).get();
         HoaDonChiTiet hoaDonChiTiet = hoaDonChiTietRepository.findByHoaDonAndSanPhamChiTiet_Id(findByHoaDon.get(), idSanPhamChiTiet);
-
-
-        // Truyền vào hóa đơn chi tiết id hóa đơn và id sản phẩm chi tiết
+        System.out.printf("số lượng có sẵn" + sanPhamChiTiet.getSoLuong());
 
         if (hoaDonChiTiet != null) {
             hoaDonChiTiet.setSoLuong(hoaDonChiTiet.getSoLuong() + soLuong);
@@ -144,6 +142,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
                     "Mã sản phẩm: " + hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getMaSanPham(),
                     "Tên sản phẩm: " + hoaDonChiTiet.getSanPhamChiTiet().getSanPham().getTenSanPham(),
                     "Số lượng: " + soLuong, "");
+            System.out.printf("1" + (sanPhamChiTiet.getSoLuong() - soLuong));
         } else {
             hoaDonChiTiet = new HoaDonChiTiet();
             hoaDonChiTiet.setId(UUID.randomUUID());
@@ -153,14 +152,16 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
             hoaDonChiTiet.setDonGia(sanPhamChiTiet.getSanPham().getGiaBan());
             hoaDonChiTiet.setDonGiaSauGiam(sanPhamChiTiet.getSanPham().getGiaBan().subtract(new BigDecimal(getGiaGiamCuoiCung(sanPhamChiTiet.getSanPham().getId()))));
             hoaDonChiTiet.setTrangThai(1);
+            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - soLuong);
+            System.out.printf("2" + (sanPhamChiTiet.getSoLuong() - soLuong));
             auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(), findByHoaDon.get().getMa(), "Thêm sản phẩm", findByHoaDon.get().getMa(),
                     "Mã sản phẩm: " + sanPhamChiTiet.getSanPham().getMaSanPham(),
                     "Tên sản phẩm: " + sanPhamChiTiet.getSanPham().getTenSanPham(),
                     "Số lượng: " + soLuong + "", "");
         }
-
         chiTietSanPhamRepository.save(sanPhamChiTiet);
         hoaDonChiTietRepository.save(hoaDonChiTiet);
+
         BigDecimal tongTienDonGia = BigDecimal.ZERO;
         for (HoaDonChiTiet hdct : findByHoaDon.get().getHoaDonChiTietList()) {
             tongTienDonGia = tongTienDonGia.add(hdct.getDonGiaSauGiam().multiply(new BigDecimal(hdct.getSoLuong())));
@@ -174,8 +175,6 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setUsername(taiKhoan.getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu("Nhân viên sửa đơn cho khách");
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
-
-        chiTietSanPhamRepository.save(sanPhamChiTiet);
 
         BigDecimal tongTien = BigDecimal.ZERO;
         for (HoaDonChiTiet x : findByHoaDon.get().getHoaDonChiTietList()) {
@@ -219,10 +218,20 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     public void capNhatSoLuong(UUID idHoaDonChiTiet, int soLuongMoi, String username) throws IOException, CsvValidationException {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Optional<HoaDonChiTiet> hoaDonChiTietOptional = hoaDonChiTietRepository.findById(idHoaDonChiTiet);
+        SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(hoaDonChiTietOptional.get().getSanPhamChiTiet().getId()).get();
         TaiKhoan taiKhoan = taiKhoanRepository.findByUsername(username).orElse(null);
         if (hoaDonChiTietOptional.isPresent()) {
-            hoaDonChiTietOptional.get().setSoLuong(soLuongMoi);
-            hoaDonChiTietRepository.save(hoaDonChiTietOptional.get());
+            if (soLuongMoi > hoaDonChiTietOptional.get().getSoLuong()) {
+                hoaDonChiTietOptional.get().setSoLuong(soLuongMoi);
+                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - 1);
+                chiTietSanPhamRepository.save(sanPhamChiTiet);
+                hoaDonChiTietRepository.save(hoaDonChiTietOptional.get());
+            } else {
+                hoaDonChiTietOptional.get().setSoLuong(soLuongMoi);
+                sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + 1);
+                chiTietSanPhamRepository.save(sanPhamChiTiet);
+                hoaDonChiTietRepository.save(hoaDonChiTietOptional.get());
+            }
         } else {
             System.out.println("ID sản phẩm chi tiết không tồn tại");
         }
@@ -329,7 +338,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         trangThaiHoaDon.setUsername(taiKhoan.getMaTaiKhoan());
         trangThaiHoaDon.setGhiChu(request.getGhiChu());
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
-        auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(),  hoaDon.getMa(), "Nhân viên hủy hóa đơn", hoaDon.getMa(), "","", "", "");
+        auditLogService.writeAuditLogHoadon(taiKhoan.getMaTaiKhoan(), hoaDon.getMa(), "Nhân viên hủy hóa đơn", hoaDon.getMa(), "", "", "", "");
         for (HoaDonChiTiet x : hoaDon.getHoaDonChiTietList()) {
             SanPhamChiTiet sanPhamChiTiet = chiTietSanPhamRepository.findById(x.getSanPhamChiTiet().getId()).get();
             sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() + x.getSoLuong());

@@ -405,8 +405,14 @@ public class CartDetailCounterServiceImpl implements CartDetailCounterService {
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
 
         if (optionalGioHangChiTiet.isPresent()) {
-            optionalGioHangChiTiet.get().setSoLuong(soLuongMoi);
-            sanPhamChiTiet.get().setSoLuong(sanPhamChiTiet.get().getSoLuong() - 1);
+            if (soLuongMoi > optionalGioHangChiTiet.get().getSoLuong()) {
+                optionalGioHangChiTiet.get().setSoLuong(soLuongMoi);
+                sanPhamChiTiet.get().setSoLuong(sanPhamChiTiet.get().getSoLuong() - 1);
+            }else {
+                optionalGioHangChiTiet.get().setSoLuong(soLuongMoi);
+                sanPhamChiTiet.get().setSoLuong(sanPhamChiTiet.get().getSoLuong() + 1);
+            }
+            chiTietSanPhamRepository.save(sanPhamChiTiet.get());
             gioHangChiTietRepository.save(optionalGioHangChiTiet.get());
             auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), hoaDon.get().getMa(), "Cập nhật số lượng", hoaDon.get().getMa(),
                     "Mã sản phẩm: " + sanPhamChiTiet.get().getSanPham().getMaSanPham(), "Tên sản phẩm: " + sanPhamChiTiet.get().getSanPham().getTenSanPham(),
