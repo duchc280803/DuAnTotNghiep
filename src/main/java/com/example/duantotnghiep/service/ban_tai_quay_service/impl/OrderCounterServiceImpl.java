@@ -286,10 +286,10 @@ public class OrderCounterServiceImpl implements OrderCounterService {
         trangThaiHoaDon.setGhiChu("Nhân viên xác nhận đơn cho khách");
         trangThaiHoaDon.setHoaDon(hoaDon.get());
         trangThaiHoaDonRepository.save(trangThaiHoaDon);
-        if (sendEmail) {
-            SendEmailOrder.sendEmailOrder(hoaDon.get(), javaMailSender);
-            System.out.println("gửi mail");
-        }
+//        if (sendEmail) {
+//            SendEmailOrder.sendEmailOrder(hoaDon.get(), javaMailSender);
+//            System.out.println("gửi mail");
+//        }
         String normalized = RemoveDiacritics.removeDiacritics(hoaDonGiaoThanhToanRequest.getHoTen());
 
         String converted = normalized.toLowerCase().replaceAll("\\s", "");
