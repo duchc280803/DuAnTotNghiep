@@ -67,7 +67,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam), soLuong, mauSac, size, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -210,7 +210,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam), soLuong, mauSac, size, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -237,7 +237,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam), soLuong, mauSac, size, chatLieu, idThuongHieu);
         }
         return chiTietSanPhamCustom; // Trả về bên ngoài vòng lặp
     }
@@ -261,7 +261,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, sizes, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam), soLuong, mauSac, sizes, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -293,7 +293,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, sizes, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam), soLuong, mauSac, sizes, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -317,7 +317,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, sizes, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam), soLuong, mauSac, sizes, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -342,7 +342,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam), soLuong, mauSac, size, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -366,7 +366,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam), soLuong, mauSac, size, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -391,7 +391,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam), soLuong, mauSac, size, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -415,7 +415,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam), soLuong, mauSac, size, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -440,7 +440,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam), soLuong, mauSac, size, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -464,7 +464,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, size, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam), soLuong, mauSac, size, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -489,7 +489,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, ssize, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam), soLuong, mauSac, ssize, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -514,7 +514,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, ssize, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam), soLuong, mauSac, ssize, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;
@@ -539,7 +539,7 @@ public class ProductCounterServiceImpl implements ProductCounterService {
             BigDecimal giaGiam = new BigDecimal(getGiaGiamCuoiCung(idSp));
 
             ChiTietSanPhamCustom chiTietSanPhamCustom = new ChiTietSanPhamCustom(
-                    idCtsp, imgage, tenSanPham, FormatNumber.formatBigDecimal(giaBan), FormatNumber.formatBigDecimal(giaBan.subtract(giaGiam)), soLuong, mauSac, ssize, chatLieu, idThuongHieu);
+                    idCtsp, imgage, tenSanPham, giaBan, giaBan.subtract(giaGiam), soLuong, mauSac, ssize, chatLieu, idThuongHieu);
             resultList.add(chiTietSanPhamCustom);
         }
         return resultList;

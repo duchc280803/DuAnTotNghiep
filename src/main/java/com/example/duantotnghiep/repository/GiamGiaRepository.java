@@ -88,7 +88,7 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
 
 //        @Query("SELECT sp.id, i.tenImage as ten, sp.tenSanPham, sp.giaBan FROM SanPham sp JOIN sp.listImage i WHERE i.isDefault = TRUE AND (:tenSanPham is null or sp.tenSanPham LIKE %:tenSanPham%) ")
 
-        @Query("SELECT sp.id, i.tenImage as ten, sp.tenSanPham, sp.giaBan FROM SanPham sp JOIN sp.listImage i WHERE i.isDefault = TRUE AND (:tenSanPham is null or sp.tenSanPham LIKE %:tenSanPham%) ")
+        @Query("SELECT sp.id, i.tenImage as ten, sp.tenSanPham, sp.giaBan FROM SanPham sp JOIN sp.listImage i WHERE i.isDefault = TRUE AND (:tenSanPham is null or sp.tenSanPham LIKE %:tenSanPham%) AND sp.trangThai = 1")
         Page<Object[]> listProductResponse(
                 @Param("tenSanPham") String tenSanPham,
                 Pageable pageable);

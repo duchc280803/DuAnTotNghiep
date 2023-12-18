@@ -20,9 +20,9 @@ public class ChiTietSanPhamCustom {
 
     private String tenSanPham;
 
-    private String giaBan;
+    private BigDecimal giaBan;
 
-    private String giaGiamGia;
+    private BigDecimal giaGiamGia;
 
     private Integer soLuong;
 
