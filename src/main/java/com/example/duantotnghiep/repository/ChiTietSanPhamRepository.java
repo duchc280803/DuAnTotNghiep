@@ -473,5 +473,7 @@ public interface ChiTietSanPhamRepository extends JpaRepository<SanPhamChiTiet, 
             "AND s.size = :size")
     Page<SanPhamChiTietResponse> finBySize(@Param("id") UUID id, @Param("size") Integer size, Pageable pageable);
 
-    SanPhamChiTiet findByMauSacAndChatLieuAndSize(MauSac mauSac, ChatLieu chatLieu, Size size);
+    @Query("SELECT spct FROM SanPhamChiTiet spct JOIN spct.sanPham sp JOIN spct.chatLieu cl JOIN spct.mauSac ms JOIN spct.size s"  +
+            " WHERE s.id = :idSize AND cl.id = :idChatLieu AND ms.id = :idMauSac AND sp.id =:idSanPham")
+    SanPhamChiTiet findBySpct(@Param("idSize") UUID idSize, @Param("idChatLieu") UUID idChatLieu, @Param("idMauSac") UUID idMauSac, @Param("idSanPham") UUID idSanPham);
 }

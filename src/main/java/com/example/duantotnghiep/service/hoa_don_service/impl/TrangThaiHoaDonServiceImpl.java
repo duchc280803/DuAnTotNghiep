@@ -11,6 +11,7 @@ import com.example.duantotnghiep.response.MessageResponse;
 import com.example.duantotnghiep.service.audi_log_service.AuditLogService;
 import com.example.duantotnghiep.service.hoa_don_service.TrangThaiHoaDonService;
 import com.example.duantotnghiep.util.FormatNumber;
+import com.example.duantotnghiep.util.SendEmailOrder;
 import com.opencsv.exceptions.CsvValidationException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -88,32 +89,33 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             // Lưu cả hai bảng
             hoaDonRepository.save(hoaDon);
             trangThaiHoaDonRepository.save(trangThaiHoaDon);
-            if (sendEmail) {
-                sendEmailOrder(hoaDon);
-                System.out.println("gửi mail");
-            }
-            if (request.getNewTrangThai() == 5) {
-                for (HinhThucThanhToan x : hoaDon.getHinhThucThanhToanList()) {
-                    if (x == null) {
-                        LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
-                        loaiHinhThucThanhToan.setId(UUID.randomUUID());
-                        loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
-                        loaiHinhThucThanhToan.setTenLoai("Khách thanh toán");
-                        loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+//            if (sendEmail) {
+//                SendEmailOrder.sendEmailOrder(hoaDon, javaMailSender);
+//            }
+            if (hoaDonOptional.get().getTrangThai() == 5) {
+                System.out.println("Có chạy vào đây khoong");
+                if (hoaDonOptional.get().getHinhThucThanhToanList().isEmpty()) {
+                    System.out.println("Có chạy vào đây khoong 1");
+                    LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+                    loaiHinhThucThanhToan.setId(UUID.randomUUID());
+                    loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
+                    loaiHinhThucThanhToan.setTenLoai("Khách thanh toán");
+                    loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
 
-                        HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
-                        hinhThucThanhToan.setId(UUID.randomUUID());
-                        hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
-                        hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
-                        hinhThucThanhToan.setTongSoTien(hoaDon.getThanhTien());
-                        hinhThucThanhToan.setGhiChu("");
-                        hinhThucThanhToan.setPhuongThucThanhToan(1);
-                        hinhThucThanhToan.setCodeTransaction(VnPayConfigTaiQuay.getRandomNumber(8));
-                        hinhThucThanhToan.setHoaDon(hoaDon);
-                        hinhThucThanhToan.setTrangThai(1);
-                        hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
-                        hinhThucThanhToanRepository.save(hinhThucThanhToan);
-                    } else {
+                    HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+                    hinhThucThanhToan.setId(UUID.randomUUID());
+                    hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+                    hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
+                    hinhThucThanhToan.setTongSoTien(hoaDon.getThanhTien());
+                    hinhThucThanhToan.setGhiChu("");
+                    hinhThucThanhToan.setPhuongThucThanhToan(1);
+                    hinhThucThanhToan.setCodeTransaction(VnPayConfigTaiQuay.getRandomNumber(8));
+                    hinhThucThanhToan.setHoaDon(hoaDon);
+                    hinhThucThanhToan.setTrangThai(1);
+                    hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
+                    hinhThucThanhToanRepository.save(hinhThucThanhToan);
+                } else {
+                    for (HinhThucThanhToan x : hoaDon.getHinhThucThanhToanList()) {
                         LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
                         loaiHinhThucThanhToan.setId(UUID.randomUUID());
                         loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
