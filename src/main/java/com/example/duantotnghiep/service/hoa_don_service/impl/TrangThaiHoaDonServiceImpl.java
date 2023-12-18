@@ -93,24 +93,47 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
                 System.out.println("gửi mail");
             }
             if (request.getNewTrangThai() == 5) {
-                LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
-                loaiHinhThucThanhToan.setId(UUID.randomUUID());
-                loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
-                loaiHinhThucThanhToan.setTenLoai("Khách thanh toán");
-                loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+                for (HinhThucThanhToan x : hoaDon.getHinhThucThanhToanList()) {
+                    if (x == null) {
+                        LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+                        loaiHinhThucThanhToan.setId(UUID.randomUUID());
+                        loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
+                        loaiHinhThucThanhToan.setTenLoai("Khách thanh toán");
+                        loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
 
-                HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
-                hinhThucThanhToan.setId(UUID.randomUUID());
-                hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
-                hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
-                hinhThucThanhToan.setTongSoTien(hoaDon.getThanhTien());
-                hinhThucThanhToan.setGhiChu("");
-                hinhThucThanhToan.setPhuongThucThanhToan(1);
-                hinhThucThanhToan.setCodeTransaction(VnPayConfigTaiQuay.getRandomNumber(8));
-                hinhThucThanhToan.setHoaDon(hoaDon);
-                hinhThucThanhToan.setTrangThai(1);
-                hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
-                hinhThucThanhToanRepository.save(hinhThucThanhToan);
+                        HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+                        hinhThucThanhToan.setId(UUID.randomUUID());
+                        hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+                        hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
+                        hinhThucThanhToan.setTongSoTien(hoaDon.getThanhTien());
+                        hinhThucThanhToan.setGhiChu("");
+                        hinhThucThanhToan.setPhuongThucThanhToan(1);
+                        hinhThucThanhToan.setCodeTransaction(VnPayConfigTaiQuay.getRandomNumber(8));
+                        hinhThucThanhToan.setHoaDon(hoaDon);
+                        hinhThucThanhToan.setTrangThai(1);
+                        hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
+                        hinhThucThanhToanRepository.save(hinhThucThanhToan);
+                    } else {
+                        LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
+                        loaiHinhThucThanhToan.setId(UUID.randomUUID());
+                        loaiHinhThucThanhToan.setNgayTao(new java.sql.Date(System.currentTimeMillis()));
+                        loaiHinhThucThanhToan.setTenLoai("Khách thanh toán");
+                        loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
+
+                        HinhThucThanhToan hinhThucThanhToan = new HinhThucThanhToan();
+                        hinhThucThanhToan.setId(UUID.randomUUID());
+                        hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
+                        hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
+                        hinhThucThanhToan.setTongSoTien(hoaDon.getThanhTien().subtract(x.getTongSoTien()));
+                        hinhThucThanhToan.setGhiChu("");
+                        hinhThucThanhToan.setPhuongThucThanhToan(1);
+                        hinhThucThanhToan.setCodeTransaction(VnPayConfigTaiQuay.getRandomNumber(8));
+                        hinhThucThanhToan.setHoaDon(hoaDon);
+                        hinhThucThanhToan.setTrangThai(1);
+                        hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
+                        hinhThucThanhToanRepository.save(hinhThucThanhToan);
+                    }
+                }
             }
         }
         return MessageResponse.builder().message("Thêm thành công").build();
