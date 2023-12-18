@@ -2,6 +2,7 @@ package com.example.duantotnghiep.util;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
@@ -10,7 +11,9 @@ public class SendConfirmationEmail {
     public static void sendConfirmationEmailStatic(String email, String username, String password, JavaMailSender mailSender) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Chào mừng bạn đến với Nice Shoe");
         try {
             helper.setTo(email);
             helper.setSubject("Chào mừng bạn đến với Nice Shoe");
@@ -38,5 +41,4 @@ public class SendConfirmationEmail {
             e.printStackTrace();
         }
     }
-
 }
