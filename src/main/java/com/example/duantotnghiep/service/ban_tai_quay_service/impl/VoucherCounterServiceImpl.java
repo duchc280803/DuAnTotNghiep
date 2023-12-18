@@ -61,27 +61,29 @@ public class VoucherCounterServiceImpl implements VoucherCounterService {
         Optional<HoaDon> optionalHoaDon = hoaDonRepository.findById(idHoaDon);
         Optional<Voucher> optionalVoucher = voucherRepository.findByIdAndTrangThai(idVoucher, 1);
 
-        if (idVoucher == null) {
-            optionalHoaDon.get().setVoucher(null);
-            optionalHoaDon.get().setTienGiamGia(thanhTien);
-            hoaDonRepository.save(optionalHoaDon.get());
-        } else {
-            HoaDon hoaDon = optionalHoaDon.get();
-            Voucher voucher = optionalVoucher.get();
-            Double maxDiscount = 0.0;
-            if (voucher.getHinhThucGiam() == 1) {
-                maxDiscount = voucher.getGiaTriGiam() / 100.0;
-                hoaDon.setVoucher(voucher);
-                hoaDon.setTienGiamGia(thanhTien.multiply(new BigDecimal(maxDiscount)));
+        if (optionalVoucher.get().getSoLuongDung() != optionalVoucher.get().getSoLuongMa()) {
+            if (idVoucher == null) {
+                optionalHoaDon.get().setVoucher(null);
+                optionalHoaDon.get().setTienGiamGia(thanhTien);
+                hoaDonRepository.save(optionalHoaDon.get());
+            } else {
+                HoaDon hoaDon = optionalHoaDon.get();
+                Voucher voucher = optionalVoucher.get();
+                Double maxDiscount = 0.0;
+                if (voucher.getHinhThucGiam() == 1) {
+                    maxDiscount = voucher.getGiaTriGiam() / 100.0;
+                    hoaDon.setVoucher(voucher);
+                    hoaDon.setTienGiamGia(thanhTien.multiply(new BigDecimal(maxDiscount)));
+                }
+                if (voucher.getHinhThucGiam() == 2) {
+                    hoaDon.setVoucher(voucher);
+                    hoaDon.setTienGiamGia(new BigDecimal(voucher.getGiaTriGiam()));
+                }
+                voucher.setSoLuongDung(voucher.getSoLuongDung() + 1);
+                auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), optionalHoaDon.get().getMa(), "Cập nhận voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + FormatNumber.formatBigDecimal(new BigDecimal(voucher.getGiaTriGiam())) + "đ", "", "");
+                hoaDonRepository.save(hoaDon);
+                return MessageResponse.builder().message("Cập nhật thành công").build();
             }
-            if (voucher.getHinhThucGiam() == 2) {
-                hoaDon.setVoucher(voucher);
-                hoaDon.setTienGiamGia(new BigDecimal(voucher.getGiaTriGiam()));
-            }
-            voucher.setSoLuongDung(voucher.getSoLuongDung() + 1);
-            auditLogService.writeAuditLogHoadon(taiKhoan.get().getMaTaiKhoan(), optionalHoaDon.get().getMa(), "Cập nhận voucher", optionalHoaDon.get().getMa(), "Mã voucher: " + voucher.getMaVoucher(), "Tiền giảm giá: " + FormatNumber.formatBigDecimal(new BigDecimal(voucher.getGiaTriGiam())) + "đ", "", "");
-            hoaDonRepository.save(hoaDon);
-            return MessageResponse.builder().message("Cập nhật thành công").build();
         }
 
         return MessageResponse.builder().message("Không tìm thấy HoaDon hoặc Voucher").build();
