@@ -53,7 +53,10 @@ public class VoucherController {
     public ResponseEntity<List<Voucher>> search(@RequestParam String keyword) {
         return new ResponseEntity<>(Service.searchByTenOrMaVoucher(keyword), HttpStatus.OK);
     }
-
+    @GetMapping("updateStatus")
+    public ResponseEntity<MessageResponse> updateVoucherStatus() {
+        return new ResponseEntity<>(Service.checkAndSetStatus(), HttpStatus.OK);
+    }
     @PutMapping("update/{id}")
     public ResponseEntity<MessageResponse> updateVoucher(@PathVariable UUID id,
             @RequestBody VoucherRequest createKhachRequest, Principal principal)
