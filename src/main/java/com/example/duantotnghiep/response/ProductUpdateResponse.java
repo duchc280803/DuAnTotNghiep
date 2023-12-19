@@ -19,8 +19,6 @@ public class ProductUpdateResponse {
 
     private String describe;
 
-    private Integer baoHang;
-
     private BigDecimal price;
 
     private String tenXuatXu;
