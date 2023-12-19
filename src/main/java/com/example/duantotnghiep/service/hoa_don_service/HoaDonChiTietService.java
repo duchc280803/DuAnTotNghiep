@@ -17,7 +17,7 @@ import java.util.UUID;
 public interface HoaDonChiTietService {
     ThongTinDonHang getThongTinDonHang(UUID idHoaDon);
 
-    List<SanPhamHoaDonChiTietResponse> getSanPhamHDCT(UUID idHoaDon);
+    List<SanPhamHoaDonChiTietResponse> getSanPhamHDCT(Integer pageNumber, Integer pageSize,UUID idHoaDon);
 
     List<HinhThucThanhToanResponse> getLichSuThanhToan(UUID idHoaDon);
 

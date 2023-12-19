@@ -14,6 +14,9 @@ import com.example.duantotnghiep.service.hoa_don_service.HoaDonChiTietService;
 import com.example.duantotnghiep.util.FormatNumber;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -69,8 +72,10 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     }
 
     @Override
-    public List<SanPhamHoaDonChiTietResponse> getSanPhamHDCT(UUID idHoaDon) {
-        return hoaDonChiTietRepository.getSanPhamHDCT(idHoaDon);
+    public List<SanPhamHoaDonChiTietResponse> getSanPhamHDCT(Integer pageNumber, Integer pageSize,UUID idHoaDon) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<SanPhamHoaDonChiTietResponse> sanPhamHoaDonChiTietResponses = hoaDonChiTietRepository.getSanPhamHDCT(pageable, idHoaDon);
+        return sanPhamHoaDonChiTietResponses.getContent();
     }
 
     @Override
