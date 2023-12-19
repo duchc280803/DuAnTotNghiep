@@ -88,11 +88,6 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
 
 //        @Query("SELECT sp.id, i.tenImage as ten, sp.tenSanPham, sp.giaBan FROM SanPham sp JOIN sp.listImage i WHERE i.isDefault = TRUE AND (:tenSanPham is null or sp.tenSanPham LIKE %:tenSanPham%) ")
 
-        @Query("SELECT sp.id, i.tenImage as ten, sp.tenSanPham, sp.giaBan FROM SanPham sp JOIN sp.listImage i WHERE i.isDefault = TRUE AND (:tenSanPham is null or sp.tenSanPham LIKE %:tenSanPham%) AND sp.trangThai = 1")
-        Page<Object[]> listProductResponse(
-                @Param("tenSanPham") String tenSanPham,
-                Pageable pageable);
-
         @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan FROM SanPham sp " +
                 "JOIN sp.listImage i " +
                 "JOIN sp.kieuDe kd " +
@@ -101,6 +96,29 @@ public interface GiamGiaRepository extends JpaRepository<GiamGia, UUID> {
                 "JOIN sp.xuatXu xx  " +
                 "WHERE i.isDefault = TRUE AND kd.id = :id or th.id = :id or dm.id = :id or xx.id = :id")
         List<Object[]> ListSearchDanhMuc(@Param("id") UUID id);
+
+        @Query("SELECT sp.id, i.tenImage, sp.tenSanPham, sp.giaBan " +
+                "FROM SanPham sp " +
+                "JOIN sp.thuongHieu th " +
+                "JOIN sp.kieuDe kd " +
+                "JOIN sp.danhMuc dm " +
+                "JOIN sp.xuatXu xx " +
+                "JOIN sp.listImage i " +
+                "WHERE i.isDefault = true " +
+                "AND sp.trangThai = 1 " +
+                "AND (:tenSanPham is null or sp.tenSanPham LIKE %:tenSanPham%) "+
+                "AND th.trangThai = 1 " +
+                "AND kd.trangThai = 1 " +
+                "AND dm.trangThai = 1 " +
+                "AND xx.trangThai = 1 ORDER BY sp.ngayTao DESC")
+        Page<Object[]> listProductResponse(
+                @Param("tenSanPham") String tenSanPham,
+                Pageable pageable);
+
+//        @Query("SELECT sp.id, i.tenImage , sp.tenSanPham, sp.giaBan FROM SanPham sp LEFT JOIN sp.listImage i WHERE i.isDefault = TRUE AND (:tenSanPham is null or sp.tenSanPham LIKE %:tenSanPham%) AND sp.trangThai = 1")
+//        Page<Object[]> listProductResponse(
+//                @Param("tenSanPham") String tenSanPham,
+//                Pageable pageable);
 
         @Query("SELECT COUNT(spgg.id) FROM GiamGia gg JOIN gg.spGiamGiaList spgg WHERE spgg.sanPham.id = :productId")
         int countRecordsByProductId(@Param("productId") UUID productId);
