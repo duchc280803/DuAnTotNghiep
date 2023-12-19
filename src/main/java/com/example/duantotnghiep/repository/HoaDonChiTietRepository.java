@@ -3,6 +3,8 @@ package com.example.duantotnghiep.repository;
 import com.example.duantotnghiep.entity.HoaDon;
 import com.example.duantotnghiep.entity.HoaDonChiTiet;
 import com.example.duantotnghiep.response.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -37,7 +39,18 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, UU
             "JOIN spct.sanPham sp " +
             "JOIN sp.listImage i " +
             "WHERE i.isDefault = true AND hd.id = :idHoaDon")
+    Page<SanPhamHoaDonChiTietResponse> getSanPhamHDCT(Pageable pageable, @Param("idHoaDon") UUID idHoaDon);
+
+    @Query("SELECT new com.example.duantotnghiep.response.SanPhamHoaDonChiTietResponse" +
+            "(hdct.id, i.tenImage, sp.tenSanPham, hdct.donGia, hdct.donGiaSauGiam, hdct.soLuong, hdct.trangThai) " +
+            "FROM HoaDon hd JOIN " +
+            "hd.hoaDonChiTietList hdct " +
+            "JOIN hdct.sanPhamChiTiet spct " +
+            "JOIN spct.sanPham sp " +
+            "JOIN sp.listImage i " +
+            "WHERE i.isDefault = true AND hd.id = :idHoaDon")
     List<SanPhamHoaDonChiTietResponse> getSanPhamHDCT(@Param("idHoaDon") UUID idHoaDon);
+
 
     @Query("SELECT new com.example.duantotnghiep.response.HinhThucThanhToanResponse(lhttt.tenLoai, httt.codeTransaction, httt.tongSoTien, httt.ngayThanhToan, httt.phuongThucThanhToan,httt.ghiChu, nv.maTaiKhoan) FROM HoaDon hd " +
             "JOIN hd.hinhThucThanhToanList httt " +
