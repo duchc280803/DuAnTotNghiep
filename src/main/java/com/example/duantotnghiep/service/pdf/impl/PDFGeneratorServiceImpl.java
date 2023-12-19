@@ -28,7 +28,7 @@ import java.util.UUID;
 @Service
 public class PDFGeneratorServiceImpl implements PDFGeneratorService {
 
-    private static final String FONT_ARIAL = "D:\\BE_DuAnTotNghiep\\lib\\font\\oki.ttf";
+    private static final String FONT_ARIAL = "D:\\DuAnTotNghiep\\lib\\font\\oki.ttf";
 
     @Autowired
     private HoaDonRepository hoaDonRepository;
