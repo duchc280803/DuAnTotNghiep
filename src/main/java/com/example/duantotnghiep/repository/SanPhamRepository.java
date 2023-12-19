@@ -188,7 +188,7 @@ public interface SanPhamRepository extends JpaRepository<SanPham, UUID> {
     List<SanPhamResponse> getBestSellingProductsbyId(@Param("id") UUID id);
 
     @Query(value = "SELECT new com.example.duantotnghiep.response.ProductUpdateResponse" +
-            "(sp.maSanPham, sp.tenSanPham,sp.moTa,sp.baoHanh, sp.giaBan, xx.tenXuatXu, dm.tenDanhMuc, th.tenThuongHieu, kd.tenDe) " +
+            "(sp.maSanPham, sp.tenSanPham,sp.moTa, sp.giaBan, xx.tenXuatXu, dm.tenDanhMuc, th.tenThuongHieu, kd.tenDe) " +
             "FROM SanPham sp " +
             "JOIN sp.thuongHieu th " +
             "JOIN sp.kieuDe kd " +
