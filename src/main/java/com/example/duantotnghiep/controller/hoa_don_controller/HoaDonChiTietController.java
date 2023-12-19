@@ -35,8 +35,12 @@ public class HoaDonChiTietController {
     }
 
     @GetMapping("hien-thi-san-pham/{idHoaDon}")
-    public ResponseEntity<List<SanPhamHoaDonChiTietResponse>> getSanPhamHDCT(@PathVariable(name = "idHoaDon") UUID idHoaDon) {
-        return new ResponseEntity<>(hoaDonChiTietService.getSanPhamHDCT(idHoaDon), HttpStatus.OK);
+    public ResponseEntity<List<SanPhamHoaDonChiTietResponse>> getSanPhamHDCT(
+            @PathVariable(name = "idHoaDon") UUID idHoaDon,
+            @RequestParam(name = "pageNumber", defaultValue = "0") Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = "5") Integer pageSize
+) {
+        return new ResponseEntity<>(hoaDonChiTietService.getSanPhamHDCT(pageNumber, pageSize, idHoaDon), HttpStatus.OK);
     }
 
     @GetMapping("hien-thi-lich-su/{idHoaDon}")
