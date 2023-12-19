@@ -89,9 +89,9 @@ public class TrangThaiHoaDonServiceImpl implements TrangThaiHoaDonService {
             // Lưu cả hai bảng
             hoaDonRepository.save(hoaDon);
             trangThaiHoaDonRepository.save(trangThaiHoaDon);
-//            if (sendEmail) {
-//                SendEmailOrder.sendEmailOrder(hoaDon, javaMailSender);
-//            }
+            if (sendEmail) {
+                SendEmailOrder.sendEmailOrder(hoaDon, javaMailSender);
+            }
             if (hoaDonOptional.get().getTrangThai() == 5) {
                 System.out.println("Có chạy vào đây khoong");
                 if (hoaDonOptional.get().getHinhThucThanhToanList().isEmpty()) {
