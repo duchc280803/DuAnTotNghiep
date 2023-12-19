@@ -432,6 +432,9 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         applyVoucherAndPayment(hoaDon, voucher, tongTienSauKhiDaTraHang);
 
         BigDecimal tienSauKhiTra = tongTienSauKhiDaTraHang.subtract(hoaDon.getTienGiamGia());
+        BigDecimal tongTienKhachTra = hoaDon.getThanhTien().subtract(hoaDon.getTienShip());
+        System.out.printf(tongTienKhachTra.toString());
+        System.out.printf(tienSauKhiTra.toString());
         // Hoàn tiền
         LoaiHinhThucThanhToan loaiHinhThucThanhToan = new LoaiHinhThucThanhToan();
         loaiHinhThucThanhToan.setId(UUID.randomUUID());
@@ -441,7 +444,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hinhThucThanhToan.setId(UUID.randomUUID());
         hinhThucThanhToan.setNgayThanhToan(new Date(System.currentTimeMillis()));
         hinhThucThanhToan.setTaiKhoan(hoaDon.getTaiKhoanKhachHang());
-        hinhThucThanhToan.setTongSoTien(hoaDon.getThanhTien().subtract(tienSauKhiTra));
+        hinhThucThanhToan.setTongSoTien(tongTienKhachTra.subtract(tienSauKhiTra));
         hinhThucThanhToan.setGhiChu("Nhân viên hoàn tiền cho khách");
         hinhThucThanhToan.setPhuongThucThanhToan(1);
         hinhThucThanhToan.setCodeTransaction(VnPayConfigTaiQuay.getRandomNumber(8));
@@ -449,7 +452,7 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         hinhThucThanhToan.setTrangThai(1);
         hinhThucThanhToan.setLoaiHinhThucThanhToan(loaiHinhThucThanhToan);
 
-        Long thanhTien = (tongTienSauKhiDaTraHang.longValue() - hoaDon.getTienGiamGia().longValue());
+        Long thanhTien = (tongTienSauKhiDaTraHang.longValue() - hoaDon.getTienGiamGia().longValue()) + hoaDon.getTienShip().longValue();
         hoaDon.setThanhTien(new BigDecimal(thanhTien));
         loaiHinhThucThanhToanRepository.save(loaiHinhThucThanhToan);
         hinhThucThanhToanRepository.save(hinhThucThanhToan);
